@@ -40,8 +40,8 @@ export default function Home() {
           <div className="animate-fade-up">
             <SectionEyebrow text="The AI-Era Marketing Agency" />
           </div>
-          <h1 className="font-display font-semibold text-[52px] md:text-[72px] lg:text-[88px] leading-[1.08] text-cream mb-8 max-w-4xl mx-auto animate-fade-up delay-1">
-            Marketing isn&apos;t a line item.<br className="hidden md:block" /> It&apos;s the <span className="italic text-ember">life</span> of your business.
+          <h1 className="font-display font-semibold not-italic text-[52px] md:text-[72px] lg:text-[88px] leading-[1.08] text-cream mb-8 max-w-4xl mx-auto animate-fade-up delay-1">
+            Marketing isn&apos;t a line item.<br className="hidden md:block" /> It&apos;s the <span style={{color: '#7CB550', fontStyle: 'italic'}}>life</span> of your business.
           </h1>
           <p className="font-body text-lg text-ash max-w-xl mx-auto mb-12 animate-fade-up delay-2 leading-relaxed">
             Hewn Life combines thirty years of human business acumen with the speed and scale of AI to carve out something truly beautiful and valuable for your brand.
