@@ -167,8 +167,8 @@ export default function HowItWorks() {
             <div className="absolute top-4 left-[12.5%] right-[12.5%] h-[1px] border-t border-dashed border-moss/40" />
             {timeline.map((step, i) => (
               <div key={i} className="relative">
-                <div className="w-8 h-8 rounded-full bg-moss flex items-center justify-center mb-6">
-                  <span className="font-body text-xs font-semibold text-obsidian">{i + 1}</span>
+                <div className="w-8 h-8 rounded-full border border-ember/60 flex items-center justify-center mb-6">
+                  <span className="font-body text-xs font-semibold text-bone">{i + 1}</span>
                 </div>
                 <p className="font-body text-[11px] uppercase tracking-[0.15em] text-ember mb-2">{step.period}</p>
                 <p className="font-body font-semibold text-sm text-cream mb-2">{step.title}</p>
@@ -181,8 +181,8 @@ export default function HowItWorks() {
             {timeline.map((step, i) => (
               <div key={i} className="flex gap-6">
                 <div className="flex flex-col items-center">
-                  <div className="w-8 h-8 rounded-full bg-moss flex-shrink-0 flex items-center justify-center">
-                    <span className="font-body text-xs font-semibold text-obsidian">{i + 1}</span>
+                  <div className="w-8 h-8 rounded-full border border-ember/60 flex-shrink-0 flex items-center justify-center">
+                    <span className="font-body text-xs font-semibold text-bone">{i + 1}</span>
                   </div>
                   {i < timeline.length - 1 && <div className="w-[1px] flex-1 border-l border-dashed border-moss/40 mt-2" />}
                 </div>
