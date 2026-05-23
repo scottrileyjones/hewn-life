@@ -11,8 +11,8 @@ export default function Contact() {
           <div className="animate-fade-up">
             <SectionEyebrow text="Let's Talk" />
           </div>
-          <h1 className="font-display font-semibold text-[56px] md:text-[72px] leading-[1.08] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
-            Tell us about your business. We&apos;ll tell you what&apos;s <span className="italic text-ember">possible.</span>
+          <h1 className="hero-heading text-[56px] md:text-[80px] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
+            Tell us about your business. We&apos;ll tell you what&apos;s <em style={{color: '#7CB550'}}>possible.</em>
           </h1>
           <p className="font-body text-lg text-ash max-w-xl animate-fade-up delay-2 leading-relaxed">
             Book a free 30-minute discovery call. No pitch deck. No pressure. Just a direct conversation about your goals.

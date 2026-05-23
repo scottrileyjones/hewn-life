@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
-import { Playfair_Display, DM_Sans, Inter_Tight } from 'next/font/google'
+import { Fraunces, DM_Sans, Inter_Tight } from 'next/font/google'
 import './globals.css'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 
-const playfair = Playfair_Display({
+const fraunces = Fraunces({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900'],
+  axes: ['opsz', 'SOFT', 'WONK'],
+  weight: ['300', '400', '500', '600', '700', '900'],
   style: ['normal', 'italic'],
   variable: '--font-display',
   display: 'swap',
@@ -37,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${dmSans.variable} ${interTight.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${dmSans.variable} ${interTight.variable}`}>
       <body>
         <Nav />
         <main>{children}</main>

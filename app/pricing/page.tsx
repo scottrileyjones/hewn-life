@@ -78,8 +78,8 @@ export default function Pricing() {
           <div className="animate-fade-up">
             <SectionEyebrow text="Transparent Pricing" />
           </div>
-          <h1 className="font-display font-semibold text-[56px] md:text-[72px] leading-[1.08] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
-            You know exactly what you&apos;re ordering. And exactly what it <span className="italic text-ember">costs.</span>
+          <h1 className="hero-heading text-[56px] md:text-[80px] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
+            You know exactly what you&apos;re ordering. And exactly what it <em style={{color: '#7CB550'}}>costs.</em>
           </h1>
           <p className="font-body text-lg text-ash max-w-xl animate-fade-up delay-2 leading-relaxed">
             We operate like a fine dining restaurant: clear, flat fees for premium, full-service work. No hidden percentages. No bloated retainers. No surprises.
