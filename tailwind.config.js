@@ -13,6 +13,7 @@ module.exports = {
         ink: '#1A1814',
         slate: '#6B6560',
         copper: '#B87A40',
+        ember: '#D87A2E',
         gold: '#C9A84C',
         silver: '#9BA4AE',
         bronze: '#B87A40',
@@ -20,6 +21,7 @@ module.exports = {
       fontFamily: {
         display: ['var(--font-display)', 'Georgia', 'serif'],
         body: ['var(--font-body)', '-apple-system', 'sans-serif'],
+        mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
       },
       fontSize: {
         hero: ['6.5rem', { lineHeight: '1.05', letterSpacing: '-0.02em' }],
