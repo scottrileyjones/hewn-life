@@ -53,7 +53,7 @@ export default function Nav() {
           <div className="hidden md:flex items-center gap-4">
             <Link
               href="/contact"
-              className="border border-copper text-copper font-mono text-[12px] uppercase tracking-[0.16em] px-5 py-2.5 rounded-full hover:bg-copper hover:text-obsidian transition-all duration-300"
+              className="border border-moss text-moss font-mono text-[12px] uppercase tracking-[0.16em] px-5 py-2.5 rounded-full hover:bg-moss hover:text-bone transition-all duration-300"
             >
               Book a Call
             </Link>
@@ -92,7 +92,7 @@ export default function Nav() {
           </div>
           <Link
             href="/contact"
-            className="mt-4 border border-copper text-copper font-mono text-[12px] uppercase tracking-[0.18em] px-8 py-4 rounded-full hover:bg-copper hover:text-obsidian transition-all duration-300"
+            className="mt-4 border border-moss text-moss font-mono text-[12px] uppercase tracking-[0.18em] px-8 py-4 rounded-full hover:bg-moss hover:text-bone transition-all duration-300"
             onClick={() => setMenuOpen(false)}
           >
             Book a Call

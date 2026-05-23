@@ -117,8 +117,8 @@ export default function HowItWorks() {
                 onClick={() => setActiveTab(i)}
                 className={`font-body text-[13px] px-5 py-2 rounded-full transition-all duration-300 ${
                   activeTab === i
-                    ? 'bg-copper text-obsidian'
-                    : 'border border-copper/40 text-copper hover:border-copper'
+                    ? 'bg-moss text-obsidian'
+                    : 'border border-moss/40 text-moss hover:border-moss'
                 }`}
               >
                 {p.num} {p.name}
@@ -164,13 +164,13 @@ export default function HowItWorks() {
           </div>
 
           <div className="hidden md:grid grid-cols-4 gap-8 relative">
-            <div className="absolute top-4 left-[12.5%] right-[12.5%] h-[1px] border-t border-dashed border-copper/40" />
+            <div className="absolute top-4 left-[12.5%] right-[12.5%] h-[1px] border-t border-dashed border-moss/40" />
             {timeline.map((step, i) => (
               <div key={i} className="relative">
-                <div className="w-8 h-8 rounded-full bg-copper flex items-center justify-center mb-6">
+                <div className="w-8 h-8 rounded-full bg-moss flex items-center justify-center mb-6">
                   <span className="font-body text-xs font-semibold text-obsidian">{i + 1}</span>
                 </div>
-                <p className="font-body text-[11px] uppercase tracking-[0.15em] text-copper mb-2">{step.period}</p>
+                <p className="font-body text-[11px] uppercase tracking-[0.15em] text-moss mb-2">{step.period}</p>
                 <p className="font-body font-semibold text-sm text-cream mb-2">{step.title}</p>
                 <p className="font-body text-xs text-ash leading-relaxed">{step.desc}</p>
               </div>
@@ -181,13 +181,13 @@ export default function HowItWorks() {
             {timeline.map((step, i) => (
               <div key={i} className="flex gap-6">
                 <div className="flex flex-col items-center">
-                  <div className="w-8 h-8 rounded-full bg-copper flex-shrink-0 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-moss flex-shrink-0 flex items-center justify-center">
                     <span className="font-body text-xs font-semibold text-obsidian">{i + 1}</span>
                   </div>
-                  {i < timeline.length - 1 && <div className="w-[1px] flex-1 border-l border-dashed border-copper/40 mt-2" />}
+                  {i < timeline.length - 1 && <div className="w-[1px] flex-1 border-l border-dashed border-moss/40 mt-2" />}
                 </div>
                 <div className="pb-8">
-                  <p className="font-body text-[11px] uppercase tracking-[0.15em] text-copper mb-1">{step.period}</p>
+                  <p className="font-body text-[11px] uppercase tracking-[0.15em] text-moss mb-1">{step.period}</p>
                   <p className="font-body font-semibold text-sm text-cream mb-2">{step.title}</p>
                   <p className="font-body text-xs text-ash leading-relaxed">{step.desc}</p>
                 </div>
@@ -215,7 +215,7 @@ export default function HowItWorks() {
               <div key={i} className="bg-marble border border-black/[0.08] rounded-2xl p-8">
                 <p className="text-3xl mb-4">{card.icon}</p>
                 <p className="font-body font-semibold text-sm text-ink mb-1">{card.title}</p>
-                <p className="font-body text-[11px] uppercase tracking-[0.1em] text-copper mb-4">{card.timing}</p>
+                <p className="font-body text-[11px] uppercase tracking-[0.1em] text-moss mb-4">{card.timing}</p>
                 <p className="font-body text-sm text-slate leading-relaxed">{card.desc}</p>
               </div>
             ))}

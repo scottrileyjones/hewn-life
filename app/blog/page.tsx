@@ -81,7 +81,7 @@ export default function Blog() {
             </div>
             <div className="lg:col-span-2">
               <SectionEyebrow text="Featured Post" light />
-              <span className="inline-block bg-copper text-obsidian font-body text-[11px] font-medium px-3 py-1 rounded-full uppercase tracking-wider mb-4">
+              <span className="inline-block bg-moss text-obsidian font-body text-[11px] font-medium px-3 py-1 rounded-full uppercase tracking-wider mb-4">
                 {featured.category}
               </span>
               <h2 className="font-display font-medium text-[36px] leading-tight text-ink mb-4">
@@ -89,7 +89,7 @@ export default function Blog() {
               </h2>
               <p className="font-body text-[12px] text-slate mb-4">{featured.date}</p>
               <p className="font-body text-base text-slate leading-relaxed mb-6">{featured.excerpt}</p>
-              <Link href="/blog" className="font-body text-sm text-copper hover:underline underline-offset-4">
+              <Link href="/blog" className="font-body text-sm text-moss hover:underline underline-offset-4">
                 Read More →
               </Link>
             </div>
@@ -104,11 +104,11 @@ export default function Blog() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {grid.map((post, i) => (
                 <article key={i} className="group cursor-pointer">
-                  <div className="aspect-[16/9] bg-marble rounded-2xl border border-black/[0.08] mb-6 overflow-hidden group-hover:border-copper/30 transition-colors flex items-center justify-center">
+                  <div className="aspect-[16/9] bg-marble rounded-2xl border border-black/[0.08] mb-6 overflow-hidden group-hover:border-moss/30 transition-colors flex items-center justify-center">
                     <p className="font-body text-sm text-slate">Post Image</p>
                   </div>
-                  <p className="font-body text-[11px] uppercase tracking-[0.15em] text-copper mb-2">{post.category}</p>
-                  <h3 className="font-display font-medium text-[22px] leading-tight text-ink mb-3 group-hover:text-copper transition-colors">
+                  <p className="font-body text-[11px] uppercase tracking-[0.15em] text-moss mb-2">{post.category}</p>
+                  <h3 className="font-display font-medium text-[22px] leading-tight text-ink mb-3 group-hover:text-moss transition-colors">
                     {post.title}
                   </h3>
                   <p className="font-body text-sm text-slate leading-relaxed mb-4 line-clamp-2">{post.excerpt}</p>
@@ -141,7 +141,7 @@ export default function Blog() {
           </h2>
           <Link
             href="/contact"
-            className="inline-flex items-center bg-copper text-obsidian font-body font-medium px-8 py-4 rounded-full hover:brightness-110 hover:scale-[1.02] transition-all duration-300"
+            className="inline-flex items-center bg-moss text-obsidian font-body font-medium px-8 py-4 rounded-full hover:brightness-110 hover:scale-[1.02] transition-all duration-300"
           >
             Book a Discovery Call
           </Link>

@@ -12,17 +12,17 @@ export default function CtaBanner({
   buttonText = "Book Your Discovery Call"
 }: CtaBannerProps) {
   return (
-    <section className="bg-copper py-24 md:py-32">
+    <section className="bg-moss py-24 md:py-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center">
-        <h2 className="font-display font-bold text-[52px] leading-tight text-obsidian mb-6 max-w-2xl mx-auto">
+        <h2 className="font-display font-bold text-[52px] leading-tight text-bone mb-6 max-w-2xl mx-auto">
           {headline}
         </h2>
-        <p className="font-body text-base text-obsidian/70 max-w-xl mx-auto mb-10">
+        <p className="font-body text-base text-bone/70 max-w-xl mx-auto mb-10">
           {body}
         </p>
         <Link
           href="/contact"
-          className="inline-flex items-center bg-obsidian text-cream font-body font-medium px-8 py-4 rounded-full hover:bg-charcoal transition-all duration-300"
+          className="inline-flex items-center bg-iron text-bone font-body font-medium px-8 py-4 rounded-full hover:bg-forge transition-all duration-300"
         >
           {buttonText}
         </Link>

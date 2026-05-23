@@ -94,12 +94,12 @@ export default function Pricing() {
             <span className={`font-body text-sm ${!annual ? 'text-ink' : 'text-slate'}`}>Monthly</span>
             <button
               onClick={() => setAnnual(!annual)}
-              className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${annual ? 'bg-copper' : 'bg-black/20'}`}
+              className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${annual ? 'bg-moss' : 'bg-black/20'}`}
             >
               <span className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform duration-300 ${annual ? 'translate-x-6' : ''}`} />
             </button>
             <span className={`font-body text-sm ${annual ? 'text-ink' : 'text-slate'}`}>
-              Annual <span className="text-copper font-medium">(save 10%)</span>
+              Annual <span className="text-moss font-medium">(save 10%)</span>
             </span>
           </div>
 
@@ -110,12 +110,12 @@ export default function Pricing() {
                 <div
                   key={tier.name}
                   className={`relative bg-white rounded-2xl overflow-hidden border ${
-                    tier.featured ? 'border-copper shadow-xl shadow-copper/10 lg:scale-[1.02]' : 'border-black/10'
+                    tier.featured ? 'border-moss shadow-xl shadow-moss/10 lg:scale-[1.02]' : 'border-black/10'
                   }`}
                 >
                   {tier.featured && (
                     <div className="absolute top-4 right-4 z-10">
-                      <span className="bg-copper text-obsidian font-body text-[11px] font-medium px-3 py-1 rounded-full uppercase tracking-wider">
+                      <span className="bg-moss text-obsidian font-body text-[11px] font-medium px-3 py-1 rounded-full uppercase tracking-wider">
                         Most Popular
                       </span>
                     </div>
@@ -136,8 +136,8 @@ export default function Pricing() {
                       href="/contact"
                       className={`block w-full text-center font-body font-medium text-sm px-6 py-3.5 rounded-full transition-all duration-300 mb-8 ${
                         tier.featured
-                          ? 'bg-copper text-obsidian hover:brightness-110'
-                          : 'border border-copper text-copper hover:bg-copper hover:text-obsidian'
+                          ? 'bg-moss text-bone hover:brightness-110'
+                          : 'border border-moss text-moss hover:bg-moss hover:text-bone'
                       }`}
                     >
                       Get Started
@@ -149,7 +149,7 @@ export default function Pricing() {
                           <ul className="space-y-2">
                             {group.items.map((item, ii) => (
                               <li key={ii} className="flex items-start gap-3">
-                                <svg className="w-4 h-4 text-copper flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                <svg className="w-4 h-4 text-moss flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                 </svg>
                                 <span className="font-body text-sm text-ink">{item}</span>
@@ -193,7 +193,7 @@ export default function Pricing() {
                   <tr key={i} className="border-b border-white/[0.08]">
                     <td className="py-5 pr-8 font-body font-medium text-sm text-cream">{row.service}</td>
                     <td className="py-5 pr-8 font-body text-sm text-ash">{row.desc}</td>
-                    <td className="py-5 font-body text-sm text-copper font-medium">{row.fee}</td>
+                    <td className="py-5 font-body text-sm text-moss font-medium">{row.fee}</td>
                   </tr>
                 ))}
               </tbody>

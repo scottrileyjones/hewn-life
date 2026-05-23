@@ -4,19 +4,28 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        obsidian: '#181714',
-        charcoal: '#242220',
-        stone: '#F5F0E8',
-        marble: '#EDE8DF',
-        cream: '#F5F0E8',
-        ash: '#A89F92',
-        ink: '#1A1814',
-        slate: '#6B6560',
-        copper: '#B87A40',
-        ember: '#D87A2E',
-        gold: '#C9A84C',
-        silver: '#9BA4AE',
-        bronze: '#B87A40',
+        // Primary darks
+        iron:    '#1A1815',
+        forge:   '#0E0D0B',
+        // Warm neutrals
+        bone:    '#F2ECE0',
+        stone:   '#E8DFC0',
+        oat:     '#DCCFB6',
+        // Accents (use sparingly)
+        copper:  '#B5621C',
+        ember:   '#D87A2E',
+        bronze:  '#8C4612',
+        // Earth (primary palette)
+        slate:   '#3F4A47',
+        moss:    '#4A5348',
+        clay:    '#685544',
+        // Legacy aliases (mapped to brand)
+        obsidian: '#1A1815',
+        charcoal: '#2A2824',
+        cream:   '#F2ECE0',
+        marble:  '#E8DFC0',
+        ash:     '#A89F92',
+        ink:     '#1A1815',
       },
       fontFamily: {
         display: ['var(--font-display)', 'Georgia', 'serif'],

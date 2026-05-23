@@ -32,7 +32,7 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <div className="aspect-[4/5] bg-marble rounded-2xl border border-copper/20 flex items-center justify-center">
+              <div className="aspect-[4/5] bg-marble rounded-2xl border border-moss/20 flex items-center justify-center">
                 <p className="font-body text-sm text-slate">Founder Portrait</p>
               </div>
             </div>
@@ -56,7 +56,7 @@ export default function About() {
                   { num: '100s', label: 'of businesses advised' },
                 ].map((stat, i) => (
                   <div key={i}>
-                    <p className="font-display font-bold text-[36px] text-copper">{stat.num}</p>
+                    <p className="font-display font-bold text-[36px] text-moss">{stat.num}</p>
                     <p className="font-body text-xs text-slate mt-1">{stat.label}</p>
                   </div>
                 ))}
@@ -78,7 +78,7 @@ export default function About() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {values.map((value) => (
               <div key={value.num} className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-8">
-                <p className="font-display font-bold text-[48px] text-copper/20 leading-none mb-4">{value.num}</p>
+                <p className="font-display font-bold text-[48px] text-moss/20 leading-none mb-4">{value.num}</p>
                 <p className="font-body font-semibold text-[13px] text-cream mb-3">{value.title}</p>
                 <p className="font-body text-sm text-ash leading-relaxed">{value.desc}</p>
               </div>

@@ -44,10 +44,10 @@ export default function FaqAccordion() {
             className="w-full text-left py-6 flex items-center justify-between gap-4 group"
             onClick={() => setOpenIndex(openIndex === i ? null : i)}
           >
-            <span className="font-body text-base text-cream group-hover:text-copper transition-colors">
+            <span className="font-body text-base text-cream group-hover:text-moss transition-colors">
               {faq.question}
             </span>
-            <span className={`text-copper transition-transform duration-300 flex-shrink-0 ${openIndex === i ? 'rotate-45' : ''}`}>
+            <span className={`text-moss transition-transform duration-300 flex-shrink-0 ${openIndex === i ? 'rotate-45' : ''}`}>
               +
             </span>
           </button>
