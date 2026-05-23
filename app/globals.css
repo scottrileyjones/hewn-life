@@ -84,6 +84,7 @@ body {
   font-style: normal;
   letter-spacing: -0.04em;
   line-height: 0.92;
+  overflow: visible;
 }
 .hero-heading em {
   font-style: italic;
