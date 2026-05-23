@@ -64,8 +64,8 @@ export default function Blog() {
           <div className="animate-fade-up">
             <SectionEyebrow text="Insights" />
           </div>
-          <h1 className="font-display font-light italic text-[52px] md:text-[64px] leading-[1.08] text-cream max-w-3xl animate-fade-up delay-1">
-            Ideas on marketing, growth, and building businesses that actually work.
+          <h1 className="font-display font-semibold text-[52px] md:text-[64px] leading-[1.08] text-cream max-w-3xl animate-fade-up delay-1">
+            Ideas on marketing, growth, and building businesses that actually <span className="italic text-ember">work.</span>
           </h1>
         </div>
       </section>

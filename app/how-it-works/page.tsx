@@ -91,8 +91,8 @@ export default function HowItWorks() {
           <div className="animate-fade-up">
             <SectionEyebrow text="Our Process" />
           </div>
-          <h1 className="font-display font-light italic text-[56px] md:text-[72px] leading-[1.08] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
-            We don&apos;t bolt marketing on. We build it into the bones of your business.
+          <h1 className="font-display font-semibold text-[56px] md:text-[72px] leading-[1.08] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
+            We don&apos;t bolt marketing on. We <span className="italic text-ember">build</span> it into the bones of your business.
           </h1>
           <p className="font-body text-lg text-ash max-w-xl animate-fade-up delay-2 leading-relaxed">
             Hewn Life operates as your fractional CMO — embedded, invested, and building systems that outlast any single campaign.
