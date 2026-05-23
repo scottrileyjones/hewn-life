@@ -35,7 +35,7 @@ export default function About() {
             <div>
               <div className="aspect-[4/5] relative rounded-2xl overflow-hidden bg-oat border border-moss/20">
                 <Image
-                  src="/images/team/scott-jones.jpg"
+                  src="https://res.cloudinary.com/dsx2wcqte/image/upload/dfdadb94b85aba15_xniyua"
                   alt="Scott Jones, Founder of Hewn Life"
                   fill
                   className="object-cover"
