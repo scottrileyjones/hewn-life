@@ -88,7 +88,7 @@ export default function Pricing() {
       </section>
 
       {/* Pricing Cards */}
-      <section className="bg-stone py-24 md:py-32">
+      <section className="bg-bone py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-center gap-4 mb-16">
             <span className={`font-body text-sm ${!annual ? 'text-ink' : 'text-slate'}`}>Monthly</span>
@@ -99,7 +99,7 @@ export default function Pricing() {
               <span className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform duration-300 ${annual ? 'translate-x-6' : ''}`} />
             </button>
             <span className={`font-body text-sm ${annual ? 'text-ink' : 'text-slate'}`}>
-              Annual <span className="text-moss font-medium">(save 10%)</span>
+              Annual <span className="text-ember font-medium">(save 10%)</span>
             </span>
           </div>
 
@@ -110,7 +110,7 @@ export default function Pricing() {
                 <div
                   key={tier.name}
                   className={`relative bg-white rounded-2xl overflow-hidden border ${
-                    tier.featured ? 'border-moss shadow-xl shadow-moss/10 lg:scale-[1.02]' : 'border-black/10'
+                    tier.featured ? 'border-ember shadow-xl shadow-ember/10 lg:scale-[1.02]' : 'border-black/10'
                   }`}
                 >
                   {tier.featured && (
@@ -137,7 +137,7 @@ export default function Pricing() {
                       className={`block w-full text-center font-body font-medium text-sm px-6 py-3.5 rounded-full transition-all duration-300 mb-8 ${
                         tier.featured
                           ? 'bg-moss text-bone hover:brightness-110'
-                          : 'border border-moss text-moss hover:bg-moss hover:text-bone'
+                          : 'border border-ember text-ember hover:bg-ember hover:text-iron'
                       }`}
                     >
                       Get Started
@@ -149,7 +149,7 @@ export default function Pricing() {
                           <ul className="space-y-2">
                             {group.items.map((item, ii) => (
                               <li key={ii} className="flex items-start gap-3">
-                                <svg className="w-4 h-4 text-moss flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                <svg className="w-4 h-4 text-ember flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                 </svg>
                                 <span className="font-body text-sm text-ink">{item}</span>
@@ -168,7 +168,7 @@ export default function Pricing() {
       </section>
 
       {/* A La Carte */}
-      <section className="bg-charcoal py-24 md:py-32">
+      <section className="bg-moss py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="mb-12">
             <SectionEyebrow text='The "Sides"' />
@@ -193,7 +193,7 @@ export default function Pricing() {
                   <tr key={i} className="border-b border-white/[0.08]">
                     <td className="py-5 pr-8 font-body font-medium text-sm text-cream">{row.service}</td>
                     <td className="py-5 pr-8 font-body text-sm text-ash">{row.desc}</td>
-                    <td className="py-5 font-body text-sm text-moss font-medium">{row.fee}</td>
+                    <td className="py-5 font-body text-sm text-ember font-medium">{row.fee}</td>
                   </tr>
                 ))}
               </tbody>
@@ -203,7 +203,7 @@ export default function Pricing() {
       </section>
 
       {/* What Clients Pay Separately */}
-      <section className="bg-stone py-24 md:py-32">
+      <section className="bg-bone py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="mb-12">
             <SectionEyebrow text="Full Transparency" light />

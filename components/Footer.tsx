@@ -47,7 +47,7 @@ export default function Footer() {
             <a href="mailto:hello@hewnlife.com" className="font-body text-sm text-cream hover:text-ember transition-colors block mb-4">
               hello@hewnlife.com
             </a>
-            <Link href="/contact" className="font-body text-sm text-moss hover:text-ember transition-colors">
+            <Link href="/contact" className="font-body text-sm text-ember hover:text-ember transition-colors">
               Book a Discovery Call →
             </Link>
           </div>

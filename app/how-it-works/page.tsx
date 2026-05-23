@@ -101,7 +101,7 @@ export default function HowItWorks() {
       </section>
 
       {/* Six Pillars Tabs */}
-      <section className="bg-stone py-24 md:py-32">
+      <section className="bg-bone py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-12">
             <SectionEyebrow text="The Six Pillars" light />
@@ -117,8 +117,8 @@ export default function HowItWorks() {
                 onClick={() => setActiveTab(i)}
                 className={`font-body text-[13px] px-5 py-2 rounded-full transition-all duration-300 ${
                   activeTab === i
-                    ? 'bg-moss text-obsidian'
-                    : 'border border-moss/40 text-moss hover:border-moss'
+                    ? 'bg-ember text-iron'
+                    : 'border border-moss/40 text-ember hover:border-moss'
                 }`}
               >
                 {p.num} {p.name}
@@ -154,7 +154,7 @@ export default function HowItWorks() {
       </section>
 
       {/* Engagement Timeline */}
-      <section className="bg-charcoal py-24 md:py-32">
+      <section className="bg-moss py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">
             <SectionEyebrow text="How We Engage" />
@@ -170,7 +170,7 @@ export default function HowItWorks() {
                 <div className="w-8 h-8 rounded-full bg-moss flex items-center justify-center mb-6">
                   <span className="font-body text-xs font-semibold text-obsidian">{i + 1}</span>
                 </div>
-                <p className="font-body text-[11px] uppercase tracking-[0.15em] text-moss mb-2">{step.period}</p>
+                <p className="font-body text-[11px] uppercase tracking-[0.15em] text-ember mb-2">{step.period}</p>
                 <p className="font-body font-semibold text-sm text-cream mb-2">{step.title}</p>
                 <p className="font-body text-xs text-ash leading-relaxed">{step.desc}</p>
               </div>
@@ -187,7 +187,7 @@ export default function HowItWorks() {
                   {i < timeline.length - 1 && <div className="w-[1px] flex-1 border-l border-dashed border-moss/40 mt-2" />}
                 </div>
                 <div className="pb-8">
-                  <p className="font-body text-[11px] uppercase tracking-[0.15em] text-moss mb-1">{step.period}</p>
+                  <p className="font-body text-[11px] uppercase tracking-[0.15em] text-ember mb-1">{step.period}</p>
                   <p className="font-body font-semibold text-sm text-cream mb-2">{step.title}</p>
                   <p className="font-body text-xs text-ash leading-relaxed">{step.desc}</p>
                 </div>
@@ -198,7 +198,7 @@ export default function HowItWorks() {
       </section>
 
       {/* Communication Cadence */}
-      <section className="bg-stone py-24 md:py-32">
+      <section className="bg-bone py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">
             <SectionEyebrow text="Staying Aligned" light />
@@ -212,10 +212,10 @@ export default function HowItWorks() {
               { icon: '📬', title: 'Weekly Async Update', timing: 'Every week', desc: "Brief email or Slack update on what was done, what's next, and any open questions." },
               { icon: '📞', title: 'Monthly Strategy Call', timing: '60-minute video call', desc: 'Monthly video call with ownership to review performance and plan the month ahead.' },
             ].map((card, i) => (
-              <div key={i} className="bg-marble border border-black/[0.08] rounded-2xl p-8">
+              <div key={i} className="bg-oat border border-black/[0.08] rounded-2xl p-8">
                 <p className="text-3xl mb-4">{card.icon}</p>
                 <p className="font-body font-semibold text-sm text-ink mb-1">{card.title}</p>
-                <p className="font-body text-[11px] uppercase tracking-[0.1em] text-moss mb-4">{card.timing}</p>
+                <p className="font-body text-[11px] uppercase tracking-[0.1em] text-ember mb-4">{card.timing}</p>
                 <p className="font-body text-sm text-slate leading-relaxed">{card.desc}</p>
               </div>
             ))}

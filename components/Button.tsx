@@ -15,8 +15,8 @@ export default function Button({ href, onClick, children, variant = 'primary', c
   const base = 'inline-flex items-center gap-2 px-8 py-4 rounded-full font-body font-medium text-sm transition-all duration-300 cursor-pointer'
 
   const variants: Record<ButtonVariant, string> = {
-    primary: 'bg-moss text-bone hover:brightness-110 hover:scale-[1.02]',
-    secondary: 'border border-moss text-moss hover:bg-moss hover:text-bone',
+    primary: 'bg-ember text-iron hover:brightness-110 hover:scale-[1.02]',
+    secondary: 'border border-ember text-ember hover:bg-ember hover:text-iron',
     ghost: 'text-cream hover:underline underline-offset-4',
     dark: 'bg-iron text-bone hover:bg-forge',
   }

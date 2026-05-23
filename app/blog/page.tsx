@@ -71,11 +71,11 @@ export default function Blog() {
       </section>
 
       {/* Featured Post */}
-      <section className="bg-stone py-24 md:py-32">
+      <section className="bg-bone py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
             <div className="lg:col-span-3">
-              <div className="aspect-[16/9] bg-marble rounded-2xl border border-black/[0.08] flex items-center justify-center">
+              <div className="aspect-[16/9] bg-oat rounded-2xl border border-black/[0.08] flex items-center justify-center">
                 <p className="font-body text-sm text-slate">Featured Image</p>
               </div>
             </div>
@@ -89,7 +89,7 @@ export default function Blog() {
               </h2>
               <p className="font-body text-[12px] text-slate mb-4">{featured.date}</p>
               <p className="font-body text-base text-slate leading-relaxed mb-6">{featured.excerpt}</p>
-              <Link href="/blog" className="font-body text-sm text-moss hover:underline underline-offset-4">
+              <Link href="/blog" className="font-body text-sm text-ember hover:underline underline-offset-4">
                 Read More →
               </Link>
             </div>
@@ -98,17 +98,17 @@ export default function Blog() {
       </section>
 
       {/* Post Grid */}
-      <section className="bg-stone pb-24 md:pb-32">
+      <section className="bg-bone pb-24 md:pb-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="border-t border-black/10 pt-16">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {grid.map((post, i) => (
                 <article key={i} className="group cursor-pointer">
-                  <div className="aspect-[16/9] bg-marble rounded-2xl border border-black/[0.08] mb-6 overflow-hidden group-hover:border-moss/30 transition-colors flex items-center justify-center">
+                  <div className="aspect-[16/9] bg-oat rounded-2xl border border-black/[0.08] mb-6 overflow-hidden group-hover:border-moss/30 transition-colors flex items-center justify-center">
                     <p className="font-body text-sm text-slate">Post Image</p>
                   </div>
-                  <p className="font-body text-[11px] uppercase tracking-[0.15em] text-moss mb-2">{post.category}</p>
-                  <h3 className="font-display font-medium text-[22px] leading-tight text-ink mb-3 group-hover:text-moss transition-colors">
+                  <p className="font-body text-[11px] uppercase tracking-[0.15em] text-ember mb-2">{post.category}</p>
+                  <h3 className="font-display font-medium text-[22px] leading-tight text-ink mb-3 group-hover:text-ember transition-colors">
                     {post.title}
                   </h3>
                   <p className="font-body text-sm text-slate leading-relaxed mb-4 line-clamp-2">{post.excerpt}</p>
@@ -133,7 +133,7 @@ export default function Blog() {
       </section>
 
       {/* Blog CTA */}
-      <section className="bg-charcoal py-24 md:py-32">
+      <section className="bg-moss py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center">
           <SectionEyebrow text="Ready to talk?" />
           <h2 className="font-display font-normal text-[44px] leading-tight text-cream mb-6 max-w-xl mx-auto">
@@ -141,7 +141,7 @@ export default function Blog() {
           </h2>
           <Link
             href="/contact"
-            className="inline-flex items-center bg-moss text-obsidian font-body font-medium px-8 py-4 rounded-full hover:brightness-110 hover:scale-[1.02] transition-all duration-300"
+            className="inline-flex items-center bg-ember text-iron font-body font-medium px-8 py-4 rounded-full hover:brightness-110 hover:scale-[1.02] transition-all duration-300"
           >
             Book a Discovery Call
           </Link>

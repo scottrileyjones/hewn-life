@@ -26,7 +26,7 @@ export default function ContactForm() {
           <input
             type="text"
             required
-            className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-moss focus:outline-none focus:ring-1 focus:ring-moss transition-all"
+            className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all"
             placeholder="Jane Smith"
           />
         </div>
@@ -35,7 +35,7 @@ export default function ContactForm() {
           <input
             type="text"
             required
-            className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-moss focus:outline-none focus:ring-1 focus:ring-moss transition-all"
+            className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all"
             placeholder="Acme Roofing Co."
           />
         </div>
@@ -46,7 +46,7 @@ export default function ContactForm() {
           <input
             type="email"
             required
-            className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-moss focus:outline-none focus:ring-1 focus:ring-moss transition-all"
+            className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all"
             placeholder="jane@example.com"
           />
         </div>
@@ -54,7 +54,7 @@ export default function ContactForm() {
           <label className="block font-body text-sm text-ink mb-2">Phone Number</label>
           <input
             type="tel"
-            className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-moss focus:outline-none focus:ring-1 focus:ring-moss transition-all"
+            className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all"
             placeholder="(555) 000-0000"
           />
         </div>
@@ -62,7 +62,7 @@ export default function ContactForm() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block font-body text-sm text-ink mb-2">Monthly Revenue (approx.)</label>
-          <select className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-moss focus:outline-none focus:ring-1 focus:ring-moss transition-all">
+          <select className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all">
             <option value="">Select range</option>
             <option>Under $500K</option>
             <option>$500K–$1M</option>
@@ -73,7 +73,7 @@ export default function ContactForm() {
         </div>
         <div>
           <label className="block font-body text-sm text-ink mb-2">Which package interests you?</label>
-          <select className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-moss focus:outline-none focus:ring-1 focus:ring-moss transition-all">
+          <select className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all">
             <option value="">Select package</option>
             <option>Bronze — $2,500/mo</option>
             <option>Silver — $5,000/mo</option>
@@ -88,7 +88,7 @@ export default function ContactForm() {
         <textarea
           required
           rows={4}
-          className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-moss focus:outline-none focus:ring-1 focus:ring-moss transition-all resize-none"
+          className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all resize-none"
           placeholder="Tell us what you're struggling with..."
         />
       </div>
@@ -96,13 +96,13 @@ export default function ContactForm() {
         <label className="block font-body text-sm text-ink mb-2">How did you hear about us?</label>
         <input
           type="text"
-          className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-moss focus:outline-none focus:ring-1 focus:ring-moss transition-all"
+          className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all"
           placeholder="Optional"
         />
       </div>
       <button
         type="submit"
-        className="w-full bg-moss text-obsidian font-body font-medium py-4 rounded-full hover:brightness-110 hover:scale-[1.01] transition-all duration-300"
+        className="w-full bg-ember text-iron font-body font-medium py-4 rounded-full hover:brightness-110 hover:scale-[1.01] transition-all duration-300"
       >
         Book My Discovery Call
       </button>

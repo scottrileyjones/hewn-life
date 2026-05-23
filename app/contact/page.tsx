@@ -21,7 +21,7 @@ export default function Contact() {
       </section>
 
       {/* Split Form + Info */}
-      <section className="bg-stone py-24 md:py-32">
+      <section className="bg-bone py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
             <div className="lg:col-span-3">
@@ -39,23 +39,23 @@ export default function Contact() {
                   "If there's a fit, we outline a custom proposal within 48 hours.",
                 ].map((step, i) => (
                   <li key={i} className="flex gap-4">
-                    <span className="font-display font-semibold text-2xl text-moss flex-shrink-0 leading-none">{i + 1}.</span>
+                    <span className="font-display font-semibold text-2xl text-ember flex-shrink-0 leading-none">{i + 1}.</span>
                     <p className="font-body text-sm text-slate leading-relaxed">{step}</p>
                   </li>
                 ))}
               </ol>
 
               <div className="border-t border-black/10 pt-8 mb-8">
-                <a href="mailto:hello@hewnlife.com" className="font-body text-sm text-ink hover:text-moss transition-colors block mb-3">
+                <a href="mailto:hello@hewnlife.com" className="font-body text-sm text-ink hover:text-ember transition-colors block mb-3">
                   hello@hewnlife.com
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="font-body text-sm text-ash hover:text-moss transition-colors flex items-center gap-2">
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="font-body text-sm text-ash hover:text-ember transition-colors flex items-center gap-2">
                   <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                   LinkedIn
                 </a>
               </div>
 
-              <div className="bg-marble rounded-2xl p-6 border border-black/[0.08]">
+              <div className="bg-oat rounded-2xl p-6 border border-black/[0.08]">
                 <blockquote className="font-display italic text-lg text-ink mb-4">
                   &ldquo;Every inquiry is reviewed personally by the founder. You will always talk to the person who will actually be doing your work.&rdquo;
                 </blockquote>
@@ -67,7 +67,7 @@ export default function Contact() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-charcoal py-24 md:py-32">
+      <section className="bg-moss py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">
             <SectionEyebrow text="Common Questions" />
