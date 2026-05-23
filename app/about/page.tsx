@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import SectionEyebrow from '@/components/SectionEyebrow'
 import CtaBanner from '@/components/CtaBanner'
 
@@ -32,8 +33,14 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <div className="aspect-[4/5] bg-oat rounded-2xl border border-moss/20 flex items-center justify-center">
-                <p className="font-body text-sm text-slate">Founder Portrait</p>
+              <div className="aspect-[4/5] relative rounded-2xl overflow-hidden bg-oat border border-moss/20">
+                <Image
+                  src="/images/team/scott-jones.jpg"
+                  alt="Scott Jones, Founder of Hewn Life"
+                  fill
+                  className="object-cover"
+                  priority
+                />
               </div>
             </div>
             <div>
