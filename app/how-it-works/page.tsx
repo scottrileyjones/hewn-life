@@ -208,12 +208,38 @@ export default function HowItWorks() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { icon: '📊', title: 'Monthly KPI Report', timing: '1st of each month', desc: 'Written report with live dashboard tracking all key performance metrics.' },
-              { icon: '📬', title: 'Weekly Async Update', timing: 'Every week', desc: "Brief email or Slack update on what was done, what's next, and any open questions." },
-              { icon: '📞', title: 'Monthly Strategy Call', timing: '60-minute video call', desc: 'Monthly video call with ownership to review performance and plan the month ahead.' },
+              {
+                icon: (
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                    <line x1="2" y1="20" x2="22" y2="20"/>
+                  </svg>
+                ),
+                title: 'Monthly KPI Report', timing: '1st of each month',
+                desc: 'Written report with live dashboard tracking all key performance metrics.'
+              },
+              {
+                icon: (
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/>
+                    <path d="M2 7l10 7 10-7"/>
+                  </svg>
+                ),
+                title: 'Weekly Async Update', timing: 'Every week',
+                desc: "Brief email or Slack update on what was done, what's next, and any open questions."
+              },
+              {
+                icon: (
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M15 10l4.553-2.069A1 1 0 0121 8.87V15.13a1 1 0 01-1.447.9L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+                  </svg>
+                ),
+                title: 'Monthly Strategy Call', timing: '60-minute video call',
+                desc: 'Monthly video call with ownership to review performance and plan the month ahead.'
+              },
             ].map((card, i) => (
               <div key={i} className="bg-oat border border-black/[0.08] rounded-2xl p-8">
-                <p className="text-3xl mb-4">{card.icon}</p>
+                <div className="text-moss mb-5">{card.icon}</div>
                 <p className="font-body font-semibold text-sm text-ink mb-1">{card.title}</p>
                 <p className="font-body text-[11px] uppercase tracking-[0.1em] text-ember mb-4">{card.timing}</p>
                 <p className="font-body text-sm text-slate leading-relaxed">{card.desc}</p>
