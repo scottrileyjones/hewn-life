@@ -25,7 +25,17 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-obsidian min-h-screen flex flex-col items-center justify-center text-center relative overflow-hidden grain-overlay pt-20">
+      <section
+        className="min-h-screen flex flex-col items-center justify-center text-center relative overflow-hidden grain-overlay pt-20"
+        style={{
+          background: `
+            radial-gradient(ellipse at 60% 40%, rgba(124,181,80,0.13) 0%, transparent 55%),
+            radial-gradient(ellipse at 20% 70%, rgba(74,83,72,0.4) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 80%, rgba(124,181,80,0.06) 0%, transparent 45%),
+            #1A1815
+          `
+        }}
+      >
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="animate-fade-up">
             <SectionEyebrow text="The AI-Era Marketing Agency" />
@@ -86,7 +96,7 @@ export default function Home() {
       </section>
 
       {/* Six Pillars */}
-      <section className="bg-obsidian py-24 md:py-32">
+      <section className="py-24 md:py-32" style={{background: "radial-gradient(ellipse at 50% 50%, rgba(74,83,72,0.5) 0%, transparent 70%), #1A1815"}}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">
             <SectionEyebrow text="How We Work" />

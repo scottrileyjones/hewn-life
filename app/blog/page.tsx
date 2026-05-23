@@ -59,7 +59,7 @@ export default function Blog() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-obsidian min-h-[60vh] flex items-end pb-24 relative overflow-hidden grain-overlay pt-32">
+      <section className="min-h-[60vh] flex items-end pb-24 relative overflow-hidden grain-overlay pt-32" style={{background: `radial-gradient(ellipse at 70% 30%, rgba(124,181,80,0.10) 0%, transparent 55%), #1A1815`}}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="animate-fade-up">
             <SectionEyebrow text="Insights" />

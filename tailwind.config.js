@@ -13,7 +13,7 @@ module.exports = {
         oat:     '#DCCFB6',
         // Accents (use sparingly)
         copper:  '#B5621C',
-        ember:   '#D87A2E',
+        ember:   '#7CB550',
         bronze:  '#8C4612',
         // Earth (primary palette)
         slate:   '#3F4A47',
