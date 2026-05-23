@@ -5,29 +5,28 @@ import FaqAccordion from '@/components/FaqAccordion'
 export default function Contact() {
   return (
     <>
-      {/* Section 6.1 — Hero */}
+      {/* Hero */}
       <section className="bg-obsidian min-h-[65vh] flex items-end pb-24 relative overflow-hidden grain-overlay pt-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <SectionEyebrow text="Let's Talk" />
-          <h1 className="font-display font-light italic text-[56px] md:text-[72px] leading-[1.08] text-cream max-w-4xl mb-8">
+          <div className="animate-fade-up">
+            <SectionEyebrow text="Let's Talk" />
+          </div>
+          <h1 className="font-display font-light italic text-[56px] md:text-[72px] leading-[1.08] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
             Tell us about your business. We&apos;ll tell you what&apos;s possible.
           </h1>
-          <p className="font-body text-lg text-ash max-w-xl leading-relaxed">
+          <p className="font-body text-lg text-ash max-w-xl animate-fade-up delay-2 leading-relaxed">
             Book a free 30-minute discovery call. No pitch deck. No pressure. Just a direct conversation about your goals.
           </p>
         </div>
       </section>
 
-      {/* Section 6.2 — Split Form + Info */}
+      {/* Split Form + Info */}
       <section className="bg-stone py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
-            {/* Form */}
             <div className="lg:col-span-3">
               <ContactForm />
             </div>
-
-            {/* Info */}
             <div className="lg:col-span-2">
               <h3 className="font-display font-medium text-[28px] text-ink mb-8">
                 What happens next
@@ -35,9 +34,9 @@ export default function Contact() {
               <ol className="space-y-6 mb-10">
                 {[
                   'We review your submission within one business day.',
-                  'You\'ll receive a link to book a 30-minute discovery call.',
-                  'We come prepared with thoughts on your business — not a sales script.',
-                  'If there\'s a fit, we outline a custom proposal within 48 hours.',
+                  "You'll receive a link to book a 30-minute discovery call.",
+                  "We come prepared with thoughts on your business — not a sales script.",
+                  "If there's a fit, we outline a custom proposal within 48 hours.",
                 ].map((step, i) => (
                   <li key={i} className="flex gap-4">
                     <span className="font-display font-semibold text-2xl text-copper flex-shrink-0 leading-none">{i + 1}.</span>
@@ -67,7 +66,7 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Section 6.3 — FAQ */}
+      {/* FAQ */}
       <section className="bg-charcoal py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">

@@ -45,7 +45,7 @@ const posts = [
   {
     category: 'Customer Experience',
     title: 'The Follow-Up That Saves the Sale',
-    excerpt: 'Most businesses lose 40% of their potential revenue to poor follow-up systems. Here\'s how to fix it in a week.',
+    excerpt: "Most businesses lose 40% of their potential revenue to poor follow-up systems. Here's how to fix it in a week.",
     date: 'February 2026',
     readTime: '6 min read',
     featured: false,
@@ -58,17 +58,19 @@ const grid = posts.slice(1)
 export default function Blog() {
   return (
     <>
-      {/* Section 5.1 — Hero */}
+      {/* Hero */}
       <section className="bg-obsidian min-h-[60vh] flex items-end pb-24 relative overflow-hidden grain-overlay pt-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <SectionEyebrow text="Insights" />
-          <h1 className="font-display font-light italic text-[52px] md:text-[64px] leading-[1.08] text-cream max-w-3xl">
+          <div className="animate-fade-up">
+            <SectionEyebrow text="Insights" />
+          </div>
+          <h1 className="font-display font-light italic text-[52px] md:text-[64px] leading-[1.08] text-cream max-w-3xl animate-fade-up delay-1">
             Ideas on marketing, growth, and building businesses that actually work.
           </h1>
         </div>
       </section>
 
-      {/* Section 5.2 — Featured Post */}
+      {/* Featured Post */}
       <section className="bg-stone py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
@@ -95,7 +97,7 @@ export default function Blog() {
         </div>
       </section>
 
-      {/* Section 5.3 — Post Grid */}
+      {/* Post Grid */}
       <section className="bg-stone pb-24 md:pb-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="border-t border-black/10 pt-16">
@@ -117,13 +119,12 @@ export default function Blog() {
               ))}
             </div>
 
-            {/* Pagination */}
             <div className="flex items-center justify-center gap-4 mt-16">
-              <button className="font-body text-sm text-slate hover:text-ink transition-colors flex items-center gap-2">
+              <button className="font-body text-sm text-slate hover:text-ink transition-colors">
                 ← Previous
               </button>
               <span className="font-body text-sm text-ash">Page 1 of 1</span>
-              <button className="font-body text-sm text-slate hover:text-ink transition-colors flex items-center gap-2">
+              <button className="font-body text-sm text-slate hover:text-ink transition-colors">
                 Next →
               </button>
             </div>
@@ -131,7 +132,7 @@ export default function Blog() {
         </div>
       </section>
 
-      {/* Section 5.4 — Blog CTA */}
+      {/* Blog CTA */}
       <section className="bg-charcoal py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center">
           <SectionEyebrow text="Ready to talk?" />
