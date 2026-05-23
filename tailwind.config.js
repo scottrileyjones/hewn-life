@@ -18,8 +18,8 @@ module.exports = {
         bronze: '#B87A40',
       },
       fontFamily: {
-        display: ['Cormorant Garamond', 'Georgia', 'serif'],
-        body: ['DM Sans', '-apple-system', 'sans-serif'],
+        display: ['var(--font-display)', 'Georgia', 'serif'],
+        body: ['var(--font-body)', '-apple-system', 'sans-serif'],
       },
       fontSize: {
         hero: ['6.5rem', { lineHeight: '1.05', letterSpacing: '-0.02em' }],
