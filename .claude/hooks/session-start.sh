@@ -10,4 +10,6 @@ cd "$CLAUDE_PROJECT_DIR"
 npm install
 
 # Configure git to push directly to GitHub
-git remote set-url origin "https://scottrileyjones:${GITHUB_PAT}@github.com/scottrileyjones/hewn-life.git"
+if [ -n "${GITHUB_PAT:-}" ]; then
+  git remote set-url origin "https://scottrileyjones:${GITHUB_PAT}@github.com/scottrileyjones/hewn-life.git"
+fi
