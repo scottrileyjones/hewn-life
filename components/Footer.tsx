@@ -54,7 +54,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/[0.08] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-ash/60">© 2026 Hewn Life. All rights reserved.</p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-ash/60">© {new Date().getFullYear()} Hewn Life. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="#" className="font-mono text-[11px] uppercase tracking-[0.14em] text-ash/60 hover:text-ash transition-colors">Privacy Policy</Link>
             <Link href="#" className="font-mono text-[11px] uppercase tracking-[0.14em] text-ash/60 hover:text-ash transition-colors">Terms</Link>
