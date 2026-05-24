@@ -1,0 +1,15 @@
+name: Deploy to Vercel
+
+on:
+  workflow_run:
+    workflows: ["Auto-merge Claude branches"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel
+        run: curl -X POST "https://api.vercel.com/v1/integrations/deploy/prj_tYwYIo5vD9dIdRBbFLXSQU1llkg9/TDyxiJBIDR"
