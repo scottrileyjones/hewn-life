@@ -7,6 +7,7 @@ const pillars = [
   {
     num: '01',
     name: 'Brand Foundation',
+    tier: 'Hewn',
     desc: 'Identity, voice, and positioning — the strategic bedrock everything else is built on. We build your brand to be distinct, defensible, and deeply aligned with your business goals.',
     deliverables: [
       { item: 'Brand Strategy Document', desc: 'Positioning, audience, voice, and competitive differentiation' },
@@ -18,6 +19,7 @@ const pillars = [
   {
     num: '02',
     name: 'Digital Presence',
+    tier: 'Hewn',
     desc: "Website, SEO, and maps — your complete digital footprint, owned and optimized. We build websites that convert and ensure you're found everywhere your customers are looking.",
     deliverables: [
       { item: 'Website Design & Development', desc: 'Custom-designed, conversion-optimized website' },
@@ -29,6 +31,7 @@ const pillars = [
   {
     num: '03',
     name: 'Lead & Revenue Engine',
+    tier: 'Forged',
     desc: 'Paid media, funnels, and automation — systems that turn attention into revenue. We build and manage the full acquisition stack from ad to closed deal.',
     deliverables: [
       { item: 'Paid Media Management', desc: 'Google, Meta, and relevant platform ad management' },
@@ -40,6 +43,7 @@ const pillars = [
   {
     num: '04',
     name: 'Customer Experience',
+    tier: 'Forged',
     desc: 'Scheduling, follow-up, and retention — the systems that turn buyers into loyal customers. We design the full customer journey from first touch to long-term advocate.',
     deliverables: [
       { item: 'Booking & Scheduling System', desc: 'Seamless appointment and consultation booking' },
@@ -51,6 +55,7 @@ const pillars = [
   {
     num: '05',
     name: 'Reputation & Social Proof',
+    tier: 'Carved',
     desc: 'Reviews, UGC, and referrals — turning your best customers into your best marketing. We systematize the generation and amplification of social proof.',
     deliverables: [
       { item: 'Review Generation System', desc: 'Automated post-service review request campaigns' },
@@ -62,6 +67,7 @@ const pillars = [
   {
     num: '06',
     name: 'Business Advisory',
+    tier: 'Carved',
     desc: 'Strategy, KPIs, and growth planning — the fractional CMO layer that ties it all together. We operate as a strategic partner invested in your long-term growth.',
     deliverables: [
       { item: 'Monthly KPI Dashboard', desc: 'Custom performance dashboard with key metrics' },
@@ -110,24 +116,38 @@ export default function HowItWorks() {
             </h2>
           </div>
 
-          <div className="flex flex-wrap gap-3 mb-12 justify-center">
-            {pillars.map((p, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveTab(i)}
-                className={`font-body text-[13px] px-5 py-2 rounded-full transition-all duration-300 ${
-                  activeTab === i
-                    ? 'bg-ember text-iron'
-                    : 'border border-moss/40 text-ember hover:border-moss'
-                }`}
-              >
-                {p.num} {p.name}
-              </button>
+          <div className="flex flex-col sm:flex-row gap-8 sm:gap-0 mb-12 justify-center">
+            {[
+              { label: 'Hewn', indices: [0, 1] },
+              { label: 'Forged', indices: [2, 3] },
+              { label: 'Carved', indices: [4, 5] },
+            ].map(({ label, indices }, gi) => (
+              <div key={label} className={`flex flex-col gap-2.5 ${gi > 0 ? 'sm:pl-8 sm:border-l sm:border-black/[0.10]' : ''}`}>
+                <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-slate/40">{label}</span>
+                <div className="flex flex-wrap gap-2">
+                  {indices.map(idx => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveTab(idx)}
+                      className={`font-body text-[13px] px-5 py-2 rounded-full transition-all duration-300 ${
+                        activeTab === idx
+                          ? 'bg-ember text-iron'
+                          : 'border border-moss/40 text-ember hover:border-moss'
+                      }`}
+                    >
+                      {pillars[idx].num} {pillars[idx].name}
+                    </button>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember mb-2">
+                {activePillar.tier === 'Hewn' ? 'Included in all plans' : `Included in ${activePillar.tier} and above`}
+              </p>
               <h3 className="font-display font-medium text-[32px] text-ink mb-4">{activePillar.name}</h3>
               <p className="font-body text-base text-slate leading-relaxed">{activePillar.desc}</p>
             </div>
