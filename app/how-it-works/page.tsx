@@ -2,6 +2,33 @@ import SectionEyebrow from '@/components/SectionEyebrow'
 import CtaBanner from '@/components/CtaBanner'
 import Link from 'next/link'
 
+const agencyComplaints = [
+  {
+    stat: '26%',
+    label: 'of your budget',
+    point: 'Goes to channels that don\'t work.',
+    detail: 'Agencies know it and keep billing anyway. Opaque pricing isn\'t accidental — it\'s structural. The more confused you are, the longer you stay.',
+  },
+  {
+    stat: '#1',
+    label: 'reason clients fire agencies',
+    point: 'Perceived indifference.',
+    detail: 'You\'re one of 20 clients. Your urgency isn\'t theirs. The retainer is their product. Your growth is an afterthought.',
+  },
+  {
+    stat: '87%',
+    label: 'of businesses',
+    point: 'Report campaign performance issues.',
+    detail: 'Because agencies are execution shops pretending to be strategic partners. They handle the "how." Nobody owns your "why" — or your outcome.',
+  },
+  {
+    stat: '$0',
+    label: 'in assets after 24 months',
+    point: 'Stop paying and everything stops.',
+    detail: 'The strategy stays in their heads. The site runs on their CMS. The campaigns pause. $84k invested. Infrastructure built: none.',
+  },
+]
+
 const hewnAssets = [
   'Brand strategy & positioning',
   'Logo & visual identity system',
@@ -32,44 +59,29 @@ const carvedAssets = [
   'Fractional CMO advisory layer',
 ]
 
+const aiStats = [
+  { num: '22%',    label: 'higher conversions',       note: 'AI-driven campaigns vs. traditional' },
+  { num: '30–70%', label: 'conversion lift',          note: 'from AI personalization' },
+  { num: '49%',    label: 'higher cross-sell revenue', note: 'organizations using AI vs. not' },
+]
+
 const timeline = [
-  {
-    period: 'WKS 1–2',
-    flex: 2,
-    title: 'Discovery',
-    desc: 'Full audit — brand, digital, systems, competitive landscape, and ownership goals. Nothing is assumed.',
-  },
-  {
-    period: 'WKS 3–8',
-    flex: 6,
-    title: 'Foundation Sprint',
-    desc: 'Brand identity, website, and Google presence built and launched. Infrastructure before spend.',
-  },
-  {
-    period: 'MOS 3–6',
-    flex: 14,
-    title: 'Growth Sprint',
-    desc: 'Paid media, funnels, automations, and retention systems layered onto the foundation.',
-  },
-  {
-    period: 'MO 6+',
-    flex: 26,
-    title: 'Scale',
-    desc: 'Ongoing advisory, quarterly planning, optimization. The system compounds.',
-    ongoing: true,
-  },
+  { period: 'WKS 1–2', flex: 2,  title: 'Discovery',          desc: 'Full audit — brand, digital, systems, competitive landscape. Nothing assumed.' },
+  { period: 'WKS 3–8', flex: 6,  title: 'Foundation Sprint',  desc: 'Brand identity, website, Google presence built and launched. Infrastructure before spend.' },
+  { period: 'MOS 3–6', flex: 14, title: 'Growth Sprint',      desc: 'Paid media, funnels, automations, and retention systems layered onto the foundation.' },
+  { period: 'MO 6+',   flex: 26, title: 'Scale',              desc: 'Ongoing advisory, quarterly planning, optimization. The system compounds.', ongoing: true },
 ]
 
 const cadence = [
-  { freq: 'Weekly',  dots: 4, title: 'Async Update',  detail: 'Every Friday',      desc: 'What was done, what\'s next, any decisions that need your input.' },
-  { freq: 'Monthly', dots: 1, title: 'KPI Report',    detail: '1st of each month', desc: 'Every key metric, every channel, every trend — written clearly, not hidden in slides.' },
-  { freq: 'Monthly', dots: 1, title: 'Strategy Call', detail: '60 minutes',        desc: 'Where next month\'s priorities get set, not just reported on.' },
+  { freq: 'Weekly',  dots: 4, title: 'Async Update',  detail: 'Every Friday',      desc: 'What was done, what\'s next, what needs your input.' },
+  { freq: 'Monthly', dots: 1, title: 'KPI Report',    detail: '1st of each month', desc: 'Every metric, every channel, every trend — written clearly, not buried in slides.' },
+  { freq: 'Monthly', dots: 1, title: 'Strategy Call', detail: '60 minutes',        desc: 'Where the next month\'s priorities get set, not just reported on.' },
 ]
 
 export default function HowItWorks() {
   return (
     <>
-      {/* ── Hero ───────────────────────────────────────────────── */}
+      {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="min-h-[60vh] flex items-end pb-24 pt-36 bg-iron">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="animate-fade-up">
@@ -80,70 +92,119 @@ export default function HowItWorks() {
             <em style={{ color: '#7CB550' }}>We build systems.</em>
           </h1>
           <p className="font-body text-lg text-ash max-w-lg animate-fade-up delay-2 leading-relaxed">
-            The difference isn&apos;t the tactics. It&apos;s what remains when the engagement ends.
+            The difference isn&apos;t tactics. It&apos;s incentives, infrastructure, and whether anyone actually knows what sells.
           </p>
         </div>
       </section>
 
-      {/* ── The Agency Audit ───────────────────────────────────── */}
-      <section className="bg-iron py-24 md:py-32 border-t border-white/10">
+      {/* ── The Agency Problem — data-backed ─────────────────── */}
+      <section className="bg-bone py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
 
-          <div className="mb-12">
-            <SectionEyebrow text="The Problem" />
-            <h2 className="font-display font-medium text-[36px] md:text-[48px] text-cream leading-tight mt-2">
-              The agency model:<br /><em>a 24-month audit.</em>
-            </h2>
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-16 mb-16 items-end">
+            <div>
+              <SectionEyebrow text="The Problem" light />
+              <h2 className="font-display font-medium text-[36px] md:text-[44px] text-ink leading-tight mt-2">
+                What businesses actually<br /><em>experience.</em>
+              </h2>
+            </div>
+            <p className="font-body text-sm text-slate leading-relaxed max-w-md self-end">
+              These aren&apos;t edge cases. 87% of businesses report campaign performance issues in any given year. The agency model is structurally misaligned with your success.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/10">
-            {/* Left — what you pay */}
-            <div className="bg-iron p-10 md:p-14">
-              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/25 mb-6">Total invested</p>
-              <p className="font-display text-[88px] md:text-[112px] leading-none text-cream">$84k</p>
-              <p className="font-mono text-[10px] text-white/25 mt-2 mb-12">avg. retainer × 24 months</p>
-
-              <div className="border-t border-white/10">
-                {[
-                  ['Monthly retainer', '$3,500 / mo'],
-                  ['Setup & onboarding', '$2,000 – $5,000'],
-                  ['Performance fees', '10–20% of ad spend'],
-                  ['Ad spend (client-funded)', '$1,500 – $5,000 / mo'],
-                ].map(([label, val]) => (
-                  <div key={label} className="flex justify-between items-baseline py-4 border-b border-white/[0.06]">
-                    <span className="font-body text-sm text-white/40">{label}</span>
-                    <span className="font-mono text-[11px] text-white/25">{val}</span>
-                  </div>
-                ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-black/10">
+            {agencyComplaints.map((c, i) => (
+              <div key={i} className="bg-bone p-10 md:p-12 flex flex-col">
+                <div className="flex items-baseline gap-4 mb-6">
+                  <span className="font-display text-[64px] md:text-[80px] leading-none text-ink">{c.stat}</span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate/40 leading-tight max-w-[120px]">{c.label}</span>
+                </div>
+                <p className="font-display font-medium text-[20px] text-ink leading-snug mb-3">{c.point}</p>
+                <p className="font-body text-sm text-slate leading-relaxed">{c.detail}</p>
               </div>
-            </div>
-
-            {/* Right — what you own */}
-            <div className="bg-forge p-10 md:p-14">
-              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/25 mb-6">Assets owned at month 24</p>
-              <p className="font-display text-[88px] md:text-[112px] leading-none text-white/10">$0</p>
-              <p className="font-mono text-[10px] text-white/25 mt-2 mb-12">stop paying and it all stops</p>
-
-              <div className="border-t border-white/10">
-                {[
-                  ['Brand strategy', 'Stays in their heads'],
-                  ['Website', 'Their CMS, their template'],
-                  ['Ad campaigns', 'Pause the day you stop'],
-                  ['Automations & CRM', 'Their tools, their logins'],
-                  ['Strategy & playbook', 'Not documented, not yours'],
-                ].map(([label, note]) => (
-                  <div key={label} className="flex justify-between items-baseline py-4 border-b border-white/[0.06]">
-                    <span className="font-body text-sm text-white/20 line-through decoration-white/15">{label}</span>
-                    <span className="font-mono text-[10px] text-white/15 ml-6 text-right">{note}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── What You Get ───────────────────────────────────────── */}
+      {/* ── The AI Advantage ─────────────────────────────────── */}
+      <section className="bg-iron py-24 md:py-32 border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-16 mb-16 items-end">
+            <div>
+              <SectionEyebrow text="The Difference" />
+              <h2 className="font-display font-medium text-[36px] md:text-[44px] text-cream leading-tight mt-2">
+                We know what sells.<br /><em style={{ color: '#7CB550' }}>We know what&apos;s beautiful.</em>
+              </h2>
+            </div>
+            <p className="font-body text-sm text-ash leading-relaxed max-w-md self-end">
+              &ldquo;30 years of experience&rdquo; means nothing if the taste is bad and the data is ignored. We use AI-driven market analysis, conversion intelligence, and trend data to inform every decision — then apply the human design judgment that turns insight into something people actually want.
+            </p>
+          </div>
+
+          {/* AI stat callouts */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10 mb-16">
+            {aiStats.map((s, i) => (
+              <div key={i} className="bg-iron p-10">
+                <p className="font-display text-[64px] md:text-[80px] leading-none text-cream mb-2">{s.num}</p>
+                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember mb-1">{s.label}</p>
+                <p className="font-mono text-[10px] text-white/25">{s.note}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* The contrast table */}
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-px bg-white/10">
+            <div className="bg-forge p-10 md:p-12">
+              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/25 mb-8">Traditional Agency</p>
+              <div className="space-y-0 divide-y divide-white/[0.06]">
+                {[
+                  ['Strategy', '"We\'ve seen this work before."'],
+                  ['Creative', 'Junior team executing a template'],
+                  ['Data', 'Monthly report — lagging indicators'],
+                  ['Optimization', 'Manual, slow, often not done'],
+                  ['Competitive intel', 'Gut feel and guesswork'],
+                  ['Edge', '30 years of experience (maybe bad taste)'],
+                ].map(([cat, val]) => (
+                  <div key={cat} className="py-4 grid grid-cols-[100px_1fr] gap-4">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/20">{cat}</span>
+                    <span className="font-body text-sm text-white/25 line-through decoration-white/15">{val}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="bg-iron p-10 md:p-12">
+              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-ember mb-8">Hewn Life</p>
+              <div className="space-y-0 divide-y divide-white/[0.06]">
+                {[
+                  ['Strategy', 'AI market + competitor analysis, validated by data'],
+                  ['Creative', 'Human taste and design instinct — the part AI can\'t fake'],
+                  ['Data', 'Real-time performance signals, weekly'],
+                  ['Optimization', 'Continuous — built into the system'],
+                  ['Competitive intel', 'Monitored, tracked, acted on quarterly'],
+                  ['Edge', 'What converts, made beautiful. You can\'t lose that.'],
+                ].map(([cat, val]) => (
+                  <div key={cat} className="py-4 grid grid-cols-[100px_1fr] gap-4">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/30">{cat}</span>
+                    <span className="font-body text-sm text-cream">{val}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Pull quote */}
+          <div className="mt-12 pt-12 border-t border-white/10">
+            <p className="font-display text-[24px] md:text-[32px] text-cream/60 leading-snug max-w-3xl">
+              &ldquo;Experience without data is just opinion.<br />Data without taste is just a spreadsheet.&rdquo;
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── What You Get ─────────────────────────────────────── */}
       <section className="bg-bone py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
 
@@ -153,18 +214,14 @@ export default function HowItWorks() {
               Assets you own.<br /><em>Systems that compound.</em>
             </h2>
             <p className="font-body text-sm text-slate mt-4 max-w-md leading-relaxed">
-              Every deliverable is yours from day one. No proprietary tools. No lock-in. When the engagement ends, the system keeps running.
+              No proprietary tools. No lock-in. Every deliverable is yours from day one. When the engagement ends, the system keeps running.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/10">
-
-            {/* Hewn */}
             <div className="bg-bone p-10">
               <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-slate/40 mb-3">Hewn — Pillars 01–02</p>
-              <div className="flex items-baseline gap-3 mb-1">
-                <span className="font-display text-[72px] leading-none text-ink">{hewnAssets.length}</span>
-              </div>
+              <p className="font-display text-[72px] leading-none text-ink mb-1">{hewnAssets.length}</p>
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember mb-8">assets built & owned</p>
               <ul className="space-y-3">
                 {hewnAssets.map(a => (
@@ -175,13 +232,9 @@ export default function HowItWorks() {
                 ))}
               </ul>
             </div>
-
-            {/* Forged — inverted / featured */}
             <div className="bg-iron p-10">
               <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/25 mb-3">Forged — Pillars 01–04</p>
-              <div className="flex items-baseline gap-3 mb-1">
-                <span className="font-display text-[72px] leading-none text-cream">{hewnAssets.length + forgedAssets.length}</span>
-              </div>
+              <p className="font-display text-[72px] leading-none text-cream mb-1">{hewnAssets.length + forgedAssets.length}</p>
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember mb-3">assets built & owned</p>
               <p className="font-mono text-[10px] text-white/25 mb-6">Everything in Hewn, plus:</p>
               <ul className="space-y-3">
@@ -193,13 +246,9 @@ export default function HowItWorks() {
                 ))}
               </ul>
             </div>
-
-            {/* Carved */}
             <div className="bg-bone p-10">
               <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-slate/40 mb-3">Carved — Pillars 01–06</p>
-              <div className="flex items-baseline gap-3 mb-1">
-                <span className="font-display text-[72px] leading-none text-ink">{hewnAssets.length + forgedAssets.length + carvedAssets.length}</span>
-              </div>
+              <p className="font-display text-[72px] leading-none text-ink mb-1">{hewnAssets.length + forgedAssets.length + carvedAssets.length}</p>
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember mb-3">assets built & owned</p>
               <p className="font-mono text-[10px] text-slate/30 mb-6">Everything in Forged, plus:</p>
               <ul className="space-y-3">
@@ -221,7 +270,7 @@ export default function HowItWorks() {
         </div>
       </section>
 
-      {/* ── How It Works — Process Timeline ────────────────────── */}
+      {/* ── Process Timeline ──────────────────────────────────── */}
       <section className="bg-iron py-24 md:py-32 border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
 
@@ -232,19 +281,13 @@ export default function HowItWorks() {
             </h2>
           </div>
 
-          {/* Gantt bar — desktop */}
+          {/* Gantt bar */}
           <div className="hidden md:flex h-10 w-full mb-0 rounded overflow-hidden">
             {timeline.map((phase, i) => (
               <div
                 key={i}
-                className={`flex items-center justify-center h-full transition-all ${
-                  phase.ongoing
-                    ? 'bg-ember'
-                    : i === 0
-                    ? 'bg-white/[0.06]'
-                    : i === 1
-                    ? 'bg-white/[0.10]'
-                    : 'bg-white/[0.16]'
+                className={`flex items-center justify-center h-full ${
+                  phase.ongoing ? 'bg-ember' : i === 0 ? 'bg-white/[0.06]' : i === 1 ? 'bg-white/[0.10]' : 'bg-white/[0.16]'
                 } ${i > 0 ? 'ml-px' : ''}`}
                 style={{ flex: phase.flex }}
               >
@@ -255,21 +298,15 @@ export default function HowItWorks() {
             ))}
           </div>
 
-          {/* Phase descriptions — desktop */}
-          <div className="hidden md:flex w-full border-b border-white/10 mb-0">
+          <div className="hidden md:flex w-full border-b border-white/10">
             {timeline.map((phase, i) => (
-              <div
-                key={i}
-                className="pt-8 pb-10 pr-8 last:pr-0"
-                style={{ flex: phase.flex }}
-              >
+              <div key={i} className="pt-8 pb-10 pr-8 last:pr-0" style={{ flex: phase.flex }}>
                 <p className="font-display font-medium text-[20px] text-cream leading-snug mb-3">{phase.title}</p>
                 <p className="font-body text-xs text-ash leading-relaxed">{phase.desc}</p>
               </div>
             ))}
           </div>
 
-          {/* Mobile timeline */}
           <div className="md:hidden flex flex-col divide-y divide-white/[0.07]">
             {timeline.map((phase, i) => (
               <div key={i} className="py-8 grid grid-cols-[80px_1fr] gap-6">
@@ -284,7 +321,7 @@ export default function HowItWorks() {
         </div>
       </section>
 
-      {/* ── Communication Cadence ──────────────────────────────── */}
+      {/* ── Communication Cadence ─────────────────────────────── */}
       <section className="bg-bone py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
 
