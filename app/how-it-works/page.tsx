@@ -92,7 +92,7 @@ export default function HowItWorks() {
             <em style={{ color: '#7CB550' }}>We build systems.</em>
           </h1>
           <p className="font-body text-lg text-ash max-w-lg animate-fade-up delay-2 leading-relaxed">
-            The difference isn&apos;t tactics. It&apos;s incentives, infrastructure, and whether anyone actually knows what sells.
+            We deploy AI intelligently — compressing months of work into days, cutting costs without cutting corners. Then we layer in the design taste and market instinct to make sure it actually wins.
           </p>
         </div>
       </section>
