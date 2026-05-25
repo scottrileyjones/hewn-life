@@ -14,7 +14,7 @@ module.exports = {
         // Accents (use sparingly)
         copper:  '#B5621C',
         ember:   '#7CB550',
-        bronze:  '#8C4612',
+        hewn:    '#8C4612',
         // Earth (primary palette)
         slate:   '#3F4A47',
         moss:    '#4A5348',
