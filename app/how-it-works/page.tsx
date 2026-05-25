@@ -157,8 +157,8 @@ export default function HowItWorks() {
 
           {/* Speed compression — annotated before/after */}
           <div className="bg-forge mb-px">
-            <div className="px-12 md:px-14 pt-12 pb-6 border-b border-white/10 flex items-center justify-between">
-              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/25">
+            <div className="px-6 md:px-14 pt-10 md:pt-12 pb-5 md:pb-6 border-b border-white/10 flex items-center justify-between">
+              <p className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.22em] md:tracking-[0.25em] text-white/25">
                 What used to take weeks — now takes hours
               </p>
               <div className="hidden md:flex items-center gap-8">
@@ -175,39 +175,54 @@ export default function HowItWorks() {
                 ['Trend & competitor monitoring',     'quarterly review', 'continuous'],
                 ['Ad model optimization',             'manual, periodic', 'AI-driven, always on'],
               ].map(([task, before, after]) => (
-                <div key={task} className="px-12 md:px-14 py-6 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
-                  <span className="font-body text-base text-cream/70 flex-1 min-w-[200px]">{task}</span>
-                  <div className="flex items-baseline gap-4 flex-shrink-0">
-                    <span className="font-display text-[22px] leading-none text-white/20 line-through">{before}</span>
-                    <span className="font-mono text-[11px] text-white/20">→</span>
-                    <span className="font-display text-[22px] leading-none text-ember">{after}</span>
+                <div key={task} className="px-6 md:px-14 py-5 md:py-6">
+                  <span className="font-body text-sm md:text-base text-cream/50 block mb-3">{task}</span>
+                  <div className="flex items-baseline gap-3">
+                    <span className="font-display text-[20px] md:text-[22px] leading-none text-white/20 line-through">{before}</span>
+                    <span className="font-mono text-[10px] text-white/20">→</span>
+                    <span className="font-display text-[20px] md:text-[22px] leading-none text-ember">{after}</span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Contrast — unified three-column table */}
+          {/* Contrast — agency vs Hewn Life */}
           <div className="bg-iron">
-            {/* Header */}
-            <div className="grid grid-cols-[72px_1fr_1fr] md:grid-cols-[140px_1fr_1fr] px-12 md:px-14 pt-12 pb-5 border-b border-white/10 gap-4">
+            {/* Mobile header */}
+            <div className="md:hidden grid grid-cols-2 px-6 pt-10 pb-4 border-b border-white/10 gap-4">
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/25">Agency</span>
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-ember">Hewn Life</span>
+            </div>
+            {/* Desktop header */}
+            <div className="hidden md:grid grid-cols-[140px_1fr_1fr] px-14 pt-12 pb-5 border-b border-white/10 gap-4">
               <span />
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/25">Traditional Agency</span>
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ember">Hewn Life</span>
             </div>
-            {/* Rows */}
             {[
-              ['Strategy',         '"We\'ve seen this work before."',              'AI deep market analysis — not gut feel'],
-              ['Creative',         'Junior team executing a template',              'Human taste on top of AI-generated intelligence'],
-              ['Speed',            'Weeks to launch anything',                      'AI compresses the slow work. We move fast.'],
-              ['Optimization',     'Manual, slow, often skipped',                   'AI models running ads and optimizing continuously'],
-              ['Intel',            'Gut feel and guesswork',                        'Competitor & trend data monitored and acted on — always'],
-              ['Edge',             '30 years of experience (maybe bad taste)',       'What converts, made beautiful. You can\'t lose that.'],
+              ['Strategy',     '"We\'ve seen this work before."',              'AI deep market analysis — not gut feel'],
+              ['Creative',     'Junior team executing a template',              'Human taste on top of AI-generated intelligence'],
+              ['Speed',        'Weeks to launch anything',                      'AI compresses the slow work. We move fast.'],
+              ['Optimization', 'Manual, slow, often skipped',                   'AI models running ads and optimizing continuously'],
+              ['Intel',        'Gut feel and guesswork',                        'Competitor & trend data monitored and acted on — always'],
+              ['Edge',         '30 years of experience (maybe bad taste)',       'What converts, made beautiful. You can\'t lose that.'],
             ].map(([cat, agency, hewn]) => (
-              <div key={cat} className="grid grid-cols-[72px_1fr_1fr] md:grid-cols-[140px_1fr_1fr] px-12 md:px-14 py-5 border-b border-white/[0.06] gap-4 items-start">
-                <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/20 pt-[3px]">{cat}</span>
-                <span className="font-body text-sm md:text-base text-white/25 line-through decoration-white/15 pr-4">{agency}</span>
-                <span className="font-body text-sm md:text-base text-cream">{hewn}</span>
+              <div key={cat} className="border-b border-white/[0.06]">
+                {/* Mobile */}
+                <div className="md:hidden px-6 py-5">
+                  <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-white/20 block mb-3">{cat}</span>
+                  <div className="grid grid-cols-2 gap-4 items-start">
+                    <span className="font-body text-sm text-white/25 line-through decoration-white/15 leading-snug">{agency}</span>
+                    <span className="font-body text-sm text-cream leading-snug">{hewn}</span>
+                  </div>
+                </div>
+                {/* Desktop */}
+                <div className="hidden md:grid grid-cols-[140px_1fr_1fr] px-14 py-5 gap-4 items-start">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/20 pt-[3px]">{cat}</span>
+                  <span className="font-body text-base text-white/25 line-through decoration-white/15 pr-4">{agency}</span>
+                  <span className="font-body text-base text-cream">{hewn}</span>
+                </div>
               </div>
             ))}
           </div>
