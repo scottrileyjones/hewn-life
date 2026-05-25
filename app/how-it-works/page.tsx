@@ -155,6 +155,31 @@ export default function HowItWorks() {
             ))}
           </div>
 
+          {/* Speed comparison — what AI compresses */}
+          <div className="mb-px">
+            <div className="bg-forge p-12 md:p-14">
+              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/25 mb-10">
+                What used to take weeks — now takes hours
+              </p>
+              <div className="divide-y divide-white/[0.06]">
+                {[
+                  ['Deep market & competitor analysis', 'weeks', 'hours'],
+                  ['Ad creative variations at scale', 'days', 'minutes'],
+                  ['Campaign setup & launch', 'weeks', '48 hours'],
+                  ['Performance reporting & synthesis', 'monthly', 'real-time'],
+                  ['Trend identification & monitoring', 'quarterly review', 'continuous'],
+                  ['Ad model optimization', 'manual, periodic', 'AI-driven, always on'],
+                ].map(([task, before, after]) => (
+                  <div key={task} className="py-5 grid grid-cols-[1fr_100px_100px] gap-4 items-baseline">
+                    <span className="font-body text-base text-white/50">{task}</span>
+                    <span className="font-mono text-[10px] text-white/20 line-through text-right">{before}</span>
+                    <span className="font-mono text-[10px] text-ember text-right">{after}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
           {/* The contrast table */}
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-px bg-white/10">
             <div className="bg-forge p-12 md:p-14">
@@ -163,7 +188,7 @@ export default function HowItWorks() {
                 {[
                   ['Strategy', '"We\'ve seen this work before."'],
                   ['Creative', 'Junior team executing a template'],
-                  ['Data', 'Monthly report — lagging indicators'],
+                  ['Speed', 'Weeks to launch anything'],
                   ['Optimization', 'Manual, slow, often not done'],
                   ['Competitive intel', 'Gut feel and guesswork'],
                   ['Edge', '30 years of experience (maybe bad taste)'],
@@ -179,11 +204,11 @@ export default function HowItWorks() {
               <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-ember mb-10">Hewn Life</p>
               <div className="space-y-0 divide-y divide-white/[0.06]">
                 {[
-                  ['Strategy', 'AI market + competitor analysis, validated by data'],
-                  ['Creative', 'Human taste and design instinct — the part AI can\'t fake'],
-                  ['Data', 'Real-time performance signals, weekly'],
-                  ['Optimization', 'Continuous — built into the system'],
-                  ['Competitive intel', 'Monitored, tracked, acted on quarterly'],
+                  ['Strategy', 'AI deep market analysis — not gut feel'],
+                  ['Creative', 'Human taste on top of AI-generated intelligence'],
+                  ['Speed', 'AI handles the slow work. We move fast.'],
+                  ['Optimization', 'AI models running ads continuously, not periodically'],
+                  ['Competitive intel', 'Monitored, synthesized, acted on — always'],
                   ['Edge', 'What converts, made beautiful. You can\'t lose that.'],
                 ].map(([cat, val]) => (
                   <div key={cat} className="py-5 grid grid-cols-[120px_1fr] gap-4">
@@ -198,7 +223,8 @@ export default function HowItWorks() {
           {/* Pull quote */}
           <div className="mt-16 pt-16 border-t border-white/10">
             <p className="font-display text-[30px] md:text-[44px] text-cream/60 leading-snug max-w-3xl">
-              &ldquo;Experience without data is just opinion.<br />Data without taste is just a spreadsheet.&rdquo;
+              &ldquo;AI does the work that used to take weeks.<br />
+              <em className="text-cream/80">We focus on the work that actually needs a human.</em>&rdquo;
             </p>
           </div>
         </div>
