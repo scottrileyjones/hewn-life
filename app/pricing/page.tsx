@@ -58,7 +58,6 @@ const tiers = [
   {
     name: 'Hewn',
     slug: 'hewn' as TierSlug,
-    subtitle: 'Pillars 01–02',
     tagline: 'Deliberately shaped. Ready to work.',
     price: { monthly: 2500, annual: 2250 },
     accentColor: '#B87A40',
@@ -93,7 +92,6 @@ const tiers = [
   {
     name: 'Forged',
     slug: 'forged' as TierSlug,
-    subtitle: 'Pillars 01–04',
     tagline: 'Full-stack marketing without the full-stack agency.',
     price: { monthly: 5000, annual: 4500 },
     accentColor: '#9BA4AE',
@@ -132,7 +130,6 @@ const tiers = [
   {
     name: 'Carved',
     slug: 'carved' as TierSlug,
-    subtitle: 'All Six Pillars',
     tagline: 'Your outsourced CMO and creative department.',
     price: { monthly: 9500, annual: 8550 },
     accentColor: '#C9A84C',
@@ -393,7 +390,6 @@ export default function Pricing() {
                       )}
 
                       {/* Tier identity */}
-                      <p className={`font-mono text-[10px] uppercase tracking-[0.2em] mb-2 ${isFeatured ? 'text-ash/50' : 'text-slate/50'}`}>{tier.subtitle}</p>
                       <p className={`font-display font-bold text-[32px] leading-none mb-3 ${isFeatured ? 'text-cream' : 'text-ink'}`}>{tier.name}</p>
 
                       {/* Tagline */}
