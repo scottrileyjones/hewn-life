@@ -4,16 +4,15 @@
 
 **After every `git push`, you must also run `git deploy`.**
 
-Vercel watches `claude/modest-ritchie-TS2pv` for production deployments, not `main`.
-The `git deploy` alias (set in `.claude/hooks/session-start.sh`) force-pushes the
-current HEAD to that branch, which triggers the actual Vercel build.
+Vercel watches `claude/modest-ritchie-TS2pv` for production deployments.
+The `git deploy` alias force-pushes HEAD to that branch, triggering exactly one Vercel build.
 
-Without `git deploy`, changes will be merged to `main` but Vercel will not update.
+The auto-merge workflow is excluded from firing on `claude/modest-ritchie-TS2pv` (via `!claude/modest-ritchie-TS2pv` in the branches filter), and the deploy hook has been removed from the workflow. This means `git deploy` triggers exactly ONE production deployment — no queue buildup.
 
 ### Correct workflow every time:
 ```
 git push -u origin <branch>   # triggers auto-merge to main
-git deploy                     # force-pushes to Vercel production branch
+git deploy                     # triggers one Vercel production build
 ```
 
 ## Project
