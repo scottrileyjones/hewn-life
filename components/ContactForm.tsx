@@ -75,9 +75,9 @@ export default function ContactForm() {
           <label className="block font-body text-sm text-ink mb-2">Which package interests you?</label>
           <select className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all">
             <option value="">Select package</option>
-            <option>Bronze — $2,500/mo</option>
-            <option>Silver — $5,000/mo</option>
-            <option>Gold — $9,500/mo</option>
+            <option>Hewn — $2,500/mo</option>
+            <option>Forged — $5,000/mo</option>
+            <option>Carved — $9,500/mo</option>
             <option>Not sure yet</option>
             <option>À la carte project</option>
           </select>

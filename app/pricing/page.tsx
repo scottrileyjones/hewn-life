@@ -2,12 +2,12 @@
 /*
  * ─── ENV VARS REQUIRED — add to .env.local ───────────────────────────────────
  * STRIPE_SECRET_KEY=sk_live_...                  ← server-side only
- * NEXT_PUBLIC_STRIPE_PRICE_BRONZE_MONTHLY=price_...
- * NEXT_PUBLIC_STRIPE_PRICE_BRONZE_ANNUAL=price_...
- * NEXT_PUBLIC_STRIPE_PRICE_SILVER_MONTHLY=price_...
- * NEXT_PUBLIC_STRIPE_PRICE_SILVER_ANNUAL=price_...
- * NEXT_PUBLIC_STRIPE_PRICE_GOLD_MONTHLY=price_...
- * NEXT_PUBLIC_STRIPE_PRICE_GOLD_ANNUAL=price_...
+ * NEXT_PUBLIC_STRIPE_PRICE_HEWN_MONTHLY=price_...
+ * NEXT_PUBLIC_STRIPE_PRICE_HEWN_ANNUAL=price_...
+ * NEXT_PUBLIC_STRIPE_PRICE_FORGED_MONTHLY=price_...
+ * NEXT_PUBLIC_STRIPE_PRICE_FORGED_ANNUAL=price_...
+ * NEXT_PUBLIC_STRIPE_PRICE_CARVED_MONTHLY=price_...
+ * NEXT_PUBLIC_STRIPE_PRICE_CARVED_ANNUAL=price_...
  * NEXT_PUBLIC_STRIPE_LINK_BRAND_IDENTITY=https://buy.stripe.com/...
  * NEXT_PUBLIC_STRIPE_LINK_WEBSITE_BUILD=https://buy.stripe.com/...
  * NEXT_PUBLIC_STRIPE_LINK_SEO_AUDIT=https://buy.stripe.com/...
@@ -25,21 +25,21 @@ import SectionEyebrow from '@/components/SectionEyebrow'
 import Link from 'next/link'
 import Cal, { getCalApi } from '@calcom/embed-react'
 
-type TierSlug = 'bronze' | 'silver' | 'gold'
+type TierSlug = 'hewn' | 'forged' | 'carved'
 type IconType = 'brand' | 'website' | 'seo' | 'ads' | 'automation' | 'video' | 'content' | 'referral'
 
 const PRICE_IDS: Record<TierSlug, { monthly: string; annual: string }> = {
-  bronze: {
-    monthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_BRONZE_MONTHLY ?? '',
-    annual:  process.env.NEXT_PUBLIC_STRIPE_PRICE_BRONZE_ANNUAL  ?? '',
+  hewn: {
+    monthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_HEWN_MONTHLY ?? '',
+    annual:  process.env.NEXT_PUBLIC_STRIPE_PRICE_HEWN_ANNUAL  ?? '',
   },
-  silver: {
-    monthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_SILVER_MONTHLY ?? '',
-    annual:  process.env.NEXT_PUBLIC_STRIPE_PRICE_SILVER_ANNUAL  ?? '',
+  forged: {
+    monthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_FORGED_MONTHLY ?? '',
+    annual:  process.env.NEXT_PUBLIC_STRIPE_PRICE_FORGED_ANNUAL  ?? '',
   },
-  gold: {
-    monthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_GOLD_MONTHLY ?? '',
-    annual:  process.env.NEXT_PUBLIC_STRIPE_PRICE_GOLD_ANNUAL  ?? '',
+  carved: {
+    monthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_CARVED_MONTHLY ?? '',
+    annual:  process.env.NEXT_PUBLIC_STRIPE_PRICE_CARVED_ANNUAL  ?? '',
   },
 }
 
@@ -56,10 +56,10 @@ const PAYMENT_LINKS: Record<string, string> = {
 
 const tiers = [
   {
-    name: 'Bronze',
-    slug: 'bronze' as TierSlug,
+    name: 'Hewn',
+    slug: 'hewn' as TierSlug,
     subtitle: 'Switched On',
-    tagline: 'Your marketing machine, switched on.',
+    tagline: 'Deliberately shaped. Ready to work.',
     price: { monthly: 2500, annual: 2250 },
     accentColor: '#B87A40',
     badge: null as string | null,
@@ -76,42 +76,42 @@ const tiers = [
     ],
   },
   {
-    name: 'Silver',
-    slug: 'silver' as TierSlug,
+    name: 'Forged',
+    slug: 'forged' as TierSlug,
     subtitle: 'The Growth Engine',
     tagline: 'Full-stack marketing without the full-stack agency.',
     price: { monthly: 5000, annual: 4500 },
     accentColor: '#9BA4AE',
     badge: 'Most Popular' as string | null,
     highlights: [
-      'Everything in Bronze',
+      'Everything in Hewn',
       '40 social graphics + 16 ad creatives/month',
       'Video scripts, email sequences + SEO blog',
       'Bi-weekly calls + 24-hour priority turnaround',
     ],
     deliverables: [
-      { pillar: 'Everything in Bronze', items: ['All Bronze deliverables included'] },
+      { pillar: 'Everything in Hewn', items: ['All Hewn deliverables included'] },
       { pillar: 'Creative (Expanded)', items: ['40 social media graphics/month', '16 ad creatives/month (static + motion)', '2 short-form video scripts/month (voiceover-ready, UGC-style)', '1 brand video concept/month (storyboard + script)', 'Full ad copy suite (Meta + Google: hooks, body, headlines, CTAs — 5 variations/theme)'] },
       { pillar: 'Content', items: ['4-email nurture or campaign sequence/month', 'SEO blog post (1,200–1,500 words, keyword-optimized)'] },
       { pillar: 'Service', items: ['Bi-weekly strategy calls (30 min each)', 'Priority 24-hour turnaround'] },
     ],
   },
   {
-    name: 'Gold',
-    slug: 'gold' as TierSlug,
+    name: 'Carved',
+    slug: 'carved' as TierSlug,
     subtitle: 'The Full Disruption',
-    tagline: 'Your outsourced CMO + full creative department.',
+    tagline: 'Your outsourced CMO and creative department.',
     price: { monthly: 9500, annual: 8550 },
     accentColor: '#C9A84C',
     badge: 'Full Service' as string | null,
     highlights: [
-      'Everything in Silver',
+      'Everything in Forged',
       '60+ graphics + 24 ad creatives/month',
       'Full paid media strategy + UGC direction',
       'Weekly calls + Slack access (M–F)',
     ],
     deliverables: [
-      { pillar: 'Everything in Silver', items: ['All Silver deliverables included'] },
+      { pillar: 'Everything in Forged', items: ['All Forged deliverables included'] },
       { pillar: 'Creative (Full Scale)', items: ['60+ social graphics/month', '24 ad creatives/month (static + motion + video)', 'UGC concept briefs (3/month — client sources creators, we script and direct)', 'Landing page copy (1 new page/month)', 'Up to 8 emails/month', '2 SEO blog posts/month'] },
       { pillar: 'Strategy', items: ['Full paid media strategy (structure, angles, copy, creative briefs)', 'Monthly brand & competitor analysis report', 'Quarterly brand strategy review'] },
       { pillar: 'Service', items: ['Weekly strategy calls (30 min)', 'Slack channel access (same-day response M–F)'] },
@@ -144,8 +144,8 @@ function ServiceIcon({ type }: { type: IconType }) {
 
 function TierIcon({ name }: { name: string }) {
   const cls = 'w-6 h-6'
-  if (name === 'Bronze') return <svg className={cls} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m2.25-18v18m13.5-18v18m2.25-18v18M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" /></svg>
-  if (name === 'Silver') return <svg className={cls} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
+  if (name === 'Hewn') return <svg className={cls} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m2.25-18v18m13.5-18v18m2.25-18v18M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" /></svg>
+  if (name === 'Forged') return <svg className={cls} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
   return <svg className={cls} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
 }
 
@@ -240,7 +240,7 @@ export default function Pricing() {
     }
   }, [annual])
 
-  const handleSilverClick = useCallback(() => handleStripeCheckout('silver'), [handleStripeCheckout])
+  const handleForgedClick = useCallback(() => handleStripeCheckout('forged'), [handleStripeCheckout])
 
   return (
     <>
@@ -275,7 +275,7 @@ export default function Pricing() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-14">
             <SectionEyebrow text="Monthly Retainers" />
-            <h2 className="font-display font-semibold text-[40px] text-cream mt-5 mb-3">Full-service marketing, all included.</h2>
+            <h2 className="font-display font-semibold text-[40px] text-cream mt-5 mb-3">Three tiers. No contracts. No agency tax.</h2>
             <p className="font-display italic text-lg text-ash/60 mb-10">We charge what a freelancer costs and deliver what an agency can&apos;t.</p>
 
             {/* Agency Tax table */}
@@ -292,9 +292,9 @@ export default function Pricing() {
                 <tbody>
                   {[
                     { scope: 'Paid media buying only',        agency: '$8,000–$12,000/mo',  hewn: '—',              color: '' },
-                    { scope: 'Paid media + copy',             agency: '$10,000–$15,000/mo', hewn: 'Bronze · $2,500', color: '#B87A40' },
-                    { scope: 'Paid media + creative',         agency: '$12,000–$18,000/mo', hewn: 'Silver · $5,000', color: '#9BA4AE' },
-                    { scope: 'Full-service + UGC + strategy', agency: '$15,000–$22,000/mo', hewn: 'Gold · $9,500',   color: '#C9A84C' },
+                    { scope: 'Paid media + copy',             agency: '$10,000–$15,000/mo', hewn: 'Hewn · $2,500',   color: '#B87A40' },
+                    { scope: 'Paid media + creative',         agency: '$12,000–$18,000/mo', hewn: 'Forged · $5,000', color: '#9BA4AE' },
+                    { scope: 'Full-service + UGC + strategy', agency: '$15,000–$22,000/mo', hewn: 'Carved · $9,500', color: '#C9A84C' },
                   ].map((row, i) => (
                     <tr key={i} className="border-b border-white/[0.04]">
                       <td className="py-3 pr-6 font-body text-sm text-ash/60 text-left">{row.scope}</td>
@@ -323,7 +323,7 @@ export default function Pricing() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
             {tiers.map((tier, i) => {
               const price = annual ? tier.price.annual : tier.price.monthly
-              const isGold = tier.slug === 'gold'
+              const isCarved = tier.slug === 'carved'
               const isSilver = tier.badge === 'Most Popular'
               const isLoading = loadingTier === tier.slug
               const isExpanded = expanded === tier.slug
@@ -331,7 +331,7 @@ export default function Pricing() {
               return (
                 <FadeInWrapper key={tier.slug} delay={i * 110} className="flex flex-col">
                   <div
-                    className={`rounded-2xl overflow-hidden flex flex-col h-full ${isGold ? 'lg:-mx-2' : ''}`}
+                    className={`rounded-2xl overflow-hidden flex flex-col h-full ${isCarved ? 'lg:-mx-2' : ''}`}
                     style={{
                       background: isSilver ? '#1E1C19' : '#141210',
                       border: `1px solid ${tier.accentColor}${isSilver ? '55' : '2A'}`,
@@ -617,14 +617,14 @@ export default function Pricing() {
         }}
       >
         <p className="font-body text-sm text-bone font-medium leading-tight">
-          Silver — $5,000/mo
+          Forged — $5,000/mo
         </p>
         <button
-          onClick={handleSilverClick}
-          disabled={loadingTier === 'silver'}
+          onClick={handleForgedClick}
+          disabled={loadingTier === 'forged'}
           className="flex items-center gap-2 bg-bone text-moss font-body font-semibold text-sm px-6 py-3 rounded-full hover:bg-white transition-colors disabled:opacity-70 flex-shrink-0"
         >
-          {loadingTier === 'silver' ? <><Spinner /> Redirecting…</> : 'Start with Silver →'}
+          {loadingTier === 'forged' ? <><Spinner /> Redirecting…</> : 'Start with Forged →'}
         </button>
       </div>
     </>

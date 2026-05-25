@@ -4,17 +4,17 @@ import { useState } from 'react'
 import Link from 'next/link'
 
 const tierDetails: Record<string, { highlights: string[]; accentColor: string }> = {
-  bronze: {
+  hewn: {
     accentColor: '#B87A40',
     highlights: ['Brand Strategy + Full Visual Identity', 'Custom Website (up to 5 pages)', 'SEO Foundation & Google Business Profile', 'Monthly Strategy Call (30 min)'],
   },
-  silver: {
+  forged: {
     accentColor: '#9BA4AE',
-    highlights: ['Everything in Bronze', 'Paid Media Management (1 platform)', 'CRM + Full Marketing Automation', '60-min Monthly Call + Weekly Updates'],
+    highlights: ['Everything in Hewn', 'Paid Media Management (1 platform)', 'CRM + Full Marketing Automation', '60-min Monthly Call + Weekly Updates'],
   },
-  gold: {
+  carved: {
     accentColor: '#C9A84C',
-    highlights: ['Everything in Silver', 'All Paid Media Platforms', 'Reputation, UGC & Referral Systems', 'Fractional CMO + Quarterly Planning'],
+    highlights: ['Everything in Forged', 'All Paid Media Platforms', 'Reputation, UGC & Referral Systems', 'Fractional CMO + Quarterly Planning'],
   },
 }
 
