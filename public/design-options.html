@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pillar Tab Design Options</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'DM Sans', sans-serif; background: #F2ECE0; }
+    .font-display { font-family: 'Playfair Display', Georgia, serif; }
+    .font-mono { font-family: 'DM Mono', monospace; }
+    .text-ink { color: #1A1815; }
+    .text-slate { color: #3F4A47; }
+    .text-ember { color: #7CB550; }
+    .text-ash { color: #A89F92; }
+    .bg-ember { background: #7CB550; }
+    .bg-iron { background: #1A1815; }
+    .border-moss { border-color: rgba(74,83,72,0.4); }
+    .pill-active { background: #7CB550; color: #1A1815; border-radius: 999px; padding: 7px 18px; font-size: 13px; cursor: pointer; }
+    .pill-inactive { border: 1px solid rgba(74,83,72,0.4); color: #7CB550; border-radius: 999px; padding: 7px 18px; font-size: 13px; cursor: pointer; }
+    .pill-inactive:hover { border-color: rgba(74,83,72,0.8); }
+    .label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(63,74,71,0.45); }
+    .option-card { background: white; border-radius: 16px; padding: 40px; margin-bottom: 24px; border: 1px solid rgba(0,0,0,0.07); }
+    .option-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #7CB550; margin-bottom: 6px; }
+    .option-desc { font-size: 13px; color: #3F4A47; margin-bottom: 28px; }
+    .section-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(63,74,71,0.4); margin-bottom: 24px; }
+    .divider { border: none; border-top: 1px solid rgba(0,0,0,0.07); margin: 40px 0; }
+
+    /* CTA options */
+    .cta-strip { background: #1A1815; border-radius: 12px; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 32px; }
+    .cta-inline { display: flex; align-items: center; gap: 10px; padding-top: 28px; border-top: 1px solid rgba(0,0,0,0.07); margin-top: 28px; }
+    .btn-primary { background: #4A5348; color: #F2ECE0; border-radius: 999px; padding: 12px 24px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; }
+    .btn-ghost { background: transparent; color: #7CB550; border: 1px solid rgba(74,83,72,0.4); border-radius: 999px; padding: 10px 20px; font-size: 13px; font-weight: 500; cursor: pointer; }
+  </style>
+</head>
+<body class="p-8 md:p-16 max-w-4xl mx-auto">
+
+  <p class="font-mono label mb-2" style="color:#7CB550">Design Options</p>
+  <h1 class="font-display text-3xl text-ink mb-2">Pillar Group Layout</h1>
+  <p class="text-slate text-sm mb-12">Comparing three approaches to grouping the six pillars by tier, and two CTA placements.</p>
+
+  <!-- OPTION A -->
+  <div class="option-card">
+    <p class="option-title">Option A</p>
+    <p class="text-ink font-semibold mb-1" style="font-size:17px">Spacing only — no separator</p>
+    <p class="option-desc">The tier label above each cluster handles all the grouping. Gap between groups is 3× wider than gap within groups. Cleanest, most minimal.</p>
+
+    <div class="section-label">The Six Pillars</div>
+
+    <div style="display:flex; flex-wrap:wrap; gap:40px; align-items:flex-end;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <span class="label">Hewn</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="pill-active">01 Brand Foundation</span>
+          <span class="pill-inactive">02 Digital Presence</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <span class="label">Forged</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="pill-inactive">03 Lead &amp; Revenue Engine</span>
+          <span class="pill-inactive">04 Customer Experience</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <span class="label">Carved</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="pill-inactive">05 Reputation &amp; Social Proof</span>
+          <span class="pill-inactive">06 Business Advisory</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION B -->
+  <div class="option-card">
+    <p class="option-title">Option B</p>
+    <p class="text-ink font-semibold mb-1" style="font-size:17px">Tier labels as pricing links</p>
+    <p class="option-desc">HEWN / FORGED / CARVED are clickable chips styled like the inactive tabs. They link to <code>/pricing</code> and show an arrow on hover. Divider removed. Labels pull double-duty as navigation.</p>
+
+    <div class="section-label">The Six Pillars</div>
+
+    <div style="display:flex; flex-wrap:wrap; gap:32px; align-items:flex-start;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <a href="#" style="display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:#7CB550;border:1px solid rgba(74,83,72,0.4);border-radius:999px;padding:4px 12px;text-decoration:none;">Hewn <span style="opacity:0.6">→</span></a>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="pill-active">01 Brand Foundation</span>
+          <span class="pill-inactive">02 Digital Presence</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <a href="#" style="display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:#7CB550;border:1px solid rgba(74,83,72,0.4);border-radius:999px;padding:4px 12px;text-decoration:none;">Forged <span style="opacity:0.6">→</span></a>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="pill-inactive">03 Lead &amp; Revenue Engine</span>
+          <span class="pill-inactive">04 Customer Experience</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <a href="#" style="display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:#7CB550;border:1px solid rgba(74,83,72,0.4);border-radius:999px;padding:4px 12px;text-decoration:none;">Carved <span style="opacity:0.6">→</span></a>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="pill-inactive">05 Reputation &amp; Social Proof</span>
+          <span class="pill-inactive">06 Business Advisory</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION C -->
+  <div class="option-card">
+    <p class="option-title">Option C</p>
+    <p class="text-ink font-semibold mb-1" style="font-size:17px">Stacked rows with top rule</p>
+    <p class="option-desc">Three horizontal rows — one per tier. A thin rule above each tier name. Echoes the table and list rhythm used elsewhere on the page. More editorial, works well on mobile too.</p>
+
+    <div class="section-label">The Six Pillars</div>
+
+    <div style="display:flex;flex-direction:column;gap:0;">
+      <div style="padding:20px 0;border-top:1px solid rgba(0,0,0,0.08);">
+        <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+          <span class="label" style="min-width:52px;">Hewn</span>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span class="pill-active">01 Brand Foundation</span>
+            <span class="pill-inactive">02 Digital Presence</span>
+          </div>
+        </div>
+      </div>
+      <div style="padding:20px 0;border-top:1px solid rgba(0,0,0,0.08);">
+        <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+          <span class="label" style="min-width:52px;">Forged</span>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span class="pill-inactive">03 Lead &amp; Revenue Engine</span>
+            <span class="pill-inactive">04 Customer Experience</span>
+          </div>
+        </div>
+      </div>
+      <div style="padding:20px 0;border-top:1px solid rgba(0,0,0,0.08);border-bottom:1px solid rgba(0,0,0,0.08);">
+        <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+          <span class="label" style="min-width:52px;">Carved</span>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span class="pill-inactive">05 Reputation &amp; Social Proof</span>
+            <span class="pill-inactive">06 Business Advisory</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- CTA OPTIONS -->
+  <p class="font-mono label mb-2" style="color:#7CB550">CTA Options</p>
+  <h2 class="font-display text-2xl text-ink mb-2">Pricing Link Placement</h2>
+  <p class="text-slate text-sm mb-10">Two options for where to add the pricing CTA — either below the pillar tabs or at the bottom of the whole section.</p>
+
+  <!-- CTA Option 1 -->
+  <div class="option-card">
+    <p class="option-title">CTA Option 1</p>
+    <p class="text-ink font-semibold mb-1" style="font-size:17px">Inline beneath tabs — subtle text link</p>
+    <p class="option-desc">A small line of copy + arrow sits just below the pillar tabs, before the detail panel. Minimal, doesn't interrupt the flow.</p>
+
+    <!-- mock tab area -->
+    <div style="padding:20px 0;border-top:1px solid rgba(0,0,0,0.08);">
+      <div style="display:flex;align-items:center;gap:24px;">
+        <span class="label" style="min-width:52px;">Hewn</span>
+        <div style="display:flex;gap:8px;">
+          <span class="pill-active">01 Brand Foundation</span>
+          <span class="pill-inactive">02 Digital Presence</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:20px 0;border-top:1px solid rgba(0,0,0,0.08);">
+      <div style="display:flex;align-items:center;gap:24px;">
+        <span class="label" style="min-width:52px;">Forged</span>
+        <div style="display:flex;gap:8px;">
+          <span class="pill-inactive">03 Lead &amp; Revenue Engine</span>
+          <span class="pill-inactive">04 Customer Experience</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:20px 0;border-top:1px solid rgba(0,0,0,0.08);border-bottom:1px solid rgba(0,0,0,0.08);margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:24px;">
+        <span class="label" style="min-width:52px;">Carved</span>
+        <div style="display:flex;gap:8px;">
+          <span class="pill-inactive">05 Reputation &amp; Social Proof</span>
+          <span class="pill-inactive">06 Business Advisory</span>
+        </div>
+      </div>
+    </div>
+    <!-- The CTA -->
+    <a href="#" style="font-size:13px;color:#7CB550;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+      See exactly what's in each plan <span>→</span>
+    </a>
+  </div>
+
+  <!-- CTA Option 2 -->
+  <div class="option-card">
+    <p class="option-title">CTA Option 2</p>
+    <p class="text-ink font-semibold mb-1" style="font-size:17px">Dark strip at section bottom — prominent</p>
+    <p class="option-desc">A full-width dark callout at the bottom of the Six Pillars section, just before the timeline. More prominent, drives action before the page continues.</p>
+
+    <div style="padding:20px 0;border-top:1px solid rgba(0,0,0,0.08);border-bottom:1px solid rgba(0,0,0,0.08);margin-bottom:0;">
+      <div style="display:flex;align-items:center;gap:24px;">
+        <span class="label" style="min-width:52px;">Carved</span>
+        <div style="display:flex;gap:8px;">
+          <span class="pill-inactive">05 Reputation &amp; Social Proof</span>
+          <span class="pill-inactive">06 Business Advisory</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- The CTA strip -->
+    <div class="cta-strip">
+      <div>
+        <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#7CB550;margin-bottom:6px;">Ready to start?</p>
+        <p style="font-family:'Playfair Display',serif;font-size:18px;color:#F2ECE0;">Each plan is built around these pillars.</p>
+      </div>
+      <a href="#" style="background:#F2ECE0;color:#1A1815;border-radius:999px;padding:12px 24px;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;">See Plans →</a>
+    </div>
+  </div>
+
+</body>
+</html>
