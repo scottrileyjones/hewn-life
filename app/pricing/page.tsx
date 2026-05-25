@@ -58,76 +58,76 @@ const tiers = [
   {
     name: 'Bronze',
     slug: 'bronze' as TierSlug,
-    subtitle: 'The Foundation',
-    tagline: 'Brand, web, and SEO — show up professionally from day one.',
+    subtitle: 'Switched On',
+    tagline: 'Your marketing machine, switched on.',
     price: { monthly: 2500, annual: 2250 },
     accentColor: '#B87A40',
     badge: null as string | null,
     highlights: [
-      'Brand Strategy + Full Visual Identity',
-      'Custom Website (up to 5 pages)',
-      'SEO Foundation & Google Business Profile',
-      'Monthly Strategy Call (30 min)',
+      '20 social graphics + 8 ad creatives/month',
+      '4 short-form copy pieces/month',
+      '48-hour turnaround, unlimited revisions',
+      'Monthly brand report + 45-min strategy call',
     ],
     deliverables: [
-      { pillar: 'Brand Foundation', items: ['Brand Strategy Document', 'Logo & Visual Identity', 'Brand Style Guide', 'Messaging Framework'] },
-      { pillar: 'Digital Presence', items: ['Custom Website (up to 5 pages)', 'SEO Foundation Setup', 'Google Business Profile Optimization'] },
-      { pillar: 'Communication', items: ['Monthly KPI Report', 'Bi-weekly Async Update', 'Monthly Strategy Call (30 min)'] },
+      { pillar: 'Creative', items: ['20 social media graphics/month (branded, ready to post)', '8 ad creatives/month (static — Meta, Google Display)', '4 pieces of short-form copy (email, landing page, or social)'] },
+      { pillar: 'Strategy', items: ['Monthly brand report (performance framing + recommendations)', 'Monthly strategy call (45 min)'] },
+      { pillar: 'Service', items: ['48-hour creative turnaround', 'Unlimited revision rounds via async (Loom + Notion)'] },
     ],
   },
   {
     name: 'Silver',
     slug: 'silver' as TierSlug,
     subtitle: 'The Growth Engine',
-    tagline: 'Paid media, automation, and a full revenue pipeline — built to scale.',
+    tagline: 'Full-stack marketing without the full-stack agency.',
     price: { monthly: 5000, annual: 4500 },
     accentColor: '#9BA4AE',
     badge: 'Most Popular' as string | null,
     highlights: [
       'Everything in Bronze',
-      'Paid Media Management (1 platform)',
-      'CRM + Full Marketing Automation',
-      '60-min Monthly Call + Weekly Updates',
+      '40 social graphics + 16 ad creatives/month',
+      'Video scripts, email sequences + SEO blog',
+      'Bi-weekly calls + 24-hour priority turnaround',
     ],
     deliverables: [
-      { pillar: 'Everything in Bronze', items: ['All Brand Foundation deliverables', 'All Digital Presence deliverables'] },
-      { pillar: 'Lead & Revenue Engine', items: ['Paid Media Management (1 platform)', 'Sales Funnel Design', 'Marketing Automation Setup', 'CRM Integration'] },
-      { pillar: 'Customer Experience', items: ['Booking System Setup', 'Customer Onboarding Sequence', 'Retention Campaign'] },
-      { pillar: 'Communication', items: ['Monthly KPI Report', 'Weekly Async Update', 'Monthly Strategy Call (60 min)'] },
+      { pillar: 'Everything in Bronze', items: ['All Bronze deliverables included'] },
+      { pillar: 'Creative (Expanded)', items: ['40 social media graphics/month', '16 ad creatives/month (static + motion)', '2 short-form video scripts/month (voiceover-ready, UGC-style)', '1 brand video concept/month (storyboard + script)', 'Full ad copy suite (Meta + Google: hooks, body, headlines, CTAs — 5 variations/theme)'] },
+      { pillar: 'Content', items: ['4-email nurture or campaign sequence/month', 'SEO blog post (1,200–1,500 words, keyword-optimized)'] },
+      { pillar: 'Service', items: ['Bi-weekly strategy calls (30 min each)', 'Priority 24-hour turnaround'] },
     ],
   },
   {
     name: 'Gold',
     slug: 'gold' as TierSlug,
     subtitle: 'The Full Disruption',
-    tagline: 'Every platform, every system, fractional CMO — total market dominance.',
+    tagline: 'Your outsourced CMO + full creative department.',
     price: { monthly: 9500, annual: 8550 },
     accentColor: '#C9A84C',
     badge: 'Full Service' as string | null,
     highlights: [
       'Everything in Silver',
-      'All Paid Media Platforms',
-      'Reputation, UGC & Referral Systems',
-      'Fractional CMO + Quarterly Planning',
+      '60+ graphics + 24 ad creatives/month',
+      'Full paid media strategy + UGC direction',
+      'Weekly calls + Slack access (M–F)',
     ],
     deliverables: [
-      { pillar: 'Everything in Silver', items: ['All Silver tier deliverables'] },
-      { pillar: 'Full Lead Engine', items: ['Paid Media Management (all platforms)', 'Advanced Funnel Optimization', 'Full Marketing Automation Suite'] },
-      { pillar: 'Reputation & Social Proof', items: ['Review Generation System', 'UGC Strategy & Campaigns', 'Referral Program', 'Testimonial Collection'] },
-      { pillar: 'Business Advisory', items: ['Monthly KPI Dashboard', 'Monthly Strategy Call (60 min)', 'Quarterly Growth Planning', 'Competitive Intelligence'] },
+      { pillar: 'Everything in Silver', items: ['All Silver deliverables included'] },
+      { pillar: 'Creative (Full Scale)', items: ['60+ social graphics/month', '24 ad creatives/month (static + motion + video)', 'UGC concept briefs (3/month — client sources creators, we script and direct)', 'Landing page copy (1 new page/month)', 'Up to 8 emails/month', '2 SEO blog posts/month'] },
+      { pillar: 'Strategy', items: ['Full paid media strategy (structure, angles, copy, creative briefs)', 'Monthly brand & competitor analysis report', 'Quarterly brand strategy review'] },
+      { pillar: 'Service', items: ['Weekly strategy calls (30 min)', 'Slack channel access (same-day response M–F)'] },
     ],
   },
 ]
 
 const services = [
-  { service: 'Brand Identity Sprint',  slug: 'brand-identity', desc: 'Logo, colors, typography — your complete visual identity system', fee: '$4,500', icon: 'brand'     as IconType, gradient: 'from-[#D4622A] to-[#9A3510]' },
-  { service: 'Website Design & Build', slug: 'website',        desc: 'Custom 5-page site, copywritten and launched',                   fee: '$7,500', icon: 'website'   as IconType, gradient: 'from-[#7CB550] to-[#3D6E1E]' },
-  { service: 'SEO Audit & Roadmap',    slug: 'seo',            desc: 'Technical + content audit with a 90-day action plan',            fee: '$2,500', icon: 'seo'       as IconType, gradient: 'from-[#4B6BFB] to-[#1A3BB8]' },
-  { service: 'Google Ads Launch',      slug: 'google-ads',     desc: 'Campaign setup, creatives, and 30-day management',               fee: '$3,000', icon: 'ads'       as IconType, gradient: 'from-[#E88B4A] to-[#C05A18]' },
-  { service: 'Marketing Automation',   slug: 'automation',     desc: 'CRM + email nurture sequence up to 10 steps',                    fee: '$3,500', icon: 'automation' as IconType, gradient: 'from-[#7C3AED] to-[#3B0F8C]' },
-  { service: 'Video Ad Package',       slug: 'video',          desc: '3 short-form video ads, scripted and produced',                  fee: '$5,000', icon: 'video'     as IconType, gradient: 'from-[#DC2626] to-[#7F1D1D]' },
-  { service: 'Content Strategy Sprint',slug: 'content',        desc: '90-day content calendar + 10 pieces of content',                 fee: '$2,000', icon: 'content'   as IconType, gradient: 'from-[#0D9488] to-[#064E3B]' },
-  { service: 'Referral Program Build', slug: 'referral',       desc: 'Full referral system design, copy, and technical setup',         fee: '$2,500', icon: 'referral'  as IconType, gradient: 'from-[#C9A84C] to-[#7A5A1A]' },
+  { service: 'Extra Ad Creative Pack',      slug: 'brand-identity', desc: '8 additional ad creatives — static or motion, any platform',         fee: '$800',   icon: 'brand'     as IconType, gradient: 'from-[#D4622A] to-[#9A3510]' },
+  { service: 'Email Automation Build-Out',  slug: 'automation',     desc: '6-email nurture or sales sequence, fully written and mapped',         fee: '$1,500', icon: 'automation' as IconType, gradient: 'from-[#7C3AED] to-[#3B0F8C]' },
+  { service: 'Additional SEO Blog Post',    slug: 'seo',            desc: '1,200–1,500 words, keyword-optimized, publish-ready',                  fee: '$350',   icon: 'seo'       as IconType, gradient: 'from-[#4B6BFB] to-[#1A3BB8]' },
+  { service: 'Video Repurposing Pack',      slug: 'video',          desc: 'One raw video → 5 short-form clips, captioned and formatted',          fee: '$400',   icon: 'video'     as IconType, gradient: 'from-[#DC2626] to-[#7F1D1D]' },
+  { service: 'Whitepaper or Lead Magnet',   slug: 'content',        desc: 'Long-form authority piece — researched, written, and designed',        fee: '$1,200', icon: 'content'   as IconType, gradient: 'from-[#0D9488] to-[#064E3B]' },
+  { service: 'Competitor Audit + Report',   slug: 'google-ads',     desc: 'Positioning gap analysis + actionable recommendations',               fee: '$1,800', icon: 'ads'       as IconType, gradient: 'from-[#E88B4A] to-[#C05A18]' },
+  { service: 'Brand Identity Refresh',      slug: 'referral',       desc: 'Logo, colors, typography — updated and delivered in a style guide',   fee: '$2,500', icon: 'referral'  as IconType, gradient: 'from-[#C9A84C] to-[#7A5A1A]' },
+  { service: 'Full Website Copy',           slug: 'website',        desc: '5 pages written, structured, and optimized for conversion',           fee: '$3,000', icon: 'website'   as IconType, gradient: 'from-[#7CB550] to-[#3D6E1E]' },
 ]
 
 function ServiceIcon({ type }: { type: IconType }) {
@@ -275,10 +275,37 @@ export default function Pricing() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-14">
             <SectionEyebrow text="Monthly Retainers" />
-            <p className="font-display font-semibold italic text-[22px] md:text-[28px] text-cream/60 mt-5 mb-5">
-              Choose your tier. Start building. No contracts, no surprises.
-            </p>
-            <h2 className="font-display font-semibold text-[40px] text-cream mb-4">Full-service marketing, all included.</h2>
+            <h2 className="font-display font-semibold text-[40px] text-cream mt-5 mb-3">Full-service marketing, all included.</h2>
+            <p className="font-display italic text-lg text-ash/60 mb-10">We charge what a freelancer costs and deliver what an agency can&apos;t.</p>
+
+            {/* Agency Tax table */}
+            <div className="mb-10 overflow-x-auto">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ash/40 mb-5">The Agency Tax — what you&apos;re really paying for</p>
+              <table className="w-full max-w-2xl mx-auto">
+                <thead>
+                  <tr className="border-b border-white/[0.07]">
+                    {['What they sell', 'Traditional agency', 'Hewn Life'].map(h => (
+                      <th key={h} className="text-left py-2.5 pr-6 last:pr-0 font-mono text-[9px] uppercase tracking-[0.15em] text-ash/35 font-normal">{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { scope: 'Paid media buying only',        agency: '$8,000–$12,000/mo',  hewn: '—',              color: '' },
+                    { scope: 'Paid media + copy',             agency: '$10,000–$15,000/mo', hewn: 'Bronze · $2,500', color: '#B87A40' },
+                    { scope: 'Paid media + creative',         agency: '$12,000–$18,000/mo', hewn: 'Silver · $5,000', color: '#9BA4AE' },
+                    { scope: 'Full-service + UGC + strategy', agency: '$15,000–$22,000/mo', hewn: 'Gold · $9,500',   color: '#C9A84C' },
+                  ].map((row, i) => (
+                    <tr key={i} className="border-b border-white/[0.04]">
+                      <td className="py-3 pr-6 font-body text-sm text-ash/60 text-left">{row.scope}</td>
+                      <td className="py-3 pr-6 font-body text-sm text-ash/35 line-through text-left">{row.agency}</td>
+                      <td className="py-3 font-body text-sm font-semibold text-left" style={{ color: row.color || 'rgba(168,159,146,0.35)' }}>{row.hewn}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
             <div className="flex items-center justify-center gap-4 mt-8">
               <span className={`font-body text-sm ${!annual ? 'text-cream font-medium' : 'text-ash/50'}`}>Monthly</span>
               <button
