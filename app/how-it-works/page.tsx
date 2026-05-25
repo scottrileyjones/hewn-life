@@ -30,33 +30,51 @@ const agencyComplaints = [
 ]
 
 const hewnAssets = [
+  // Build
   'Brand strategy & positioning',
   'Logo & visual identity system',
-  'Brand style guide',
-  'Messaging framework & taglines',
+  'Brand style guide & messaging framework',
   'Custom website design & build',
   'SEO foundation & on-page optimization',
   'Google Business Profile setup',
+  // Ongoing
+  'Organic social — 3 posts/week, 2 platforms',
+  'Google Business Profile management',
+  'Monthly SEO content',
+  'AI market & competitor intelligence brief',
+  'Monthly strategy call',
 ]
 
 const forgedAssets = [
-  'Paid media campaigns (Google + Meta)',
+  // Paid media
+  'Google Ads management (search + retargeting)',
+  'Meta Ads management (Facebook + Instagram)',
+  'A/B creative testing & optimization',
+  // Lifecycle
+  'Lifecycle marketing setup (Klaviyo, Customer.io, etc.)',
+  'Email onboarding, nurture & re-engagement sequences',
+  'Monthly email campaigns',
+  // Funnels
   'Sales funnels & landing pages',
-  'Marketing automation sequences',
   'CRM setup & pipeline management',
   'Booking & scheduling system',
-  'New customer onboarding sequence',
-  'Retention & re-engagement campaigns',
 ]
 
 const carvedAssets = [
+  // Expanded channels
+  'TikTok ad management',
+  'Full social media management — all platforms',
+  // Advanced lifecycle
+  'SMS campaigns & behavioral triggers',
+  'Win-back & purchase milestone automations',
+  // Reputation
   'Review generation system',
   'UGC strategy & campaigns',
   'Referral program with tracking',
-  'Video & written testimonial capture',
+  // Advisory
   'Monthly KPI dashboard',
   'Quarterly growth planning sessions',
-  'Fractional CMO advisory layer',
+  'Fractional CMO advisory',
 ]
 
 const aiStats = [
@@ -244,18 +262,18 @@ export default function HowItWorks() {
           <div className="mb-16">
             <SectionEyebrow text="What You Get" light />
             <h2 className="font-display font-medium text-[36px] md:text-[48px] text-ink leading-tight mt-2">
-              Assets you own.<br /><em>Systems that compound.</em>
+              Built to last.<br /><em>Managed to compound.</em>
             </h2>
             <p className="font-body text-sm text-slate mt-4 max-w-md leading-relaxed">
-              No proprietary tools. No lock-in. Every deliverable is yours from day one. When the engagement ends, the system keeps running.
+              Every deliverable is yours from day one — no lock-in, no proprietary tools. And the ongoing management means the system keeps getting smarter every month.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/10">
             <div className="bg-bone p-10">
-              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-slate/40 mb-3">Hewn — Pillars 01–02</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-slate/40 mb-3">Hewn — Brand & Presence</p>
               <p className="font-display text-[72px] leading-none text-ink mb-1">{hewnAssets.length}</p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember mb-8">assets built & owned</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember mb-8">deliverables & managed services</p>
               <ul className="space-y-3">
                 {hewnAssets.map(a => (
                   <li key={a} className="grid grid-cols-[16px_1fr] gap-2 items-start">
@@ -266,9 +284,9 @@ export default function HowItWorks() {
               </ul>
             </div>
             <div className="bg-iron p-10">
-              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/25 mb-3">Forged — Pillars 01–04</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/25 mb-3">Forged — Growth Engine</p>
               <p className="font-display text-[72px] leading-none text-cream mb-1">{hewnAssets.length + forgedAssets.length}</p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember mb-3">assets built & owned</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember mb-3">deliverables & managed services</p>
               <p className="font-mono text-[10px] text-white/25 mb-6">Everything in Hewn, plus:</p>
               <ul className="space-y-3">
                 {forgedAssets.map(a => (
@@ -280,9 +298,9 @@ export default function HowItWorks() {
               </ul>
             </div>
             <div className="bg-bone p-10">
-              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-slate/40 mb-3">Carved — Pillars 01–06</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-slate/40 mb-3">Carved — Full Service</p>
               <p className="font-display text-[72px] leading-none text-ink mb-1">{hewnAssets.length + forgedAssets.length + carvedAssets.length}</p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember mb-3">assets built & owned</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember mb-3">deliverables & managed services</p>
               <p className="font-mono text-[10px] text-slate/30 mb-6">Everything in Forged, plus:</p>
               <ul className="space-y-3">
                 {carvedAssets.map(a => (
