@@ -155,69 +155,61 @@ export default function HowItWorks() {
             ))}
           </div>
 
-          {/* Speed comparison — what AI compresses */}
-          <div className="mb-px">
-            <div className="bg-forge p-12 md:p-14">
-              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/25 mb-10">
+          {/* Speed compression — annotated before/after */}
+          <div className="bg-forge mb-px">
+            <div className="px-12 md:px-14 pt-12 pb-6 border-b border-white/10 flex items-center justify-between">
+              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/25">
                 What used to take weeks — now takes hours
               </p>
-              <div className="divide-y divide-white/[0.06]">
-                {[
-                  ['Deep market & competitor analysis', 'weeks', 'hours'],
-                  ['Ad creative variations at scale', 'days', 'minutes'],
-                  ['Campaign setup & launch', 'weeks', '48 hours'],
-                  ['Performance reporting & synthesis', 'monthly', 'real-time'],
-                  ['Trend identification & monitoring', 'quarterly review', 'continuous'],
-                  ['Ad model optimization', 'manual, periodic', 'AI-driven, always on'],
-                ].map(([task, before, after]) => (
-                  <div key={task} className="py-5 grid grid-cols-[1fr_100px_100px] gap-4 items-baseline">
-                    <span className="font-body text-base text-white/50">{task}</span>
-                    <span className="font-mono text-[10px] text-white/20 line-through text-right">{before}</span>
-                    <span className="font-mono text-[10px] text-ember text-right">{after}</span>
-                  </div>
-                ))}
+              <div className="hidden md:flex items-center gap-8">
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/20">Before</span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember">Now</span>
               </div>
+            </div>
+            <div className="divide-y divide-white/[0.06]">
+              {[
+                ['Deep market & competitor analysis', 'weeks',            'hours'],
+                ['Ad creative variations at scale',   'days',             'minutes'],
+                ['Campaign setup & launch',           'weeks',            '48 hours'],
+                ['Performance reporting',             'monthly',          'real-time'],
+                ['Trend & competitor monitoring',     'quarterly review', 'continuous'],
+                ['Ad model optimization',             'manual, periodic', 'AI-driven, always on'],
+              ].map(([task, before, after]) => (
+                <div key={task} className="px-12 md:px-14 py-6 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+                  <span className="font-body text-base text-cream/70 flex-1 min-w-[200px]">{task}</span>
+                  <div className="flex items-baseline gap-4 flex-shrink-0">
+                    <span className="font-display text-[22px] leading-none text-white/20 line-through">{before}</span>
+                    <span className="font-mono text-[11px] text-white/20">→</span>
+                    <span className="font-display text-[22px] leading-none text-ember">{after}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* The contrast table */}
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-px bg-white/10">
-            <div className="bg-forge p-12 md:p-14">
-              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/25 mb-10">Traditional Agency</p>
-              <div className="space-y-0 divide-y divide-white/[0.06]">
-                {[
-                  ['Strategy', '"We\'ve seen this work before."'],
-                  ['Creative', 'Junior team executing a template'],
-                  ['Speed', 'Weeks to launch anything'],
-                  ['Optimization', 'Manual, slow, often not done'],
-                  ['Competitive intel', 'Gut feel and guesswork'],
-                  ['Edge', '30 years of experience (maybe bad taste)'],
-                ].map(([cat, val]) => (
-                  <div key={cat} className="py-5 grid grid-cols-[120px_1fr] gap-4">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/20">{cat}</span>
-                    <span className="font-body text-base text-white/25 line-through decoration-white/15">{val}</span>
-                  </div>
-                ))}
-              </div>
+          {/* Contrast — unified three-column table */}
+          <div className="bg-iron">
+            {/* Header */}
+            <div className="grid grid-cols-[72px_1fr_1fr] md:grid-cols-[140px_1fr_1fr] px-12 md:px-14 pt-12 pb-5 border-b border-white/10 gap-4">
+              <span />
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/25">Traditional Agency</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ember">Hewn Life</span>
             </div>
-            <div className="bg-iron p-12 md:p-14">
-              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-ember mb-10">Hewn Life</p>
-              <div className="space-y-0 divide-y divide-white/[0.06]">
-                {[
-                  ['Strategy', 'AI deep market analysis — not gut feel'],
-                  ['Creative', 'Human taste on top of AI-generated intelligence'],
-                  ['Speed', 'AI handles the slow work. We move fast.'],
-                  ['Optimization', 'AI models running ads continuously, not periodically'],
-                  ['Competitive intel', 'Monitored, synthesized, acted on — always'],
-                  ['Edge', 'What converts, made beautiful. You can\'t lose that.'],
-                ].map(([cat, val]) => (
-                  <div key={cat} className="py-5 grid grid-cols-[120px_1fr] gap-4">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/30">{cat}</span>
-                    <span className="font-body text-base text-cream">{val}</span>
-                  </div>
-                ))}
+            {/* Rows */}
+            {[
+              ['Strategy',         '"We\'ve seen this work before."',              'AI deep market analysis — not gut feel'],
+              ['Creative',         'Junior team executing a template',              'Human taste on top of AI-generated intelligence'],
+              ['Speed',            'Weeks to launch anything',                      'AI compresses the slow work. We move fast.'],
+              ['Optimization',     'Manual, slow, often skipped',                   'AI models running ads and optimizing continuously'],
+              ['Intel',            'Gut feel and guesswork',                        'Competitor & trend data monitored and acted on — always'],
+              ['Edge',             '30 years of experience (maybe bad taste)',       'What converts, made beautiful. You can\'t lose that.'],
+            ].map(([cat, agency, hewn]) => (
+              <div key={cat} className="grid grid-cols-[72px_1fr_1fr] md:grid-cols-[140px_1fr_1fr] px-12 md:px-14 py-5 border-b border-white/[0.06] gap-4 items-start">
+                <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/20 pt-[3px]">{cat}</span>
+                <span className="font-body text-sm md:text-base text-white/25 line-through decoration-white/15 pr-4">{agency}</span>
+                <span className="font-body text-sm md:text-base text-cream">{hewn}</span>
               </div>
-            </div>
+            ))}
           </div>
 
           {/* Pull quote */}
