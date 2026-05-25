@@ -105,7 +105,7 @@ export default function HowItWorks() {
             <div>
               <SectionEyebrow text="Traditional Agencies" light />
               <h2 className="font-display font-medium text-[44px] md:text-[60px] text-ink leading-tight mt-2">
-                What working with a<br /><em>typical agency costs you.</em>
+                What traditional agencies<br /><em>actually cost you.</em>
               </h2>
             </div>
             <p className="font-body text-base text-slate leading-relaxed max-w-md self-end">
