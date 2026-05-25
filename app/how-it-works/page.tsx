@@ -103,13 +103,13 @@ export default function HowItWorks() {
 
           <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-16 mb-20 items-end">
             <div>
-              <SectionEyebrow text="The Problem" light />
+              <SectionEyebrow text="Traditional Agencies" light />
               <h2 className="font-display font-medium text-[44px] md:text-[60px] text-ink leading-tight mt-2">
-                What businesses actually<br /><em>experience.</em>
+                What working with a<br /><em>typical agency costs you.</em>
               </h2>
             </div>
             <p className="font-body text-base text-slate leading-relaxed max-w-md self-end">
-              These aren&apos;t edge cases. 87% of businesses report campaign performance issues in any given year. The agency model is structurally misaligned with your success.
+              These aren&apos;t edge cases. 87% of businesses report campaign performance issues in any given year. The traditional agency model is structurally misaligned with your success — by design.
             </p>
           </div>
 
@@ -134,13 +134,13 @@ export default function HowItWorks() {
 
           <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-16 mb-20 items-end">
             <div>
-              <SectionEyebrow text="The Difference" />
+              <SectionEyebrow text="How We're Different" />
               <h2 className="font-display font-medium text-[44px] md:text-[60px] text-cream leading-tight mt-2">
                 We know what sells.<br /><em style={{ color: '#7CB550' }}>We know what&apos;s beautiful.</em>
               </h2>
             </div>
             <p className="font-body text-base text-ash leading-relaxed max-w-md self-end">
-              &ldquo;30 years of experience&rdquo; means nothing if the taste is bad and the data is ignored. We use AI-driven market analysis, conversion intelligence, and trend data to inform every decision — then apply the human design judgment that turns insight into something people actually want.
+              &ldquo;30 years of experience&rdquo; means nothing if the taste is bad and the data is ignored. We use AI-driven market analysis, conversion intelligence, and trend data to inform every decision — then apply the human design judgment that turns insight into something people actually want to buy.
             </p>
           </div>
 
