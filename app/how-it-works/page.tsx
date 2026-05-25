@@ -98,30 +98,30 @@ export default function HowItWorks() {
       </section>
 
       {/* ── The Agency Problem — data-backed ─────────────────── */}
-      <section className="bg-bone py-24 md:py-32">
+      <section className="bg-bone py-28 md:py-40">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
 
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-16 mb-16 items-end">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-16 mb-20 items-end">
             <div>
               <SectionEyebrow text="The Problem" light />
-              <h2 className="font-display font-medium text-[36px] md:text-[44px] text-ink leading-tight mt-2">
+              <h2 className="font-display font-medium text-[44px] md:text-[60px] text-ink leading-tight mt-2">
                 What businesses actually<br /><em>experience.</em>
               </h2>
             </div>
-            <p className="font-body text-sm text-slate leading-relaxed max-w-md self-end">
+            <p className="font-body text-base text-slate leading-relaxed max-w-md self-end">
               These aren&apos;t edge cases. 87% of businesses report campaign performance issues in any given year. The agency model is structurally misaligned with your success.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-black/10">
             {agencyComplaints.map((c, i) => (
-              <div key={i} className="bg-bone p-10 md:p-12 flex flex-col">
-                <div className="flex items-baseline gap-4 mb-6">
-                  <span className="font-display text-[64px] md:text-[80px] leading-none text-ink">{c.stat}</span>
+              <div key={i} className="bg-bone p-12 md:p-16 flex flex-col">
+                <div className="flex items-baseline gap-5 mb-8">
+                  <span className="font-display text-[88px] md:text-[120px] leading-none text-ink">{c.stat}</span>
                   <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate/40 leading-tight max-w-[120px]">{c.label}</span>
                 </div>
-                <p className="font-display font-medium text-[20px] text-ink leading-snug mb-3">{c.point}</p>
-                <p className="font-body text-sm text-slate leading-relaxed">{c.detail}</p>
+                <p className="font-display font-medium text-[24px] text-ink leading-snug mb-4">{c.point}</p>
+                <p className="font-body text-base text-slate leading-relaxed">{c.detail}</p>
               </div>
             ))}
           </div>
@@ -129,17 +129,17 @@ export default function HowItWorks() {
       </section>
 
       {/* ── The AI Advantage ─────────────────────────────────── */}
-      <section className="bg-iron py-24 md:py-32 border-t border-white/10">
+      <section className="bg-iron py-28 md:py-40 border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
 
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-16 mb-16 items-end">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-16 mb-20 items-end">
             <div>
               <SectionEyebrow text="The Difference" />
-              <h2 className="font-display font-medium text-[36px] md:text-[44px] text-cream leading-tight mt-2">
+              <h2 className="font-display font-medium text-[44px] md:text-[60px] text-cream leading-tight mt-2">
                 We know what sells.<br /><em style={{ color: '#7CB550' }}>We know what&apos;s beautiful.</em>
               </h2>
             </div>
-            <p className="font-body text-sm text-ash leading-relaxed max-w-md self-end">
+            <p className="font-body text-base text-ash leading-relaxed max-w-md self-end">
               &ldquo;30 years of experience&rdquo; means nothing if the taste is bad and the data is ignored. We use AI-driven market analysis, conversion intelligence, and trend data to inform every decision — then apply the human design judgment that turns insight into something people actually want.
             </p>
           </div>
@@ -147,18 +147,18 @@ export default function HowItWorks() {
           {/* AI stat callouts */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10 mb-16">
             {aiStats.map((s, i) => (
-              <div key={i} className="bg-iron p-10">
-                <p className="font-display text-[64px] md:text-[80px] leading-none text-cream mb-2">{s.num}</p>
-                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember mb-1">{s.label}</p>
-                <p className="font-mono text-[10px] text-white/25">{s.note}</p>
+              <div key={i} className="bg-iron p-12 md:p-14">
+                <p className="font-display text-[88px] md:text-[112px] leading-none text-cream mb-3">{s.num}</p>
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-ember mb-2">{s.label}</p>
+                <p className="font-mono text-[11px] text-white/25">{s.note}</p>
               </div>
             ))}
           </div>
 
           {/* The contrast table */}
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-px bg-white/10">
-            <div className="bg-forge p-10 md:p-12">
-              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/25 mb-8">Traditional Agency</p>
+            <div className="bg-forge p-12 md:p-14">
+              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/25 mb-10">Traditional Agency</p>
               <div className="space-y-0 divide-y divide-white/[0.06]">
                 {[
                   ['Strategy', '"We\'ve seen this work before."'],
@@ -168,15 +168,15 @@ export default function HowItWorks() {
                   ['Competitive intel', 'Gut feel and guesswork'],
                   ['Edge', '30 years of experience (maybe bad taste)'],
                 ].map(([cat, val]) => (
-                  <div key={cat} className="py-4 grid grid-cols-[100px_1fr] gap-4">
+                  <div key={cat} className="py-5 grid grid-cols-[120px_1fr] gap-4">
                     <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/20">{cat}</span>
-                    <span className="font-body text-sm text-white/25 line-through decoration-white/15">{val}</span>
+                    <span className="font-body text-base text-white/25 line-through decoration-white/15">{val}</span>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="bg-iron p-10 md:p-12">
-              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-ember mb-8">Hewn Life</p>
+            <div className="bg-iron p-12 md:p-14">
+              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-ember mb-10">Hewn Life</p>
               <div className="space-y-0 divide-y divide-white/[0.06]">
                 {[
                   ['Strategy', 'AI market + competitor analysis, validated by data'],
@@ -186,9 +186,9 @@ export default function HowItWorks() {
                   ['Competitive intel', 'Monitored, tracked, acted on quarterly'],
                   ['Edge', 'What converts, made beautiful. You can\'t lose that.'],
                 ].map(([cat, val]) => (
-                  <div key={cat} className="py-4 grid grid-cols-[100px_1fr] gap-4">
+                  <div key={cat} className="py-5 grid grid-cols-[120px_1fr] gap-4">
                     <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/30">{cat}</span>
-                    <span className="font-body text-sm text-cream">{val}</span>
+                    <span className="font-body text-base text-cream">{val}</span>
                   </div>
                 ))}
               </div>
@@ -196,8 +196,8 @@ export default function HowItWorks() {
           </div>
 
           {/* Pull quote */}
-          <div className="mt-12 pt-12 border-t border-white/10">
-            <p className="font-display text-[24px] md:text-[32px] text-cream/60 leading-snug max-w-3xl">
+          <div className="mt-16 pt-16 border-t border-white/10">
+            <p className="font-display text-[30px] md:text-[44px] text-cream/60 leading-snug max-w-3xl">
               &ldquo;Experience without data is just opinion.<br />Data without taste is just a spreadsheet.&rdquo;
             </p>
           </div>
