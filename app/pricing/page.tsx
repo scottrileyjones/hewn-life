@@ -58,63 +58,114 @@ const tiers = [
   {
     name: 'Hewn',
     slug: 'hewn' as TierSlug,
-    subtitle: 'Switched On',
+    subtitle: 'Pillars 01–02',
     tagline: 'Deliberately shaped. Ready to work.',
     price: { monthly: 2500, annual: 2250 },
     accentColor: '#B87A40',
     badge: null as string | null,
     highlights: [
-      '20 social graphics + 8 ad creatives/month',
-      '4 short-form copy pieces/month',
-      '48-hour turnaround, unlimited revisions',
-      'Monthly brand report + 45-min strategy call',
+      'Brand strategy, visual identity & style guide',
+      'Custom website + SEO foundation',
+      'Google Business Profile + local listings',
+      'Monthly strategy call',
     ],
     deliverables: [
-      { pillar: 'Creative', items: ['20 social media graphics/month (branded, ready to post)', '8 ad creatives/month (static — Meta, Google Display)', '4 pieces of short-form copy (email, landing page, or social)'] },
-      { pillar: 'Strategy', items: ['Monthly brand report (performance framing + recommendations)', 'Monthly strategy call (45 min)'] },
-      { pillar: 'Service', items: ['48-hour creative turnaround', 'Unlimited revision rounds via async (Loom + Notion)'] },
+      {
+        pillar: 'Brand Foundation',
+        items: [
+          'Brand Strategy Document (positioning, audience, voice)',
+          'Logo & Visual Identity (logo suite, palette, typography)',
+          'Brand Style Guide (complete brand standards)',
+          'Messaging Framework (taglines, elevator pitch, value props)',
+        ],
+      },
+      {
+        pillar: 'Digital Presence',
+        items: [
+          'Website Design & Development (up to 5 pages, conversion-optimized)',
+          'SEO Foundation (technical + on-page optimization)',
+          'Google Business Profile (complete setup & optimization)',
+          'Local Listings Management (consistent NAP across directories)',
+        ],
+      },
     ],
   },
   {
     name: 'Forged',
     slug: 'forged' as TierSlug,
-    subtitle: 'The Growth Engine',
+    subtitle: 'Pillars 01–04',
     tagline: 'Full-stack marketing without the full-stack agency.',
     price: { monthly: 5000, annual: 4500 },
     accentColor: '#9BA4AE',
     badge: 'Most Popular' as string | null,
     highlights: [
       'Everything in Hewn',
-      '40 social graphics + 16 ad creatives/month',
-      'Video scripts, email sequences + SEO blog',
-      'Bi-weekly calls + 24-hour priority turnaround',
+      'Paid media management + sales funnels',
+      'Marketing automation + CRM setup',
+      'Booking, onboarding & retention systems',
     ],
     deliverables: [
-      { pillar: 'Everything in Hewn', items: ['All Hewn deliverables included'] },
-      { pillar: 'Creative (Expanded)', items: ['40 social media graphics/month', '16 ad creatives/month (static + motion)', '2 short-form video scripts/month (voiceover-ready, UGC-style)', '1 brand video concept/month (storyboard + script)', 'Full ad copy suite (Meta + Google: hooks, body, headlines, CTAs — 5 variations/theme)'] },
-      { pillar: 'Content', items: ['4-email nurture or campaign sequence/month', 'SEO blog post (1,200–1,500 words, keyword-optimized)'] },
-      { pillar: 'Service', items: ['Bi-weekly strategy calls (30 min each)', 'Priority 24-hour turnaround'] },
+      {
+        pillar: 'Everything in Hewn',
+        items: ['All Hewn deliverables included'],
+      },
+      {
+        pillar: 'Lead & Revenue Engine',
+        items: [
+          'Paid Media Management (Google + Meta)',
+          'Sales Funnel Design (landing pages, offers, conversion paths)',
+          'Marketing Automation (nurture sequences + drip campaigns)',
+          'CRM Setup & Integration (pipeline + sales process)',
+        ],
+      },
+      {
+        pillar: 'Customer Experience',
+        items: [
+          'Booking & Scheduling System',
+          'Automated Onboarding Sequence (new customer welcome)',
+          'Retention Campaigns (re-engagement + loyalty)',
+          'Customer Feedback Systems (NPS + satisfaction)',
+        ],
+      },
     ],
   },
   {
     name: 'Carved',
     slug: 'carved' as TierSlug,
-    subtitle: 'The Full Disruption',
+    subtitle: 'All Six Pillars',
     tagline: 'Your outsourced CMO and creative department.',
     price: { monthly: 9500, annual: 8550 },
     accentColor: '#C9A84C',
     badge: 'Full Service' as string | null,
     highlights: [
       'Everything in Forged',
-      '60+ graphics + 24 ad creatives/month',
-      'Full paid media strategy + UGC direction',
+      'Review generation, UGC & referral program',
+      'Monthly KPI dashboard + quarterly growth planning',
       'Weekly calls + Slack access (M–F)',
     ],
     deliverables: [
-      { pillar: 'Everything in Forged', items: ['All Forged deliverables included'] },
-      { pillar: 'Creative (Full Scale)', items: ['60+ social graphics/month', '24 ad creatives/month (static + motion + video)', 'UGC concept briefs (3/month — client sources creators, we script and direct)', 'Landing page copy (1 new page/month)', 'Up to 8 emails/month', '2 SEO blog posts/month'] },
-      { pillar: 'Strategy', items: ['Full paid media strategy (structure, angles, copy, creative briefs)', 'Monthly brand & competitor analysis report', 'Quarterly brand strategy review'] },
-      { pillar: 'Service', items: ['Weekly strategy calls (30 min)', 'Slack channel access (same-day response M–F)'] },
+      {
+        pillar: 'Everything in Forged',
+        items: ['All Forged deliverables included'],
+      },
+      {
+        pillar: 'Reputation & Social Proof',
+        items: [
+          'Review Generation System (automated post-service requests)',
+          'UGC Strategy & Campaigns (user-generated content programs)',
+          'Referral Program (structured system with tracking)',
+          'Testimonial Collection (video + written capture process)',
+        ],
+      },
+      {
+        pillar: 'Business Advisory',
+        items: [
+          'Monthly KPI Dashboard (custom performance tracking)',
+          'Monthly Strategy Call (60-min video, performance + planning)',
+          'Quarterly Growth Planning (structured sessions + roadmap)',
+          'Competitive Intelligence (ongoing landscape monitoring)',
+        ],
+      },
     ],
   },
 ]
@@ -285,10 +336,10 @@ export default function Pricing() {
                 </thead>
                 <tbody>
                   {[
-                    { scope: 'Paid media buying only',        agency: '$8,000–$12,000/mo',  hewn: '—' },
-                    { scope: 'Paid media + copy',             agency: '$10,000–$15,000/mo', hewn: 'Hewn · $2,500' },
-                    { scope: 'Paid media + creative',         agency: '$12,000–$18,000/mo', hewn: 'Forged · $5,000' },
-                    { scope: 'Full-service + UGC + strategy', agency: '$15,000–$22,000/mo', hewn: 'Carved · $9,500' },
+                    { scope: 'Brand + website only',                     agency: '$8,000–$15,000 project', hewn: '—' },
+                    { scope: 'Brand + website + digital presence',        agency: '$5,000–$10,000/mo',      hewn: 'Hewn · $2,500' },
+                    { scope: 'Above + paid media, funnels & automation',  agency: '$10,000–$18,000/mo',     hewn: 'Forged · $5,000' },
+                    { scope: 'Full-service + UGC + fractional CMO',       agency: '$15,000–$25,000/mo',     hewn: 'Carved · $9,500' },
                   ].map((row, i) => (
                     <tr key={i} className="border-b border-black/[0.05]">
                       <td className="py-3 pr-6 font-body text-sm text-slate text-left">{row.scope}</td>

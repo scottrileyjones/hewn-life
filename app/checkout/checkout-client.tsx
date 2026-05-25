@@ -6,15 +6,15 @@ import Link from 'next/link'
 const tierDetails: Record<string, { highlights: string[]; accentColor: string }> = {
   hewn: {
     accentColor: '#B87A40',
-    highlights: ['Brand Strategy + Full Visual Identity', 'Custom Website (up to 5 pages)', 'SEO Foundation & Google Business Profile', 'Monthly Strategy Call (30 min)'],
+    highlights: ['Brand strategy, visual identity & style guide', 'Custom website + SEO foundation', 'Google Business Profile + local listings', 'Monthly strategy call'],
   },
   forged: {
     accentColor: '#9BA4AE',
-    highlights: ['Everything in Hewn', 'Paid Media Management (1 platform)', 'CRM + Full Marketing Automation', '60-min Monthly Call + Weekly Updates'],
+    highlights: ['Everything in Hewn', 'Paid media management + sales funnels', 'Marketing automation + CRM setup', 'Booking, onboarding & retention systems'],
   },
   carved: {
     accentColor: '#C9A84C',
-    highlights: ['Everything in Forged', 'All Paid Media Platforms', 'Reputation, UGC & Referral Systems', 'Fractional CMO + Quarterly Planning'],
+    highlights: ['Everything in Forged', 'Review generation, UGC & referral program', 'Monthly KPI dashboard + quarterly growth planning', 'Weekly calls + Slack access (M–F)'],
   },
 }
 
