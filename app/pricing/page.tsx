@@ -244,7 +244,7 @@ function CalEmbed() {
 
   return (
     <Cal
-      calLink="scott-hewn/exploration"
+      calLink="scott-hewn/discovery"
       style={{ width: '100%', height: '600px', border: 'none' }}
     />
   )
