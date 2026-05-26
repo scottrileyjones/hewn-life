@@ -2,7 +2,7 @@
 import { useEffect } from 'react'
 import { getCalApi } from '@calcom/embed-react'
 
-const CAL_LINK = 'scott-hewn/exploration'
+const CAL_LINK = 'scott-hewn/discovery'
 
 interface CalButtonProps {
   children: React.ReactNode
