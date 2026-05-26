@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import CalButton from './CalButton'
 
 interface CtaBannerProps {
   headline?: string
@@ -20,12 +20,9 @@ export default function CtaBanner({
         <p className="font-body text-base text-bone/70 max-w-xl mx-auto mb-10">
           {body}
         </p>
-        <Link
-          href="/contact"
-          className="inline-flex items-center bg-iron text-bone font-body font-medium px-8 py-4 rounded-full hover:bg-forge transition-all duration-300"
-        >
+        <CalButton className="inline-flex items-center bg-iron text-bone font-body font-medium px-8 py-4 rounded-full hover:bg-forge transition-all duration-300">
           {buttonText}
-        </Link>
+        </CalButton>
       </div>
     </section>
   )

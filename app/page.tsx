@@ -1,5 +1,6 @@
 import SectionEyebrow from '@/components/SectionEyebrow'
 import CtaBanner from '@/components/CtaBanner'
+import CalButton from '@/components/CalButton'
 import Link from 'next/link'
 
 const pillars = [
@@ -47,9 +48,9 @@ export default function Home() {
             Hewn Life combines thirty years of human business acumen with the speed and scale of AI to carve out something truly beautiful and valuable for your brand.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up delay-3">
-            <Link href="/contact" className="bg-ember text-iron font-body font-medium px-8 py-4 rounded-full hover:brightness-110 hover:scale-[1.02] transition-all duration-300">
+            <CalButton className="bg-ember text-iron font-body font-medium px-8 py-4 rounded-full hover:brightness-110 hover:scale-[1.02] transition-all duration-300">
               Book a Discovery Call
-            </Link>
+            </CalButton>
             <Link href="/how-it-works" className="text-cream font-body font-medium px-8 py-4 rounded-full hover:underline underline-offset-4 flex items-center gap-2">
               See Our Services →
             </Link>

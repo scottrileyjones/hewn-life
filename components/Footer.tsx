@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import HewnLogo from './HewnLogo'
+import CalButton from './CalButton'
 
 export default function Footer() {
   return (
@@ -47,9 +48,9 @@ export default function Footer() {
             <a href="mailto:hello@hewnlife.com" className="font-body text-sm text-cream hover:text-ember transition-colors block mb-4">
               hello@hewnlife.com
             </a>
-            <Link href="/contact" className="font-body text-sm text-ember hover:text-ember transition-colors">
+            <CalButton className="font-body text-sm text-ember hover:text-ember transition-colors text-left">
               Book a Discovery Call →
-            </Link>
+            </CalButton>
           </div>
         </div>
 
