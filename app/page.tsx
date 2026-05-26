@@ -159,114 +159,109 @@ export default function Home() {
   return (
     <>
       {/* ── HERO ──────────────────────────────────── */}
-      <section className="min-h-screen flex flex-col justify-end relative overflow-hidden pt-20">
+      <section className="bg-bone pt-28 pb-16 md:pb-20 border-b border-iron/8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
 
-        {/* Photo background */}
-        <div className="absolute inset-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=1600&q=80&fit=crop"
-            alt=""
-            className="w-full h-full object-cover object-center"
-          />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(26,24,21,0.88) 0%, rgba(26,24,21,0.55) 50%, rgba(26,24,21,0.80) 100%)' }} />
-          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 70% 25%, rgba(124,181,80,0.10) 0%, transparent 55%)' }} />
-        </div>
-
-        {/* Floating data viz cards */}
-        <div className="absolute top-[22%] right-6 md:right-16 lg:right-24 hidden md:flex flex-col gap-3 z-10">
-          <div className="bg-iron/75 backdrop-blur-md border border-white/[0.10] rounded-2xl p-4 w-44">
-            <p className="font-mono text-[8px] uppercase tracking-[0.22em] text-white/30 mb-1">Revenue trend</p>
-            <p className="font-display text-[26px] text-ember leading-none mb-3">+127%</p>
-            <Sparkline trigger={true} width={128} height={36} />
+          {/* Editorial header strip */}
+          <div className="flex items-center gap-6 mb-10 pb-5 border-b border-iron/10">
+            <SectionEyebrow text="The AI-Era Marketing Agency" light />
+            <div className="flex-1 h-px bg-iron/10" />
           </div>
-          <div className="bg-iron/75 backdrop-blur-md border border-white/[0.10] rounded-2xl p-4 w-44 hidden lg:block">
-            <p className="font-mono text-[8px] uppercase tracking-[0.22em] text-white/30 mb-3">ROAS by channel</p>
-            <BarChart
-              trigger={true}
-              bars={[
-                { label: 'Meta',   pct: 55, color: 'rgba(124,181,80,0.45)' },
-                { label: 'Google', pct: 72, color: 'rgba(124,181,80,0.65)' },
-                { label: 'TikTok', pct: 88, color: 'rgba(124,181,80,0.85)' },
-                { label: 'Email',  pct: 100, color: '#7CB550' },
-              ]}
-            />
-          </div>
-        </div>
 
-        {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full pb-16 md:pb-24">
-          <div className="max-w-3xl">
-            <div className="animate-fade-up mb-6">
-              <SectionEyebrow text="The AI-Era Marketing Agency" />
-            </div>
-            <h1
-              className="font-display text-[48px] md:text-[68px] lg:text-[84px] text-cream leading-[1.02] mb-6 animate-fade-up"
-              style={{ animationDelay: '80ms' }}
-            >
-              Marketing that moves<br />
-              at the speed of<br />
-              <em style={{ color: '#7CB550' }}>your ambition.</em>
-            </h1>
-            <p
-              className="font-body text-lg text-ash max-w-lg mb-10 leading-relaxed animate-fade-up"
-              style={{ animationDelay: '160ms' }}
-            >
-              AI-driven analysis and speed. Human taste and judgment. Full-service execution at a fraction of what agencies charge.
-            </p>
-            <div
-              className="flex flex-col sm:flex-row items-start sm:items-center gap-4 animate-fade-up"
-              style={{ animationDelay: '240ms' }}
-            >
-              <Link
-                href="/pricing"
-                className="inline-flex items-center gap-2 bg-ember text-iron font-body font-semibold px-8 py-4 rounded-full hover:brightness-110 hover:scale-[1.02] transition-all duration-300 text-base"
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
+
+            {/* Left — text */}
+            <div className="order-2 lg:order-1">
+              <h1 className="font-display text-[52px] md:text-[66px] lg:text-[78px] text-iron leading-[1.02] mb-6 animate-fade-up">
+                Marketing that moves<br />
+                at the speed of<br />
+                <em style={{ color: '#7CB550' }}>your ambition.</em>
+              </h1>
+              <p
+                className="font-body text-lg text-ash max-w-md mb-10 leading-relaxed animate-fade-up"
+                style={{ animationDelay: '80ms' }}
               >
-                Get Started — From $2,500/mo
-              </Link>
-              <Link href="/how-it-works" className="text-cream/60 font-body text-sm hover:text-cream transition-colors flex items-center gap-2">
-                See how it works →
-              </Link>
-            </div>
-          </div>
-
-          {/* Below-fold trust strip */}
-          <div className="mt-14 pt-10 border-t border-white/[0.10] grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
-            {[
-              { value: '47+',    label: 'Brands launched' },
-              { value: '$4.2M',  label: 'Ad spend managed' },
-              { value: '3.2×',   label: 'Average ROAS' },
-              { value: '22 days', label: 'Avg time to launch' },
-            ].map((s, i) => (
-              <div key={i}>
-                <p className="font-display text-[28px] md:text-[34px] text-cream leading-none">{s.value}</p>
-                <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/30 mt-1.5">{s.label}</p>
+                AI-driven analysis and speed. Human taste and judgment. Full-service execution at a fraction of what agencies charge.
+              </p>
+              <div
+                className="flex flex-col sm:flex-row gap-4 animate-fade-up"
+                style={{ animationDelay: '160ms' }}
+              >
+                <Link
+                  href="/pricing"
+                  className="inline-flex items-center justify-center bg-iron text-bone font-body font-semibold px-8 py-4 rounded-sm hover:bg-iron/85 transition-all duration-300 text-base"
+                >
+                  Get Started — From $2,500/mo
+                </Link>
+                <Link
+                  href="/how-it-works"
+                  className="text-iron/40 font-body text-sm hover:text-iron transition-colors flex items-center gap-2 self-center"
+                >
+                  See how it works →
+                </Link>
               </div>
-            ))}
+
+              {/* Trust stats */}
+              <div
+                className="mt-12 pt-10 border-t border-iron/10 grid grid-cols-2 gap-8 animate-fade-up"
+                style={{ animationDelay: '240ms' }}
+              >
+                {[
+                  { value: '47+',     label: 'Brands launched' },
+                  { value: '$4.2M',   label: 'Ad spend managed' },
+                  { value: '3.2×',    label: 'Average ROAS' },
+                  { value: '22 days', label: 'Avg time to launch' },
+                ].map((s, i) => (
+                  <div key={i}>
+                    <p className="font-display text-[28px] md:text-[34px] text-iron leading-none">{s.value}</p>
+                    <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-iron/35 mt-1.5">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right — person photo (hidden on mobile) */}
+            <div
+              className="order-1 lg:order-2 hidden lg:block animate-fade-up"
+              style={{ animationDelay: '60ms' }}
+            >
+              <div className="overflow-hidden rounded-sm" style={{ aspectRatio: '3/4' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=85&fit=crop&crop=top"
+                  alt=""
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+              <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-iron/30 mt-3 pl-1">
+                Building brands that compound.
+              </p>
+            </div>
+
           </div>
         </div>
       </section>
 
       {/* ── ANIMATED STATS ──────────────────────────── */}
-      <div ref={statsRef} className="bg-forge border-t border-white/[0.06] py-20">
+      <div ref={statsRef} className="bg-iron border-b border-white/[0.06] py-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0 md:divide-x divide-white/[0.08]">
             <div className="md:pr-12">
-              <p className="font-display text-[64px] md:text-[80px] leading-none text-cream">
+              <p className="font-display text-[64px] md:text-[80px] leading-none text-bone">
                 {brands}<span className="text-ember">+</span>
               </p>
               <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ember mt-3">Brands built & launched</p>
               <p className="font-body text-sm text-white/30 mt-2 leading-relaxed">Across retail, services, health, and e-commerce</p>
             </div>
             <div className="md:px-12">
-              <p className="font-display text-[64px] md:text-[80px] leading-none text-cream">
+              <p className="font-display text-[64px] md:text-[80px] leading-none text-bone">
                 {days}<span className="text-ember"> days</span>
               </p>
               <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ember mt-3">Average time to launch</p>
               <p className="font-body text-sm text-white/30 mt-2 leading-relaxed">From signed contract to live brand and site</p>
             </div>
             <div className="md:pl-12">
-              <p className="font-display text-[64px] md:text-[80px] leading-none text-cream">
+              <p className="font-display text-[64px] md:text-[80px] leading-none text-bone">
                 {clients}<span className="text-ember">%</span>
               </p>
               <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ember mt-3">Client retention rate</p>
@@ -276,26 +271,26 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── PHOTO + DATA VIZ BENTO ──────────────────── */}
-      <section ref={photoRef} className="bg-iron py-24 md:py-32">
+      {/* ── WORK SECTION ────────────────────────────── */}
+      <section ref={photoRef} className="bg-bone py-20 md:py-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 mb-16 items-end">
+          <div className="flex items-end justify-between gap-8 mb-10 pb-6 border-b border-iron/10">
             <div>
-              <SectionEyebrow text="The Work" />
-              <h2 className="font-display font-medium text-[40px] md:text-[52px] text-cream leading-tight mt-2">
+              <SectionEyebrow text="The Work" light />
+              <h2 className="font-display font-medium text-[36px] md:text-[48px] text-iron leading-tight mt-2">
                 AI does the heavy lifting.<br /><em style={{ color: '#7CB550' }}>We make it win.</em>
               </h2>
             </div>
-            <p className="font-body text-base text-ash leading-relaxed max-w-md self-end">
-              Every campaign is backed by real-time competitive intelligence, AI-generated creative variations, and human judgment that knows what actually converts.
+            <p className="hidden md:block font-body text-sm text-ash leading-relaxed max-w-xs self-end">
+              Real-time intelligence, creative variation, and human judgment — every campaign.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
             {/* Large photo */}
-            <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
+            <div className="relative overflow-hidden rounded-sm aspect-[4/3]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=900&q=80&fit=crop"
@@ -303,24 +298,24 @@ export default function Home() {
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-iron via-iron/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6">
-                <div className="bg-iron/80 backdrop-blur-md border border-white/[0.10] rounded-xl p-5">
+              <div className="absolute bottom-5 left-5 right-5">
+                <div className="bg-iron/80 backdrop-blur-md border border-white/[0.10] rounded-sm p-4">
                   <p className="font-mono text-[8px] uppercase tracking-[0.22em] text-white/35 mb-3">Campaign performance — Q4</p>
                   <div className="flex items-end justify-between gap-4">
                     <div>
-                      <p className="font-display text-[32px] text-ember leading-none">+284%</p>
+                      <p className="font-display text-[28px] text-ember leading-none">+284%</p>
                       <p className="font-mono text-[9px] text-white/30 mt-1">Lead volume YoY</p>
                     </div>
-                    <Sparkline trigger={photoInView} width={140} height={44} />
+                    <Sparkline trigger={photoInView} width={120} height={40} />
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Right column — two stacked */}
+            {/* Right — two stacked */}
             <div className="flex flex-col gap-4">
 
-              <div className="relative rounded-2xl overflow-hidden" style={{ aspectRatio: '16/9' }}>
+              <div className="relative overflow-hidden rounded-sm" style={{ aspectRatio: '16/9' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=900&q=80&fit=crop"
@@ -329,7 +324,7 @@ export default function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-iron via-iron/20 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
-                  <div className="bg-iron/80 backdrop-blur-md border border-white/[0.10] rounded-xl p-4">
+                  <div className="bg-iron/80 backdrop-blur-md border border-white/[0.10] rounded-sm p-4">
                     <p className="font-mono text-[8px] uppercase tracking-[0.22em] text-white/35 mb-3">ROAS by channel</p>
                     <BarChart
                       trigger={photoInView}
@@ -344,7 +339,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="relative rounded-2xl overflow-hidden" style={{ aspectRatio: '16/9' }}>
+              <div className="relative overflow-hidden rounded-sm" style={{ aspectRatio: '16/9' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=900&q=80&fit=crop"
@@ -353,10 +348,10 @@ export default function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-iron via-iron/20 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
-                  <div className="bg-iron/80 backdrop-blur-md border border-white/[0.10] rounded-xl p-4 flex items-center justify-between">
+                  <div className="bg-iron/80 backdrop-blur-md border border-white/[0.10] rounded-sm p-4 flex items-center justify-between">
                     <div>
                       <p className="font-mono text-[8px] uppercase tracking-[0.22em] text-white/35">Market share captured</p>
-                      <p className="font-display text-[28px] text-cream leading-none mt-1">↑ 18%</p>
+                      <p className="font-display text-[24px] text-bone leading-none mt-1">↑ 18%</p>
                       <p className="font-mono text-[8px] text-white/30 mt-1">vs. nearest competitor</p>
                     </div>
                     <div className="flex flex-col items-center gap-1">
@@ -372,80 +367,81 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── SIX PILLARS ────────────────────────────── */}
+      <section className="bg-white py-20 md:py-28 border-t border-b border-iron/8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="flex items-end justify-between gap-8 mb-10 pb-6 border-b border-iron/10">
+            <div>
+              <SectionEyebrow text="How We Work" light />
+              <h2 className="font-display font-normal italic text-[36px] md:text-[48px] text-iron leading-tight mt-2">
+                Six pillars.<br />One mission.
+              </h2>
+            </div>
+            <p className="hidden md:block font-body text-sm text-ash leading-relaxed max-w-xs self-end">
+              We operate as your embedded growth partner — not a vendor. Every pillar connects to the next.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10">
+            {pillars.map((p) => (
+              <div key={p.num} className="group">
+                <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-ember mb-3">{p.num}</p>
+                <h3 className="font-display text-[20px] text-iron mb-3 leading-tight">{p.name}</h3>
+                <p className="font-body text-sm text-ash leading-relaxed">{p.desc}</p>
+                <div className="mt-5 h-px bg-iron/8 group-hover:bg-ember/40 transition-colors duration-300" />
+              </div>
+            ))}
+          </div>
+          <div className="mt-14 flex items-center gap-6">
+            <Link
+              href="/pricing"
+              className="inline-flex items-center gap-2 bg-iron text-bone font-body font-semibold px-8 py-4 rounded-sm hover:bg-iron/85 transition-all duration-300"
+            >
+              Get Started — From $2,500/mo
+            </Link>
+            <Link href="/how-it-works" className="font-body text-sm text-ash hover:text-iron transition-colors">
+              See the full process →
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ── TESTIMONIALS ──────────────────────────── */}
-      <section ref={testRef} className="bg-bone py-24 md:py-32">
+      <section ref={testRef} className="bg-bone py-20 md:py-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 mb-16 items-end">
+          <div className="flex items-end justify-between gap-8 mb-10 pb-6 border-b border-iron/10">
             <div>
               <SectionEyebrow text="Client Results" light />
-              <h2 className="font-display font-medium text-[40px] md:text-[52px] text-ink leading-tight mt-2">
+              <h2 className="font-display font-medium text-[36px] md:text-[48px] text-iron leading-tight mt-2">
                 Don&apos;t take<br /><em>our word for it.</em>
               </h2>
             </div>
-            <p className="font-body text-base text-slate leading-relaxed max-w-md self-end">
-              These are placeholder quotes — real results from real clients coming soon. The format is ready. The results will be better.
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
               <div
                 key={i}
-                className="bg-white border border-black/[0.06] rounded-2xl p-8 flex flex-col"
+                className="bg-white border border-iron/8 rounded-sm p-8 flex flex-col"
                 style={{
                   opacity: testInView ? 1 : 0,
                   transform: testInView ? 'translateY(0)' : 'translateY(24px)',
                   transition: `opacity 0.6s ease ${i * 120}ms, transform 0.6s ease ${i * 120}ms`,
                 }}
               >
-                <p className="font-display italic text-[19px] text-ink leading-snug mb-8 flex-1">
+                <p className="font-display italic text-[18px] text-iron/70 leading-snug mb-8 flex-1">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <div className="flex items-center gap-3 pt-6 border-t border-black/[0.06]">
+                <div className="flex items-center gap-3 pt-6 border-t border-iron/8">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={t.photo} alt={t.name} className="w-10 h-10 rounded-full object-cover bg-oat" />
+                  <img src={t.photo} alt={t.name} className="w-10 h-10 rounded-full object-cover" />
                   <div>
-                    <p className="font-body font-semibold text-sm text-ink">{t.name}</p>
-                    <p className="font-body text-xs text-slate">{t.role}</p>
+                    <p className="font-body font-semibold text-sm text-iron">{t.name}</p>
+                    <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-iron/35">{t.role}</p>
                   </div>
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── SIX PILLARS ────────────────────────────── */}
-      <section className="bg-iron py-24 md:py-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 mb-16 items-end">
-            <div>
-              <SectionEyebrow text="How We Work" />
-              <h2 className="font-display font-normal italic text-[40px] md:text-[52px] leading-tight text-cream mt-2">
-                Six pillars.<br />One mission.
-              </h2>
-            </div>
-            <p className="font-body text-base text-ash leading-relaxed max-w-md self-end">
-              We operate as your embedded growth partner — not a vendor. Every pillar connects to the next. The system compounds.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.05]">
-            {pillars.map((p) => (
-              <div key={p.num} className="bg-iron p-10 hover:bg-white/[0.03] transition-colors duration-300 group">
-                <p className="font-display font-bold text-[52px] text-ember/12 leading-none mb-5 group-hover:text-ember/20 transition-colors">{p.num}</p>
-                <p className="font-body font-semibold text-[12px] uppercase tracking-wider text-cream mb-3">{p.name}</p>
-                <p className="font-body text-sm text-ash leading-relaxed">{p.desc}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-12 flex items-center gap-6">
-            <Link href="/pricing" className="inline-flex items-center gap-2 bg-moss text-bone font-body font-semibold px-8 py-4 rounded-full hover:brightness-110 transition-all duration-300">
-              Get Started — From $2,500/mo
-            </Link>
-            <Link href="/how-it-works" className="font-body text-sm text-ash hover:text-cream transition-colors">
-              See the full process →
-            </Link>
           </div>
         </div>
       </section>
