@@ -345,34 +345,6 @@ export default function Pricing() {
             <h2 className="font-display font-semibold text-[40px] text-ink mt-5 mb-3">Three tiers. No contracts. No agency tax.</h2>
             <p className="font-display italic text-lg text-slate/70 mb-10">We charge what a freelancer costs and deliver what an agency can&apos;t.</p>
 
-            {/* Agency Tax table */}
-            <div className="mb-10 overflow-x-auto">
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate/50 mb-5">The Agency Tax — what you&apos;re really paying for</p>
-              <table className="w-full max-w-2xl mx-auto">
-                <thead>
-                  <tr className="border-b border-black/[0.08]">
-                    {['What they sell', 'Traditional agency', 'Hewn Life'].map(h => (
-                      <th key={h} className="text-left py-2.5 pr-6 last:pr-0 font-mono text-[9px] uppercase tracking-[0.15em] text-slate/40 font-normal">{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { scope: 'Brand + website only',                     agency: '$8,000–$15,000 project', hewn: '—' },
-                    { scope: 'Brand + website + digital presence',        agency: '$5,000–$10,000/mo',      hewn: 'Hewn · $2,500' },
-                    { scope: 'Above + paid media, funnels & automation',  agency: '$10,000–$18,000/mo',     hewn: 'Forged · $5,000' },
-                    { scope: 'Full-service + UGC + fractional CMO',       agency: '$15,000–$25,000/mo',     hewn: 'Carved · $9,500' },
-                  ].map((row, i) => (
-                    <tr key={i} className="border-b border-black/[0.05]">
-                      <td className="py-3 pr-6 font-body text-sm text-slate text-left">{row.scope}</td>
-                      <td className="py-3 pr-6 font-body text-sm text-slate/40 line-through text-left">{row.agency}</td>
-                      <td className={`py-3 font-body text-sm font-semibold text-left ${row.hewn === '—' ? 'text-slate/30' : 'text-moss'}`}>{row.hewn}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
             <div className="flex items-center justify-center gap-4 mt-8">
               <span className={`font-body text-sm ${!annual ? 'text-ink font-medium' : 'text-slate/50'}`}>Monthly</span>
               <button
@@ -509,6 +481,36 @@ export default function Pricing() {
           </div>
         </div>
       </section>
+
+      {/* Agency Tax comparison */}
+      <div className="bg-bone border-t border-black/[0.08] py-16">
+        <div className="max-w-2xl mx-auto px-6">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate/50 mb-6 text-center">The Agency Tax — what you&apos;re really paying for</p>
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-black/[0.08]">
+                {['What they sell', 'Traditional agency', 'Hewn Life'].map(h => (
+                  <th key={h} className="text-left py-2.5 pr-6 last:pr-0 font-mono text-[9px] uppercase tracking-[0.15em] text-slate/40 font-normal">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { scope: 'Brand + website only',                     agency: '$8,000–$15,000 project', hewn: '—' },
+                { scope: 'Brand + website + digital presence',        agency: '$5,000–$10,000/mo',      hewn: 'Hewn · $2,500' },
+                { scope: 'Above + paid media, funnels & automation',  agency: '$10,000–$18,000/mo',     hewn: 'Forged · $5,000' },
+                { scope: 'Full-service + UGC + fractional CMO',       agency: '$15,000–$25,000/mo',     hewn: 'Carved · $9,500' },
+              ].map((row, i) => (
+                <tr key={i} className="border-b border-black/[0.05]">
+                  <td className="py-3 pr-6 font-body text-sm text-slate text-left">{row.scope}</td>
+                  <td className="py-3 pr-6 font-body text-sm text-slate/40 line-through text-left">{row.agency}</td>
+                  <td className={`py-3 font-body text-sm font-semibold text-left ${row.hewn === '—' ? 'text-slate/30' : 'text-moss'}`}>{row.hewn}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       {/* Trust signals strip */}
       <div className="bg-bone border-t border-b border-black/[0.08] py-5 px-6">
