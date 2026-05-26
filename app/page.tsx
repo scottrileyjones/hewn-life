@@ -25,19 +25,29 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-obsidian min-h-screen flex flex-col items-center justify-center text-center relative overflow-hidden grain-overlay pt-20">
+      <section
+        className="min-h-screen flex flex-col items-center justify-center text-center relative overflow-hidden grain-overlay pt-20"
+        style={{
+          background: `
+            radial-gradient(ellipse at 60% 40%, rgba(124,181,80,0.13) 0%, transparent 55%),
+            radial-gradient(ellipse at 20% 70%, rgba(74,83,72,0.4) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 80%, rgba(124,181,80,0.06) 0%, transparent 45%),
+            #1A1815
+          `
+        }}
+      >
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="animate-fade-up">
             <SectionEyebrow text="The AI-Era Marketing Agency" />
           </div>
-          <h1 className="font-display font-light italic text-[52px] md:text-[72px] lg:text-[88px] leading-[1.08] text-cream mb-8 max-w-4xl mx-auto animate-fade-up delay-1">
-            Marketing isn&apos;t a<br />line item. It&apos;s the<br />life of your business.
+          <h1 className="font-display font-semibold text-[52px] md:text-[72px] lg:text-[88px] leading-[1.08] text-cream mb-8 max-w-4xl mx-auto animate-fade-up delay-1">
+            Marketing isn&apos;t a line item.<br className="hidden md:block" /> It&apos;s the <span className="italic text-ember">life</span> of your business.
           </h1>
           <p className="font-body text-lg text-ash max-w-xl mx-auto mb-12 animate-fade-up delay-2 leading-relaxed">
             Hewn Life combines thirty years of human business acumen with the speed and scale of AI to carve out something truly beautiful and valuable for your brand.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up delay-3">
-            <Link href="/contact" className="bg-moss text-obsidian font-body font-medium px-8 py-4 rounded-full hover:brightness-110 hover:scale-[1.02] transition-all duration-300">
+            <Link href="/contact" className="bg-ember text-iron font-body font-medium px-8 py-4 rounded-full hover:brightness-110 hover:scale-[1.02] transition-all duration-300">
               Book a Discovery Call
             </Link>
             <Link href="/how-it-works" className="text-cream font-body font-medium px-8 py-4 rounded-full hover:underline underline-offset-4 flex items-center gap-2">
@@ -48,7 +58,7 @@ export default function Home() {
       </section>
 
       {/* Logo bar */}
-      <section className="bg-charcoal py-12 border-y border-white/[0.08]">
+      <section className="bg-moss py-12 border-y border-white/[0.08]">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <p className="font-body text-[11px] uppercase tracking-[0.2em] text-ash text-center mb-8">
             Trusted by growth-minded businesses
@@ -62,11 +72,11 @@ export default function Home() {
       </section>
 
       {/* Disruption Statement */}
-      <section className="bg-stone py-24 md:py-32">
+      <section className="bg-bone py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="text-center lg:text-left">
-              <p className="font-display font-bold text-[120px] leading-none text-moss">3x</p>
+              <p className="font-display font-bold text-[120px] leading-none text-ember">3x</p>
               <p className="font-body text-sm text-slate mt-2">average ROI vs. traditional agency model</p>
             </div>
             <div>
@@ -77,7 +87,7 @@ export default function Home() {
               <p className="font-body text-base text-slate max-w-lg mb-8 leading-relaxed">
                 Traditional agencies carry massive overhead, opaque retainers, and percentage-of-spend fees that punish your growth. Hewn Life was built to disrupt that. Flat fees. Full transparency. Zero percentage-of-spend.
               </p>
-              <Link href="/pricing" className="font-body text-sm text-moss hover:underline underline-offset-4">
+              <Link href="/pricing" className="font-body text-sm text-ember hover:underline underline-offset-4">
                 See How We Price It →
               </Link>
             </div>
@@ -86,7 +96,7 @@ export default function Home() {
       </section>
 
       {/* Six Pillars */}
-      <section className="bg-obsidian py-24 md:py-32">
+      <section className="py-24 md:py-32" style={{background: "radial-gradient(ellipse at 50% 50%, rgba(74,83,72,0.5) 0%, transparent 70%), #1A1815"}}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">
             <SectionEyebrow text="How We Work" />
@@ -103,7 +113,7 @@ export default function Home() {
                 key={pillar.num}
                 className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-8 hover:border-moss/30 hover:-translate-y-0.5 transition-all duration-300"
               >
-                <p className="font-display font-bold text-[48px] text-moss/20 leading-none mb-4">{pillar.num}</p>
+                <p className="font-display font-bold text-[48px] text-ember/20 leading-none mb-4">{pillar.num}</p>
                 <p className="font-body font-semibold text-[13px] uppercase tracking-wider text-cream mb-3">{pillar.name}</p>
                 <p className="font-body text-sm text-ash leading-relaxed">{pillar.desc}</p>
               </div>
@@ -113,14 +123,14 @@ export default function Home() {
       </section>
 
       {/* Testimonial */}
-      <section className="bg-stone py-24 md:py-32">
+      <section className="bg-bone py-24 md:py-32">
         <div className="max-w-3xl mx-auto px-6 lg:px-12 text-center">
-          <p className="font-display text-[80px] leading-none text-moss/20 mb-4">&ldquo;</p>
+          <p className="font-display text-[80px] leading-none text-ember/20 mb-4">&ldquo;</p>
           <blockquote className="font-display font-normal italic text-[32px] leading-snug text-ink mb-10">
             Hewn Life didn&apos;t just run our marketing. They rebuilt how we think about our business.
           </blockquote>
           <div className="flex items-center justify-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-marble border border-black/10" />
+            <div className="w-12 h-12 rounded-full bg-oat border border-black/10" />
             <div className="text-left">
               <p className="font-body font-semibold text-sm text-ink">Jane Smith</p>
               <p className="font-body text-sm text-slate">Owner, Acme Roofing Co.</p>
@@ -130,7 +140,7 @@ export default function Home() {
       </section>
 
       {/* Comparison Numbers */}
-      <section className="bg-charcoal py-24 md:py-32">
+      <section className="bg-moss py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">
             <SectionEyebrow text="The Numbers Don't Lie" />
@@ -144,7 +154,7 @@ export default function Home() {
                 <tr className="border-b border-white/[0.08]">
                   <th className="text-left py-4 pr-8 font-body text-[11px] uppercase tracking-[0.1em] text-ash font-normal">Service Category</th>
                   <th className="text-left py-4 pr-8 font-body text-[11px] uppercase tracking-[0.1em] text-ash font-normal">Traditional Agency</th>
-                  <th className="text-left py-4 font-body text-[11px] uppercase tracking-[0.1em] text-moss font-normal">Hewn Life Gold</th>
+                  <th className="text-left py-4 font-body text-[11px] uppercase tracking-[0.1em] text-ember font-normal">Hewn Life Gold</th>
                 </tr>
               </thead>
               <tbody>
@@ -152,7 +162,7 @@ export default function Home() {
                   <tr key={i} className="border-b border-white/[0.08]">
                     <td className="py-4 pr-8 font-body text-sm text-cream">{row.service}</td>
                     <td className="py-4 pr-8 font-body text-sm text-ash">{row.traditional}</td>
-                    <td className="py-4 font-body text-sm text-moss">{row.hewn}</td>
+                    <td className="py-4 font-body text-sm text-ember">{row.hewn}</td>
                   </tr>
                 ))}
               </tbody>
@@ -160,7 +170,7 @@ export default function Home() {
                 <tr className="border-t-2 border-moss/30">
                   <td className="py-6 font-body font-semibold text-sm text-cream">TOTAL</td>
                   <td className="py-6 font-body font-semibold text-sm text-ash">$20,000–$50,000+/mo</td>
-                  <td className="py-6 font-body font-semibold text-sm text-moss">$9,500/month</td>
+                  <td className="py-6 font-body font-semibold text-sm text-ember">$9,500/month</td>
                 </tr>
               </tfoot>
             </table>
