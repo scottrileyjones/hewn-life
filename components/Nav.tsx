@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import HewnLogo from './HewnLogo'
+import CalButton from './CalButton'
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -51,12 +52,9 @@ export default function Nav() {
           </div>
 
           <div className="hidden md:flex items-center gap-4">
-            <Link
-              href="/contact"
-              className="border border-ember text-ember font-mono text-[12px] uppercase tracking-[0.16em] px-5 py-2.5 rounded-full hover:bg-ember hover:text-iron transition-all duration-300"
-            >
+            <CalButton className="border border-ember text-ember font-mono text-[12px] uppercase tracking-[0.16em] px-5 py-2.5 rounded-full hover:bg-ember hover:text-iron transition-all duration-300">
               Book a Call
-            </Link>
+            </CalButton>
           </div>
 
           {/* Mobile hamburger */}
@@ -90,13 +88,12 @@ export default function Nav() {
               </Link>
             ))}
           </div>
-          <Link
-            href="/contact"
+          <CalButton
             className="mt-4 border border-ember text-ember font-mono text-[12px] uppercase tracking-[0.18em] px-8 py-4 rounded-full hover:bg-ember hover:text-iron transition-all duration-300"
             onClick={() => setMenuOpen(false)}
           >
             Book a Call
-          </Link>
+          </CalButton>
         </div>
       )}
     </>

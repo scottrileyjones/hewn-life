@@ -24,6 +24,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import SectionEyebrow from '@/components/SectionEyebrow'
 import Link from 'next/link'
 import Cal, { getCalApi } from '@calcom/embed-react'
+import CalButton from '@/components/CalButton'
 
 type TierSlug = 'hewn' | 'forged' | 'carved'
 type IconType = 'brand' | 'website' | 'seo' | 'ads' | 'automation' | 'video' | 'content' | 'referral'
@@ -243,7 +244,7 @@ function CalEmbed() {
 
   return (
     <Cal
-      calLink={process.env.NEXT_PUBLIC_CALCOM_LINK ?? ''}
+      calLink="scott-hewn/exploration"
       style={{ width: '100%', height: '600px', border: 'none' }}
     />
   )
@@ -308,9 +309,9 @@ export default function Pricing() {
             <a href="#plans" className="inline-flex items-center bg-moss text-bone font-body font-medium px-8 py-4 rounded-full hover:brightness-110 transition-all duration-300">
               See Plans
             </a>
-            <Link href="/contact" className="font-body text-sm text-ash hover:text-cream transition-colors">
+            <CalButton className="font-body text-sm text-ash hover:text-cream transition-colors">
               Not sure what you need? Let&apos;s talk →
-            </Link>
+            </CalButton>
           </div>
         </div>
       </section>
@@ -449,9 +450,9 @@ export default function Pricing() {
                         </button>
 
                         <p className="text-center mb-6">
-                          <Link href="/contact" className={`font-body text-xs transition-colors ${isFeatured ? 'text-ash/40 hover:text-ash' : 'text-slate/50 hover:text-slate'}`}>
+                          <CalButton className={`font-body text-xs transition-colors ${isFeatured ? 'text-ash/40 hover:text-ash' : 'text-slate/50 hover:text-slate'}`}>
                             Have questions? Book a free call →
-                          </Link>
+                          </CalButton>
                         </p>
 
                         <button
@@ -631,9 +632,9 @@ export default function Pricing() {
           <p className="font-body text-base text-ash max-w-lg mx-auto mb-10">
             Book a free 30-minute exploration call. No pitch deck, no pressure — just an honest conversation about your business and where to start.
           </p>
-          <Link href="/contact" className="inline-flex items-center bg-moss text-bone font-body font-medium px-8 py-4 rounded-full hover:brightness-110 transition-all duration-300">
+          <CalButton className="inline-flex items-center bg-moss text-bone font-body font-medium px-8 py-4 rounded-full hover:brightness-110 transition-all duration-300">
             Book a Free Exploration Call
-          </Link>
+          </CalButton>
         </div>
       </section>
 
