@@ -136,7 +136,7 @@ export default function HowItWorks() {
             <div>
               <SectionEyebrow text="How We're Different" />
               <h2 className="font-display font-medium text-[44px] md:text-[60px] text-cream leading-tight mt-2">
-                We know what sells.<br /><em style={{ color: '#7CB550' }}>We know what&apos;s beautiful.</em>
+                We know what sells.<br /><span style={{ color: '#6BAD3D' }} className="font-bold">We know what&apos;s beautiful.</span>
               </h2>
             </div>
             <p className="font-body text-base text-ash leading-relaxed max-w-md self-end">
@@ -361,7 +361,7 @@ export default function HowItWorks() {
           <div className="mb-16">
             <SectionEyebrow text="Staying Aligned" light />
             <h2 className="font-display font-medium text-[36px] md:text-[48px] text-ink leading-tight mt-2">
-              You will always know<br /><em>exactly what&apos;s happening.</em>
+              You will always know<br /><span className="font-bold">exactly what&apos;s happening.</span>
             </h2>
           </div>
 
