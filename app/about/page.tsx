@@ -14,13 +14,13 @@ export default function About() {
   return (
     <>
       {/* Hero */}
-      <section className="min-h-[70vh] flex items-end pb-24 relative overflow-hidden grain-overlay pt-32" style={{background: `radial-gradient(ellipse at 70% 30%, rgba(124,181,80,0.10) 0%, transparent 55%), #1A1815`}}>
+      <section className="min-h-[70vh] flex items-end pb-24 relative overflow-hidden pt-32" style={{background: `radial-gradient(ellipse at 70% 30%, rgba(124,181,80,0.10) 0%, transparent 55%), #1A1815`}}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="animate-fade-up">
             <SectionEyebrow text="Our Story" />
           </div>
           <h1 className="hero-heading text-[56px] md:text-[80px] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
-            We believe marketing is the <em style={{color: '#7CB550'}}>life</em> of your business — not an afterthought.
+            We believe marketing is the <span style={{color: '#6BAD3D'}} className="font-bold">life</span> of your business — not an afterthought.
           </h1>
           <p className="font-body text-lg text-ash max-w-xl animate-fade-up delay-2 leading-relaxed">
             Hewn Life was built on a simple but radical conviction: premium marketing should not require a massive agency with bloated overhead and hidden fees.
@@ -78,7 +78,7 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">
             <SectionEyebrow text="What We Stand For" />
-            <h2 className="font-display font-normal italic text-[44px] leading-tight text-cream">
+            <h2 className="font-display font-bold text-[44px] leading-tight text-cream">
               Five values that drive every decision.
             </h2>
           </div>
@@ -97,7 +97,7 @@ export default function About() {
       {/* Philosophy */}
       <section className="bg-bone py-24 md:py-32">
         <div className="max-w-2xl mx-auto px-6 text-center">
-          <blockquote className="font-display font-normal italic text-[36px] leading-snug text-ink mb-8">
+          <blockquote className="font-display font-medium text-[36px] leading-snug text-ink mb-8">
             &ldquo;The name &lsquo;Hewn&rsquo; reflects the meticulous process of taking raw material and carving out something truly beautiful and valuable.&rdquo;
           </blockquote>
           <p className="font-body text-sm text-slate">— Scott Jones, Founder</p>

@@ -5,27 +5,27 @@ module.exports = {
     extend: {
       colors: {
         // Primary darks
-        iron:    '#1A1815',
-        forge:   '#0E0D0B',
-        // Warm neutrals
-        bone:    '#F2ECE0',
-        stone:   '#E8DFC0',
-        oat:     '#DCCFB6',
+        iron:    '#0D0D0D',
+        forge:   '#080808',
+        // Cool neutrals
+        bone:    '#F7F6F3',
+        stone:   '#EDEAE4',
+        oat:     '#E0DBD2',
         // Accents (use sparingly)
         copper:  '#B5621C',
-        ember:   '#7CB550',
+        ember:   '#6BAD3D',
         hewn:    '#8C4612',
         // Earth (primary palette)
-        slate:   '#3F4A47',
-        moss:    '#4A5348',
+        slate:   '#44514D',
+        moss:    '#3D4A3F',
         clay:    '#685544',
         // Legacy aliases (mapped to brand)
-        obsidian: '#1A1815',
-        charcoal: '#2A2824',
-        cream:   '#F2ECE0',
-        marble:  '#E8DFC0',
-        ash:     '#A89F92',
-        ink:     '#1A1815',
+        obsidian: '#0D0D0D',
+        charcoal: '#222222',
+        cream:   '#F7F6F3',
+        marble:  '#EDEAE4',
+        ash:     '#9A9590',
+        ink:     '#0D0D0D',
       },
       fontFamily: {
         display: ['var(--font-display)', 'Georgia', 'serif'],

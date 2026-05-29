@@ -52,7 +52,7 @@ export default function Nav() {
           </div>
 
           <div className="hidden md:flex items-center gap-4">
-            <CalButton className="border border-ember text-ember font-mono text-[12px] uppercase tracking-[0.16em] px-5 py-2.5 rounded-full hover:bg-ember hover:text-iron transition-all duration-300">
+            <CalButton className="bg-iron text-bone font-body font-medium px-5 py-2.5 rounded-lg hover:bg-charcoal transition-all duration-300">
               Book a Call
             </CalButton>
           </div>
@@ -89,7 +89,7 @@ export default function Nav() {
             ))}
           </div>
           <CalButton
-            className="mt-4 border border-ember text-ember font-mono text-[12px] uppercase tracking-[0.18em] px-8 py-4 rounded-full hover:bg-ember hover:text-iron transition-all duration-300"
+            className="mt-4 bg-iron text-bone font-body font-medium px-8 py-4 rounded-lg hover:bg-charcoal transition-all duration-300"
             onClick={() => setMenuOpen(false)}
           >
             Book a Call

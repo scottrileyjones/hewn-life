@@ -298,7 +298,7 @@ export default function Pricing() {
     <>
       {/* Hero — unchanged */}
       <section
-        className="min-h-[70vh] flex items-end pb-24 relative overflow-hidden grain-overlay pt-32"
+        className="min-h-[70vh] flex items-end pb-24 relative overflow-hidden pt-32"
         style={{ background: `radial-gradient(ellipse at 70% 30%, rgba(124,181,80,0.10) 0%, transparent 55%), #1A1815` }}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -306,7 +306,7 @@ export default function Pricing() {
             <SectionEyebrow text="Transparent Pricing" />
           </div>
           <h1 className="hero-heading text-[56px] md:text-[80px] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
-            Pick a plan. Check out. We <em style={{ color: '#7CB550' }}>get to work.</em>
+            Pick a plan. Check out. We <span style={{ color: '#6BAD3D' }} className="font-bold">get to work.</span>
           </h1>
           <p className="font-body text-lg text-ash max-w-xl animate-fade-up delay-2 leading-relaxed mb-10">
             No sales calls required. Flat fees, secure checkout, and your onboarding call scheduled within 48 hours of purchase.
@@ -328,7 +328,7 @@ export default function Pricing() {
           <div className="text-center mb-14">
             <SectionEyebrow text="Monthly Retainers" light />
             <h2 className="font-display font-semibold text-[40px] text-ink mt-5 mb-3">Three tiers. No contracts. No agency tax.</h2>
-            <p className="font-display italic text-lg text-slate/70 mb-10">We charge what a freelancer costs and deliver what an agency can&apos;t.</p>
+            <p className="font-display font-medium text-lg text-slate/70 mb-10">We charge what a freelancer costs and deliver what an agency can&apos;t.</p>
 
 
             <div className="flex items-center justify-center gap-4 mt-8">
@@ -382,7 +382,7 @@ export default function Pricing() {
                       <p className={`font-display font-bold text-[32px] leading-none mb-3 ${isFeatured ? 'text-cream' : 'text-ink'}`}>{tier.name}</p>
 
                       {/* Tagline */}
-                      <p className={`font-display italic text-sm mb-6 leading-snug ${isFeatured ? 'text-ash/70' : 'text-slate'}`}>{tier.tagline}</p>
+                      <p className={`font-display font-medium text-sm mb-6 leading-snug ${isFeatured ? 'text-ash/70' : 'text-slate'}`}>{tier.tagline}</p>
 
                       {/* Price */}
                       <div className={`mb-6 pb-6 border-b ${isFeatured ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
@@ -642,11 +642,11 @@ export default function Pricing() {
       </section>
 
       {/* Not Sure? — unchanged */}
-      <section className="bg-obsidian py-24 md:py-32 grain-overlay">
+      <section className="bg-obsidian py-24 md:py-32">
         <div className="max-w-2xl mx-auto px-6 text-center">
           <SectionEyebrow text="Not Sure Where to Start?" />
           <h2 className="font-display font-bold text-[48px] leading-tight text-cream mb-6">
-            Let&apos;s figure it out <em style={{ color: '#7CB550' }}>together.</em>
+            Let&apos;s figure it out <span style={{ color: '#6BAD3D' }} className="font-bold">together.</span>
           </h2>
           <p className="font-body text-base text-ash max-w-lg mx-auto mb-10">
             Book a free 30-minute exploration call. No pitch deck, no pressure — just an honest conversation about your business and where to start.
