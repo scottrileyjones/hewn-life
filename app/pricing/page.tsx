@@ -415,7 +415,7 @@ export default function Pricing() {
                           <>
                             <div className="flex items-baseline gap-2 mb-1">
                               <span className={`font-body text-sm line-through ${isFeatured ? 'text-ash/30' : 'text-slate/30'}`}>${tier.price.monthly.toLocaleString()}</span>
-                              <span className="font-mono text-[10px] uppercase tracking-widest font-medium text-ember">Save 10%</span>
+                              <span className="font-mono text-[10px] uppercase tracking-widest font-medium text-ember">Save 20%</span>
                             </div>
                             <div className="flex items-end gap-1">
                               <span className={`font-display font-bold text-[52px] leading-none ${isFeatured ? 'text-cream' : 'text-ink'}`}>${price.toLocaleString()}</span>
