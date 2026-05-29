@@ -282,8 +282,10 @@ export default function Pricing() {
       })
       const { url, error } = await res.json() as { url?: string; error?: string }
       if (error) throw new Error(error)
-      if (url) window.open(url, '_blank')
-      else throw new Error('No checkout URL returned')
+      if (url) {
+        window.open(url, '_blank')
+        setLoadingTier(null)
+      } else throw new Error('No checkout URL returned')
     } catch (err) {
       setCheckoutError(err instanceof Error ? err.message : 'Something went wrong')
       setLoadingTier(null)
