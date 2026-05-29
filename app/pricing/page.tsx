@@ -254,6 +254,7 @@ export default function Pricing() {
   const [annual, setAnnual] = useState(false)
   const [expanded, setExpanded] = useState<TierSlug | null>(null)
   const [loadingTier, setLoadingTier] = useState<string | null>(null)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
   const [calOpen, setCalOpen] = useState(false)
   const [showStickyBar, setShowStickyBar] = useState(false)
   const plansRef = useRef<HTMLElement>(null)
@@ -271,6 +272,7 @@ export default function Pricing() {
 
   const handleStripeCheckout = useCallback(async (slug: TierSlug) => {
     setLoadingTier(slug)
+    setCheckoutError(null)
     try {
       const priceId = PRICE_IDS[slug][annual ? 'annual' : 'monthly']
       const res = await fetch('/api/checkout', {
@@ -281,7 +283,9 @@ export default function Pricing() {
       const { url, error } = await res.json() as { url?: string; error?: string }
       if (error) throw new Error(error)
       if (url) window.location.href = url
-    } catch {
+      else throw new Error('No checkout URL returned')
+    } catch (err) {
+      setCheckoutError(err instanceof Error ? err.message : 'Something went wrong')
       setLoadingTier(null)
     }
   }, [annual])
@@ -366,6 +370,11 @@ export default function Pricing() {
             </div>
           </div>
 
+          {checkoutError && (
+            <div className="mb-6 bg-red-50 border border-red-200 rounded-xl px-5 py-4 text-center">
+              <p className="font-body text-sm text-red-700">{checkoutError}</p>
+            </div>
+          )}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
             {tiers.map((tier, i) => {
               const price = annual ? tier.price.annual : tier.price.monthly
