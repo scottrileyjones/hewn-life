@@ -51,6 +51,9 @@ export default function Footer() {
             <CalButton className="font-body text-sm text-ember hover:text-ember transition-colors text-left">
               Book a Discovery Call →
             </CalButton>
+            <Link href="/pricing" className="font-body text-sm text-ash/60 hover:text-ash transition-colors block mt-2">
+              See Plans & Pricing →
+            </Link>
           </div>
         </div>
 

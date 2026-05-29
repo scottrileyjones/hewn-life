@@ -51,8 +51,8 @@ export default function Home() {
             <CalButton className="bg-ember text-iron font-body font-medium px-8 py-4 rounded-full hover:brightness-110 hover:scale-[1.02] transition-all duration-300">
               Book a Discovery Call
             </CalButton>
-            <Link href="/how-it-works" className="text-cream font-body font-medium px-8 py-4 rounded-full hover:underline underline-offset-4 flex items-center gap-2">
-              See Our Services →
+            <Link href="/pricing" className="bg-ash/20 text-bone border border-ash/30 font-body font-medium px-8 py-4 rounded-full hover:bg-ash/30 transition-all duration-300">
+              See Plans & Pricing
             </Link>
           </div>
         </div>
