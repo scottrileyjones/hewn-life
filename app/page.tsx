@@ -1,5 +1,13 @@
 import CalButton from '@/components/CalButton'
 import Link from 'next/link'
+import Image from 'next/image'
+
+const PHOTOS = {
+  hero:       'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_1100,c_fill,g_face/v1780097466/nubelson-fernandes-oC9G2VPkFNE-unsplash_pljopa.jpg',
+  strategy:   'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_700,c_fill/v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg',
+  testimonial:'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_700,c_fill/v1780097464/soundtrap-c_S99FlDqSw-unsplash_mtpxgd.jpg',
+  cta:        'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_900,c_fill/v1780097464/collabstr-bM2nm41YaeA-unsplash_gspy6l.jpg',
+}
 
 const pillars = [
   { num: '01', name: 'Brand Foundation', desc: 'Identity, voice, and positioning — the strategic bedrock everything else is built on.', bg: '#F0F7EB', accent: '#6BAD3D' },
@@ -60,12 +68,8 @@ export default function Home() {
 
           {/* Right — photo card */}
           <div className="animate-fade-up delay-2 relative">
-            <div className="rounded-3xl overflow-hidden bg-[#F0F7EB] aspect-[4/5] w-full relative">
-              {/* Placeholder — swap with <Image> when photos arrive */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-[#6BAD3D]/40">
-                <svg className="w-16 h-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}><path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                <span className="font-mono text-[10px] uppercase tracking-widest">Hero Image</span>
-              </div>
+            <div className="rounded-3xl overflow-hidden aspect-[4/5] w-full relative">
+              <Image src={PHOTOS.hero} alt="Creative professional at work" fill className="object-cover" priority />
             </div>
             {/* Floating stat card */}
             <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl border border-black/[0.06] px-6 py-4">
@@ -104,11 +108,8 @@ export default function Home() {
       <section className="py-16 px-6 lg:px-12 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Photo card */}
-          <div className="rounded-3xl overflow-hidden bg-[#EBF3F7] aspect-[4/3] relative">
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-[#3D7FA4]/40">
-              <svg className="w-16 h-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}><path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-              <span className="font-mono text-[10px] uppercase tracking-widest">Photo 2</span>
-            </div>
+          <div className="rounded-3xl overflow-hidden aspect-[4/3] relative">
+            <Image src={PHOTOS.strategy} alt="Team collaborating at a whiteboard" fill className="object-cover" />
           </div>
           {/* Copy */}
           <div>
@@ -181,11 +182,8 @@ export default function Home() {
             </div>
           </div>
           {/* Photo */}
-          <div className="rounded-2xl overflow-hidden bg-white/[0.06] aspect-[4/3] relative">
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-white/20">
-              <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}><path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-              <span className="font-mono text-[10px] uppercase tracking-widest">Photo 3</span>
-            </div>
+          <div className="rounded-2xl overflow-hidden aspect-[4/3] relative">
+            <Image src={PHOTOS.testimonial} alt="Professional recording studio" fill className="object-cover" />
           </div>
         </div>
       </section>
@@ -253,11 +251,8 @@ export default function Home() {
             </div>
           </div>
           {/* Right — photo */}
-          <div className="bg-[#F0F7EB] relative min-h-[320px]">
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-[#6BAD3D]/40">
-              <svg className="w-16 h-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}><path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-              <span className="font-mono text-[10px] uppercase tracking-widest">Photo 4</span>
-            </div>
+          <div className="relative min-h-[320px]">
+            <Image src={PHOTOS.cta} alt="Creator working on content" fill className="object-cover" />
           </div>
         </div>
       </section>
