@@ -31,13 +31,39 @@ export default function CheckoutClient() {
   const tierInfo = tierDetails[tier] ?? null
   const accentColor = tierInfo?.accentColor ?? '#7CB550'
 
+  const priceId = params.get('priceId') ?? ''
   const [form, setForm] = useState({ businessName: '', fullName: '', email: '', phone: '', notes: '' })
-  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: replace with Stripe checkout redirect
-    setSubmitted(true)
+    if (!priceId) return
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          priceId,
+          mode: type === 'plan' ? 'subscription' : 'payment',
+          customerEmail: form.email,
+          metadata: {
+            businessName: form.businessName,
+            fullName: form.fullName,
+            phone: form.phone,
+            notes: form.notes,
+          },
+        }),
+      })
+      const { url, error: apiError } = await res.json() as { url?: string; error?: string }
+      if (apiError) throw new Error(apiError)
+      if (url) window.location.href = url
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+      setLoading(false)
+    }
   }
 
   if (!price || !name) {
@@ -46,23 +72,6 @@ export default function CheckoutClient() {
         <div className="text-center">
           <p className="font-body text-slate mb-6">No plan selected.</p>
           <Link href="/pricing" className="font-body text-sm font-medium text-ember hover:underline">← Back to Pricing</Link>
-        </div>
-      </div>
-    )
-  }
-
-  if (submitted) {
-    return (
-      <div className="min-h-screen bg-bone flex items-center justify-center px-6">
-        <div className="text-center max-w-md">
-          <div className="w-16 h-16 rounded-full bg-moss/10 flex items-center justify-center mx-auto mb-6">
-            <svg className="w-8 h-8 text-moss" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-          </div>
-          <h1 className="font-display font-bold text-[36px] text-ink mb-4">You&apos;re almost there.</h1>
-          <p className="font-body text-base text-slate mb-8">Redirecting you to secure checkout via Stripe…</p>
-          <p className="font-body text-xs text-slate/60">
-            Not redirected? <Link href="/contact" className="text-ember hover:underline">Contact us</Link>
-          </p>
         </div>
       </div>
     )
@@ -112,9 +121,22 @@ export default function CheckoutClient() {
                 <textarea value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} rows={4} placeholder="Tell us about your business, your goals, or any context that will help us hit the ground running." className="w-full border border-black/15 rounded-xl px-4 py-3.5 font-body text-sm text-ink placeholder:text-slate/50 focus:outline-none focus:ring-2 focus:ring-moss/30 focus:border-moss bg-white resize-none" />
               </div>
 
-              <button type="submit" className="flex items-center justify-center gap-2 w-full font-body font-semibold text-sm px-8 py-4 rounded-full text-white transition-all duration-300 hover:brightness-110" style={{ background: `linear-gradient(135deg, ${accentColor}, ${accentColor}CC)` }}>
-                <svg className="w-4 h-4 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                Continue to Secure Payment
+              {error && (
+                <p className="font-body text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>
+              )}
+
+              <button type="submit" disabled={loading || !priceId} className="flex items-center justify-center gap-2 w-full font-body font-semibold text-sm px-8 py-4 rounded-full text-white transition-all duration-300 hover:brightness-110 disabled:opacity-70 disabled:cursor-not-allowed" style={{ background: `linear-gradient(135deg, ${accentColor}, ${accentColor}CC)` }}>
+                {loading ? (
+                  <>
+                    <svg className="w-4 h-4 animate-spin opacity-80" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" /></svg>
+                    Redirecting to Stripe…
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                    Continue to Secure Payment
+                  </>
+                )}
               </button>
 
               <p className="text-center font-body text-xs text-slate/60">
