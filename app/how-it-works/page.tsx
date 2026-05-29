@@ -105,7 +105,7 @@ export default function HowItWorks() {
             <div>
               <SectionEyebrow text="Traditional Agencies" light />
               <h2 className="font-display font-medium text-[44px] md:text-[60px] text-ink leading-tight mt-2">
-                What working with a<br /><em>typical agency costs you.</em>
+                What working with a<br /><span className="font-bold">typical agency costs you.</span>
               </h2>
             </div>
             <p className="font-body text-base text-slate leading-relaxed max-w-md self-end">
@@ -244,7 +244,7 @@ export default function HowItWorks() {
           <div className="mb-16">
             <SectionEyebrow text="What You Get" light />
             <h2 className="font-display font-medium text-[36px] md:text-[48px] text-ink leading-tight mt-2">
-              Assets you own.<br /><em>Systems that compound.</em>
+              Assets you own.<br /><span className="font-bold">Systems that compound.</span>
             </h2>
             <p className="font-body text-sm text-slate mt-4 max-w-md leading-relaxed">
               No proprietary tools. No lock-in. Every deliverable is yours from day one. When the engagement ends, the system keeps running.

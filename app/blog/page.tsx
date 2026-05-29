@@ -59,13 +59,13 @@ export default function Blog() {
   return (
     <>
       {/* Hero */}
-      <section className="min-h-[60vh] flex items-end pb-24 relative overflow-hidden grain-overlay pt-32" style={{background: `radial-gradient(ellipse at 70% 30%, rgba(124,181,80,0.10) 0%, transparent 55%), #1A1815`}}>
+      <section className="min-h-[60vh] flex items-end pb-24 relative overflow-hidden pt-32" style={{background: `radial-gradient(ellipse at 70% 30%, rgba(124,181,80,0.10) 0%, transparent 55%), #1A1815`}}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="animate-fade-up">
             <SectionEyebrow text="Insights" />
           </div>
           <h1 className="hero-heading text-[52px] md:text-[72px] text-cream max-w-3xl animate-fade-up delay-1">
-            Ideas on marketing, growth, and building businesses that actually <em style={{color: '#7CB550'}}>work.</em>
+            Ideas on marketing, growth, and building businesses that actually <span style={{color: '#6BAD3D'}} className="font-bold">work.</span>
           </h1>
         </div>
       </section>

@@ -10,7 +10,7 @@ export default function Footer() {
           {/* Column 1 — Brand */}
           <div>
             <HewnLogo />
-            <p className="font-display italic text-ash text-base mt-5 mb-6">
+            <p className="font-display text-ash text-base mt-5 mb-6">
               Carved from the raw. Built for the future.
             </p>
             <div className="flex gap-4">

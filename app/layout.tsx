@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
-import { Playfair_Display, DM_Sans, Inter_Tight } from 'next/font/google'
+import { Plus_Jakarta_Sans, DM_Sans, Inter_Tight } from 'next/font/google'
 import './globals.css'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 
-const playfair = Playfair_Display({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900'],
+  weight: ['400', '500', '600', '700', '800'],
   style: ['normal', 'italic'],
   variable: '--font-display',
   display: 'swap',
@@ -51,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${dmSans.variable} ${interTight.variable}`}>
+    <html lang="en" className={`${plusJakarta.variable} ${dmSans.variable} ${interTight.variable}`}>
       <body>
         <Nav />
         <main>{children}</main>

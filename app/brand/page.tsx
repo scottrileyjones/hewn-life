@@ -53,11 +53,11 @@ export default function BrandGuide() {
   return (
     <div className="min-h-screen bg-bone">
       {/* Header */}
-      <div className="bg-iron grain-overlay pt-32 pb-20 px-6">
+      <div className="bg-iron pt-32 pb-20 px-6">
         <div className="max-w-5xl mx-auto">
           <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-ash/40 mb-4">Internal Reference</p>
           <h1 className="font-display font-bold text-[64px] md:text-[80px] leading-none text-bone mb-4">
-            Brand<br /><em style={{ color: '#7CB550' }}>Guide.</em>
+            Brand<br /><span style={{ color: '#6BAD3D' }} className="font-bold">Guide.</span>
           </h1>
           <p className="font-body text-base text-ash/60 max-w-md">
             The visual and verbal language of Hewn Life. Use this as the source of truth for all brand expressions.

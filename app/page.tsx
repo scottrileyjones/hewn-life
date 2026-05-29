@@ -27,7 +27,7 @@ export default function Home() {
     <>
       {/* Hero */}
       <section
-        className="min-h-screen flex flex-col items-center justify-center text-center relative overflow-hidden grain-overlay pt-20"
+        className="min-h-screen flex flex-col items-center justify-center text-center relative overflow-hidden pt-20"
         style={{
           background: `
             radial-gradient(ellipse at 60% 40%, rgba(124,181,80,0.13) 0%, transparent 55%),
@@ -42,7 +42,7 @@ export default function Home() {
             <SectionEyebrow text="The AI-Era Marketing Agency" />
           </div>
           <h1 className="hero-heading text-[56px] md:text-[80px] lg:text-[96px] text-cream mb-8 max-w-4xl mx-auto animate-fade-up delay-1">
-            Marketing isn&apos;t a line item.<br className="hidden md:block" /> It&apos;s the <em style={{color: '#7CB550'}}>life</em> of your business.
+            Marketing isn&apos;t a line item.<br className="hidden md:block" /> It&apos;s the <span style={{color: '#6BAD3D'}} className="font-bold">life</span> of your business.
           </h1>
           <p className="font-body text-lg text-ash max-w-xl mx-auto mb-12 animate-fade-up delay-2 leading-relaxed">
             Hewn Life combines thirty years of human business acumen with the speed and scale of AI to carve out something truly beautiful and valuable for your brand.
@@ -101,7 +101,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">
             <SectionEyebrow text="How We Work" />
-            <h2 className="font-display font-normal italic text-[48px] leading-tight text-cream mb-6">
+            <h2 className="font-display font-bold text-[48px] leading-tight text-cream mb-6">
               Six pillars. One mission.
             </h2>
             <p className="font-body text-base text-ash max-w-2xl mx-auto">
@@ -127,7 +127,7 @@ export default function Home() {
       <section className="bg-bone py-24 md:py-32">
         <div className="max-w-3xl mx-auto px-6 lg:px-12 text-center">
           <p className="font-display text-[80px] leading-none text-ember/20 mb-4">&ldquo;</p>
-          <blockquote className="font-display font-normal italic text-[32px] leading-snug text-ink mb-10">
+          <blockquote className="font-display font-medium text-[32px] leading-snug text-ink mb-10">
             Hewn Life didn&apos;t just run our marketing. They rebuilt how we think about our business.
           </blockquote>
           <div className="flex items-center justify-center gap-4">

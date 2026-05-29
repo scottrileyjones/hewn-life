@@ -6,13 +6,13 @@ export default function Contact() {
   return (
     <>
       {/* Hero */}
-      <section className="min-h-[65vh] flex items-end pb-24 relative overflow-hidden grain-overlay pt-32" style={{background: `radial-gradient(ellipse at 70% 30%, rgba(124,181,80,0.10) 0%, transparent 55%), #1A1815`}}>
+      <section className="min-h-[65vh] flex items-end pb-24 relative overflow-hidden pt-32" style={{background: `radial-gradient(ellipse at 70% 30%, rgba(124,181,80,0.10) 0%, transparent 55%), #1A1815`}}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="animate-fade-up">
             <SectionEyebrow text="Let's Talk" />
           </div>
           <h1 className="hero-heading text-[56px] md:text-[80px] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
-            Tell us about your business. We&apos;ll tell you what&apos;s <em style={{color: '#7CB550'}}>possible.</em>
+            Tell us about your business. We&apos;ll tell you what&apos;s <span style={{color: '#6BAD3D'}} className="font-bold">possible.</span>
           </h1>
           <p className="font-body text-lg text-ash max-w-xl animate-fade-up delay-2 leading-relaxed">
             Book a free 30-minute discovery call. No pitch deck. No pressure. Just a direct conversation about your goals.
@@ -56,7 +56,7 @@ export default function Contact() {
               </div>
 
               <div className="bg-oat rounded-2xl p-6 border border-black/[0.08]">
-                <blockquote className="font-display italic text-lg text-ink mb-4">
+                <blockquote className="font-display text-lg text-ink mb-4">
                   &ldquo;Every inquiry is reviewed personally by the founder. You will always talk to the person who will actually be doing your work.&rdquo;
                 </blockquote>
                 <p className="font-body text-sm text-slate">— Scott Jones, Founder</p>
