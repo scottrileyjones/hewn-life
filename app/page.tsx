@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 const PHOTOS = {
-  hero:       'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_1100,c_fill,g_face/v1780097466/nubelson-fernandes-oC9G2VPkFNE-unsplash_pljopa.jpg',
+  hero:       'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_1100,c_fill/v1779578220/main-sample.png',
   strategy:   'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_700,c_fill/v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg',
   testimonial:'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_700,c_fill/v1780097464/soundtrap-c_S99FlDqSw-unsplash_mtpxgd.jpg',
   cta:        'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_900,c_fill/v1780097464/collabstr-bM2nm41YaeA-unsplash_gspy6l.jpg',
@@ -118,12 +118,6 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* Floating ROI badge */}
-            <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl border border-black/[0.06] px-6 py-4">
-              <p className="font-display font-bold text-[32px] text-[#6BAD3D] leading-none">3×</p>
-              <p className="font-body text-xs text-[#6B6560] mt-1">avg. ROI vs. traditional agency</p>
             </div>
           </div>
         </div>
