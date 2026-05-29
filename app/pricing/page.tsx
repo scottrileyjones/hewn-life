@@ -26,7 +26,7 @@ import Link from 'next/link'
 import Cal, { getCalApi } from '@calcom/embed-react'
 import CalButton from '@/components/CalButton'
 
-type TierSlug = 'hewn' | 'forged' | 'carved'
+type TierSlug = 'hewn' | 'wrought' | 'forged'
 type IconType = 'brand' | 'website' | 'seo' | 'ads' | 'automation' | 'video' | 'content' | 'referral'
 
 const PRICE_IDS: Record<TierSlug, { monthly: string; annual: string }> = {
@@ -34,13 +34,13 @@ const PRICE_IDS: Record<TierSlug, { monthly: string; annual: string }> = {
     monthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_HEWN_MONTHLY ?? '',
     annual:  process.env.NEXT_PUBLIC_STRIPE_PRICE_HEWN_ANNUAL  ?? '',
   },
+  wrought: {
+    monthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_WROUGHT_MONTHLY ?? '',
+    annual:  process.env.NEXT_PUBLIC_STRIPE_PRICE_WROUGHT_ANNUAL  ?? '',
+  },
   forged: {
     monthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_FORGED_MONTHLY ?? '',
     annual:  process.env.NEXT_PUBLIC_STRIPE_PRICE_FORGED_ANNUAL  ?? '',
-  },
-  carved: {
-    monthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_CARVED_MONTHLY ?? '',
-    annual:  process.env.NEXT_PUBLIC_STRIPE_PRICE_CARVED_ANNUAL  ?? '',
   },
 }
 
@@ -92,8 +92,8 @@ const tiers = [
     ],
   },
   {
-    name: 'Forged',
-    slug: 'forged' as TierSlug,
+    name: 'Wrought',
+    slug: 'wrought' as TierSlug,
     subtitle: 'Pillars 01–04',
     tagline: 'Full-stack marketing without the full-stack agency.',
     price: { monthly: 5000, annual: 4000 },
@@ -131,23 +131,23 @@ const tiers = [
     ],
   },
   {
-    name: 'Carved',
-    slug: 'carved' as TierSlug,
+    name: 'Forged',
+    slug: 'forged' as TierSlug,
     subtitle: 'All Six Pillars',
     tagline: 'Your outsourced CMO and creative department.',
     price: { monthly: 9500, annual: 7600 },
     accentColor: '#C9A84C',
     badge: 'Full Service' as string | null,
     highlights: [
-      'Everything in Forged',
+      'Everything in Wrought',
       'Review generation, UGC & referral program',
       'Monthly KPI dashboard + quarterly growth planning',
       'Weekly calls + Slack access (M–F)',
     ],
     deliverables: [
       {
-        pillar: 'Everything in Forged',
-        items: ['All Forged deliverables included'],
+        pillar: 'Everything in Wrought',
+        items: ['All Wrought deliverables included'],
       },
       {
         pillar: 'Reputation & Social Proof',
@@ -339,8 +339,8 @@ export default function Pricing() {
                   {[
                     { scope: 'Brand + website only',                     agency: '$8,000–$15,000 project', hewn: '—' },
                     { scope: 'Brand + website + digital presence',        agency: '$5,000–$10,000/mo',      hewn: 'Hewn · $2,500' },
-                    { scope: 'Above + paid media, funnels & automation',  agency: '$10,000–$18,000/mo',     hewn: 'Forged · $5,000' },
-                    { scope: 'Full-service + UGC + fractional CMO',       agency: '$15,000–$25,000/mo',     hewn: 'Carved · $9,500' },
+                    { scope: 'Above + paid media, funnels & automation',  agency: '$10,000–$18,000/mo',     hewn: 'Wrought · $5,000' },
+                    { scope: 'Full-service + UGC + fractional CMO',       agency: '$15,000–$25,000/mo',     hewn: 'Forged · $9,500' },
                   ].map((row, i) => (
                     <tr key={i} className="border-b border-black/[0.05]">
                       <td className="py-3 pr-6 font-body text-sm text-slate text-left">{row.scope}</td>
@@ -369,7 +369,7 @@ export default function Pricing() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
             {tiers.map((tier, i) => {
               const price = annual ? tier.price.annual : tier.price.monthly
-              const isCarved = tier.slug === 'carved'
+              const isCarved = tier.slug === 'forged'
               const isFeatured = tier.slug === 'forged'
               const isLoading = loadingTier === tier.slug
               const isExpanded = expanded === tier.slug
@@ -647,7 +647,7 @@ export default function Pricing() {
         }}
       >
         <p className="font-body text-sm text-bone font-medium leading-tight">
-          Forged — $5,000/mo
+          Forged — $9,500/mo
         </p>
         <button
           onClick={handleForgedClick}
