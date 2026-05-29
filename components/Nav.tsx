@@ -19,7 +19,7 @@ export default function Nav() {
   const pathname = usePathname()
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 80)
+    const handleScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -30,8 +30,8 @@ export default function Nav() {
 
   return (
     <>
-      <nav className={`fixed top-0 w-full z-50 h-16 md:h-20 transition-all duration-300 ${
-        scrolled ? 'backdrop-blur-md bg-obsidian/80 border-b border-white/[0.08]' : ''
+      <nav className={`fixed top-0 w-full z-50 h-16 md:h-18 transition-all duration-300 ${
+        scrolled ? 'bg-white/90 backdrop-blur-md border-b border-black/[0.06]' : 'bg-transparent'
       }`}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12 h-full flex items-center justify-between">
           <HewnLogo />
@@ -42,8 +42,8 @@ export default function Nav() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`font-mono text-[12px] uppercase tracking-[0.18em] transition-colors duration-200 ${
-                  pathname === link.href ? 'text-cream' : 'text-ash hover:text-cream'
+                className={`font-mono text-[11px] uppercase tracking-[0.18em] transition-colors duration-200 ${
+                  pathname === link.href ? 'text-[#0D0D0D]' : 'text-[#0D0D0D]/50 hover:text-[#0D0D0D]'
                 }`}
               >
                 {link.label}
@@ -51,22 +51,22 @@ export default function Nav() {
             ))}
           </div>
 
-          <div className="hidden md:flex items-center gap-4">
-            <CalButton className="bg-iron text-bone font-body font-medium px-5 py-2.5 rounded-lg hover:bg-charcoal transition-all duration-300">
+          <div className="hidden md:flex items-center gap-3">
+            <CalButton className="bg-[#0D0D0D] text-white font-body text-sm font-medium px-5 py-2.5 rounded-full hover:bg-[#222] transition-all duration-200">
               Book a Call
             </CalButton>
           </div>
 
           {/* Mobile hamburger */}
           <button
-            className="md:hidden text-cream p-2"
+            className="md:hidden p-2"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
             <div className="w-6 flex flex-col gap-1.5">
-              <span className={`block h-[1.5px] bg-cream transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-              <span className={`block h-[1.5px] bg-cream transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
-              <span className={`block h-[1.5px] bg-cream transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+              <span className={`block h-[1.5px] bg-[#0D0D0D] transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+              <span className={`block h-[1.5px] bg-[#0D0D0D] transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
+              <span className={`block h-[1.5px] bg-[#0D0D0D] transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
             </div>
           </button>
         </div>
@@ -74,14 +74,14 @@ export default function Nav() {
 
       {/* Mobile menu overlay */}
       {menuOpen && (
-        <div className="fixed inset-0 bg-obsidian z-40 flex flex-col items-center justify-center gap-10 md:hidden">
+        <div className="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center gap-10 md:hidden">
           <HewnLogo size="lg" />
           <div className="flex flex-col items-center gap-8 mt-4">
             {navLinks.map(link => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-display text-3xl text-cream hover:text-ember transition-colors"
+                className="font-display font-bold text-3xl text-[#0D0D0D] hover:text-[#6BAD3D] transition-colors"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
@@ -89,7 +89,7 @@ export default function Nav() {
             ))}
           </div>
           <CalButton
-            className="mt-4 bg-iron text-bone font-body font-medium px-8 py-4 rounded-lg hover:bg-charcoal transition-all duration-300"
+            className="mt-4 bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200"
             onClick={() => setMenuOpen(false)}
           >
             Book a Call

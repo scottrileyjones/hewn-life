@@ -5,11 +5,11 @@ interface HewnLogoProps {
   size?: 'sm' | 'md' | 'lg'
 }
 
-export default function HewnLogo({ dark = false, size = 'md' }: HewnLogoProps) {
+export default function HewnLogo({ dark = true, size = 'md' }: HewnLogoProps) {
   const markSize = size === 'sm' ? 24 : size === 'lg' ? 44 : 32
   const textSize = size === 'sm' ? 'text-xl' : size === 'lg' ? 'text-4xl' : 'text-[26px]'
-  const markColor = dark ? 'text-ink' : 'text-cream'
-  const wordColor = dark ? 'text-ink' : 'text-cream'
+  const markColor = dark ? 'text-[#0D0D0D]' : 'text-white'
+  const wordColor = dark ? 'text-[#0D0D0D]' : 'text-white'
 
   return (
     <Link href="/" className="flex items-center gap-3 group">
@@ -25,10 +25,8 @@ export default function HewnLogo({ dark = false, size = 'md' }: HewnLogoProps) {
         <rect x="68" y="14" width="18" height="72" fill="currentColor" />
         <polygon points="32,58 68,42 68,54 32,70" fill="currentColor" />
       </svg>
-      <span
-        className={`font-display font-semibold ${textSize} leading-none tracking-[0.02em] ${wordColor}`}
-      >
-        Hewn<em className="not-italic font-normal italic text-ember" style={{ fontSize: '0.92em', letterSpacing: '0.01em' }}>Life</em>
+      <span className={`font-display font-semibold ${textSize} leading-none tracking-[0.02em] ${wordColor}`}>
+        Hewn<span className="text-[#6BAD3D]">Life</span>
       </span>
     </Link>
   )

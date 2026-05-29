@@ -51,8 +51,8 @@ html {
 }
 
 body {
-  background-color: #1A1815;
-  color: #F2ECE0;
+  background-color: #ffffff;
+  color: #0D0D0D;
   font-family: var(--font-body), -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
