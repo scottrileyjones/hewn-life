@@ -8,13 +8,13 @@ const tierDetails: Record<string, { highlights: string[]; accentColor: string }>
     accentColor: '#B87A40',
     highlights: ['Brand strategy, visual identity & style guide', 'Custom website + SEO foundation', 'Google Business Profile + local listings', 'Monthly strategy call'],
   },
-  forged: {
+  wrought: {
     accentColor: '#9BA4AE',
     highlights: ['Everything in Hewn', 'Paid media management + sales funnels', 'Marketing automation + CRM setup', 'Booking, onboarding & retention systems'],
   },
-  carved: {
+  forged: {
     accentColor: '#C9A84C',
-    highlights: ['Everything in Forged', 'Review generation, UGC & referral program', 'Monthly KPI dashboard + quarterly growth planning', 'Weekly calls + Slack access (M–F)'],
+    highlights: ['Everything in Wrought', 'Review generation, UGC & referral program', 'Monthly KPI dashboard + quarterly growth planning', 'Weekly calls + Slack access (M–F)'],
   },
 }
 
