@@ -70,8 +70,57 @@ export default function Home() {
           <div className="animate-fade-up delay-2 relative">
             <div className="rounded-3xl overflow-hidden aspect-[4/5] w-full relative">
               <Image src={PHOTOS.hero} alt="Creative professional at work" fill className="object-cover" priority />
+
+              {/* Analytics overlay card */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[88%] bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-black/[0.06] p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-black/40">Monthly Snapshot</p>
+                  <span className="flex items-center gap-1.5 bg-[#F0F7EB] text-[#3D6B1E] rounded-full px-2.5 py-1 text-[10px] font-body font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D]" />
+                    Live
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  {/* Revenue row */}
+                  <div>
+                    <div className="flex items-end justify-between mb-1">
+                      <span className="font-body text-xs text-black/50">Revenue attributed</span>
+                      <span className="flex items-center gap-1 font-body text-[11px] font-semibold text-[#6BAD3D]">
+                        <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none"><path d="M2 9l4-4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        +34%
+                      </span>
+                    </div>
+                    <p className="font-display font-bold text-[22px] leading-none text-[#0D0D0D]">$48,200</p>
+                  </div>
+
+                  {/* Bar chart */}
+                  <div className="flex items-end gap-1.5 h-10 pt-1">
+                    {[30, 52, 44, 70, 58, 85, 100].map((h, i) => (
+                      <div key={i} className="flex-1 rounded-sm" style={{ height: `${h}%`, background: i === 6 ? '#6BAD3D' : `rgba(107,173,61,${0.15 + i * 0.08})` }} />
+                    ))}
+                  </div>
+
+                  {/* Sub-metrics */}
+                  <div className="flex gap-4 pt-1 border-t border-black/[0.06]">
+                    <div>
+                      <p className="font-body text-[10px] text-black/40 mb-0.5">Leads</p>
+                      <p className="font-body font-semibold text-sm text-[#0D0D0D]">142</p>
+                    </div>
+                    <div>
+                      <p className="font-body text-[10px] text-black/40 mb-0.5">ROAS</p>
+                      <p className="font-body font-semibold text-sm text-[#0D0D0D]">4.8×</p>
+                    </div>
+                    <div>
+                      <p className="font-body text-[10px] text-black/40 mb-0.5">CAC</p>
+                      <p className="font-body font-semibold text-sm text-[#0D0D0D]">$112</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            {/* Floating stat card */}
+
+            {/* Floating ROI badge */}
             <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl border border-black/[0.06] px-6 py-4">
               <p className="font-display font-bold text-[32px] text-[#6BAD3D] leading-none">3×</p>
               <p className="font-body text-xs text-[#6B6560] mt-1">avg. ROI vs. traditional agency</p>
