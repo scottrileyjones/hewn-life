@@ -61,7 +61,7 @@ const tiers = [
     slug: 'hewn' as TierSlug,
     subtitle: 'Pillars 01–02',
     tagline: 'Deliberately shaped. Ready to work.',
-    price: { monthly: 2500, annual: 2250 },
+    price: { monthly: 2500, annual: 2000 },
     accentColor: '#B87A40',
     badge: null as string | null,
     highlights: [
@@ -96,7 +96,7 @@ const tiers = [
     slug: 'forged' as TierSlug,
     subtitle: 'Pillars 01–04',
     tagline: 'Full-stack marketing without the full-stack agency.',
-    price: { monthly: 5000, annual: 4500 },
+    price: { monthly: 5000, annual: 4000 },
     accentColor: '#9BA4AE',
     badge: 'Most Popular' as string | null,
     highlights: [
@@ -135,7 +135,7 @@ const tiers = [
     slug: 'carved' as TierSlug,
     subtitle: 'All Six Pillars',
     tagline: 'Your outsourced CMO and creative department.',
-    price: { monthly: 9500, annual: 8550 },
+    price: { monthly: 9500, annual: 7600 },
     accentColor: '#C9A84C',
     badge: 'Full Service' as string | null,
     highlights: [
@@ -361,7 +361,7 @@ export default function Pricing() {
                 <span className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform duration-300 ${annual ? 'translate-x-6' : ''}`} />
               </button>
               <span className={`font-body text-sm ${annual ? 'text-ink font-medium' : 'text-slate/50'}`}>
-                Annual <span className="font-medium text-ember">(save 10%)</span>
+                Annual <span className="font-medium text-ember">(save 20%)</span>
               </span>
             </div>
           </div>
