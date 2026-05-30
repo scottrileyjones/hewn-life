@@ -97,6 +97,57 @@ export default function HowItWorks() {
         </div>
       </section>
 
+      {/* ── Process Timeline ──────────────────────────────────── */}
+      <section className="bg-iron py-24 md:py-32 border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+
+          <div className="mb-16">
+            <SectionEyebrow text="The Process" />
+            <h2 className="hero-heading text-[36px] md:text-[48px] text-cream leading-tight mt-2">
+              From first call<br /><span className="accent" style={{ color: '#7CB550' }}>to market leader.</span>
+            </h2>
+          </div>
+
+          {/* Gantt bar */}
+          <div className="hidden md:flex h-10 w-full mb-0 rounded overflow-hidden">
+            {timeline.map((phase, i) => (
+              <div
+                key={i}
+                className={`flex items-center justify-center h-full ${
+                  phase.ongoing ? 'bg-ember' : i === 0 ? 'bg-white/[0.06]' : i === 1 ? 'bg-white/[0.10]' : 'bg-white/[0.16]'
+                } ${i > 0 ? 'ml-px' : ''}`}
+                style={{ flex: phase.flex }}
+              >
+                <span className={`font-mono text-[9px] uppercase tracking-[0.2em] truncate px-2 ${phase.ongoing ? 'text-iron' : 'text-white/40'}`}>
+                  {phase.period}{phase.ongoing ? ' →' : ''}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="hidden md:flex w-full border-b border-white/10">
+            {timeline.map((phase, i) => (
+              <div key={i} className="pt-8 pb-10 pr-8 last:pr-0" style={{ flex: phase.flex }}>
+                <p className="font-display font-medium text-[20px] text-cream leading-snug mb-3">{phase.title}</p>
+                <p className="font-body text-xs text-ash leading-relaxed">{phase.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="md:hidden flex flex-col divide-y divide-white/[0.07]">
+            {timeline.map((phase, i) => (
+              <div key={i} className="py-8 grid grid-cols-[80px_1fr] gap-6">
+                <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-ember leading-relaxed">{phase.period}</p>
+                <div>
+                  <p className="font-display font-medium text-[20px] text-cream leading-snug mb-2">{phase.title}</p>
+                  <p className="font-body text-sm text-ash leading-relaxed">{phase.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── The Agency Problem — data-backed ─────────────────── */}
       <section className="bg-bone py-28 md:py-40">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -299,57 +350,6 @@ export default function HowItWorks() {
             <Link href="/pricing" className="inline-flex items-center gap-2 font-body text-sm font-medium text-ember hover:opacity-70 transition-opacity">
               See pricing for each tier <span>→</span>
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Process Timeline ──────────────────────────────────── */}
-      <section className="bg-iron py-24 md:py-32 border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-
-          <div className="mb-16">
-            <SectionEyebrow text="The Process" />
-            <h2 className="font-display font-medium text-[36px] md:text-[48px] text-cream leading-tight mt-2">
-              From first call<br /><em style={{ color: '#7CB550' }}>to market leader.</em>
-            </h2>
-          </div>
-
-          {/* Gantt bar */}
-          <div className="hidden md:flex h-10 w-full mb-0 rounded overflow-hidden">
-            {timeline.map((phase, i) => (
-              <div
-                key={i}
-                className={`flex items-center justify-center h-full ${
-                  phase.ongoing ? 'bg-ember' : i === 0 ? 'bg-white/[0.06]' : i === 1 ? 'bg-white/[0.10]' : 'bg-white/[0.16]'
-                } ${i > 0 ? 'ml-px' : ''}`}
-                style={{ flex: phase.flex }}
-              >
-                <span className={`font-mono text-[9px] uppercase tracking-[0.2em] truncate px-2 ${phase.ongoing ? 'text-iron' : 'text-white/40'}`}>
-                  {phase.period}{phase.ongoing ? ' →' : ''}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <div className="hidden md:flex w-full border-b border-white/10">
-            {timeline.map((phase, i) => (
-              <div key={i} className="pt-8 pb-10 pr-8 last:pr-0" style={{ flex: phase.flex }}>
-                <p className="font-display font-medium text-[20px] text-cream leading-snug mb-3">{phase.title}</p>
-                <p className="font-body text-xs text-ash leading-relaxed">{phase.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="md:hidden flex flex-col divide-y divide-white/[0.07]">
-            {timeline.map((phase, i) => (
-              <div key={i} className="py-8 grid grid-cols-[80px_1fr] gap-6">
-                <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-ember leading-relaxed">{phase.period}</p>
-                <div>
-                  <p className="font-display font-medium text-[20px] text-cream leading-snug mb-2">{phase.title}</p>
-                  <p className="font-body text-sm text-ash leading-relaxed">{phase.desc}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
