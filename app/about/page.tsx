@@ -63,7 +63,7 @@ export default function About() {
                   { num: '100s', label: 'of businesses advised' },
                 ].map((stat, i) => (
                   <div key={i}>
-                    <p className="font-display font-bold text-[36px] text-ember">{stat.num}</p>
+                    <p className="font-display font-bold text-[36px] text-amethyst">{stat.num}</p>
                     <p className="font-body text-xs text-slate mt-1">{stat.label}</p>
                   </div>
                 ))}
