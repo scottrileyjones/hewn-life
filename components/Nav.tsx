@@ -28,13 +28,15 @@ export default function Nav() {
     setMenuOpen(false)
   }, [pathname])
 
+  const darkHero = !scrolled && ['/about', '/how-it-works'].includes(pathname)
+
   return (
     <>
       <nav className={`fixed top-0 w-full z-50 h-16 md:h-18 transition-all duration-300 ${
         scrolled ? 'bg-white/90 backdrop-blur-md border-b border-black/[0.06]' : 'bg-transparent'
       }`}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12 h-full flex items-center justify-between">
-          <HewnLogo />
+          <HewnLogo dark={!darkHero} />
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
@@ -43,7 +45,9 @@ export default function Nav() {
                 key={link.href}
                 href={link.href}
                 className={`font-mono text-[11px] uppercase tracking-[0.18em] transition-colors duration-200 ${
-                  pathname === link.href ? 'text-[#0D0D0D]' : 'text-[#0D0D0D]/50 hover:text-[#0D0D0D]'
+                  darkHero
+                    ? pathname === link.href ? 'text-white' : 'text-white/50 hover:text-white'
+                    : pathname === link.href ? 'text-[#0D0D0D]' : 'text-[#0D0D0D]/50 hover:text-[#0D0D0D]'
                 }`}
               >
                 {link.label}
@@ -52,7 +56,9 @@ export default function Nav() {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
-            <CalButton className="bg-[#0D0D0D] text-white font-body text-sm font-medium px-5 py-2.5 rounded-full hover:bg-[#222] transition-all duration-200">
+            <CalButton className={`font-body text-sm font-medium px-5 py-2.5 rounded-full transition-all duration-200 ${
+              darkHero ? 'bg-white text-[#0D0D0D] hover:bg-white/90' : 'bg-[#0D0D0D] text-white hover:bg-[#222]'
+            }`}>
               Book a Call
             </CalButton>
           </div>
@@ -64,9 +70,9 @@ export default function Nav() {
             aria-label="Toggle menu"
           >
             <div className="w-6 flex flex-col gap-1.5">
-              <span className={`block h-[1.5px] bg-[#0D0D0D] transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-              <span className={`block h-[1.5px] bg-[#0D0D0D] transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
-              <span className={`block h-[1.5px] bg-[#0D0D0D] transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+              <span className={`block h-[1.5px] transition-all duration-300 ${darkHero ? 'bg-white' : 'bg-[#0D0D0D]'} ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+              <span className={`block h-[1.5px] transition-all duration-300 ${darkHero ? 'bg-white' : 'bg-[#0D0D0D]'} ${menuOpen ? 'opacity-0' : ''}`} />
+              <span className={`block h-[1.5px] transition-all duration-300 ${darkHero ? 'bg-white' : 'bg-[#0D0D0D]'} ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
             </div>
           </button>
         </div>
