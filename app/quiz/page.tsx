@@ -197,6 +197,99 @@ function getServices(answers: Record<string, string>): ServiceFlag[] {
   return serviceFlags.filter(s => s.trigger(answers))
 }
 
+// ── Health score ──────────────────────────────────────────────────────────────
+
+type HealthCategory = { label: string; score: number; description: string }
+
+function computeHealthScore(answers: Record<string, string>): { overall: number; categories: HealthCategory[] } {
+  const presenceMap: Record<string, number> = { none: 8, basic: 28, active: 62, advanced: 88 }
+  const budgetMap: Record<string, number> = { low: 10, mid: 30, high: 65, premium: 88 }
+  const stageMap: Record<string, number> = { pre: 12, early: 30, growth: 62, scale: 85 }
+  const teamMap: Record<string, number> = { solo: 18, small: 40, team: 65, full: 85 }
+  const painMap: Record<string, number> = { nosite: 8, conversion: 42, visibility: 48, messaging: 38 }
+
+  const presence = presenceMap[answers.presence] ?? 20
+  const budget = budgetMap[answers.budget] ?? 20
+  const stage = stageMap[answers.stage] ?? 20
+  const team = teamMap[answers.team] ?? 20
+  const pain = painMap[answers.pain] ?? 30
+
+  const overall = Math.round((presence + budget + stage + team + pain) / 5)
+
+  const categories: HealthCategory[] = [
+    {
+      label: 'Digital Presence',
+      score: presence,
+      description: presence < 30 ? 'Little to no established presence — the foundation is missing.' : presence < 60 ? 'Basic presence exists but conversion and differentiation are weak.' : 'Strong presence with active channels in play.',
+    },
+    {
+      label: 'Investment Readiness',
+      score: budget,
+      description: budget < 30 ? 'Budget constraints will limit growth velocity significantly.' : budget < 60 ? 'Budget allows for meaningful activity, with room to scale.' : 'Investment level is aligned with serious growth ambitions.',
+    },
+    {
+      label: 'Business Maturity',
+      score: stage,
+      description: stage < 30 ? 'Early stage — systems and proof points are still being built.' : stage < 60 ? 'Established business with clear growth trajectory.' : 'Proven business ready to scale aggressively.',
+    },
+    {
+      label: 'Team Capacity',
+      score: team,
+      description: team < 30 ? 'Thin team means marketing will compete with everything else for attention.' : team < 60 ? 'Some marketing capacity, but strategy and execution are stretched.' : 'Solid team capacity to execute and adapt quickly.',
+    },
+  ]
+
+  return { overall, categories }
+}
+
+// ── ROI projection ────────────────────────────────────────────────────────────
+
+type RoiProjection = {
+  revenueLabel: string
+  conservativeLift: number
+  aggressiveLift: number
+  conservativeNew: string
+  aggressiveNew: string
+  annualMin: string
+  annualMax: string
+}
+
+function computeRoi(answers: Record<string, string>, tierKey: 'hewn' | 'wrought' | 'forged'): RoiProjection {
+  const revenueBase: Record<string, number> = { pre: 0, early: 125000, growth: 600000, scale: 1500000 }
+  const revenueLabel: Record<string, string> = { pre: 'Pre-revenue', early: '~$125K / yr', growth: '~$600K / yr', scale: '~$1.5M+ / yr' }
+
+  const liftRange: Record<string, [number, number]> = {
+    hewn:   [0.18, 0.32],
+    wrought:[0.38, 0.65],
+    forged: [0.65, 1.20],
+  }
+
+  const base = revenueBase[answers.stage] ?? 125000
+  const [lo, hi] = liftRange[tierKey]
+
+  const newLo = Math.round(base * lo)
+  const newHi = Math.round(base * hi)
+
+  const fmt = (n: number) =>
+    n >= 1000000 ? `$${(n / 1000000).toFixed(1)}M` : n >= 1000 ? `$${Math.round(n / 1000)}K` : `$${n}`
+
+  // Annual retainer cost
+  const cost: Record<string, number> = { hewn: 30000, wrought: 60000, forged: 114000 }
+  const annualCost = cost[tierKey]
+  const annualMin = fmt(Math.max(0, newLo - annualCost))
+  const annualMax = fmt(Math.max(0, newHi - annualCost))
+
+  return {
+    revenueLabel: revenueLabel[answers.stage] ?? '~$125K / yr',
+    conservativeLift: Math.round(lo * 100),
+    aggressiveLift: Math.round(hi * 100),
+    conservativeNew: fmt(newLo),
+    aggressiveNew: fmt(newHi),
+    annualMin,
+    annualMax,
+  }
+}
+
 // ── Calculating screen ────────────────────────────────────────────────────────
 
 const calcSteps = [
@@ -211,7 +304,7 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
   const [active, setActive] = useState(0)
 
   useEffect(() => {
-    const perStep = 1100
+    const perStep = 1600
     const timers = calcSteps.map((_, i) =>
       setTimeout(() => setActive(i + 1), perStep * (i + 1))
     )
@@ -580,83 +673,165 @@ export default function Quiz() {
     return <CalculatingScreen onDone={() => setStep('results')} />
   }
 
-  // ── Results ────────────────────────────────────────────────────────────────
+  // ── Results dashboard ─────────────────────────────────────────────────────
   if (step === 'results' && tier) {
     const tierKey = computeResult(answers)
+    const health = computeHealthScore(answers)
+    const roi = computeRoi(answers, tierKey)
+    const scoreColor = health.overall >= 65 ? '#6BAD3D' : health.overall >= 40 ? '#F59E0B' : '#EF4444'
+    const scoreLabel = health.overall >= 65 ? 'Strong' : health.overall >= 40 ? 'Developing' : 'Critical'
+
     return (
-      <main className="min-h-screen bg-white">
-        {/* Results hero */}
-        <section className="pt-36 pb-20 px-6 lg:px-12 bg-[#0D0D0D]">
-          <div className="max-w-3xl mx-auto">
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#6BAD3D] mb-4">Your Results</p>
-            <h1 className="hero-heading text-[40px] md:text-[56px] text-white leading-[1.06] mb-6">
-              We know what you need.<br />
-              <span className="accent" style={{ color: '#6BAD3D' }}>Here it is.</span>
+      <main className="min-h-screen bg-[#F9F7F3]">
+
+        {/* ── Header ── */}
+        <section className="pt-36 pb-16 px-6 lg:px-12 bg-[#0D0D0D]">
+          <div className="max-w-4xl mx-auto">
+            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#6BAD3D] mb-4">Marketing Assessment Report</p>
+            <h1 className="hero-heading text-[36px] md:text-[52px] text-white leading-tight mb-4">
+              {contact.name ? `${contact.name.split(' ')[0]}'s` : 'Your'} Growth<br />
+              <span className="accent" style={{ color: '#6BAD3D' }}>Opportunity Report.</span>
             </h1>
-            <p className="font-body text-base text-white/60 leading-relaxed max-w-xl">
-              Based on your answers, here's where we'd focus to drive the most impact for your business right now.
+            <p className="font-body text-base text-white/50">
+              Based on your answers — here's an honest read of where you stand and what's possible.
             </p>
           </div>
         </section>
 
-        {/* Recommended services */}
-        <section className="py-20 px-6 lg:px-12 border-b border-black/[0.06]">
-          <div className="max-w-3xl mx-auto">
-            <SectionEyebrow text="Recommended Services" light />
-            <h2 className="hero-heading text-[30px] md:text-[40px] text-[#0D0D0D] leading-tight mt-3 mb-10">
-              Your personalized <span className="accent" style={{ color: '#6BAD3D' }}>service mix.</span>
-            </h2>
-            <div className="space-y-4">
-              {services.map((svc, i) => (
-                <div key={i} className="flex items-start gap-4 p-6 bg-[#F9F7F3] border border-black/[0.06] rounded-2xl">
-                  <span className="mt-0.5 flex-shrink-0 w-6 h-6 rounded-full bg-[#6BAD3D] flex items-center justify-center">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path d="M2.5 6.5l2.2 2.2L9.5 3.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </span>
-                  <div>
-                    <p className="font-display font-semibold text-[18px] text-[#0D0D0D] mb-1">{svc.label}</p>
-                    <p className="font-body text-[14px] text-[#6B6560] leading-relaxed">{svc.reason}</p>
-                  </div>
+        {/* ── Score + categories ── */}
+        <section className="px-6 lg:px-12 py-12">
+          <div className="max-w-4xl mx-auto grid md:grid-cols-[auto_1fr] gap-6 items-start">
+
+            {/* Overall score dial */}
+            <div className="bg-white rounded-3xl p-8 flex flex-col items-center justify-center min-w-[200px] border border-black/[0.06]">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92] mb-4">Marketing Health</p>
+              <div className="relative w-36 h-36 mb-4">
+                <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
+                  <circle cx="60" cy="60" r="50" fill="none" stroke="#F0EDE8" strokeWidth="10" />
+                  <circle
+                    cx="60" cy="60" r="50" fill="none" strokeWidth="10"
+                    stroke={scoreColor}
+                    strokeLinecap="round"
+                    strokeDasharray={`${(health.overall / 100) * 314} 314`}
+                    style={{ transition: 'stroke-dasharray 1.2s ease' }}
+                  />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="font-display text-[40px] leading-none text-[#0D0D0D]">{health.overall}</span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#A89F92]">/ 100</span>
                 </div>
-              ))}
+              </div>
+              <span className="font-body text-sm font-medium px-4 py-1.5 rounded-full" style={{ background: `${scoreColor}18`, color: scoreColor }}>
+                {scoreLabel}
+              </span>
+            </div>
+
+            {/* Category breakdown */}
+            <div className="bg-white rounded-3xl p-8 border border-black/[0.06]">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92] mb-6">Score Breakdown</p>
+              <div className="space-y-5">
+                {health.categories.map(cat => {
+                  const c = cat.score >= 65 ? '#6BAD3D' : cat.score >= 40 ? '#F59E0B' : '#EF4444'
+                  return (
+                    <div key={cat.label}>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="font-body text-[14px] font-medium text-[#0D0D0D]">{cat.label}</span>
+                        <span className="font-mono text-[13px]" style={{ color: c }}>{cat.score}/100</span>
+                      </div>
+                      <div className="h-1.5 bg-[#F0EDE8] rounded-full overflow-hidden">
+                        <div className="h-full rounded-full transition-all duration-1000" style={{ width: `${cat.score}%`, background: c }} />
+                      </div>
+                      <p className="font-body text-[12px] text-[#A89F92] mt-1 leading-snug">{cat.description}</p>
+                    </div>
+                  )
+                })}
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Tier recommendation */}
-        <section className="py-20 px-6 lg:px-12 bg-[#F9F7F3]">
-          <div className="max-w-3xl mx-auto">
-            <SectionEyebrow text="Recommended Tier" light />
-            <h2 className="hero-heading text-[30px] md:text-[40px] text-[#0D0D0D] leading-tight mt-3 mb-10">
-              Where to <span className="accent" style={{ color: '#6BAD3D' }}>start.</span>
-            </h2>
-            <div
-              className="rounded-3xl p-8 md:p-12 text-white relative overflow-hidden"
-              style={{ background: tierKey === 'hewn' ? '#1A1815' : '#17131F' }}
-            >
-              {/* Glow */}
-              <div
-                className="absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl opacity-30 pointer-events-none"
-                style={{ background: tier.color }}
-              />
+        {/* ── ROI Projection ── */}
+        <section className="px-6 lg:px-12 pb-12">
+          <div className="max-w-4xl mx-auto bg-[#0D0D0D] rounded-3xl p-8 md:p-12 relative overflow-hidden">
+            <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: tier.color }} />
+            <div className="relative">
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#6BAD3D] mb-4">ROI Projection</p>
+              <h2 className="hero-heading text-[28px] md:text-[38px] text-white leading-tight mb-2">
+                What working with Hewn<br />
+                <span className="accent" style={{ color: '#6BAD3D' }}>could be worth to you.</span>
+              </h2>
+              <p className="font-body text-[14px] text-white/40 mb-10">
+                Based on your current revenue stage ({roi.revenueLabel}) and the {tier.name} tier.
+                Projections are directional estimates based on industry benchmarks — not guarantees.
+              </p>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                {[
+                  { label: 'Est. Revenue Lift', value: `${roi.conservativeLift}–${roi.aggressiveLift}%`, sub: 'year-over-year' },
+                  { label: 'New Revenue (Low)', value: roi.conservativeNew, sub: 'conservative case' },
+                  { label: 'New Revenue (High)', value: roi.aggressiveNew, sub: 'aggressive case' },
+                  { label: 'Net ROI Range', value: `${roi.annualMin}–${roi.annualMax}`, sub: 'after retainer cost' },
+                ].map(s => (
+                  <div key={s.label} className="bg-white/[0.06] rounded-2xl p-5">
+                    <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/40 mb-2">{s.label}</p>
+                    <p className="font-display text-[26px] md:text-[30px] leading-none text-white mb-1">{s.value}</p>
+                    <p className="font-mono text-[9px] uppercase tracking-[0.12em]" style={{ color: tier.color }}>{s.sub}</p>
+                  </div>
+                ))}
+              </div>
+
+              <p className="font-body text-[12px] text-white/25 leading-relaxed max-w-xl">
+                Lift percentages derived from aggregate client outcomes and industry ROAS benchmarks for businesses at comparable stages. Actual results vary based on market, execution, and competitive factors.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Recommended services ── */}
+        <section className="px-6 lg:px-12 pb-12">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white rounded-3xl p-8 md:p-10 border border-black/[0.06]">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92] mb-2">Recommended Services</p>
+              <h2 className="hero-heading text-[26px] md:text-[34px] text-[#0D0D0D] leading-tight mb-8">
+                Your personalized <span className="accent" style={{ color: '#6BAD3D' }}>service mix.</span>
+              </h2>
+              <div className="space-y-3">
+                {services.map((svc, i) => (
+                  <div key={i} className="flex items-start gap-4 p-5 bg-[#F9F7F3] rounded-2xl">
+                    <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#6BAD3D] flex items-center justify-center">
+                      <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                        <path d="M2.5 6.5l2.2 2.2L9.5 3.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
+                    <div>
+                      <p className="font-display font-semibold text-[16px] text-[#0D0D0D] mb-0.5">{svc.label}</p>
+                      <p className="font-body text-[13px] text-[#6B6560] leading-relaxed">{svc.reason}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Tier recommendation ── */}
+        <section className="px-6 lg:px-12 pb-12">
+          <div className="max-w-4xl mx-auto">
+            <div className="rounded-3xl p-8 md:p-12 text-white relative overflow-hidden" style={{ background: tierKey === 'hewn' ? '#1A1815' : '#17131F' }}>
+              <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl opacity-30 pointer-events-none" style={{ background: tier.color }} />
               <div className="relative">
                 <p className="font-mono text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: tier.color }}>
-                  {tierKey === 'hewn' ? 'Foundation' : tierKey === 'wrought' ? 'Growth' : 'Scale'}
+                  Recommended Plan · {tierKey === 'hewn' ? 'Foundation' : tierKey === 'wrought' ? 'Growth' : 'Scale'}
                 </p>
-                <h3 className="font-display text-[48px] leading-none text-white mb-1">{tier.name}</h3>
-                <p className="font-body text-[28px] font-light text-white/70 mb-6">{tier.price}</p>
-                <p className="font-display italic text-[20px] text-white/90 mb-4">{tier.tagline}</p>
-                <p className="font-body text-[15px] text-white/60 leading-relaxed max-w-lg mb-10">{tier.description}</p>
-
+                <h3 className="font-display text-[44px] leading-none text-white mb-1">{tier.name}</h3>
+                <p className="font-body text-[26px] font-light text-white/60 mb-5">{tier.price}</p>
+                <p className="font-display italic text-[19px] text-white/90 mb-3">{tier.tagline}</p>
+                <p className="font-body text-[14px] text-white/55 leading-relaxed max-w-lg mb-10">{tier.description}</p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <CalButton className="inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 hover:-translate-y-0.5" style={{ background: tier.color, color: 'white' }}>
                     Book a Discovery Call
                   </CalButton>
-                  <Link
-                    href={tier.href}
-                    className="inline-flex items-center justify-center border border-white/20 text-white font-body font-medium px-8 py-4 rounded-full hover:border-white/40 transition-all duration-200"
-                  >
+                  <Link href={tier.href} className="inline-flex items-center justify-center border border-white/20 text-white font-body font-medium px-8 py-4 rounded-full hover:border-white/40 transition-all duration-200">
                     See Full Pricing
                   </Link>
                 </div>
@@ -665,17 +840,14 @@ export default function Quiz() {
           </div>
         </section>
 
-        {/* One-off option */}
-        <section className="py-16 px-6 lg:px-12 bg-white border-t border-black/[0.06]">
-          <div className="max-w-3xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+        {/* ── One-off option ── */}
+        <section className="px-6 lg:px-12 pb-12">
+          <div className="max-w-4xl mx-auto bg-white rounded-3xl p-8 border border-black/[0.06] flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
-              <p className="font-display font-semibold text-[20px] text-[#0D0D0D] mb-1">Not ready for a retainer?</p>
-              <p className="font-body text-[15px] text-[#6B6560]">Start with our Website in a Week — a fully built custom site for a flat $1,000.</p>
+              <p className="font-display font-semibold text-[18px] text-[#0D0D0D] mb-1">Not ready for a retainer?</p>
+              <p className="font-body text-[14px] text-[#6B6560]">Start with our Website in a Week — a fully built custom site for a flat $1,000.</p>
             </div>
-            <Link
-              href="/website-in-a-week"
-              className="flex-shrink-0 inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200 whitespace-nowrap"
-            >
+            <Link href="/website-in-a-week" className="flex-shrink-0 inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200 whitespace-nowrap">
               Site in a Week →
             </Link>
           </div>
