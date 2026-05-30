@@ -37,11 +37,6 @@ export async function POST(req: NextRequest) {
       'Recommended Tier': tier || '',
       'Recommended Services': Array.isArray(services) ? services.join(', ') : (services || ''),
       'Submitted At': new Date().toLocaleString('en-US'),
-      // Keep the full summary in Quiz Responses as a human-readable snapshot.
-      'Quiz Responses': [
-        `Tier: ${tier || '—'}`,
-        `Services: ${Array.isArray(services) ? services.join(' • ') : (services || '—')}`,
-      ].join('\n'),
     }
 
     const res = await fetch(
