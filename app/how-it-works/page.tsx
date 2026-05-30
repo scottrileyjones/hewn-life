@@ -46,9 +46,9 @@ export default function HowItWorks() {
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="pt-36 pb-20 px-6 lg:px-12 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="animate-fade-up max-w-3xl">
+          <div className="animate-fade-up max-w-2xl">
             <SectionEyebrow text="How It Works" light />
-            <h1 className="hero-heading text-[52px] md:text-[72px] text-[#0D0D0D] mb-6 leading-[1.0]">
+            <h1 className="hero-heading text-[44px] md:text-[60px] text-[#0D0D0D] mb-6 leading-[1.05]">
               Most agencies sell campaigns.<br />
               <span className="accent" style={{ color: '#6BAD3D' }}>We build systems.</span>
             </h1>
