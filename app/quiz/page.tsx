@@ -271,12 +271,124 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
   )
 }
 
+// ── Capture screen ────────────────────────────────────────────────────────────
+
+interface Contact { name: string; email: string; phone: string }
+
+function CaptureScreen({
+  contact,
+  setContact,
+  onBack,
+  onSubmit,
+}: {
+  contact: Contact
+  setContact: React.Dispatch<React.SetStateAction<Contact>>
+  onBack: () => void
+  onSubmit: () => void
+}) {
+  const [error, setError] = useState('')
+
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)
+  const canSubmit = contact.name.trim().length > 1 && emailValid
+
+  function handleSubmit() {
+    if (!canSubmit) {
+      setError('Please enter your name and a valid email.')
+      return
+    }
+    setError('')
+    onSubmit()
+  }
+
+  return (
+    <main className="min-h-screen bg-white">
+      <div className="pt-28 pb-24 px-6 lg:px-12">
+        <div className="max-w-md mx-auto">
+          <div className="text-center mb-10">
+            <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[#6BAD3D] mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D]" />
+              Your results are ready
+            </span>
+            <h2 className="hero-heading text-[30px] md:text-[40px] text-[#0D0D0D] leading-tight mb-3">
+              Where should we send<br />
+              <span className="accent" style={{ color: '#6BAD3D' }}>your plan?</span>
+            </h2>
+            <p className="font-body text-[15px] text-[#6B6560] leading-relaxed">
+              We&apos;ve built your personalized recommendation. Tell us where to send it — and we&apos;ll show it to you right now.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-2 block">Name</label>
+              <input
+                type="text"
+                value={contact.name}
+                onChange={e => setContact(c => ({ ...c, name: e.target.value }))}
+                placeholder="Jane Founder"
+                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all"
+              />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-2 block">Email</label>
+              <input
+                type="email"
+                value={contact.email}
+                onChange={e => setContact(c => ({ ...c, email: e.target.value }))}
+                placeholder="jane@company.com"
+                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all"
+              />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-2 block">
+                Phone <span className="text-black/25 normal-case tracking-normal">(optional)</span>
+              </label>
+              <input
+                type="tel"
+                value={contact.phone}
+                onChange={e => setContact(c => ({ ...c, phone: e.target.value }))}
+                placeholder="(555) 123-4567"
+                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all"
+              />
+            </div>
+          </div>
+
+          {error && <p className="font-body text-[13px] text-red-500 mt-4">{error}</p>}
+
+          <button
+            onClick={handleSubmit}
+            disabled={!canSubmit}
+            className={`w-full mt-6 inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 ${
+              canSubmit
+                ? 'bg-[#8B5CF6] text-white hover:bg-[#7C3AED] shadow-[0_8px_30px_-8px_rgba(139,92,246,0.5)] hover:-translate-y-0.5'
+                : 'bg-black/[0.06] text-black/30 cursor-not-allowed'
+            }`}
+          >
+            Show My Results →
+          </button>
+
+          <p className="font-body text-[12px] text-[#A89F92] text-center mt-4 leading-relaxed">
+            No spam. We&apos;ll only reach out about your recommendation. Unsubscribe anytime.
+          </p>
+
+          <div className="text-center mt-6">
+            <button onClick={onBack} className="font-body text-sm text-[#A89F92] hover:text-[#6B6560] transition-colors">
+              ← Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  )
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function Quiz() {
-  const [step, setStep] = useState<'intro' | number | 'calculating' | 'results'>('intro')
+  const [step, setStep] = useState<'intro' | number | 'capture' | 'calculating' | 'results'>('intro')
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [selected, setSelected] = useState<string | null>(null)
+  const [contact, setContact] = useState({ name: '', email: '', phone: '' })
 
   const currentQ = typeof step === 'number' ? questions[step] : null
   const progress = typeof step === 'number' ? ((step + 1) / questions.length) * 100 : step === 'results' ? 100 : 0
@@ -293,7 +405,7 @@ export default function Quiz() {
     if (typeof step === 'number' && step < questions.length - 1) {
       setStep(step + 1)
     } else {
-      setStep('calculating')
+      setStep('capture')
     }
   }
 
@@ -311,6 +423,39 @@ export default function Quiz() {
     setStep('intro')
     setAnswers({})
     setSelected(null)
+    setContact({ name: '', email: '', phone: '' })
+  }
+
+  // Map raw answer values to their human-readable labels for the CRM.
+  function readableAnswers(): Record<string, string> {
+    const out: Record<string, string> = {}
+    questions.forEach(q => {
+      const opt = q.options.find(o => o.value === answers[q.id])
+      if (opt) out[q.question] = opt.label
+    })
+    return out
+  }
+
+  async function submitLead() {
+    const tierKey = computeResult(answers)
+    const svc = getServices(answers).map(s => s.label)
+    try {
+      await fetch('/api/quiz-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: contact.name,
+          email: contact.email,
+          phone: contact.phone,
+          tier: tiers[tierKey].name,
+          services: svc,
+          answers: readableAnswers(),
+        }),
+      })
+    } catch {
+      // Don't block the user's results on a CRM hiccup — log only.
+      console.error('Lead submission failed')
+    }
   }
 
   const tier = step === 'results' ? tiers[computeResult(answers)] : null
@@ -358,6 +503,24 @@ export default function Quiz() {
           </div>
         </section>
       </main>
+    )
+  }
+
+  // ── Capture ──────────────────────────────────────────────────────────────────
+  if (step === 'capture') {
+    return (
+      <CaptureScreen
+        contact={contact}
+        setContact={setContact}
+        onBack={() => {
+          setStep(questions.length - 1)
+          setSelected(answers[questions[questions.length - 1].id] || null)
+        }}
+        onSubmit={() => {
+          submitLead()
+          setStep('calculating')
+        }}
+      />
     )
   }
 
