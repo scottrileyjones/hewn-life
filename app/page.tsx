@@ -81,6 +81,26 @@ export default function Home() {
                 See Plans & Pricing
               </Link>
             </div>
+
+            {/* Trustpilot rating */}
+            <div className="flex items-center gap-3 mt-6">
+              {/* Trustpilot star icon + wordmark */}
+              <div className="flex items-center gap-1.5">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="24" height="24" rx="3" fill="#00B67A"/>
+                  <path d="M12 4l2.2 6.6H21l-5.6 4.1 2.1 6.6L12 17.2l-5.5 4.1 2.1-6.6L3 10.6h6.8L12 4z" fill="white"/>
+                </svg>
+                <span className="font-body text-sm font-bold text-[#191919] tracking-tight">Trustpilot</span>
+              </div>
+              <div className="flex gap-0.5">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="#00B67A" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 4l2.2 6.6H21l-5.6 4.1 2.1 6.6L12 17.2l-5.5 4.1 2.1-6.6L3 10.6h6.8L12 4z"/>
+                  </svg>
+                ))}
+              </div>
+              <span className="font-body text-xs text-[#6B6560]"><strong className="text-[#0D0D0D]">4.9</strong> · Rated Excellent</span>
+            </div>
           </div>
 
           {/* Right — photo card */}
