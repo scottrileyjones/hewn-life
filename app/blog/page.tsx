@@ -65,7 +65,7 @@ export default function Blog() {
             <SectionEyebrow text="Insights" />
           </div>
           <h1 className="hero-heading text-[52px] md:text-[72px] text-cream max-w-3xl animate-fade-up delay-1">
-            Ideas on marketing, growth, and building businesses that actually <span style={{color: '#6BAD3D'}} className="font-bold">work.</span>
+            Ideas on marketing, growth, and building businesses that actually <span style={{color: '#6BAD3D'}} className="accent">work.</span>
           </h1>
         </div>
       </section>
