@@ -7,7 +7,7 @@ const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { name, email, phone, tier, services, answers } = body || {}
+    const { name, company, email, phone, tier, services, answers } = body || {}
 
     // Basic validation
     if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -25,6 +25,7 @@ export async function POST(req: NextRequest) {
     // Field names must match the Airtable table exactly.
     const fields: Record<string, unknown> = {
       Name: name || '',
+      Company: company || '',
       Email: email,
       Phone: phone || '',
       'Business Stage': a['Where is your business right now?'] || '',
