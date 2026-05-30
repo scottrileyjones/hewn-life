@@ -11,6 +11,7 @@ const navLinks = [
   { href: '/how-it-works', label: 'How It Works' },
   { href: '/website-in-a-week', label: 'Site in a Week' },
   { href: '/pricing', label: 'Pricing' },
+  { href: '/quiz', label: 'Take the Quiz' },
   { href: '/blog', label: 'Blog' },
 ]
 
