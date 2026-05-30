@@ -346,7 +346,7 @@ function CaptureScreen({
                 type="text"
                 value={contact.company}
                 onChange={e => setContact(c => ({ ...c, company: e.target.value }))}
-                placeholder="Acme Co."
+                placeholder="Costco"
                 className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all"
               />
             </div>
