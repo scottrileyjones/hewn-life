@@ -116,22 +116,25 @@ export default function BuildWeek() {
       </div>
 
       {/* ── Right: sticky browser mockup that builds ── */}
-      <div className="order-1 lg:order-2 sticky top-20 self-start z-10">
-        {/* Compact on mobile, full size on desktop */}
-        <div className="lg:hidden">
-          <BrowserMockup activeDay={activeDay} compact />
+      <div className="order-1 lg:order-2 sticky top-16 lg:top-20 self-start z-20">
+        {/* On mobile, an opaque backdrop panel keeps scrolling text from bleeding behind the mockup */}
+        <div className="-mx-6 px-6 pt-3 pb-4 bg-white/95 backdrop-blur-sm border-b border-black/[0.07] shadow-[0_12px_20px_-12px_rgba(0,0,0,0.18)] lg:mx-0 lg:px-0 lg:pt-0 lg:pb-0 lg:bg-transparent lg:backdrop-blur-none lg:border-0 lg:shadow-none">
+          {/* Compact on mobile, full size on desktop */}
+          <div className="lg:hidden">
+            <BrowserMockup activeDay={activeDay} compact />
+          </div>
+          <div className="hidden lg:block">
+            <BrowserMockup activeDay={activeDay} />
+          </div>
+          <div className="mt-3 lg:mt-5 flex items-center justify-center gap-2">
+            {days.map((_, i) => (
+              <div key={i} className={`h-1 rounded-full transition-all duration-400 ${activeDay >= i ? 'w-6 lg:w-8 bg-[#8B5CF6]' : 'w-3 lg:w-4 bg-black/10'}`} />
+            ))}
+          </div>
+          <p className="text-center font-mono text-[9px] lg:text-[10px] uppercase tracking-[0.2em] text-black/30 mt-2 lg:mt-3">
+            {activeDay < 0 ? 'Ready to build' : activeDay >= days.length - 1 ? 'Live & yours' : `Building — ${days[activeDay].day}`}
+          </p>
         </div>
-        <div className="hidden lg:block">
-          <BrowserMockup activeDay={activeDay} />
-        </div>
-        <div className="mt-3 lg:mt-5 flex items-center justify-center gap-2">
-          {days.map((_, i) => (
-            <div key={i} className={`h-1 rounded-full transition-all duration-400 ${activeDay >= i ? 'w-6 lg:w-8 bg-[#8B5CF6]' : 'w-3 lg:w-4 bg-black/10'}`} />
-          ))}
-        </div>
-        <p className="text-center font-mono text-[9px] lg:text-[10px] uppercase tracking-[0.2em] text-black/30 mt-2 lg:mt-3">
-          {activeDay < 0 ? 'Ready to build' : activeDay >= days.length - 1 ? 'Live & yours' : `Building — ${days[activeDay].day}`}
-        </p>
       </div>
 
     </div>
