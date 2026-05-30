@@ -26,7 +26,7 @@ export default function HewnLogo({ dark = true, size = 'md' }: HewnLogoProps) {
         <polygon points="32,58 68,42 68,54 32,70" fill="currentColor" />
       </svg>
       <span className={`font-display font-semibold ${textSize} leading-none tracking-[0.02em] ${wordColor}`}>
-        Hewn<span className="text-[#6BAD3D]">Life</span>
+        Hewn<span className="accent text-[#6BAD3D]">Life</span>
       </span>
     </Link>
   )
