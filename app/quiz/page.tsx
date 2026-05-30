@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import CalButton from '@/components/CalButton'
 import SectionEyebrow from '@/components/SectionEyebrow'
@@ -183,10 +183,98 @@ function getServices(answers: Record<string, string>): ServiceFlag[] {
   return serviceFlags.filter(s => s.trigger(answers))
 }
 
+// ── Calculating screen ────────────────────────────────────────────────────────
+
+const calcSteps = [
+  { task: 'Analyzing your business stage', benefit: 'We tailor every recommendation to where you actually are — no generic playbooks.' },
+  { task: 'Mapping your goals to proven channels', benefit: 'Hewn Life builds strategies around outcomes, not vanity metrics.' },
+  { task: 'Identifying your highest-leverage services', benefit: 'AI-accelerated execution means we move 3× faster than a traditional agency.' },
+  { task: 'Matching you to the right starting tier', benefit: 'You only invest in what moves the needle — nothing you don\'t need.' },
+  { task: 'Building your personalized recommendation', benefit: 'Senior strategy and craft, without the senior-agency invoice.' },
+]
+
+function CalculatingScreen({ onDone }: { onDone: () => void }) {
+  const [active, setActive] = useState(0)
+
+  useEffect(() => {
+    const perStep = 1100
+    const timers = calcSteps.map((_, i) =>
+      setTimeout(() => setActive(i + 1), perStep * (i + 1))
+    )
+    const done = setTimeout(onDone, perStep * calcSteps.length + 700)
+    return () => {
+      timers.forEach(clearTimeout)
+      clearTimeout(done)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const currentBenefit = calcSteps[Math.min(active, calcSteps.length - 1)].benefit
+
+  return (
+    <main className="min-h-screen bg-[#0D0D0D] flex items-center justify-center px-6 py-32">
+      <div className="max-w-xl w-full text-center">
+        {/* Pulsing machine core */}
+        <div className="relative mx-auto mb-12 w-28 h-28 flex items-center justify-center">
+          <span className="absolute inset-0 rounded-full border border-[#8B5CF6]/30 animate-ping" style={{ animationDuration: '2s' }} />
+          <span className="absolute inset-2 rounded-full border border-[#8B5CF6]/20 animate-ping" style={{ animationDuration: '2.6s' }} />
+          <span className="absolute inset-0 rounded-full blur-2xl bg-[#8B5CF6]/30" />
+          <svg className="relative w-12 h-12 animate-spin text-[#8B5CF6]" style={{ animationDuration: '3s' }} viewBox="0 0 24 24" fill="none">
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            <circle cx="12" cy="12" r="3.5" stroke="currentColor" strokeWidth="1.5" />
+          </svg>
+        </div>
+
+        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#6BAD3D] mb-8">
+          Building your assessment
+        </p>
+
+        {/* Task checklist */}
+        <div className="space-y-3 text-left mb-10">
+          {calcSteps.map((s, i) => {
+            const isDone = i < active
+            const isCurrent = i === active
+            return (
+              <div
+                key={i}
+                className={`flex items-center gap-3 transition-all duration-500 ${
+                  isDone || isCurrent ? 'opacity-100' : 'opacity-30'
+                }`}
+              >
+                <span className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  isDone ? 'bg-[#6BAD3D]' : isCurrent ? 'border border-[#8B5CF6]' : 'border border-white/20'
+                }`}>
+                  {isDone ? (
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.5l2.2 2.2L9.5 3.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  ) : isCurrent ? (
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-pulse" />
+                  ) : null}
+                </span>
+                <span className={`font-body text-[15px] ${isDone ? 'text-white/50' : isCurrent ? 'text-white' : 'text-white/40'}`}>
+                  {s.task}{isCurrent && <span className="inline-block animate-pulse">…</span>}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Rotating benefit message */}
+        <div className="min-h-[60px] flex items-center justify-center">
+          <p key={active} className="font-display italic text-[19px] md:text-[22px] text-white/90 leading-snug animate-fade-up">
+            “{currentBenefit}”
+          </p>
+        </div>
+      </div>
+    </main>
+  )
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function Quiz() {
-  const [step, setStep] = useState<'intro' | number | 'results'>('intro')
+  const [step, setStep] = useState<'intro' | number | 'calculating' | 'results'>('intro')
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [selected, setSelected] = useState<string | null>(null)
 
@@ -205,7 +293,7 @@ export default function Quiz() {
     if (typeof step === 'number' && step < questions.length - 1) {
       setStep(step + 1)
     } else {
-      setStep('results')
+      setStep('calculating')
     }
   }
 
@@ -271,6 +359,11 @@ export default function Quiz() {
         </section>
       </main>
     )
+  }
+
+  // ── Calculating ──────────────────────────────────────────────────────────────
+  if (step === 'calculating') {
+    return <CalculatingScreen onDone={() => setStep('results')} />
   }
 
   // ── Results ────────────────────────────────────────────────────────────────
