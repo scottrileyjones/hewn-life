@@ -61,8 +61,8 @@ export default function Nav() {
               href="/quiz"
               className={`font-body text-sm font-medium px-5 py-2.5 rounded-full border transition-all duration-200 ${
                 darkHero
-                  ? 'border-white/40 text-white hover:border-white hover:bg-white/10'
-                  : 'border-black/20 text-[#0D0D0D] hover:border-black/40'
+                  ? 'border-[#8B5CF6] text-[#A78BFA] hover:border-[#A78BFA] hover:bg-[#8B5CF6]/10'
+                  : 'border-[#8B5CF6] text-[#8B5CF6] hover:bg-[#8B5CF6]/10'
               }`}
             >
               Take the Quiz
