@@ -96,7 +96,8 @@ export default function ProcessTimeline() {
       <div className="flex flex-col gap-16 md:gap-28 py-4">
         {steps.map((step, i) => {
           const isActive = activeStep >= i
-          const leftSide = i % 2 === 0
+          // Content (title + card) alternates side; date pill sits opposite, near the spine
+          const contentRight = i % 2 === 0
           return (
             <div
               key={i}
@@ -121,22 +122,18 @@ export default function ProcessTimeline() {
                 </div>
               </div>
 
-              {/* ── Left column ── */}
-              <div className={`${leftSide ? 'md:order-1 md:text-right md:pr-4' : 'md:order-2 md:col-start-2'} pl-20 md:pl-0`}>
-                {leftSide ? (
-                  <StepCard step={step} isActive={isActive} align="right" />
-                ) : (
-                  <StepLabel step={step} isActive={isActive} align="left" />
-                )}
+              {/* ── Date pill (opposite the content, near the spine) ── */}
+              <div className={`pl-20 md:pl-0 ${
+                contentRight ? 'md:order-1 md:text-right md:pr-6' : 'md:order-2 md:col-start-2 md:pl-6'
+              }`}>
+                <StepPill step={step} isActive={isActive} align={contentRight ? 'right' : 'left'} />
               </div>
 
-              {/* ── Right column ── */}
-              <div className={`${leftSide ? 'md:order-2 md:col-start-2 md:pl-4' : 'md:order-1 md:text-right md:pr-4'} pl-20 md:pl-0 mt-4 md:mt-0`}>
-                {leftSide ? (
-                  <StepLabel step={step} isActive={isActive} align="right" />
-                ) : (
-                  <StepCard step={step} isActive={isActive} align="left" />
-                )}
+              {/* ── Content: title + card ── */}
+              <div className={`pl-20 md:pl-0 mt-4 md:mt-0 ${
+                contentRight ? 'md:order-2 md:col-start-2 md:pl-6' : 'md:order-1 md:text-right md:pr-6'
+              }`}>
+                <StepContent step={step} isActive={isActive} align={contentRight ? 'left' : 'right'} />
               </div>
             </div>
           )
@@ -146,29 +143,40 @@ export default function ProcessTimeline() {
   )
 }
 
-function StepLabel({ step, isActive, align }: { step: typeof steps[number]; isActive: boolean; align: 'left' | 'right' }) {
+function StepPill({ step, isActive, align }: { step: typeof steps[number]; isActive: boolean; align: 'left' | 'right' }) {
   return (
-    <div className={`transition-all duration-700 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-40 translate-y-2'} ${align === 'right' ? 'md:flex md:flex-col md:items-end' : ''}`}>
-      <span className={`inline-block rounded-full px-4 py-1.5 font-body text-xs font-semibold tracking-wide transition-all duration-500 ${
-        isActive ? 'bg-gradient-to-r from-[#8B5CF6] to-[#A78BFA] text-white shadow-[0_4px_16px_rgba(139,92,246,0.35)]' : 'bg-black/[0.06] text-black/40'
+    <div className={`transition-all duration-700 ${
+      isActive ? 'opacity-100 translate-y-0' : `opacity-0 ${align === 'right' ? 'md:translate-x-4' : 'md:-translate-x-4'} translate-y-2`
+    }`}>
+      <span className={`inline-block rounded-full px-5 py-2 font-body text-sm font-semibold tracking-wide transition-all duration-500 ${
+        isActive ? 'bg-gradient-to-r from-[#8B5CF6] to-[#A78BFA] text-white shadow-[0_4px_18px_rgba(139,92,246,0.4)]' : 'bg-black/[0.06] text-black/40'
       }`}>
         {step.period}
       </span>
-      <p className="font-display font-bold text-[28px] md:text-[34px] text-[#0D0D0D] mt-4 leading-none">{step.title}</p>
-      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#8B5CF6] mt-2">{step.place}</p>
     </div>
   )
 }
 
-function StepCard({ step, isActive, align }: { step: typeof steps[number]; isActive: boolean; align: 'left' | 'right' }) {
+function StepContent({ step, isActive, align }: { step: typeof steps[number]; isActive: boolean; align: 'left' | 'right' }) {
   return (
-    <div className={`transition-all duration-700 ${isActive ? 'opacity-100 translate-x-0' : `opacity-0 ${align === 'right' ? 'translate-x-4' : '-translate-x-4'}`}`}>
-      <div className={`bg-white rounded-2xl border border-black/[0.06] p-7 transition-shadow duration-500 ${isActive ? 'shadow-[0_12px_40px_rgba(139,92,246,0.12)]' : 'shadow-sm'} ${align === 'right' ? 'md:text-right' : ''}`}>
+    <div className={`transition-all duration-700 delay-100 ${
+      isActive ? 'opacity-100 translate-x-0' : `opacity-0 ${align === 'right' ? 'md:translate-x-6' : 'md:-translate-x-6'}`
+    }`}>
+      {/* Title block */}
+      <div className={align === 'right' ? 'md:text-right' : ''}>
+        <p className="font-display font-bold text-[28px] md:text-[34px] text-[#0D0D0D] leading-none">{step.title}</p>
+        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#8B5CF6] mt-2 mb-5">{step.place}</p>
+      </div>
+
+      {/* Card */}
+      <div className={`bg-white rounded-2xl border border-black/[0.06] p-7 transition-shadow duration-500 ${
+        isActive ? 'shadow-[0_12px_40px_rgba(139,92,246,0.12)]' : 'shadow-sm'
+      } ${align === 'right' ? 'md:text-right' : ''}`}>
         <p className="font-body text-[15px] text-[#3D3A36] leading-relaxed mb-3">{step.desc}</p>
         <p className="font-body text-sm text-[#6B6560] leading-relaxed mb-5">{step.detail}</p>
         <div className={`flex items-center gap-3 pt-4 border-t border-black/[0.06] ${align === 'right' ? 'md:justify-end' : ''}`}>
           <span className="font-mono text-[11px] text-black/30 line-through">{step.traditionalTime}</span>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="rotate-90 md:rotate-0">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M3 7h8M8 4l3 3-3 3" stroke="#8B5CF6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
           <span className="font-mono text-[11px] font-semibold text-[#7C3AED] uppercase tracking-[0.12em]">{step.aiTime}</span>
