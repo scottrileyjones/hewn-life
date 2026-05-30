@@ -37,10 +37,10 @@ const pillars = [
 ]
 
 const stats = [
-  { value: '3×', label: 'Average ROI vs. traditional agency', bg: '#6BAD3D', text: '#ffffff' },
+  { value: '3×', label: 'Average ROI vs. traditional agency', bg: '#8B5CF6', text: '#ffffff' },
   { value: '48h', label: 'Onboarding within 48 hours of purchase', bg: '#0D0D0D', text: '#ffffff' },
-  { value: '$0', label: 'Percentage-of-spend fees. Ever.', bg: '#F7F0EB', text: '#0D0D0D' },
-  { value: '6', label: 'Full service pillars in every retainer', bg: '#EBF3F7', text: '#0D0D0D' },
+  { value: '$0', label: 'Percentage-of-spend fees. Ever.', bg: '#F3EBFF', text: '#0D0D0D' },
+  { value: '6', label: 'Full service pillars in every retainer', bg: '#E9D5FF', text: '#0D0D0D' },
 ]
 
 const comparisonRows = [
