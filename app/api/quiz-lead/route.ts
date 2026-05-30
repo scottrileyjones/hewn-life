@@ -19,20 +19,27 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Lead storage is not configured.' }, { status: 500 })
     }
 
+    const servicesText = Array.isArray(services) ? services.join('\n  • ') : (services || '')
+    const answersText =
+      answers && typeof answers === 'object'
+        ? Object.entries(answers)
+            .map(([k, v]) => `${k}\n  → ${v}`)
+            .join('\n\n')
+        : ''
+
+    const quizResponses = [
+      `RECOMMENDED TIER: ${tier || '—'}`,
+      `\nRECOMMENDED SERVICES:\n  • ${servicesText}`,
+      `\nQUIZ ANSWERS:\n${answersText}`,
+      `\nSubmitted: ${new Date().toLocaleString('en-US')}`,
+    ].join('\n')
+
+    // Field names must match the Airtable table exactly.
     const fields: Record<string, unknown> = {
       Name: name || '',
       Email: email,
       Phone: phone || '',
-      'Recommended Tier': tier || '',
-      'Recommended Services': Array.isArray(services) ? services.join('\n') : (services || ''),
-      'Quiz Answers':
-        answers && typeof answers === 'object'
-          ? Object.entries(answers)
-              .map(([k, v]) => `${k}: ${v}`)
-              .join('\n')
-          : '',
-      'Submitted At': new Date().toISOString(),
-      Status: 'New',
+      'Quiz Responses': quizResponses,
     }
 
     const res = await fetch(
