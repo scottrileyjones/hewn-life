@@ -19,27 +19,29 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Lead storage is not configured.' }, { status: 500 })
     }
 
-    const servicesText = Array.isArray(services) ? services.join('\n  • ') : (services || '')
-    const answersText =
-      answers && typeof answers === 'object'
-        ? Object.entries(answers)
-            .map(([k, v]) => `${k}\n  → ${v}`)
-            .join('\n\n')
-        : ''
-
-    const quizResponses = [
-      `RECOMMENDED TIER: ${tier || '—'}`,
-      `\nRECOMMENDED SERVICES:\n  • ${servicesText}`,
-      `\nQUIZ ANSWERS:\n${answersText}`,
-      `\nSubmitted: ${new Date().toLocaleString('en-US')}`,
-    ].join('\n')
+    // Map question IDs (sent as readable labels from the quiz) to Airtable column names.
+    const a = (answers || {}) as Record<string, string>
 
     // Field names must match the Airtable table exactly.
     const fields: Record<string, unknown> = {
       Name: name || '',
       Email: email,
       Phone: phone || '',
-      'Quiz Responses': quizResponses,
+      'Business Stage': a['Where is your business right now?'] || '',
+      'Primary Goal': a["What's your single most important goal in the next 90 days?"] || '',
+      'Marketing Presence': a['How would you describe your current marketing presence?'] || '',
+      'Monthly Budget': a["What's a realistic monthly marketing investment for you?"] || '',
+      'Biggest Challenge': a["What's the biggest thing holding your marketing back?"] || '',
+      'Timeline': a['How urgent is this for you?'] || '',
+      'Team Capacity': a['What does your internal marketing capacity look like?'] || '',
+      'Recommended Tier': tier || '',
+      'Recommended Services': Array.isArray(services) ? services.join(', ') : (services || ''),
+      'Submitted At': new Date().toLocaleString('en-US'),
+      // Keep the full summary in Quiz Responses as a human-readable snapshot.
+      'Quiz Responses': [
+        `Tier: ${tier || '—'}`,
+        `Services: ${Array.isArray(services) ? services.join(' • ') : (services || '—')}`,
+      ].join('\n'),
     }
 
     const res = await fetch(
