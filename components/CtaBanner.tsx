@@ -20,7 +20,7 @@ export default function CtaBanner({
         <p className="font-body text-base text-bone/70 max-w-xl mx-auto mb-10">
           {body}
         </p>
-        <CalButton className="inline-flex items-center bg-iron text-bone font-body font-medium px-8 py-4 rounded-full hover:bg-forge transition-all duration-300">
+        <CalButton className="inline-flex items-center bg-[#8B5CF6] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#7C3AED] transition-all duration-300">
           {buttonText}
         </CalButton>
       </div>
