@@ -71,19 +71,23 @@ export default function HowItWorks() {
       <section className="bg-white pb-28 px-6 lg:px-12 border-b border-black/[0.06]">
         <div className="max-w-7xl mx-auto">
 
-          {/* WSJ-style section header */}
-          <div className="flex items-center gap-4 mb-16 pb-6 border-b border-black/[0.08]">
-            <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-black/30">Fig. 1</span>
-            <div className="flex-1 h-[0.5px] bg-black/10" />
-            <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-black/30">The Hewn Life Engagement Model</span>
-            <div className="w-8 h-[0.5px] bg-black/10" />
+          {/* Section heading */}
+          <div className="mb-16 pb-10 border-b border-black/[0.08]">
+            <SectionEyebrow text="The Process" light />
+            <h2 className="hero-heading text-[36px] md:text-[52px] text-[#0D0D0D] leading-tight mt-3">
+              From first call<br />
+              <span className="accent" style={{ color: '#6BAD3D' }}>to market leader.</span>
+            </h2>
+            <p className="font-body text-base text-[#6B6560] max-w-lg mt-5 leading-relaxed">
+              Four phases. AI compressing every stage. A system you own at the end.
+            </p>
           </div>
 
           <ProcessTimeline />
 
           {/* CTA buttons */}
           <div className="mt-16 flex flex-col sm:flex-row justify-center gap-3">
-            <CalButton className="inline-flex items-center justify-center bg-[#8B5CF6] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#7C3AED] transition-all duration-200">
+            <CalButton className="inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
               Book a Discovery Call
             </CalButton>
             <Link href="/pricing" className="inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200">
