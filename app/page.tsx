@@ -289,20 +289,25 @@ export default function Home() {
               key={i}
               className="flex items-center justify-between gap-4 sm:grid sm:grid-cols-[1fr_180px_150px] px-5 sm:px-7 py-4 sm:py-[18px] border-b border-black/[0.05]"
             >
-              <span className="font-body text-sm md:text-[15px] text-[#0D0D0D] font-medium">{row.service}</span>
-              <span className="hidden sm:block font-body text-sm text-black/35 line-through text-right whitespace-nowrap">{row.traditional}</span>
-              <span className="flex items-center justify-end gap-1.5 text-[#6BAD3D] whitespace-nowrap">
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                <span className="font-body text-sm font-medium">Included</span>
-              </span>
+              <span className="font-body text-sm md:text-[15px] text-[#0D0D0D] font-medium flex-1 min-w-0">{row.service}</span>
+              {/* Mobile: stack traditional above Included. Desktop: separate columns */}
+              <div className="flex flex-col items-end gap-0.5 sm:contents">
+                <span className="font-body text-[13px] sm:text-sm text-black/35 line-through text-right whitespace-nowrap">{row.traditional}</span>
+                <span className="flex items-center justify-end gap-1.5 text-[#6BAD3D] whitespace-nowrap">
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                  <span className="font-body text-sm font-medium">Included</span>
+                </span>
+              </div>
             </div>
           ))}
 
           {/* Total row */}
           <div className="flex items-center justify-between gap-4 sm:grid sm:grid-cols-[1fr_180px_150px] px-5 sm:px-7 py-5 sm:py-6 bg-[#0D0D0D]">
-            <span className="font-body font-semibold text-sm text-white">Total</span>
-            <span className="hidden sm:block font-body text-sm text-white/30 line-through text-right whitespace-nowrap">$20k–$50k+/mo</span>
-            <span className="font-display font-bold text-[15px] text-[#6BAD3D] text-right whitespace-nowrap">$2,500/mo</span>
+            <span className="font-body font-semibold text-sm text-white flex-1 min-w-0">Total</span>
+            <div className="flex flex-col items-end gap-0.5 sm:contents">
+              <span className="font-body text-[13px] sm:text-sm text-white/30 line-through text-right whitespace-nowrap">$20k–$50k+/mo</span>
+              <span className="font-display font-bold text-[15px] text-[#6BAD3D] text-right whitespace-nowrap">$2,500/mo</span>
+            </div>
           </div>
         </div>
 
