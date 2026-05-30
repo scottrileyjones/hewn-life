@@ -649,10 +649,10 @@ export default function Pricing() {
             Let&apos;s figure it out <span style={{ color: '#6BAD3D' }} className="accent">together.</span>
           </h2>
           <p className="font-body text-base text-ash max-w-lg mx-auto mb-10">
-            Book a free 30-minute exploration call. No pitch deck, no pressure — just an honest conversation about your business and where to start.
+            Book a free 30-minute discovery call. No pitch deck, no pressure — just an honest conversation about your business and where to start.
           </p>
           <CalButton className="inline-flex items-center bg-[#8B5CF6] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#7C3AED] transition-all duration-300">
-            Book a Free Exploration Call
+            Book a Free Discovery Call
           </CalButton>
         </div>
       </section>
