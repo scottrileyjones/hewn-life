@@ -179,6 +179,20 @@ function computeResult(answers: Record<string, string>): 'hewn' | 'wrought' | 'f
   return 'hewn'
 }
 
+// The match score of the recommended tier — higher means a stronger fit.
+function computeScore(answers: Record<string, string>): number {
+  const totals = { hewn: 0, wrought: 0, forged: 0 }
+  questions.forEach(q => {
+    const opt = q.options.find(o => o.value === answers[q.id])
+    if (opt) {
+      totals.hewn += opt.score.hewn
+      totals.wrought += opt.score.wrought
+      totals.forged += opt.score.forged
+    }
+  })
+  return Math.max(totals.hewn, totals.wrought, totals.forged)
+}
+
 function getServices(answers: Record<string, string>): ServiceFlag[] {
   return serviceFlags.filter(s => s.trigger(answers))
 }
@@ -486,6 +500,7 @@ export default function Quiz() {
           tier: tiers[tierKey].name,
           services: svc,
           answers: readableAnswers(),
+          score: computeScore(answers),
         }),
       })
     } catch {
