@@ -8,9 +8,10 @@ interface CalButtonProps {
   children: React.ReactNode
   className?: string
   onClick?: () => void
+  style?: React.CSSProperties
 }
 
-export default function CalButton({ children, className, onClick }: CalButtonProps) {
+export default function CalButton({ children, className, onClick, style }: CalButtonProps) {
   useEffect(() => {
     (async () => {
       const cal = await getCalApi({})
@@ -23,6 +24,7 @@ export default function CalButton({ children, className, onClick }: CalButtonPro
       data-cal-link={CAL_LINK}
       data-cal-config='{"layout":"month_view"}'
       className={className}
+      style={style}
       onClick={onClick}
     >
       {children}
