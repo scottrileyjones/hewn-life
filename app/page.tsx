@@ -140,14 +140,58 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── LOGO BAR ── */}
+      {/* ── TECH BAR ── */}
       <section className="border-y border-black/[0.06] py-10 px-6">
         <div className="max-w-7xl mx-auto">
-          <p className="font-body text-[11px] uppercase tracking-[0.2em] text-black/30 text-center mb-8">Trusted by growth-minded businesses</p>
-          <div className="flex items-center justify-center gap-10 md:gap-16 flex-wrap">
-            {[1,2,3,4,5].map(i => (
-              <div key={i} className="w-24 h-7 bg-black/[0.06] rounded-md" />
-            ))}
+          <p className="font-body text-[11px] uppercase tracking-[0.2em] text-black/30 text-center mb-8">Powered by the world's leading AI</p>
+          <div className="flex items-center justify-center gap-10 md:gap-14 flex-wrap">
+
+            {/* Claude */}
+            <div className="flex items-center gap-2 opacity-40 hover:opacity-70 transition-opacity">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 3.5c1.04 0 1.968.392 2.672 1.032L7.532 14.672A4.463 4.463 0 017.5 12c0-2.485 2.015-4.5 4.5-4.5zm0 9c-1.04 0-1.968-.392-2.672-1.032l7.14-8.14A4.463 4.463 0 0116.5 12c0 2.485-2.015 4.5-4.5 4.5z" fill="currentColor"/>
+              </svg>
+              <span className="font-display font-semibold text-[15px] text-[#0D0D0D] tracking-tight">Claude</span>
+            </div>
+
+            {/* Perplexity */}
+            <div className="flex items-center gap-2 opacity-40 hover:opacity-70 transition-opacity">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L3 7v5l9 5 9-5V7L12 2zM5 8.5L12 5l7 3.5v3L12 15 5 11.5v-3z" fill="currentColor"/>
+                <path d="M3 12v5l9 5 9-5v-5l-9 5-9-5z" fill="currentColor" opacity=".5"/>
+              </svg>
+              <span className="font-display font-semibold text-[15px] text-[#0D0D0D] tracking-tight">Perplexity</span>
+            </div>
+
+            {/* Manus */}
+            <div className="flex items-center gap-2 opacity-40 hover:opacity-70 transition-opacity">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="8" height="8" rx="1.5" fill="currentColor"/>
+                <rect x="13" y="3" width="8" height="8" rx="1.5" fill="currentColor" opacity=".6"/>
+                <rect x="3" y="13" width="8" height="8" rx="1.5" fill="currentColor" opacity=".6"/>
+                <rect x="13" y="13" width="8" height="8" rx="1.5" fill="currentColor" opacity=".3"/>
+              </svg>
+              <span className="font-display font-semibold text-[15px] text-[#0D0D0D] tracking-tight">Manus</span>
+            </div>
+
+            {/* ElevenLabs */}
+            <div className="flex items-center gap-2 opacity-40 hover:opacity-70 transition-opacity">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4" y="3" width="3" height="18" rx="1.5" fill="currentColor"/>
+                <rect x="10.5" y="3" width="3" height="18" rx="1.5" fill="currentColor"/>
+                <rect x="17" y="3" width="3" height="18" rx="1.5" fill="currentColor"/>
+              </svg>
+              <span className="font-display font-semibold text-[15px] text-[#0D0D0D] tracking-tight">ElevenLabs</span>
+            </div>
+
+            {/* Descript */}
+            <div className="flex items-center gap-2 opacity-40 hover:opacity-70 transition-opacity">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 5a1 1 0 011-1h6c3.866 0 7 3.134 7 7s-3.134 7-7 7H5a1 1 0 01-1-1V5zm3 2v10h4a4 4 0 000-8H7z" fill="currentColor"/>
+              </svg>
+              <span className="font-display font-semibold text-[15px] text-[#0D0D0D] tracking-tight">Descript</span>
+            </div>
+
           </div>
         </div>
       </section>
