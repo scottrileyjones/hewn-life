@@ -297,8 +297,8 @@ export default function Home() {
       {/* ── BOTTOM CTA ── */}
       <section className="py-16 px-6 lg:px-12 max-w-7xl mx-auto pb-24">
         <div className="rounded-3xl overflow-hidden grid grid-cols-1 lg:grid-cols-2">
-          {/* Left — copy on green */}
-          <div className="bg-[#6BAD3D] p-12 md:p-16 flex flex-col justify-between">
+          {/* Left — copy on purple */}
+          <div className="bg-[#8B5CF6] p-12 md:p-16 flex flex-col justify-between">
             <div>
               <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/60 mb-6">Get Started</p>
               <h2 className="font-display font-bold text-[40px] leading-tight text-white mb-6">

@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           {/* Column 1 — Brand */}
           <div>
-            <HewnLogo />
+            <HewnLogo dark={false} />
             <p className="font-display text-ash text-base mt-5 mb-6">
               Carved from the raw. Built for the future.
             </p>
