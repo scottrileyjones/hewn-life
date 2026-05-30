@@ -67,12 +67,12 @@ export default function BuildWeek() {
   }, [])
 
   return (
-    <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+    <div className="grid lg:grid-cols-2 gap-8 lg:gap-20 items-start">
 
       {/* ── Left: scroll-driven day list ── */}
-      <div ref={containerRef} className="relative order-2 lg:order-1">
+      <div ref={containerRef} className="relative order-2 lg:order-1 pt-4">
         {/* spine */}
-        <div className="absolute top-2 bottom-2 left-5 w-[2px]">
+        <div className="absolute top-6 bottom-2 left-5 w-[2px]">
           <div className="absolute inset-0 bg-black/[0.08]" />
           <div
             className="absolute top-0 left-0 w-full bg-gradient-to-b from-[#8B5CF6] to-[#A78BFA] transition-[height] duration-300 ease-out"
@@ -116,14 +116,20 @@ export default function BuildWeek() {
       </div>
 
       {/* ── Right: sticky browser mockup that builds ── */}
-      <div className="order-1 lg:order-2 lg:sticky lg:top-28">
-        <BrowserMockup activeDay={activeDay} />
-        <div className="mt-5 flex items-center justify-center gap-2">
+      <div className="order-1 lg:order-2 sticky top-20 self-start z-10">
+        {/* Compact on mobile, full size on desktop */}
+        <div className="lg:hidden">
+          <BrowserMockup activeDay={activeDay} compact />
+        </div>
+        <div className="hidden lg:block">
+          <BrowserMockup activeDay={activeDay} />
+        </div>
+        <div className="mt-3 lg:mt-5 flex items-center justify-center gap-2">
           {days.map((_, i) => (
-            <div key={i} className={`h-1 rounded-full transition-all duration-400 ${activeDay >= i ? 'w-8 bg-[#8B5CF6]' : 'w-4 bg-black/10'}`} />
+            <div key={i} className={`h-1 rounded-full transition-all duration-400 ${activeDay >= i ? 'w-6 lg:w-8 bg-[#8B5CF6]' : 'w-3 lg:w-4 bg-black/10'}`} />
           ))}
         </div>
-        <p className="text-center font-mono text-[10px] uppercase tracking-[0.2em] text-black/30 mt-3">
+        <p className="text-center font-mono text-[9px] lg:text-[10px] uppercase tracking-[0.2em] text-black/30 mt-2 lg:mt-3">
           {activeDay < 0 ? 'Ready to build' : activeDay >= days.length - 1 ? 'Live & yours' : `Building — ${days[activeDay].day}`}
         </p>
       </div>
@@ -140,11 +146,11 @@ function Block({ show, className, children }: { show: boolean; className?: strin
   )
 }
 
-function BrowserMockup({ activeDay }: { activeDay: number }) {
+function BrowserMockup({ activeDay, compact = false }: { activeDay: number; compact?: boolean }) {
   // structure: day0, design: day1, content/copy: day2, features: day3, polish/live: day4
   const built = activeDay >= 4
   return (
-    <div className="rounded-2xl border border-black/[0.08] shadow-[0_20px_60px_rgba(0,0,0,0.10)] overflow-hidden bg-white">
+    <div className={`rounded-2xl border border-black/[0.08] overflow-hidden bg-white ${compact ? 'shadow-[0_8px_24px_rgba(0,0,0,0.10)]' : 'shadow-[0_20px_60px_rgba(0,0,0,0.10)]'}`}>
       {/* browser chrome */}
       <div className="flex items-center gap-2 px-4 py-3 border-b border-black/[0.06] bg-[#FAF9F7]">
         <div className="flex gap-1.5">
@@ -164,7 +170,7 @@ function BrowserMockup({ activeDay }: { activeDay: number }) {
       </div>
 
       {/* viewport */}
-      <div className="aspect-[4/3] p-5 overflow-hidden relative">
+      <div className={`${compact ? 'aspect-[16/7]' : 'aspect-[4/3]'} p-4 overflow-hidden relative`}>
         {/* nav bar */}
         <Block show={activeDay >= 0} className="flex items-center justify-between mb-4">
           <div className={`h-3 w-16 rounded transition-colors duration-500 ${activeDay >= 1 ? 'bg-[#8B5CF6]' : 'bg-black/15'}`} />
