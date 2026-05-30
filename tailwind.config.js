@@ -26,6 +26,9 @@ module.exports = {
         marble:  '#EDEAE4',
         ash:     '#9A9590',
         ink:     '#0D0D0D',
+        // Purple accent
+        amethyst:'#8B5CF6',
+        lilac:   '#E9D5FF',
       },
       fontFamily: {
         display: ['var(--font-display)', 'Georgia', 'serif'],
