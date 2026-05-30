@@ -273,7 +273,7 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
 
 // ── Capture screen ────────────────────────────────────────────────────────────
 
-interface Contact { name: string; email: string; phone: string }
+interface Contact { name: string; company: string; email: string; phone: string }
 
 function CaptureScreen({
   contact,
@@ -326,6 +326,16 @@ function CaptureScreen({
                 value={contact.name}
                 onChange={e => setContact(c => ({ ...c, name: e.target.value }))}
                 placeholder="Jane Founder"
+                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all"
+              />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-2 block">Company</label>
+              <input
+                type="text"
+                value={contact.company}
+                onChange={e => setContact(c => ({ ...c, company: e.target.value }))}
+                placeholder="Acme Co."
                 className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all"
               />
             </div>
@@ -388,7 +398,7 @@ export default function Quiz() {
   const [step, setStep] = useState<'intro' | number | 'capture' | 'calculating' | 'results'>('intro')
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [selected, setSelected] = useState<string | null>(null)
-  const [contact, setContact] = useState({ name: '', email: '', phone: '' })
+  const [contact, setContact] = useState({ name: '', company: '', email: '', phone: '' })
 
   const currentQ = typeof step === 'number' ? questions[step] : null
   const progress = typeof step === 'number' ? ((step + 1) / questions.length) * 100 : step === 'results' ? 100 : 0
@@ -423,7 +433,7 @@ export default function Quiz() {
     setStep('intro')
     setAnswers({})
     setSelected(null)
-    setContact({ name: '', email: '', phone: '' })
+    setContact({ name: '', company: '', email: '', phone: '' })
   }
 
   // Map raw answer values to their human-readable labels for the CRM.
@@ -445,6 +455,7 @@ export default function Quiz() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: contact.name,
+          company: contact.company,
           email: contact.email,
           phone: contact.phone,
           tier: tiers[tierKey].name,
