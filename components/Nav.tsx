@@ -104,6 +104,13 @@ export default function Nav() {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/quiz"
+              className="font-display font-bold text-3xl text-[#8B5CF6] hover:text-[#7C3AED] transition-colors"
+              onClick={() => setMenuOpen(false)}
+            >
+              Take the Quiz
+            </Link>
           </div>
           <CalButton
             className="mt-4 bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200"
