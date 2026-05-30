@@ -12,7 +12,7 @@ export default function Contact() {
             <SectionEyebrow text="Let's Talk" />
           </div>
           <h1 className="hero-heading text-[56px] md:text-[80px] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
-            Tell us about your business. We&apos;ll tell you what&apos;s <span style={{color: '#6BAD3D'}} className="font-bold">possible.</span>
+            Tell us about your business. We&apos;ll tell you what&apos;s <span style={{color: '#6BAD3D'}} className="accent">possible.</span>
           </h1>
           <p className="font-body text-lg text-ash max-w-xl animate-fade-up delay-2 leading-relaxed">
             Book a free 30-minute discovery call. No pitch deck. No pressure. Just a direct conversation about your goals.

@@ -306,7 +306,7 @@ export default function Pricing() {
             <SectionEyebrow text="Transparent Pricing" />
           </div>
           <h1 className="hero-heading text-[56px] md:text-[80px] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
-            Pick a plan. Check out. We <span style={{ color: '#6BAD3D' }} className="font-bold">get to work.</span>
+            Pick a plan. Check out. We <span style={{ color: '#6BAD3D' }} className="accent">get to work.</span>
           </h1>
           <p className="font-body text-lg text-ash max-w-xl animate-fade-up delay-2 leading-relaxed mb-10">
             No sales calls required. Flat fees, secure checkout, and your onboarding call scheduled within 48 hours of purchase.
@@ -646,7 +646,7 @@ export default function Pricing() {
         <div className="max-w-2xl mx-auto px-6 text-center">
           <SectionEyebrow text="Not Sure Where to Start?" />
           <h2 className="font-display font-bold text-[48px] leading-tight text-cream mb-6">
-            Let&apos;s figure it out <span style={{ color: '#6BAD3D' }} className="font-bold">together.</span>
+            Let&apos;s figure it out <span style={{ color: '#6BAD3D' }} className="accent">together.</span>
           </h2>
           <p className="font-body text-base text-ash max-w-lg mx-auto mb-10">
             Book a free 30-minute exploration call. No pitch deck, no pressure — just an honest conversation about your business and where to start.

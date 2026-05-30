@@ -20,7 +20,7 @@ export default function About() {
             <SectionEyebrow text="Our Story" />
           </div>
           <h1 className="hero-heading text-[56px] md:text-[80px] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
-            We believe marketing is the <span style={{color: '#6BAD3D'}} className="font-bold">life</span> of your business — not an afterthought.
+            We believe marketing is the <span style={{color: '#6BAD3D'}} className="accent">life</span> of your business — not an afterthought.
           </h1>
           <p className="font-body text-lg text-ash max-w-xl animate-fade-up delay-2 leading-relaxed">
             Hewn Life was built on a simple but radical conviction: premium marketing should not require a massive agency with bloated overhead and hidden fees.
