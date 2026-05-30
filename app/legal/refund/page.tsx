@@ -10,7 +10,7 @@ export default function Refund() {
     <LegalLayout
       title="Refund Policy"
       updated="May 30, 2026"
-      intro="This Refund Policy describes when and how refunds are issued for services provided by Hewn Life. Because our services are custom, labor-intensive, and begin promptly after engagement, this Policy is designed to be fair to both parties. It supplements our Terms of Service and any applicable statement of work (&ldquo;SOW&rdquo;)."
+      intro="This Refund Policy describes when and how refunds are issued for services provided by Hewn Life LLC. Because our services are custom, labor-intensive, and begin promptly after engagement, this Policy is designed to be fair to both parties. It supplements our Terms of Service and any applicable statement of work (&ldquo;SOW&rdquo;)."
       sections={[
         {
           heading: 'Nature of Our Services',

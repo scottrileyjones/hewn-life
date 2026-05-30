@@ -10,7 +10,7 @@ export default function Privacy() {
     <LegalLayout
       title="Privacy Policy"
       updated="May 30, 2026"
-      intro="This Privacy Policy explains how Hewn Life (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;) collects, uses, discloses, and safeguards your information when you visit our website, contact us, or use our services. By using our website or services, you consent to the practices described here."
+      intro="This Privacy Policy explains how Hewn Life LLC (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;) collects, uses, discloses, and safeguards your information when you visit our website, contact us, or use our services. By using our website or services, you consent to the practices described here."
       sections={[
         {
           heading: 'Information We Collect',
@@ -100,7 +100,7 @@ export default function Privacy() {
         {
           heading: 'Contact Us',
           body: [
-            'If you have questions or requests regarding this Privacy Policy or your personal information, contact us at hello@hewnlife.com.',
+            'If you have questions or requests regarding this Privacy Policy or your personal information, contact us at hello@hewnlife.com or by mail at Hewn Life LLC, 389 N 1500 E, Layton, UT 84040.',
           ],
         },
       ]}

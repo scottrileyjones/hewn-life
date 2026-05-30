@@ -10,7 +10,7 @@ export default function Cookies() {
     <LegalLayout
       title="Cookie Policy"
       updated="May 30, 2026"
-      intro="This Cookie Policy explains how Hewn Life uses cookies and similar technologies when you visit our website. It should be read alongside our Privacy Policy. By continuing to use our website, you consent to our use of cookies as described here, subject to your choices below."
+      intro="This Cookie Policy explains how Hewn Life LLC uses cookies and similar technologies when you visit our website. It should be read alongside our Privacy Policy. By continuing to use our website, you consent to our use of cookies as described here, subject to your choices below."
       sections={[
         {
           heading: 'What Are Cookies',
