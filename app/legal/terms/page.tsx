@@ -10,7 +10,7 @@ export default function Terms() {
     <LegalLayout
       title="Terms of Service"
       updated="May 30, 2026"
-      intro="These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and use of the websites, products, and services (collectively, the &ldquo;Services&rdquo;) provided by Hewn Life (&ldquo;Hewn Life,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;). By engaging our Services, signing a statement of work, or using this website, you (&ldquo;Client,&rdquo; &ldquo;you,&rdquo; or &ldquo;your&rdquo;) agree to be bound by these Terms. If you do not agree, do not use the Services."
+      intro="These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and use of the websites, products, and services (collectively, the &ldquo;Services&rdquo;) provided by Hewn Life LLC, a Utah limited liability company (&ldquo;Hewn Life,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;). By engaging our Services, signing a statement of work, or using this website, you (&ldquo;Client,&rdquo; &ldquo;you,&rdquo; or &ldquo;your&rdquo;) agree to be bound by these Terms. If you do not agree, do not use the Services."
       sections={[
         {
           heading: 'Acceptance of Terms',
@@ -106,7 +106,7 @@ export default function Terms() {
         {
           heading: 'Governing Law & Dispute Resolution',
           body: [
-            'These Terms are governed by the laws of the State in which Hewn Life is organized, without regard to conflict-of-laws principles. The parties will attempt to resolve disputes informally and in good faith. Any unresolved dispute will be subject to binding arbitration or the exclusive jurisdiction of the courts located in that State, as permitted by law.',
+            'These Terms are governed by the laws of the State of Utah, without regard to conflict-of-laws principles. The parties will attempt to resolve disputes informally and in good faith. Any unresolved dispute will be subject to binding arbitration or the exclusive jurisdiction of the state and federal courts located in Davis County, Utah, and the parties consent to the personal jurisdiction of those courts.',
           ],
         },
         {

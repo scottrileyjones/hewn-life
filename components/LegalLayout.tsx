@@ -77,10 +77,16 @@ export default function LegalLayout({ title, updated, intro, sections }: LegalPa
 
             {/* Contact footer */}
             <div className="mt-14 pt-8 border-t border-black/[0.08]">
-              <p className="font-body text-sm text-[#6B6560] leading-relaxed">
+              <p className="font-body text-sm text-[#6B6560] leading-relaxed mb-4">
                 Questions about this document? Contact us at{' '}
                 <a href="mailto:hello@hewnlife.com" className="text-[#8B5CF6] hover:underline">hello@hewnlife.com</a>.
               </p>
+              <address className="font-body text-sm text-[#6B6560] not-italic leading-relaxed">
+                <span className="font-semibold text-[#0D0D0D]">Hewn Life LLC</span><br />
+                389 N 1500 E<br />
+                Layton, UT 84040<br />
+                United States
+              </address>
             </div>
           </div>
         </div>
