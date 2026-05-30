@@ -62,8 +62,8 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
           {/* Left — copy */}
           <div className="animate-fade-up">
-            <div className="inline-flex items-center gap-2 bg-[#F0F7EB] text-[#3D6B1E] rounded-full px-4 py-1.5 mb-8">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D]" />
+            <div className="inline-flex items-center gap-2 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-4 py-1.5 mb-8">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
               <span className="font-body text-xs font-medium tracking-wide">The AI-Era Marketing Agency</span>
             </div>
             <h1 className="hero-heading text-[52px] md:text-[68px] lg:text-[72px] text-[#0D0D0D] mb-8 leading-[0.95]">
@@ -93,8 +93,8 @@ export default function Home() {
               <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[88%] bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-black/[0.06] p-5">
                 <div className="flex items-center justify-between mb-4">
                   <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-black/40">Monthly Snapshot</p>
-                  <span className="flex items-center gap-1.5 bg-[#F0F7EB] text-[#3D6B1E] rounded-full px-2.5 py-1 text-[10px] font-body font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D]" />
+                  <span className="flex items-center gap-1.5 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-2.5 py-1 text-[10px] font-body font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
                     Live
                   </span>
                 </div>
