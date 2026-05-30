@@ -350,7 +350,7 @@ export default function Pricing() {
               <p className="font-body text-sm text-red-700">{checkoutError}</p>
             </div>
           )}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
             {tiers.map((tier, i) => {
               const price = annual ? tier.price.annual : tier.price.monthly
               const isCarved = tier.slug === 'forged'
@@ -359,7 +359,7 @@ export default function Pricing() {
               const isExpanded = expanded === tier.slug
 
               return (
-                <FadeInWrapper key={tier.slug} delay={i * 110} className="flex flex-col">
+                <FadeInWrapper key={tier.slug} delay={i * 110} className="flex flex-col h-full">
                   <div
                     className={`rounded-2xl overflow-hidden flex flex-col h-full ${isCarved ? 'lg:-mx-2' : ''}`}
                     style={{
