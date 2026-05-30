@@ -1,6 +1,7 @@
 import CalButton from '@/components/CalButton'
 import Link from 'next/link'
 import Image from 'next/image'
+import CountUp from '@/components/CountUp'
 
 const PHOTOS = {
   hero:       'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_1100,c_fill/v1779578220/main-sample.png',
@@ -165,7 +166,7 @@ export default function Home() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((s, i) => (
             <div key={i} className="rounded-2xl p-6 flex flex-col justify-between min-h-[140px]" style={{ background: s.bg }}>
-              <p className="font-display font-bold text-[44px] leading-none" style={{ color: s.text }}>{s.value}</p>
+              <p className="font-display font-bold text-[44px] leading-none" style={{ color: s.text }}><CountUp value={s.value} /></p>
               <p className="font-body text-sm leading-snug mt-3" style={{ color: s.text === '#ffffff' ? 'rgba(255,255,255,0.7)' : '#6B6560' }}>{s.label}</p>
             </div>
           ))}
