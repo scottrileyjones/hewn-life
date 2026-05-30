@@ -268,37 +268,37 @@ export default function Home() {
         </div>
 
         <div className="rounded-3xl border border-black/[0.08] overflow-hidden">
-          {/* Column header — hidden on mobile */}
-          <div className="hidden sm:grid grid-cols-[1fr_auto_auto] gap-6 px-7 py-4 bg-[#F7F6F3] border-b border-black/[0.06]">
+          {/* Column header — desktop only */}
+          <div className="hidden sm:grid grid-cols-[1fr_180px_150px] px-7 py-4 bg-[#F7F6F3] border-b border-black/[0.06]">
             <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-black/40">Service</span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-black/40 text-right w-[160px]">Traditional</span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#6BAD3D] text-right w-[90px]">Hewnlife</span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-black/40 text-right">Traditional</span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#8B5CF6] text-right">Hewnlife</span>
           </div>
 
           {comparisonRows.map((row, i) => (
             <div
               key={i}
-              className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_auto_auto] items-center gap-x-4 gap-y-1 px-5 sm:px-7 py-4 sm:py-5 border-b border-black/[0.05]"
+              className="flex items-center justify-between gap-4 sm:grid sm:grid-cols-[1fr_180px_150px] px-5 sm:px-7 py-4 sm:py-[18px] border-b border-black/[0.05]"
             >
-              <span className="font-body text-sm md:text-[15px] text-[#0D0D0D] font-medium row-start-1">{row.service}</span>
-              <span className="font-body text-xs sm:text-sm text-black/35 line-through text-left sm:text-right sm:w-[160px] whitespace-nowrap col-start-1 sm:col-start-2 row-start-2 sm:row-start-1">{row.traditional}</span>
-              <span className="flex items-center justify-end gap-1.5 text-[#6BAD3D] sm:w-[90px] col-start-2 row-start-1 sm:row-start-1">
+              <span className="font-body text-sm md:text-[15px] text-[#0D0D0D] font-medium">{row.service}</span>
+              <span className="hidden sm:block font-body text-sm text-black/35 line-through text-right whitespace-nowrap">{row.traditional}</span>
+              <span className="flex items-center justify-end gap-1.5 text-[#6BAD3D] whitespace-nowrap">
                 <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                <span className="font-body text-sm font-medium sm:hidden">Included</span>
+                <span className="font-body text-sm font-medium">Included</span>
               </span>
             </div>
           ))}
 
           {/* Total row */}
-          <div className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_auto_auto] items-center gap-x-4 gap-y-1 px-5 sm:px-7 py-5 sm:py-6 bg-[#0D0D0D]">
-            <span className="font-body font-semibold text-sm text-white row-start-1">Total</span>
-            <span className="font-body text-xs sm:text-sm text-white/30 line-through text-left sm:text-right sm:w-[160px] whitespace-nowrap col-start-1 sm:col-start-2 row-start-2 sm:row-start-1">$20k–$50k+/mo</span>
-            <span className="font-display font-bold text-sm text-[#6BAD3D] text-right sm:w-[90px] whitespace-nowrap col-start-2 row-start-1">$2,500/mo</span>
+          <div className="flex items-center justify-between gap-4 sm:grid sm:grid-cols-[1fr_180px_150px] px-5 sm:px-7 py-5 sm:py-6 bg-[#0D0D0D]">
+            <span className="font-body font-semibold text-sm text-white">Total</span>
+            <span className="hidden sm:block font-body text-sm text-white/30 line-through text-right whitespace-nowrap">$20k–$50k+/mo</span>
+            <span className="font-display font-bold text-[15px] text-[#6BAD3D] text-right whitespace-nowrap">$2,500/mo</span>
           </div>
         </div>
 
         <p className="text-center font-body text-sm text-[#6B6560] mt-6">
-          Everything above. One flat monthly fee. <span className="text-[#0D0D0D] font-medium">No percentage of spend, ever.</span>
+          Everything above. One flat monthly fee. <span className="text-[#8B5CF6] font-medium">No percentage of spend, ever.</span>
         </p>
       </section>
 
