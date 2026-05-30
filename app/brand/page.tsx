@@ -27,10 +27,11 @@ const colors = [
 ]
 
 const typeScale = [
-  { label: 'Hero', size: '80px', weight: 'Bold', font: 'Playfair Display', sample: 'Built for the future.' },
-  { label: 'H1', size: '56px', weight: 'Bold', font: 'Playfair Display', sample: 'Three tiers. No contracts.' },
-  { label: 'H2', size: '40px', weight: 'Semibold', font: 'Playfair Display', sample: 'Your outsourced CMO.' },
-  { label: 'H3', size: '28px', weight: 'Semibold', font: 'Playfair Display', sample: 'Deliberately shaped.' },
+  { label: 'Hero', size: '80px', weight: 'Bold', font: 'Plus Jakarta Sans', sample: 'Built for the future.' },
+  { label: 'H1', size: '56px', weight: 'Bold', font: 'Plus Jakarta Sans', sample: 'Three tiers. No contracts.' },
+  { label: 'H2', size: '40px', weight: 'Semibold', font: 'Plus Jakarta Sans', sample: 'Your outsourced CMO.' },
+  { label: 'H3', size: '28px', weight: 'Semibold', font: 'Plus Jakarta Sans', sample: 'Deliberately shaped.' },
+  { label: 'Accent', size: '—', weight: 'Italic 600', font: 'Playfair Display', sample: 'It’s the life of your business.' },
   { label: 'Body LG', size: '18px', weight: 'Regular', font: 'DM Sans', sample: 'We charge what a freelancer costs and deliver what an agency can\'t.' },
   { label: 'Body', size: '16px', weight: 'Regular', font: 'DM Sans', sample: 'Flat fees, secure checkout, and your onboarding call scheduled within 48 hours.' },
   { label: 'Body SM', size: '14px', weight: 'Regular', font: 'DM Sans', sample: 'Cancel anytime. No long-term contracts. Dedicated account manager.' },
@@ -145,12 +146,13 @@ export default function BrandGuide() {
                 <p
                   style={{ fontSize: t.label === 'Mono / Label' ? '11px' : undefined }}
                   className={`text-ink leading-tight flex-1 ${
-                    t.font === 'Playfair Display' ? 'font-display' : t.font === 'Inter Tight' ? 'font-mono uppercase tracking-[0.2em]' : 'font-body'
+                    t.font === 'Plus Jakarta Sans' ? 'font-display' : t.font === 'Playfair Display' ? 'font-accent italic text-ember' : t.font === 'Inter Tight' ? 'font-mono uppercase tracking-[0.2em]' : 'font-body'
                   } ${
                     t.label === 'Hero' ? 'font-bold text-[40px] md:text-[56px]' :
                     t.label === 'H1' ? 'font-bold text-[32px] md:text-[40px]' :
                     t.label === 'H2' ? 'font-semibold text-[26px] md:text-[32px]' :
                     t.label === 'H3' ? 'font-semibold text-[22px]' :
+                    t.label === 'Accent' ? 'font-semibold text-[28px] md:text-[36px]' :
                     t.label === 'Body LG' ? 'text-lg' :
                     t.label === 'Body SM' ? 'text-sm' : 'text-base'
                   }`}

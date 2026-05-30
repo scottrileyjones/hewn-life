@@ -31,6 +31,7 @@ module.exports = {
         display: ['var(--font-display)', 'Georgia', 'serif'],
         body: ['var(--font-body)', '-apple-system', 'sans-serif'],
         mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
+        accent: ['var(--font-accent)', 'Georgia', 'serif'],
       },
       fontSize: {
         hero: ['6.5rem', { lineHeight: '1.05', letterSpacing: '-0.02em' }],

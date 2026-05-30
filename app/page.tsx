@@ -68,7 +68,7 @@ export default function Home() {
             </div>
             <h1 className="hero-heading text-[52px] md:text-[68px] lg:text-[72px] text-[#0D0D0D] mb-8 leading-[0.95]">
               Marketing isn&apos;t a line item. It&apos;s the{' '}
-              <span style={{ color: '#6BAD3D' }}>life</span>{' '}
+              <span className="accent" style={{ color: '#6BAD3D' }}>life</span>{' '}
               of your business.
             </h1>
             <p className="font-body text-lg text-[#6B6560] max-w-md mb-10 leading-relaxed">
