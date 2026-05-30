@@ -353,54 +353,67 @@ export default function Pricing() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
             {tiers.map((tier, i) => {
               const price = annual ? tier.price.annual : tier.price.monthly
-              const isCarved = tier.slug === 'forged'
-              const isFeatured = tier.slug === 'forged'
+              const isFeatured = tier.slug === 'wrought'
               const isLoading = loadingTier === tier.slug
               const isExpanded = expanded === tier.slug
 
               return (
-                <FadeInWrapper key={tier.slug} delay={i * 110} className="flex flex-col h-full">
+                <FadeInWrapper key={tier.slug} delay={i * 110} className={`flex flex-col h-full ${isFeatured ? 'lg:z-10' : ''}`}>
                   <div
-                    className={`rounded-2xl overflow-hidden flex flex-col h-full ${isCarved ? 'lg:-mx-2' : ''}`}
+                    className={`rounded-3xl overflow-hidden flex flex-col h-full transition-all duration-300 ${
+                      isFeatured
+                        ? 'lg:-my-4 lg:scale-[1.04] shadow-[0_30px_80px_-20px_rgba(139,92,246,0.55)] ring-1 ring-[#8B5CF6]/40'
+                        : 'shadow-[0_2px_24px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)]'
+                    }`}
                     style={{
-                      background: isFeatured ? '#1A1815' : '#FFFFFF',
+                      background: isFeatured ? '#17131F' : '#FFFFFF',
                       border: isFeatured ? 'none' : '1px solid rgba(0,0,0,0.08)',
                     }}
                   >
+                    {/* Featured ribbon */}
+                    {isFeatured && (
+                      <div className="bg-gradient-to-r from-[#8B5CF6] to-[#A78BFA] py-2.5 text-center">
+                        <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-white font-semibold inline-flex items-center gap-1.5">
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 8.9H23l-7.5 5.5 2.9 8.9L12 19.8l-6.4 5.5 2.9-8.9L1 10.9h8.1L12 2z"/></svg>
+                          {tier.badge}
+                        </span>
+                      </div>
+                    )}
+
                     <div className="p-8 flex flex-col flex-1">
-                      {/* Badge */}
-                      {tier.badge && (
-                        <div className="mb-5">
-                          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember font-semibold">
-                            {tier.badge}
-                          </span>
+                      {/* Badge (non-featured) */}
+                      {!isFeatured && (
+                        <div className="mb-5 h-4">
+                          {tier.badge && (
+                            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember font-semibold">{tier.badge}</span>
+                          )}
                         </div>
                       )}
 
                       {/* Tier identity */}
-                      <p className={`font-mono text-[10px] uppercase tracking-[0.2em] mb-2 ${isFeatured ? 'text-ash/50' : 'text-slate/50'}`}>{tier.subtitle}</p>
-                      <p className={`font-display font-bold text-[32px] leading-none mb-3 ${isFeatured ? 'text-cream' : 'text-ink'}`}>{tier.name}</p>
+                      <p className={`font-mono text-[10px] uppercase tracking-[0.2em] mb-2 ${isFeatured ? 'text-[#A78BFA]' : 'text-slate/50'}`}>{tier.subtitle}</p>
+                      <p className={`font-display font-bold text-[32px] leading-none mb-3 ${isFeatured ? 'text-white' : 'text-ink'}`}>{tier.name}</p>
 
                       {/* Tagline */}
-                      <p className={`font-display font-medium text-sm mb-6 leading-snug ${isFeatured ? 'text-ash/70' : 'text-slate'}`}>{tier.tagline}</p>
+                      <p className={`font-display font-medium text-sm mb-6 leading-snug ${isFeatured ? 'text-white/60' : 'text-slate'}`}>{tier.tagline}</p>
 
                       {/* Price */}
-                      <div className={`mb-6 pb-6 border-b ${isFeatured ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
+                      <div className={`mb-6 pb-6 border-b ${isFeatured ? 'border-white/[0.10]' : 'border-black/[0.08]'}`}>
                         {annual ? (
                           <>
                             <div className="flex items-baseline gap-2 mb-1">
-                              <span className={`font-body text-sm line-through ${isFeatured ? 'text-ash/30' : 'text-slate/30'}`}>${tier.price.monthly.toLocaleString()}</span>
-                              <span className="font-mono text-[10px] uppercase tracking-widest font-medium text-ember">Save 20%</span>
+                              <span className={`font-body text-sm line-through ${isFeatured ? 'text-white/30' : 'text-slate/30'}`}>${tier.price.monthly.toLocaleString()}</span>
+                              <span className={`font-mono text-[10px] uppercase tracking-widest font-medium ${isFeatured ? 'text-[#A78BFA]' : 'text-ember'}`}>Save 20%</span>
                             </div>
                             <div className="flex items-end gap-1">
-                              <span className={`font-display font-bold text-[52px] leading-none ${isFeatured ? 'text-cream' : 'text-ink'}`}>${price.toLocaleString()}</span>
-                              <span className={`font-body text-sm mb-1.5 ${isFeatured ? 'text-ash/50' : 'text-slate/60'}`}>/mo, billed annually</span>
+                              <span className={`font-display font-bold text-[52px] leading-none ${isFeatured ? 'text-white' : 'text-ink'}`}>${price.toLocaleString()}</span>
+                              <span className={`font-body text-sm mb-1.5 ${isFeatured ? 'text-white/50' : 'text-slate/60'}`}>/mo, billed annually</span>
                             </div>
                           </>
                         ) : (
                           <div className="flex items-end gap-1">
-                            <span className={`font-display font-bold text-[52px] leading-none ${isFeatured ? 'text-cream' : 'text-ink'}`}>${price.toLocaleString()}</span>
-                            <span className={`font-body text-sm mb-1.5 ${isFeatured ? 'text-ash/50' : 'text-slate/60'}`}>/mo</span>
+                            <span className={`font-display font-bold text-[52px] leading-none ${isFeatured ? 'text-white' : 'text-ink'}`}>${price.toLocaleString()}</span>
+                            <span className={`font-body text-sm mb-1.5 ${isFeatured ? 'text-white/50' : 'text-slate/60'}`}>/mo</span>
                           </div>
                         )}
                       </div>
@@ -409,10 +422,12 @@ export default function Pricing() {
                       <ul className="space-y-2.5 mb-8">
                         {tier.highlights.map((h, hi) => (
                           <li key={hi} className="flex items-start gap-3">
-                            <svg className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isFeatured ? 'text-ember' : 'text-moss'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                            </svg>
-                            <span className={`font-body text-sm ${isFeatured ? 'text-ash/80' : 'text-slate'}`}>{h}</span>
+                            <span className={`flex-shrink-0 mt-0.5 w-[18px] h-[18px] rounded-full flex items-center justify-center ${isFeatured ? 'bg-[#8B5CF6]' : 'bg-moss/10'}`}>
+                              <svg className={`w-3 h-3 ${isFeatured ? 'text-white' : 'text-moss'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                              </svg>
+                            </span>
+                            <span className={`font-body text-sm ${isFeatured ? 'text-white/85' : 'text-slate'}`}>{h}</span>
                           </li>
                         ))}
                       </ul>
@@ -421,42 +436,46 @@ export default function Pricing() {
                         <button
                           onClick={() => handleStripeCheckout(tier.slug)}
                           disabled={isLoading}
-                          className={`flex items-center justify-center gap-2 w-full font-body font-semibold text-sm px-6 py-4 rounded-full transition-all duration-300 hover:brightness-110 mb-3 disabled:opacity-70 disabled:cursor-not-allowed ${isFeatured ? 'bg-moss text-bone' : 'bg-ink text-bone'}`}
+                          className={`flex items-center justify-center gap-2 w-full font-body font-semibold text-sm px-6 py-4 rounded-full transition-all duration-300 mb-3 disabled:opacity-70 disabled:cursor-not-allowed ${
+                            isFeatured
+                              ? 'bg-gradient-to-r from-[#8B5CF6] to-[#A78BFA] text-white shadow-[0_8px_24px_rgba(139,92,246,0.45)] hover:shadow-[0_12px_32px_rgba(139,92,246,0.6)] hover:-translate-y-0.5'
+                              : 'bg-[#8B5CF6] text-white hover:bg-[#7C3AED]'
+                          }`}
                         >
                           {isLoading ? (
                             <><Spinner /> Redirecting…</>
                           ) : (
                             <>
-                              <svg className="w-3.5 h-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                              <svg className="w-3.5 h-3.5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                               Get {tier.name} — ${price.toLocaleString()}/mo
                             </>
                           )}
                         </button>
 
                         <p className="text-center mb-6">
-                          <CalButton className={`font-body text-xs transition-colors ${isFeatured ? 'text-ash/40 hover:text-ash' : 'text-slate/50 hover:text-slate'}`}>
+                          <CalButton className={`font-body text-xs transition-colors ${isFeatured ? 'text-white/45 hover:text-white' : 'text-slate/50 hover:text-slate'}`}>
                             Have questions? Book a free call →
                           </CalButton>
                         </p>
 
                         <button
                           onClick={() => setExpanded(isExpanded ? null : tier.slug)}
-                          className={`flex items-center gap-1.5 font-body text-xs transition-colors w-full ${isFeatured ? 'text-ash/40 hover:text-ash' : 'text-slate/40 hover:text-slate'}`}
+                          className={`flex items-center gap-1.5 font-body text-xs transition-colors w-full ${isFeatured ? 'text-white/45 hover:text-white' : 'text-slate/40 hover:text-slate'}`}
                         >
                           <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
                           {isExpanded ? 'Hide full deliverables' : 'See everything included'}
                         </button>
 
                         {isExpanded && (
-                          <div className={`mt-6 pt-6 border-t ${isFeatured ? 'border-white/[0.05]' : 'border-black/[0.05]'} space-y-5`}>
+                          <div className={`mt-6 pt-6 border-t ${isFeatured ? 'border-white/[0.08]' : 'border-black/[0.05]'} space-y-5`}>
                             {tier.deliverables.map((group, gi) => (
                               <div key={gi}>
-                                <p className={`font-mono text-[10px] uppercase tracking-[0.18em] mb-2.5 ${isFeatured ? 'text-ash/35' : 'text-slate/40'}`}>{group.pillar}</p>
+                                <p className={`font-mono text-[10px] uppercase tracking-[0.18em] mb-2.5 ${isFeatured ? 'text-[#A78BFA]' : 'text-slate/40'}`}>{group.pillar}</p>
                                 <ul className="space-y-1.5">
                                   {group.items.map((item, ii) => (
                                     <li key={ii} className="flex items-start gap-2.5">
-                                      <svg className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${isFeatured ? 'text-ember' : 'text-moss'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                                      <span className={`font-body text-xs ${isFeatured ? 'text-ash/60' : 'text-slate/80'}`}>{item}</span>
+                                      <svg className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${isFeatured ? 'text-[#A78BFA]' : 'text-moss'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                      <span className={`font-body text-xs ${isFeatured ? 'text-white/65' : 'text-slate/80'}`}>{item}</span>
                                     </li>
                                   ))}
                                 </ul>
