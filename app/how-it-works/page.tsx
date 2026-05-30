@@ -87,9 +87,9 @@ export default function HowItWorks() {
           <div className="animate-fade-up">
             <SectionEyebrow text="How It Works" />
           </div>
-          <h1 className="font-display text-[52px] md:text-[80px] text-cream max-w-3xl mb-8 animate-fade-up delay-1 leading-[1.05]">
+          <h1 className="hero-heading text-[52px] md:text-[80px] text-cream max-w-3xl mb-8 animate-fade-up delay-1 leading-[1.05]">
             Most agencies sell campaigns.<br />
-            <em style={{ color: '#7CB550' }}>We build systems.</em>
+            <span className="accent" style={{ color: '#6BAD3D' }}>We build systems.</span>
           </h1>
           <p className="font-body text-lg text-ash max-w-lg animate-fade-up delay-2 leading-relaxed">
             We deploy AI intelligently — compressing months of work into days, cutting costs without cutting corners. Then we layer in the design taste and market instinct to make sure it actually wins.
