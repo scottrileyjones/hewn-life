@@ -11,7 +11,6 @@ const navLinks = [
   { href: '/how-it-works', label: 'How It Works' },
   { href: '/website-in-a-week', label: 'Site in a Week' },
   { href: '/pricing', label: 'Pricing' },
-  { href: '/quiz', label: 'Take the Quiz' },
   { href: '/blog', label: 'Blog' },
 ]
 
@@ -58,6 +57,16 @@ export default function Nav() {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
+            <Link
+              href="/quiz"
+              className={`font-body text-sm font-medium px-5 py-2.5 rounded-full border transition-all duration-200 ${
+                darkHero
+                  ? 'border-white/40 text-white hover:border-white hover:bg-white/10'
+                  : 'border-black/20 text-[#0D0D0D] hover:border-black/40'
+              }`}
+            >
+              Take the Quiz
+            </Link>
             <CalButton className={`font-body text-sm font-medium px-5 py-2.5 rounded-full transition-all duration-200 ${
               darkHero ? 'bg-white text-[#0D0D0D] hover:bg-white/90' : 'bg-[#0D0D0D] text-white hover:bg-[#222]'
             }`}>
