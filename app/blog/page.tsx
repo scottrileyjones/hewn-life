@@ -1,4 +1,3 @@
-import SectionEyebrow from '@/components/SectionEyebrow'
 import Link from 'next/link'
 
 const posts = [
@@ -57,96 +56,95 @@ const grid = posts.slice(1)
 
 export default function Blog() {
   return (
-    <>
-      {/* Hero */}
-      <section className="min-h-[60vh] flex items-end pb-24 relative overflow-hidden pt-32" style={{background: `radial-gradient(ellipse at 70% 30%, rgba(124,181,80,0.10) 0%, transparent 55%), #1A1815`}}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="animate-fade-up">
-            <SectionEyebrow text="Insights" />
+    <div className="bg-white">
+
+      {/* ── HERO ── */}
+      <section className="pt-32 pb-16 px-6 lg:px-12 max-w-7xl mx-auto">
+        <div className="animate-fade-up max-w-3xl">
+          <div className="inline-flex items-center gap-2 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-4 py-1.5 mb-8">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
+            <span className="font-body text-xs font-medium tracking-wide">Insights</span>
           </div>
-          <h1 className="hero-heading text-[52px] md:text-[72px] text-cream max-w-3xl animate-fade-up delay-1">
-            Ideas on marketing, growth, and building businesses that actually <span style={{color: '#6BAD3D'}} className="accent">work.</span>
+          <h1 className="hero-heading text-[48px] md:text-[64px] text-[#0D0D0D] leading-[0.98]">
+            Ideas on marketing, growth, and building businesses that actually{' '}
+            <span className="accent" style={{ color: '#6BAD3D' }}>work.</span>
           </h1>
         </div>
       </section>
 
-      {/* Featured Post */}
-      <section className="bg-bone py-24 md:py-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
-            <div className="lg:col-span-3">
-              <div className="aspect-[16/9] bg-oat rounded-2xl border border-black/[0.08] flex items-center justify-center">
-                <p className="font-body text-sm text-slate">Featured Image</p>
-              </div>
+      {/* ── FEATURED POST ── */}
+      <section className="py-12 px-6 lg:px-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
+          <div className="lg:col-span-3">
+            <div className="aspect-[16/9] bg-[#F0F7EB] rounded-3xl flex items-center justify-center">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-[#6BAD3D]/40">Featured Image</p>
             </div>
-            <div className="lg:col-span-2">
-              <SectionEyebrow text="Featured Post" light />
-              <span className="inline-block bg-moss text-obsidian font-body text-[11px] font-medium px-3 py-1 rounded-full uppercase tracking-wider mb-4">
-                {featured.category}
-              </span>
-              <h2 className="font-display font-medium text-[36px] leading-tight text-ink mb-4">
-                {featured.title}
-              </h2>
-              <p className="font-body text-[12px] text-slate mb-4">{featured.date}</p>
-              <p className="font-body text-base text-slate leading-relaxed mb-6">{featured.excerpt}</p>
-              <Link href="/blog" className="font-body text-sm text-ember hover:underline underline-offset-4">
-                Read More →
-              </Link>
-            </div>
+          </div>
+          <div className="lg:col-span-2">
+            <span className="inline-block bg-[#E9D5FF] text-[#6D28D9] font-body text-[11px] font-medium px-3 py-1 rounded-full uppercase tracking-wider mb-5">
+              {featured.category}
+            </span>
+            <h2 className="font-display font-bold text-[32px] leading-tight text-[#0D0D0D] mb-4">
+              {featured.title}
+            </h2>
+            <p className="font-body text-[12px] text-[#6B6560] mb-4">{featured.date} · {featured.readTime}</p>
+            <p className="font-body text-base text-[#6B6560] leading-relaxed mb-6">{featured.excerpt}</p>
+            <Link href="/blog" className="font-body text-sm font-medium text-[#6BAD3D] hover:underline underline-offset-4">
+              Read More →
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Post Grid */}
-      <section className="bg-bone pb-24 md:pb-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="border-t border-black/10 pt-16">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {grid.map((post, i) => (
-                <article key={i} className="group cursor-pointer">
-                  <div className="aspect-[16/9] bg-oat rounded-2xl border border-black/[0.08] mb-6 overflow-hidden group-hover:border-moss/30 transition-colors flex items-center justify-center">
-                    <p className="font-body text-sm text-slate">Post Image</p>
-                  </div>
-                  <p className="font-body text-[11px] uppercase tracking-[0.15em] text-ember mb-2">{post.category}</p>
-                  <h3 className="font-display font-medium text-[22px] leading-tight text-ink mb-3 group-hover:text-ember transition-colors">
-                    {post.title}
-                  </h3>
-                  <p className="font-body text-sm text-slate leading-relaxed mb-4 line-clamp-2">{post.excerpt}</p>
-                  <p className="font-body text-[12px] text-slate">
-                    {post.date} · {post.readTime}
-                  </p>
-                </article>
-              ))}
-            </div>
+      {/* ── POST GRID ── */}
+      <section className="py-12 px-6 lg:px-12 max-w-7xl mx-auto pb-24">
+        <div className="border-t border-black/[0.06] pt-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {grid.map((post, i) => (
+              <article key={i} className="group cursor-pointer">
+                <div className="aspect-[16/9] bg-[#F7F6F3] rounded-2xl mb-6 overflow-hidden group-hover:bg-[#F0F7EB] transition-colors flex items-center justify-center">
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-black/20">Post Image</p>
+                </div>
+                <p className="font-body text-[11px] uppercase tracking-[0.15em] text-[#8B5CF6] mb-2">{post.category}</p>
+                <h3 className="font-display font-semibold text-[22px] leading-tight text-[#0D0D0D] mb-3 group-hover:text-[#6BAD3D] transition-colors">
+                  {post.title}
+                </h3>
+                <p className="font-body text-sm text-[#6B6560] leading-relaxed mb-4 line-clamp-2">{post.excerpt}</p>
+                <p className="font-body text-[12px] text-black/40">
+                  {post.date} · {post.readTime}
+                </p>
+              </article>
+            ))}
+          </div>
 
-            <div className="flex items-center justify-center gap-4 mt-16">
-              <button className="font-body text-sm text-slate hover:text-ink transition-colors">
-                ← Previous
-              </button>
-              <span className="font-body text-sm text-ash">Page 1 of 1</span>
-              <button className="font-body text-sm text-slate hover:text-ink transition-colors">
-                Next →
-              </button>
-            </div>
+          <div className="flex items-center justify-center gap-4 mt-16">
+            <button className="font-body text-sm text-[#6B6560] hover:text-[#0D0D0D] transition-colors">
+              ← Previous
+            </button>
+            <span className="font-body text-sm text-black/30">Page 1 of 1</span>
+            <button className="font-body text-sm text-[#6B6560] hover:text-[#0D0D0D] transition-colors">
+              Next →
+            </button>
           </div>
         </div>
       </section>
 
-      {/* Blog CTA */}
-      <section className="bg-moss py-24 md:py-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center">
-          <SectionEyebrow text="Ready to talk?" />
-          <h2 className="font-display font-normal text-[44px] leading-tight text-cream mb-6 max-w-xl mx-auto">
+      {/* ── BLOG CTA ── */}
+      <section className="py-16 px-6 lg:px-12 max-w-7xl mx-auto pb-24">
+        <div className="bg-[#6BAD3D] rounded-3xl p-12 md:p-16 text-center">
+          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/60 mb-6">Ready to talk?</p>
+          <h2 className="font-display font-bold text-[40px] leading-tight text-white mb-8 max-w-xl mx-auto">
             Stop reading. Start growing.
           </h2>
           <Link
             href="/contact"
-            className="inline-flex items-center bg-ember text-iron font-body font-medium px-8 py-4 rounded-full hover:brightness-110 hover:scale-[1.02] transition-all duration-300"
+            className="inline-flex items-center bg-white text-[#0D0D0D] font-body font-semibold px-8 py-4 rounded-full hover:bg-white/90 transition-all duration-200"
           >
             Book a Discovery Call
           </Link>
         </div>
       </section>
-    </>
+
+    </div>
   )
 }
