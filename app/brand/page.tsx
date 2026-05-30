@@ -23,6 +23,8 @@ const colors = [
     { name: 'Ember', token: 'ember', hex: '#7CB550' },
     { name: 'Copper', token: 'copper', hex: '#B5621C' },
     { name: 'Hewn', token: 'hewn', hex: '#8C4612' },
+    { name: 'Amethyst', token: 'amethyst', hex: '#8B5CF6' },
+    { name: 'Lilac', token: 'lilac', hex: '#E9D5FF' },
   ]},
 ]
 
