@@ -28,7 +28,7 @@ export default function Nav() {
     setMenuOpen(false)
   }, [pathname])
 
-  const darkHero = !scrolled && ['/about', '/how-it-works', '/contact', '/pricing'].includes(pathname)
+  const darkHero = !scrolled && ['/about', '/contact', '/pricing'].includes(pathname)
 
   return (
     <>
