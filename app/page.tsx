@@ -73,18 +73,8 @@ export default function Home() {
             <p className="font-body text-lg text-[#6B6560] max-w-md mb-10 leading-relaxed">
               You were never paying for strategy — you were paying for bloat. AI now handles the technical work at speed. Hewn Life brings what AI can&apos;t: thirty years of taste, trend instinct, and the vision to see what&apos;s coming before your competitors do.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <CalButton className="inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
-                Book a Discovery Call
-              </CalButton>
-              <Link href="/pricing" className="inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 hover:bg-black/[0.02] transition-all duration-200">
-                See Plans & Pricing
-              </Link>
-            </div>
-
             {/* Trustpilot rating */}
-            <div className="flex items-center gap-3 mt-6">
-              {/* Trustpilot star icon + wordmark */}
+            <div className="flex flex-wrap items-center justify-center sm:justify-between gap-x-3 gap-y-2 mb-5 max-w-md">
               <div className="flex items-center gap-1.5">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect width="24" height="24" rx="3" fill="#00B67A"/>
@@ -100,6 +90,15 @@ export default function Home() {
                 ))}
               </div>
               <span className="font-body text-xs text-[#6B6560]"><strong className="text-[#0D0D0D]">4.9</strong> · Rated Excellent</span>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 max-w-md">
+              <CalButton className="inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
+                Book a Discovery Call
+              </CalButton>
+              <Link href="/pricing" className="inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 hover:bg-black/[0.02] transition-all duration-200">
+                See Plans & Pricing
+              </Link>
             </div>
           </div>
 
