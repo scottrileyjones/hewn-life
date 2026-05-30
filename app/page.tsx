@@ -10,12 +10,30 @@ const PHOTOS = {
 }
 
 const pillars = [
-  { num: '01', name: 'Brand Foundation', desc: 'Identity, voice, and positioning — the strategic bedrock everything else is built on.', bg: '#F0F7EB', accent: '#6BAD3D' },
-  { num: '02', name: 'Digital Presence', desc: 'Website, SEO, and maps — your complete digital footprint, owned and optimized.', bg: '#EBF3F7', accent: '#3D7FA4' },
-  { num: '03', name: 'Lead & Revenue Engine', desc: 'Paid media, funnels, and automation — systems that turn attention into revenue.', bg: '#F7F0EB', accent: '#B5621C' },
-  { num: '04', name: 'Customer Experience', desc: 'Scheduling, follow-up, and retention — the systems that turn buyers into loyal customers.', bg: '#F3EBF7', accent: '#7A4A9A' },
-  { num: '05', name: 'Reputation & Social Proof', desc: 'Reviews, UGC, and referrals — turning your best customers into your best marketing.', bg: '#F7EBEB', accent: '#A43D3D' },
-  { num: '06', name: 'Business Advisory', desc: 'Strategy, KPIs, and growth planning — the fractional CMO layer that ties it all together.', bg: '#EBEFF7', accent: '#3D4FA4' },
+  {
+    num: '01', name: 'Brand Foundation', desc: 'Identity, voice, and positioning — the strategic bedrock everything else is built on.', bg: '#F0F7EB', accent: '#6BAD3D',
+    icon: <><path d="M12 3L3 8l9 5 9-5-9-5z" /><path d="M3 13l9 5 9-5" /><path d="M3 18l9 5 9-5" /></>,
+  },
+  {
+    num: '02', name: 'Digital Presence', desc: 'Website, SEO, and maps — your complete digital footprint, owned and optimized.', bg: '#EBF3F7', accent: '#3D7FA4',
+    icon: <><circle cx="12" cy="12" r="9" /><path d="M3 12h18" /><path d="M12 3c2.5 2.5 3.5 6 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-6-3.5-9s1-6.5 3.5-9z" /></>,
+  },
+  {
+    num: '03', name: 'Lead & Revenue Engine', desc: 'Paid media, funnels, and automation — systems that turn attention into revenue.', bg: '#F7F0EB', accent: '#B5621C',
+    icon: <><path d="M3 17l6-6 4 4 8-8" /><path d="M21 7v5h-5" /></>,
+  },
+  {
+    num: '04', name: 'Customer Experience', desc: 'Scheduling, follow-up, and retention — the systems that turn buyers into loyal customers.', bg: '#F3EBF7', accent: '#7A4A9A',
+    icon: <><path d="M21 11.5a8.38 8.38 0 0 1-9 8.4 9 9 0 0 1-3.9-.9L3 21l1.9-5.1A8.38 8.38 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5z" /><path d="M12 14s-2-1.3-2-2.6A1.4 1.4 0 0 1 12 10a1.4 1.4 0 0 1 2 1.4C14 12.7 12 14 12 14z" /></>,
+  },
+  {
+    num: '05', name: 'Reputation & Social Proof', desc: 'Reviews, UGC, and referrals — turning your best customers into your best marketing.', bg: '#F7EBEB', accent: '#A43D3D',
+    icon: <path d="M12 3l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 18.2 6.2 21.8l1.1-6.4L2.6 9.8l6.5-.9L12 3z" />,
+  },
+  {
+    num: '06', name: 'Business Advisory', desc: 'Strategy, KPIs, and growth planning — the fractional CMO layer that ties it all together.', bg: '#EBEFF7', accent: '#3D4FA4',
+    icon: <><path d="M9 18h6" /><path d="M10 21h4" /><path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.3 1 2.5h6c0-1.2.3-1.8 1-2.5A6 6 0 0 0 12 3z" /></>,
+  },
 ]
 
 const stats = [
@@ -200,7 +218,14 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {pillars.map((p) => (
             <div key={p.num} className="rounded-2xl p-7 hover:-translate-y-0.5 transition-transform duration-200" style={{ background: p.bg }}>
-              <p className="font-display font-bold text-[40px] leading-none mb-5" style={{ color: p.accent + '33' }}>{p.num}</p>
+              <div className="flex items-center justify-between mb-5">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: '#ffffff' }}>
+                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke={p.accent} strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+                    {p.icon}
+                  </svg>
+                </div>
+                <span className="font-display font-bold text-[32px] leading-none" style={{ color: p.accent + '33' }}>{p.num}</span>
+              </div>
               <p className="font-body font-semibold text-[13px] uppercase tracking-wider text-[#0D0D0D] mb-2">{p.name}</p>
               <p className="font-body text-sm text-[#6B6560] leading-relaxed">{p.desc}</p>
             </div>
