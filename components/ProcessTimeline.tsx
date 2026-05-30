@@ -4,192 +4,176 @@ import { useEffect, useRef, useState } from 'react'
 const steps = [
   {
     num: '01',
-    period: 'WKS 1–2',
-    traditionalTime: '4–6 wks',
-    aiTime: '3 days',
+    period: 'Weeks 1–2',
     title: 'Discovery',
+    place: 'Audit & Strategy',
     desc: 'Full audit — brand, digital, systems, competitive landscape. Nothing assumed, nothing guessed.',
+    detail: 'AI-driven market and competitor analysis maps your entire landscape in days, not weeks. We surface the gaps, the opportunities, and the fastest path to traction before a single dollar is spent.',
+    traditionalTime: '4–6 weeks',
+    aiTime: '3 days',
   },
   {
     num: '02',
-    period: 'WKS 3–8',
-    traditionalTime: '6–8 wks',
-    aiTime: '2 wks',
+    period: 'Weeks 3–8',
     title: 'Foundation Sprint',
-    desc: 'Brand identity, website, Google presence built and launched. Infrastructure before spend.',
+    place: 'Build & Launch',
+    desc: 'Brand identity, website, and Google presence built and launched. Infrastructure before spend.',
+    detail: 'Brand identity, a custom website, and your full digital presence — designed, built, and shipped. AI accelerates production while human taste makes sure it actually converts.',
+    traditionalTime: '6–8 weeks',
+    aiTime: '2 weeks',
   },
   {
     num: '03',
-    period: 'MOS 3–6',
-    traditionalTime: '3–6 mos',
-    aiTime: '6 wks',
+    period: 'Months 3–6',
     title: 'Growth Sprint',
+    place: 'Scale Demand',
     desc: 'Paid media, funnels, automations, and retention systems layered onto the foundation.',
+    detail: 'Paid media across Google and Meta, sales funnels, automated nurture sequences, and retention systems — all layered onto a foundation built to hold them.',
+    traditionalTime: '3–6 months',
+    aiTime: '6 weeks',
   },
   {
     num: '04',
-    period: 'MO 6+',
+    period: 'Month 6+',
+    title: 'Scale',
+    place: 'Compound & Optimize',
+    desc: 'Ongoing advisory, quarterly planning, and continuous optimization. The system compounds.',
+    detail: 'A fractional CMO advisory layer, quarterly growth planning, and AI models optimizing your campaigns around the clock. The system gets smarter — and your lead stretches.',
     traditionalTime: 'manual check-ins',
     aiTime: '24/7 AI-optimized',
-    title: 'Scale',
-    desc: 'Ongoing advisory, quarterly planning, continuous optimization. The system compounds.',
     ongoing: true,
   },
 ]
 
 export default function ProcessTimeline() {
-  const ref = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const stepRefs = useRef<(HTMLDivElement | null)[]>([])
   const [activeStep, setActiveStep] = useState(-1)
-  const [showAi, setShowAi] = useState<boolean[]>(new Array(steps.length).fill(false))
+  const [progress, setProgress] = useState(0) // 0–1 fill of the spine
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          steps.forEach((_, i) => {
-            setTimeout(() => {
-              setActiveStep(i)
-              setTimeout(() => {
-                setShowAi(prev => {
-                  const next = [...prev]
-                  next[i] = true
-                  return next
-                })
-              }, 450)
-            }, i * 850)
-          })
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.25 }
-    )
-    if (ref.current) observer.observe(ref.current)
-    return () => observer.disconnect()
+    const handleScroll = () => {
+      const container = containerRef.current
+      if (!container) return
+      const rect = container.getBoundingClientRect()
+      const triggerLine = window.innerHeight * 0.55
+
+      // Spine fill progress
+      const total = rect.height
+      const scrolled = triggerLine - rect.top
+      setProgress(Math.max(0, Math.min(1, scrolled / total)))
+
+      // Active step = furthest step whose center has passed the trigger line
+      let active = -1
+      stepRefs.current.forEach((el, i) => {
+        if (!el) return
+        const r = el.getBoundingClientRect()
+        if (r.top + r.height * 0.4 < triggerLine) active = i
+      })
+      setActiveStep(active)
+    }
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
+    }
   }, [])
 
   return (
-    <div ref={ref}>
+    <div ref={containerRef} className="relative max-w-5xl mx-auto">
 
-      {/* ── Desktop ── */}
-      <div className="hidden md:block">
-        <div className="relative flex items-start">
-          {steps.map((step, i) => (
-            <div key={i} className="flex-1 flex flex-col items-center relative">
+      {/* ── Center spine (desktop) / left spine (mobile) ── */}
+      <div className="absolute top-0 bottom-0 left-6 md:left-1/2 md:-translate-x-1/2 w-[2px]">
+        <div className="absolute inset-0 bg-black/[0.08]" />
+        <div
+          className="absolute top-0 left-0 w-full bg-gradient-to-b from-[#8B5CF6] to-[#A78BFA] transition-[height] duration-300 ease-out"
+          style={{ height: `${progress * 100}%`, boxShadow: '0 0 12px rgba(139,92,246,0.5)' }}
+        />
+      </div>
 
-              {/* Period label */}
-              <div className="mb-5 h-8 flex items-end">
-                <p className={`font-mono text-[9px] uppercase tracking-[0.22em] transition-all duration-500 ${activeStep >= i ? 'text-[#0D0D0D]/40' : 'text-[#0D0D0D]/10'}`}>
-                  {step.period}
-                </p>
-              </div>
-
-              {/* Connector + Circle row */}
-              <div className="flex items-center w-full">
-                {/* Left connector */}
-                <div className="flex-1 h-[1px] relative overflow-hidden">
-                  {i === 0
-                    ? null
-                    : <>
-                        <div className="absolute inset-0 bg-black/8" />
-                        <div
-                          className="absolute inset-0 bg-[#6BAD3D] transition-all duration-700 ease-out"
-                          style={{ width: activeStep >= i ? '100%' : '0%' }}
-                        />
-                      </>
-                  }
-                </div>
-
-                {/* Circle */}
-                <div className={`w-11 h-11 rounded-full border flex items-center justify-center flex-shrink-0 transition-all duration-500 relative ${
-                  activeStep >= i
-                    ? 'border-[#6BAD3D] bg-[#6BAD3D] shadow-[0_0_0_4px_rgba(107,173,61,0.12)]'
-                    : 'border-black/15 bg-white'
-                }`}>
-                  <span className={`font-mono text-[11px] font-semibold transition-colors duration-300 ${activeStep >= i ? 'text-white' : 'text-black/25'}`}>
+      <div className="flex flex-col gap-16 md:gap-28 py-4">
+        {steps.map((step, i) => {
+          const isActive = activeStep >= i
+          const leftSide = i % 2 === 0
+          return (
+            <div
+              key={i}
+              ref={el => { stepRefs.current[i] = el }}
+              className="relative md:grid md:grid-cols-2 md:items-center md:gap-16"
+            >
+              {/* ── Node on the spine ── */}
+              <div className="absolute left-6 md:left-1/2 -translate-x-1/2 top-1 md:top-1/2 md:-translate-y-1/2 z-10">
+                <div className={`relative w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 ${
+                  isActive
+                    ? 'bg-gradient-to-br from-[#8B5CF6] to-[#A78BFA] border-0'
+                    : 'bg-white border-2 border-black/10'
+                }`}
+                  style={isActive ? { boxShadow: '0 0 0 6px rgba(139,92,246,0.14), 0 0 24px rgba(139,92,246,0.45)' } : undefined}
+                >
+                  <span className={`font-mono text-[12px] font-bold transition-colors duration-300 ${isActive ? 'text-white' : 'text-black/30'}`}>
                     {step.num}
                   </span>
-                  {step.ongoing && activeStep >= i && (
-                    <span className="absolute -right-1 -top-1 w-2.5 h-2.5 rounded-full bg-[#6BAD3D] animate-ping opacity-60" />
+                  {step.ongoing && isActive && (
+                    <span className="absolute inset-0 rounded-full border-2 border-[#8B5CF6] animate-ping opacity-40" />
                   )}
                 </div>
-
-                {/* Right connector */}
-                <div className="flex-1 h-[1px] relative overflow-hidden">
-                  {i < steps.length - 1
-                    ? <>
-                        <div className="absolute inset-0 bg-black/8" />
-                        <div
-                          className="absolute inset-0 bg-[#6BAD3D] transition-all duration-700 ease-out"
-                          style={{ width: activeStep >= i + 1 ? '100%' : '0%' }}
-                        />
-                      </>
-                    : null
-                  }
-                </div>
               </div>
 
-              {/* Step info */}
-              <div className={`mt-7 text-center px-5 transition-all duration-600 ${activeStep >= i ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}>
-                <p className="font-display font-semibold text-[17px] text-[#0D0D0D] mb-2 leading-snug">{step.title}</p>
-                <p className="font-body text-[13px] text-[#6B6560] leading-relaxed mb-5">{step.desc}</p>
-
-                {/* Speed callout — WSJ annotation style */}
-                <div className="border-t border-black/[0.07] pt-4">
-                  <p className="font-mono text-[8px] uppercase tracking-[0.18em] text-black/20 mb-1">Typical timeline</p>
-                  <p className={`font-mono text-[10px] text-black/25 line-through decoration-black/20 mb-2 transition-opacity duration-400 ${showAi[i] ? 'opacity-100' : 'opacity-0'}`}>
-                    {step.traditionalTime}
-                  </p>
-                  <div className={`flex items-center justify-center gap-1.5 transition-all duration-500 delay-100 ${showAi[i] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1'}`}>
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                      <path d="M5 1v8M2 6l3 3 3-3" stroke="#6BAD3D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#6BAD3D] font-medium">
-                      {step.aiTime}
-                    </p>
-                  </div>
-                </div>
+              {/* ── Left column ── */}
+              <div className={`${leftSide ? 'md:order-1 md:text-right md:pr-4' : 'md:order-2 md:col-start-2'} pl-20 md:pl-0`}>
+                {leftSide ? (
+                  <StepCard step={step} isActive={isActive} align="right" />
+                ) : (
+                  <StepLabel step={step} isActive={isActive} align="left" />
+                )}
               </div>
 
+              {/* ── Right column ── */}
+              <div className={`${leftSide ? 'md:order-2 md:col-start-2 md:pl-4' : 'md:order-1 md:text-right md:pr-4'} pl-20 md:pl-0 mt-4 md:mt-0`}>
+                {leftSide ? (
+                  <StepLabel step={step} isActive={isActive} align="right" />
+                ) : (
+                  <StepCard step={step} isActive={isActive} align="left" />
+                )}
+              </div>
             </div>
-          ))}
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function StepLabel({ step, isActive, align }: { step: typeof steps[number]; isActive: boolean; align: 'left' | 'right' }) {
+  return (
+    <div className={`transition-all duration-700 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-40 translate-y-2'} ${align === 'right' ? 'md:flex md:flex-col md:items-end' : ''}`}>
+      <span className={`inline-block rounded-full px-4 py-1.5 font-body text-xs font-semibold tracking-wide transition-all duration-500 ${
+        isActive ? 'bg-gradient-to-r from-[#8B5CF6] to-[#A78BFA] text-white shadow-[0_4px_16px_rgba(139,92,246,0.35)]' : 'bg-black/[0.06] text-black/40'
+      }`}>
+        {step.period}
+      </span>
+      <p className="font-display font-bold text-[28px] md:text-[34px] text-[#0D0D0D] mt-4 leading-none">{step.title}</p>
+      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#8B5CF6] mt-2">{step.place}</p>
+    </div>
+  )
+}
+
+function StepCard({ step, isActive, align }: { step: typeof steps[number]; isActive: boolean; align: 'left' | 'right' }) {
+  return (
+    <div className={`transition-all duration-700 ${isActive ? 'opacity-100 translate-x-0' : `opacity-0 ${align === 'right' ? 'translate-x-4' : '-translate-x-4'}`}`}>
+      <div className={`bg-white rounded-2xl border border-black/[0.06] p-7 transition-shadow duration-500 ${isActive ? 'shadow-[0_12px_40px_rgba(139,92,246,0.12)]' : 'shadow-sm'} ${align === 'right' ? 'md:text-right' : ''}`}>
+        <p className="font-body text-[15px] text-[#3D3A36] leading-relaxed mb-3">{step.desc}</p>
+        <p className="font-body text-sm text-[#6B6560] leading-relaxed mb-5">{step.detail}</p>
+        <div className={`flex items-center gap-3 pt-4 border-t border-black/[0.06] ${align === 'right' ? 'md:justify-end' : ''}`}>
+          <span className="font-mono text-[11px] text-black/30 line-through">{step.traditionalTime}</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="rotate-90 md:rotate-0">
+            <path d="M3 7h8M8 4l3 3-3 3" stroke="#8B5CF6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="font-mono text-[11px] font-semibold text-[#7C3AED] uppercase tracking-[0.12em]">{step.aiTime}</span>
         </div>
       </div>
-
-      {/* ── Mobile: vertical ── */}
-      <div className="md:hidden">
-        {steps.map((step, i) => (
-          <div key={i} className="flex gap-5">
-            {/* Left: circle + vertical line */}
-            <div className="flex flex-col items-center flex-shrink-0">
-              <div className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-500 ${
-                activeStep >= i ? 'border-[#6BAD3D] bg-[#6BAD3D]' : 'border-black/15 bg-white'
-              }`}>
-                <span className={`font-mono text-[10px] font-semibold ${activeStep >= i ? 'text-white' : 'text-black/25'}`}>
-                  {step.num}
-                </span>
-              </div>
-              {i < steps.length - 1 && (
-                <div className="w-[1px] flex-1 my-1 relative overflow-hidden" style={{ minHeight: 64 }}>
-                  <div className="absolute inset-0 bg-black/8" />
-                  <div className="absolute inset-0 bg-[#6BAD3D] transition-all duration-700" style={{ height: activeStep >= i + 1 ? '100%' : '0%' }} />
-                </div>
-              )}
-            </div>
-
-            {/* Right: content */}
-            <div className={`pb-10 flex-1 transition-all duration-500 ${activeStep >= i ? 'opacity-100' : 'opacity-30'}`}>
-              <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#0D0D0D]/35 mb-1 mt-2">{step.period}</p>
-              <p className="font-display font-semibold text-[20px] text-[#0D0D0D] mb-2 leading-snug">{step.title}</p>
-              <p className="font-body text-sm text-[#6B6560] leading-relaxed mb-3">{step.desc}</p>
-              <div className={`flex items-center gap-3 transition-opacity duration-500 ${showAi[i] ? 'opacity-100' : 'opacity-0'}`}>
-                <span className="font-mono text-[9px] text-black/25 line-through">{step.traditionalTime}</span>
-                <span className="font-mono text-[9px] text-[#6BAD3D] uppercase tracking-[0.14em]">↓ {step.aiTime}</span>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
     </div>
   )
 }
