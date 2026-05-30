@@ -31,6 +31,7 @@ export default function Footer() {
                 { href: '/', label: 'Home' },
                 { href: '/about', label: 'About' },
                 { href: '/how-it-works', label: 'How It Works' },
+                { href: '/website-in-a-week', label: 'Website in a Week' },
                 { href: '/pricing', label: 'Pricing' },
                 { href: '/blog', label: 'Blog' },
                 { href: '/contact', label: 'Contact' },
