@@ -81,6 +81,16 @@ export default function HowItWorks() {
 
           <ProcessTimeline />
 
+          {/* CTA buttons */}
+          <div className="mt-16 flex flex-col sm:flex-row justify-center gap-3">
+            <CalButton className="inline-flex items-center justify-center bg-[#8B5CF6] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#7C3AED] transition-all duration-200">
+              Book a Discovery Call
+            </CalButton>
+            <Link href="/pricing" className="inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200">
+              See Plans & Pricing
+            </Link>
+          </div>
+
           {/* Footnote annotation */}
           <div className="mt-14 pt-6 border-t border-black/[0.06] flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-8">
             <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-black/20">* AI-compressed timeline vs. traditional agency average</p>
