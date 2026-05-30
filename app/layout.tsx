@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, DM_Sans, Inter_Tight, Playfair_Display } from 'next/
 import './globals.css'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
+import CookieConsent from '@/components/CookieConsent'
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -64,6 +65,7 @@ export default function RootLayout({
         <Nav />
         <main>{children}</main>
         <Footer />
+        <CookieConsent />
       </body>
     </html>
   )
