@@ -2,6 +2,7 @@ import SectionEyebrow from '@/components/SectionEyebrow'
 import CtaBanner from '@/components/CtaBanner'
 import BuildWeek from '@/components/BuildWeek'
 import CalButton from '@/components/CalButton'
+import CountUp from '@/components/CountUp'
 import Link from 'next/link'
 
 export const metadata = {
@@ -77,7 +78,7 @@ export default function WebsiteInAWeek() {
             { num: '100%', label: 'yours to keep' },
           ].map((s, i) => (
             <div key={i} className="text-center md:text-left">
-              <p className="font-display text-[40px] md:text-[52px] leading-none text-white mb-2">{s.num}</p>
+              <p className="font-display text-[40px] md:text-[52px] leading-none text-white mb-2"><CountUp value={s.num} /></p>
               <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#6BAD3D]">{s.label}</p>
             </div>
           ))}

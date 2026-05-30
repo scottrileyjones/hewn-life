@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import SectionEyebrow from '@/components/SectionEyebrow'
 import CtaBanner from '@/components/CtaBanner'
+import CountUp from '@/components/CountUp'
 
 const values = [
   { num: '01', title: 'Human Taste Above All', desc: 'AI amplifies our work — it never replaces the judgment, taste, and empathy that great marketing demands.' },
@@ -63,7 +64,7 @@ export default function About() {
                   { num: '100s', label: 'of businesses advised' },
                 ].map((stat, i) => (
                   <div key={i}>
-                    <p className="font-display font-bold text-[36px] text-amethyst">{stat.num}</p>
+                    <p className="font-display font-bold text-[36px] text-amethyst"><CountUp value={stat.num} /></p>
                     <p className="font-body text-xs text-slate mt-1">{stat.label}</p>
                   </div>
                 ))}

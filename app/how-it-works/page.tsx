@@ -2,6 +2,7 @@ import SectionEyebrow from '@/components/SectionEyebrow'
 import CtaBanner from '@/components/CtaBanner'
 import ProcessTimeline from '@/components/ProcessTimeline'
 import CalButton from '@/components/CalButton'
+import CountUp from '@/components/CountUp'
 import Link from 'next/link'
 
 const hewnAssets = [
@@ -176,7 +177,7 @@ export default function HowItWorks() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/[0.08]">
             <div className="bg-[#F9F7F3] p-10">
               <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-black/30 mb-3">Hewn — Tier 01</p>
-              <p className="font-display text-[64px] leading-none text-[#0D0D0D] mb-1">{hewnAssets.length}</p>
+              <p className="font-display text-[64px] leading-none text-[#0D0D0D] mb-1"><CountUp value={String(hewnAssets.length)} /></p>
               <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#6BAD3D] mb-8">deliverables built & owned</p>
               <ul className="space-y-3">
                 {hewnAssets.map(a => (
@@ -189,7 +190,7 @@ export default function HowItWorks() {
             </div>
             <div className="bg-[#0D0D0D] p-10">
               <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/25 mb-3">Forged — Tier 02</p>
-              <p className="font-display text-[64px] leading-none text-white mb-1">{hewnAssets.length + forgedAssets.length}</p>
+              <p className="font-display text-[64px] leading-none text-white mb-1"><CountUp value={String(hewnAssets.length + forgedAssets.length)} /></p>
               <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#6BAD3D] mb-3">deliverables built & owned</p>
               <p className="font-mono text-[9px] text-white/20 mb-6">Everything in Hewn, plus:</p>
               <ul className="space-y-3">
@@ -203,7 +204,7 @@ export default function HowItWorks() {
             </div>
             <div className="bg-[#F9F7F3] p-10">
               <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-black/30 mb-3">Carved — Tier 03</p>
-              <p className="font-display text-[64px] leading-none text-[#0D0D0D] mb-1">{hewnAssets.length + forgedAssets.length + carvedAssets.length}</p>
+              <p className="font-display text-[64px] leading-none text-[#0D0D0D] mb-1"><CountUp value={String(hewnAssets.length + forgedAssets.length + carvedAssets.length)} /></p>
               <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#6BAD3D] mb-3">deliverables built & owned</p>
               <p className="font-mono text-[9px] text-black/25 mb-6">Everything in Forged, plus:</p>
               <ul className="space-y-3">
