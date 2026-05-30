@@ -64,15 +64,14 @@ export default function Home() {
           <div className="animate-fade-up">
             <div className="inline-flex items-center gap-2 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-4 py-1.5 mb-8">
               <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
-              <span className="font-body text-xs font-medium tracking-wide">The AI-Era Marketing Agency</span>
+              <span className="font-body text-xs font-medium tracking-wide">The End of Agency Bloat</span>
             </div>
             <h1 className="hero-heading text-[52px] md:text-[68px] lg:text-[72px] text-[#0D0D0D] mb-8 leading-[0.95]">
-              Marketing isn&apos;t a line item. It&apos;s the{' '}
-              <span className="accent" style={{ color: '#6BAD3D' }}>life</span>{' '}
-              of your business.
+              AI killed the agency.{' '}
+              <span className="accent" style={{ color: '#8B5CF6' }}>Good.</span>
             </h1>
             <p className="font-body text-lg text-[#6B6560] max-w-md mb-10 leading-relaxed">
-              Thirty years of human business acumen. The speed and scale of AI. Full-service marketing at a fraction of the traditional cost.
+              You were never paying for strategy — you were paying for bloat. AI now handles the technical work at speed. Hewn Life brings what AI can&apos;t: thirty years of taste, trend instinct, and the vision to see what&apos;s coming before your competitors do.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <CalButton className="inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
