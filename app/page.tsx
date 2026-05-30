@@ -255,43 +255,51 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── COMPARISON TABLE ── */}
-      <section className="py-16 px-6 lg:px-12 max-w-7xl mx-auto">
+      {/* ── COMPARISON ── */}
+      <section className="py-16 px-6 lg:px-12 max-w-4xl mx-auto">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-black/[0.04] rounded-full px-4 py-1.5 mb-4">
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-black/50">The Numbers</span>
+          <div className="inline-flex items-center gap-2 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-4 py-1.5 mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
+            <span className="font-body text-xs font-medium tracking-wide">The Numbers</span>
           </div>
-          <h2 className="font-display font-bold text-[40px] text-[#0D0D0D]">
-            What this costs at a traditional agency.
+          <h2 className="font-display font-bold text-[36px] md:text-[44px] text-[#0D0D0D] leading-tight">
+            What this costs at a <span className="accent" style={{ color: '#6BAD3D' }}>traditional agency.</span>
           </h2>
         </div>
-        <div className="bg-[#F7F6F3] rounded-3xl overflow-hidden">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-black/[0.06]">
-                <th className="text-left px-8 py-5 font-mono text-[10px] uppercase tracking-[0.15em] text-black/40 font-normal">Service</th>
-                <th className="text-left px-8 py-5 font-mono text-[10px] uppercase tracking-[0.15em] text-black/40 font-normal">Traditional Agency</th>
-                <th className="text-left px-8 py-5 font-mono text-[10px] uppercase tracking-[0.15em] text-[#6BAD3D] font-normal">Hewn Life</th>
-              </tr>
-            </thead>
-            <tbody>
-              {comparisonRows.map((row, i) => (
-                <tr key={i} className="border-b border-black/[0.05]">
-                  <td className="px-8 py-4 font-body text-sm text-[#0D0D0D]">{row.service}</td>
-                  <td className="px-8 py-4 font-body text-sm text-black/40 line-through">{row.traditional}</td>
-                  <td className="px-8 py-4 font-body text-sm font-medium text-[#6BAD3D]">{row.hewn}</td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr className="bg-[#0D0D0D]">
-                <td className="px-8 py-5 font-body font-semibold text-sm text-white">Total</td>
-                <td className="px-8 py-5 font-body text-sm text-white/30 line-through">$20,000–$50,000+/mo</td>
-                <td className="px-8 py-5 font-body font-bold text-sm text-[#6BAD3D]">From $2,500/mo</td>
-              </tr>
-            </tfoot>
-          </table>
+
+        <div className="rounded-3xl border border-black/[0.08] overflow-hidden">
+          {/* Column header — hidden on mobile */}
+          <div className="hidden sm:grid grid-cols-[1fr_auto_auto] gap-6 px-7 py-4 bg-[#F7F6F3] border-b border-black/[0.06]">
+            <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-black/40">Service</span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-black/40 text-right w-[160px]">Traditional</span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#6BAD3D] text-right w-[90px]">Hewnlife</span>
+          </div>
+
+          {comparisonRows.map((row, i) => (
+            <div
+              key={i}
+              className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_auto_auto] items-center gap-x-4 gap-y-1 px-5 sm:px-7 py-4 sm:py-5 border-b border-black/[0.05]"
+            >
+              <span className="font-body text-sm md:text-[15px] text-[#0D0D0D] font-medium row-start-1">{row.service}</span>
+              <span className="font-body text-xs sm:text-sm text-black/35 line-through text-left sm:text-right sm:w-[160px] whitespace-nowrap col-start-1 sm:col-start-2 row-start-2 sm:row-start-1">{row.traditional}</span>
+              <span className="flex items-center justify-end gap-1.5 text-[#6BAD3D] sm:w-[90px] col-start-2 row-start-1 sm:row-start-1">
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <span className="font-body text-sm font-medium sm:hidden">Included</span>
+              </span>
+            </div>
+          ))}
+
+          {/* Total row */}
+          <div className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_auto_auto] items-center gap-x-4 gap-y-1 px-5 sm:px-7 py-5 sm:py-6 bg-[#0D0D0D]">
+            <span className="font-body font-semibold text-sm text-white row-start-1">Total</span>
+            <span className="font-body text-xs sm:text-sm text-white/30 line-through text-left sm:text-right sm:w-[160px] whitespace-nowrap col-start-1 sm:col-start-2 row-start-2 sm:row-start-1">$20k–$50k+/mo</span>
+            <span className="font-display font-bold text-sm text-[#6BAD3D] text-right sm:w-[90px] whitespace-nowrap col-start-2 row-start-1">$2,500/mo</span>
+          </div>
         </div>
+
+        <p className="text-center font-body text-sm text-[#6B6560] mt-6">
+          Everything above. One flat monthly fee. <span className="text-[#0D0D0D] font-medium">No percentage of spend, ever.</span>
+        </p>
       </section>
 
       {/* ── BOTTOM CTA ── */}
