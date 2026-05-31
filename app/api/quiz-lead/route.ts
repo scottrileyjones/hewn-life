@@ -7,7 +7,7 @@ const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { name, company, email, phone, state, notes, tier, services, answers, score, annualRevenue, annualRevenueLabel } = body || {}
+    const { name, company, email, phone, state, notes, consent, tier, services, answers, score, annualRevenue, annualRevenueLabel } = body || {}
 
     // Basic validation
     if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
       Phone: phone || '',
       State: state || '',
       Notes: notes || '',
+      'Marketing Consent': consent === true,
       'Business Stage': a['Where is your business right now?'] || '',
       'Primary Goal': a["What's your single most important goal in the next 90 days?"] || '',
       'Marketing Presence': a['How would you describe your current marketing presence?'] || '',

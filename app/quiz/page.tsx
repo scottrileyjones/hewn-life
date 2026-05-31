@@ -684,7 +684,7 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
 
 // ── Capture screen ────────────────────────────────────────────────────────────
 
-interface Contact { name: string; company: string; email: string; phone: string; state: string; notes: string }
+interface Contact { name: string; company: string; email: string; phone: string; state: string; notes: string; consent: boolean }
 
 const US_STATES = [
   'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
@@ -711,11 +711,15 @@ function CaptureScreen({
   const [error, setError] = useState('')
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)
-  const canSubmit = contact.name.trim().length > 1 && emailValid
+  const canSubmit = contact.name.trim().length > 1 && emailValid && contact.consent
 
   function handleSubmit() {
-    if (!canSubmit) {
+    if (contact.name.trim().length <= 1 || !emailValid) {
       setError('Please enter your name and a valid email.')
+      return
+    }
+    if (!contact.consent) {
+      setError('Please agree to the consent statement to see your results.')
       return
     }
     setError('')
@@ -811,20 +815,29 @@ function CaptureScreen({
                 ))}
               </select>
             </div>
-            <div>
-              <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-2 block">
-                Anything else we should know? <span className="text-black/25 normal-case tracking-normal">(optional)</span>
-              </label>
-              <textarea
-                name="notes"
-                rows={3}
-                value={contact.notes}
-                onChange={e => setContact(c => ({ ...c, notes: e.target.value }))}
-                placeholder="Tell us anything about your business, goals, or challenges that would help us tailor your plan."
-                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all resize-none"
-              />
-            </div>
           </div>
+
+          {/* Marketing consent */}
+          <label className="flex items-start gap-3 mt-6 cursor-pointer select-none">
+            <span className="relative flex-shrink-0 mt-0.5">
+              <input
+                type="checkbox"
+                checked={contact.consent}
+                onChange={e => setContact(c => ({ ...c, consent: e.target.checked }))}
+                className="peer sr-only"
+              />
+              <span className="w-5 h-5 rounded-md border border-black/20 bg-white flex items-center justify-center transition-all peer-checked:bg-[#8B5CF6] peer-checked:border-[#8B5CF6]">
+                {contact.consent && (
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                    <path d="M2.5 6.5l2.2 2.2L9.5 3.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                )}
+              </span>
+            </span>
+            <span className="font-body text-[13px] text-[#6B6560] leading-relaxed">
+              I agree to receive my results and occasional marketing communications from Hewn Life, and consent to my information being used as described in the <Link href="/privacy" className="text-[#8B5CF6] underline hover:text-[#7C3AED]">privacy policy</Link>. I can unsubscribe anytime.
+            </span>
+          </label>
 
           {error && <p className="font-body text-[13px] text-red-500 mt-4">{error}</p>}
 
@@ -971,7 +984,7 @@ function RevenueSliderScreen({
               onClick={onNext}
               className="inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 bg-[#8B5CF6] text-white hover:bg-[#7C3AED] shadow-[0_8px_30px_-8px_rgba(139,92,246,0.5)] hover:-translate-y-0.5"
             >
-              See My Results →
+              Next →
             </button>
           </div>
         </div>
@@ -1002,25 +1015,106 @@ function RevenueSliderScreen({
   )
 }
 
+// ── Notes screen ──────────────────────────────────────────────────────────────
+
+function NotesScreen({
+  notes,
+  setNotes,
+  onBack,
+  onNext,
+  stepNumber,
+  totalSteps,
+}: {
+  notes: string
+  setNotes: (v: string) => void
+  onBack: () => void
+  onNext: () => void
+  stepNumber: number
+  totalSteps: number
+}) {
+  const pct = (stepNumber / totalSteps) * 100
+  return (
+    <main className="min-h-screen bg-white">
+      <div className="pt-28 pb-24 px-6 lg:px-12">
+        <div className="max-w-2xl mx-auto">
+          {/* Progress bar */}
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-3">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
+                Question {stepNumber} of {totalSteps}
+              </p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
+                {Math.round(pct)}%
+              </p>
+            </div>
+            <div className="h-1 bg-black/[0.06] rounded-full overflow-hidden">
+              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: '#8B5CF6' }} />
+            </div>
+          </div>
+
+          {/* Question */}
+          <div className="mb-8">
+            <h2 className="hero-heading text-[28px] md:text-[36px] text-[#0D0D0D] leading-tight mb-3">
+              Anything else we should know?
+            </h2>
+            <p className="font-body text-[15px] text-[#A89F92] leading-relaxed italic">
+              Optional — but the more context you give, the sharper your recommendation.
+            </p>
+          </div>
+
+          {/* Textarea */}
+          <div className="mb-10">
+            <textarea
+              name="notes"
+              rows={6}
+              value={notes}
+              onChange={e => setNotes(e.target.value)}
+              placeholder="Tell us about your business, your goals, what you've tried, or anything that would help us tailor your plan."
+              className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all resize-none"
+            />
+          </div>
+
+          {/* Navigation */}
+          <div className="flex items-center justify-between">
+            <button
+              onClick={onBack}
+              className="font-body text-sm text-[#A89F92] hover:text-[#6B6560] transition-colors"
+            >
+              ← Back
+            </button>
+            <button
+              onClick={onNext}
+              className="inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 bg-[#8B5CF6] text-white hover:bg-[#7C3AED] shadow-[0_8px_30px_-8px_rgba(139,92,246,0.5)] hover:-translate-y-0.5"
+            >
+              {notes.trim() ? 'Continue →' : 'Skip →'}
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  )
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function Quiz() {
-  const [step, setStep] = useState<'intro' | number | 'revenue' | 'capture' | 'calculating' | 'results'>('intro')
+  const [step, setStep] = useState<'intro' | number | 'revenue' | 'notes' | 'capture' | 'calculating' | 'results'>('intro')
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [selected, setSelected] = useState<string | null>(null)
-  const [contact, setContact] = useState({ name: '', company: '', email: '', phone: '', state: '', notes: '' })
+  const [contact, setContact] = useState({ name: '', company: '', email: '', phone: '', state: '', notes: '', consent: false })
   const [revenueIdx, setRevenueIdx] = useState(0)
 
   // The revenue slider is the first step; downstream scoring still expects a
   // `stage` answer, so we derive it from the revenue number.
   const scoredAnswers = { ...answers, stage: revenueStage(revenueIdx) }
 
-  const totalSteps = questions.length + 1 // +1 for the revenue slider
+  const totalSteps = questions.length + 2 // +1 revenue slider, +1 notes
   const currentQ = typeof step === 'number' ? questions[step] : null
-  // Revenue is step 1; question index N is step N+2.
+  // Revenue is step 1; question index N is step N+2; notes is the last step.
   const progress =
     step === 'revenue' ? (1 / totalSteps) * 100
     : typeof step === 'number' ? ((step + 2) / totalSteps) * 100
+    : step === 'notes' ? 100
     : step === 'results' ? 100 : 0
 
   // Always start each step at the top of the page.
@@ -1040,7 +1134,7 @@ export default function Quiz() {
     if (typeof step === 'number' && step < questions.length - 1) {
       setStep(step + 1)
     } else {
-      setStep('capture')
+      setStep('notes')
     }
   }
 
@@ -1059,7 +1153,7 @@ export default function Quiz() {
     setStep('intro')
     setAnswers({})
     setSelected(null)
-    setContact({ name: '', company: '', email: '', phone: '', state: '', notes: '' })
+    setContact({ name: '', company: '', email: '', phone: '', state: '', notes: '', consent: false })
     setRevenueIdx(0)
   }
 
@@ -1086,6 +1180,7 @@ export default function Quiz() {
           phone: contact.phone,
           state: contact.state,
           notes: contact.notes,
+          consent: contact.consent,
           tier: tiers[tierKey].name,
           services: svc,
           answers: readableAnswers(),
@@ -1188,16 +1283,30 @@ export default function Quiz() {
     )
   }
 
+  // ── Notes ─────────────────────────────────────────────────────────────────
+  if (step === 'notes') {
+    return (
+      <NotesScreen
+        notes={contact.notes}
+        setNotes={(v) => setContact(c => ({ ...c, notes: v }))}
+        onBack={() => {
+          setStep(questions.length - 1)
+          setSelected(answers[questions[questions.length - 1].id] || null)
+        }}
+        onNext={() => setStep('capture')}
+        stepNumber={totalSteps}
+        totalSteps={totalSteps}
+      />
+    )
+  }
+
   // ── Capture ───────────────────────────────────────────────────────────────
   if (step === 'capture') {
     return (
       <CaptureScreen
         contact={contact}
         setContact={setContact}
-        onBack={() => {
-          setStep(questions.length - 1)
-          setSelected(answers[questions[questions.length - 1].id] || null)
-        }}
+        onBack={() => setStep('notes')}
         onSubmit={() => {
           submitLead()
           setStep('calculating')
