@@ -746,6 +746,8 @@ function CaptureScreen({
               <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-2 block">Name</label>
               <input
                 type="text"
+                name="name"
+                autoComplete="name"
                 value={contact.name}
                 onChange={e => setContact(c => ({ ...c, name: e.target.value }))}
                 placeholder="Jane Founder"
@@ -756,6 +758,8 @@ function CaptureScreen({
               <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-2 block">Company</label>
               <input
                 type="text"
+                name="organization"
+                autoComplete="organization"
                 value={contact.company}
                 onChange={e => setContact(c => ({ ...c, company: e.target.value }))}
                 placeholder="Acme Co."
@@ -766,6 +770,12 @@ function CaptureScreen({
               <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-2 block">Email</label>
               <input
                 type="email"
+                name="email"
+                autoComplete="email"
+                inputMode="email"
+                autoCapitalize="off"
+                autoCorrect="off"
+                spellCheck={false}
                 value={contact.email}
                 onChange={e => setContact(c => ({ ...c, email: e.target.value }))}
                 placeholder="jane@company.com"
@@ -778,6 +788,9 @@ function CaptureScreen({
               </label>
               <input
                 type="tel"
+                name="tel"
+                autoComplete="tel"
+                inputMode="tel"
                 value={contact.phone}
                 onChange={e => setContact(c => ({ ...c, phone: e.target.value }))}
                 placeholder="(555) 123-4567"
@@ -787,6 +800,8 @@ function CaptureScreen({
             <div>
               <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-2 block">State</label>
               <select
+                name="address-level1"
+                autoComplete="address-level1"
                 value={contact.state}
                 onChange={e => setContact(c => ({ ...c, state: e.target.value }))}
                 className={`w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all appearance-none ${contact.state ? 'text-[#0D0D0D]' : 'text-black/25'}`}
