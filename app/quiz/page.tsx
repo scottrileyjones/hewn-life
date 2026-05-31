@@ -5,7 +5,7 @@ import Image from 'next/image'
 import CalButton from '@/components/CalButton'
 
 const QUIZ_HERO_IMAGE =
-  'https://res.cloudinary.com/dnstpvgmv/image/upload/v1759178490/u9385715703_A_confident_African_American_female_entrepreneur__67de8de9-21cf-43e9-b389-cd87a8c4ce1b_0_qiqkmwf.png'
+  'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_1600,c_fill/v1779578220/main-sample.png'
 
 // ── Questions ────────────────────────────────────────────────────────────────
 
