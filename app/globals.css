@@ -87,7 +87,90 @@ body {
   font-weight: 700;
 }
 
-/* Noise texture using CSS */
+/* Blog post body prose styles */
+.prose-hewn h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #0D0D0D;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+.prose-hewn h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  color: #0D0D0D;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+.prose-hewn p {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: #3D3A36;
+  margin-bottom: 1.25rem;
+}
+.prose-hewn ul, .prose-hewn ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.prose-hewn li {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: #3D3A36;
+  margin-bottom: 0.4rem;
+}
+.prose-hewn strong {
+  font-weight: 600;
+  color: #0D0D0D;
+}
+.prose-hewn a {
+  color: #8B5CF6;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-hewn a:hover { color: #7C3AED; }
+.prose-hewn blockquote {
+  border-left: 3px solid #8B5CF6;
+  padding-left: 1.25rem;
+  margin: 2rem 0;
+  color: #6B6560;
+  font-style: italic;
+  font-family: var(--font-accent);
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+.prose-hewn .stat-callout {
+  background: #F9F7F3;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 1.25rem;
+  padding: 1.5rem 1.75rem;
+  margin: 2rem 0;
+}
+.prose-hewn .stat-callout p { margin-bottom: 0; color: #0D0D0D; }
+.prose-hewn .stat-callout .stat-number {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #8B5CF6;
+  display: block;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+.prose-hewn .source-note {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: #A89F92;
+  margin-top: -0.75rem;
+  margin-bottom: 1.25rem;
+}
+
 .noise-bg::after {
   content: '';
   position: absolute;

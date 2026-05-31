@@ -2,52 +2,58 @@ import Link from 'next/link'
 
 const posts = [
   {
-    category: 'Brand Strategy',
-    title: 'Why Your Brand is Your Most Valuable Business Asset',
-    excerpt: 'Most business owners treat their brand as a logo and some colors. The businesses that win treat it as the foundation of every decision they make.',
+    category: 'SEO',
+    title: 'Answer Engine Optimization (AEO): How Small Businesses Get Found in AI Search',
+    excerpt: 'Google isn\'t the only game in town anymore. Here\'s how to show up in ChatGPT, Perplexity, and AI Overviews before your competitors figure it out.',
     date: 'May 2026',
-    readTime: '6 min read',
+    readTime: '9 min read',
     featured: true,
-  },
-  {
-    category: 'Lead Generation',
-    title: 'The Local Business Lead Machine: A 90-Day Framework',
-    excerpt: 'A systematic approach to generating qualified local leads without relying on referrals or word-of-mouth alone.',
-    date: 'April 2026',
-    readTime: '8 min read',
-    featured: false,
+    href: '/blog/answer-engine-optimization-small-business',
   },
   {
     category: 'AI & Marketing',
-    title: 'How AI is Changing What Small Businesses Can Afford',
-    excerpt: 'For the first time in history, small businesses can access Fortune 500-level marketing capabilities at a fraction of the cost.',
-    date: 'April 2026',
-    readTime: '5 min read',
+    title: 'Can AI Really Run Your Small Business Marketing? What\'s Actually Possible in 2026',
+    excerpt: 'Not hype. Not fear. A straight answer about what AI can and can\'t do for your marketing right now.',
+    date: 'May 2026',
+    readTime: '8 min read',
     featured: false,
+    href: '/blog/ai-marketing-for-small-business',
   },
   {
     category: 'Pricing & Value',
-    title: 'Why Traditional Agency Pricing is Broken',
-    excerpt: 'Percentage of spend, hourly billing, and bloated retainers — the old model benefits the agency, not the client.',
-    date: 'March 2026',
+    title: 'How Much Does a Marketing Agency Cost for a Small Business in 2026?',
+    excerpt: 'Real numbers, no fluff. What small businesses actually pay — and how to know if you\'re overpaying.',
+    date: 'May 2026',
     readTime: '7 min read',
     featured: false,
+    href: '/blog/how-much-does-a-marketing-agency-cost',
   },
   {
-    category: 'SEO',
-    title: 'Local SEO in 2026: What Actually Moves the Needle',
-    excerpt: 'Google Maps, review velocity, and E-E-A-T signals — a plain-English guide to local search dominance.',
-    date: 'March 2026',
-    readTime: '9 min read',
+    category: 'Pricing & Value',
+    title: 'Hiring a Marketing Agency vs. Doing It In-House: The Real Cost Comparison',
+    excerpt: 'The math most businesses get wrong. Here\'s what in-house marketing actually costs — and why the agency case is stronger than it looks.',
+    date: 'May 2026',
+    readTime: '7 min read',
     featured: false,
+    href: '/blog/agency-vs-in-house-marketing-cost',
   },
   {
-    category: 'Customer Experience',
-    title: 'The Follow-Up That Saves the Sale',
-    excerpt: "Most businesses lose 40% of their potential revenue to poor follow-up systems. Here's how to fix it in a week.",
-    date: 'February 2026',
+    category: 'AI & Marketing',
+    title: 'From Zero to Live in a Week: How Fast a Small Business Can Launch Modern Marketing',
+    excerpt: 'Speed is now a real competitive advantage. Here\'s what\'s possible in 7 days when you have the right team and the right tools.',
+    date: 'May 2026',
     readTime: '6 min read',
     featured: false,
+    href: '/blog/launch-marketing-fast',
+  },
+  {
+    category: 'Brand Strategy',
+    title: 'Why Your Brand is Your Most Valuable Business Asset',
+    excerpt: 'Most business owners treat their brand as a logo and some colors. The businesses that win treat it as the foundation of every decision they make.',
+    date: 'April 2026',
+    readTime: '6 min read',
+    featured: false,
+    href: '/blog',
   },
 ]
 
@@ -89,7 +95,7 @@ export default function Blog() {
             </h2>
             <p className="font-body text-[12px] text-[#6B6560] mb-4">{featured.date} · {featured.readTime}</p>
             <p className="font-body text-base text-[#6B6560] leading-relaxed mb-6">{featured.excerpt}</p>
-            <Link href="/blog" className="font-body text-sm font-medium text-[#6BAD3D] hover:underline underline-offset-4">
+            <Link href={featured.href} className="font-body text-sm font-medium text-[#6BAD3D] hover:underline underline-offset-4">
               Read More →
             </Link>
           </div>
@@ -101,7 +107,8 @@ export default function Blog() {
         <div className="border-t border-black/[0.06] pt-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {grid.map((post, i) => (
-              <article key={i} className="group cursor-pointer">
+              <Link key={i} href={post.href} className="group">
+              <article className="group cursor-pointer">
                 <div className="aspect-[16/9] bg-[#F7F6F3] rounded-2xl mb-6 overflow-hidden group-hover:bg-[#F0F7EB] transition-colors flex items-center justify-center">
                   <p className="font-mono text-[10px] uppercase tracking-widest text-black/20">Post Image</p>
                 </div>
@@ -114,6 +121,7 @@ export default function Blog() {
                   {post.date} · {post.readTime}
                 </p>
               </article>
+              </Link>
             ))}
           </div>
 
