@@ -3,13 +3,15 @@ import Link from 'next/link'
 interface HewnLogoProps {
   dark?: boolean
   size?: 'sm' | 'md' | 'lg'
+  mono?: boolean
 }
 
-export default function HewnLogo({ dark = true, size = 'md' }: HewnLogoProps) {
+export default function HewnLogo({ dark = true, size = 'md', mono = false }: HewnLogoProps) {
   const markSize = size === 'sm' ? 24 : size === 'lg' ? 44 : 32
   const textSize = size === 'sm' ? 'text-xl' : size === 'lg' ? 'text-4xl' : 'text-[26px]'
   const markColor = dark ? 'text-[#0D0D0D]' : 'text-white'
   const wordColor = dark ? 'text-[#0D0D0D]' : 'text-white'
+  const accentClass = mono ? wordColor : 'text-[#6BAD3D]'
 
   return (
     <Link href="/" className="flex items-center gap-3 group">
@@ -26,7 +28,7 @@ export default function HewnLogo({ dark = true, size = 'md' }: HewnLogoProps) {
         <polygon points="32,58 68,42 68,54 32,70" fill="currentColor" />
       </svg>
       <span className={`font-display font-semibold ${textSize} leading-none tracking-[0.02em] ${wordColor}`}>
-        hewn<span className="accent text-[#6BAD3D]">life</span>
+        hewn<span className={`accent ${accentClass}`}>life</span>
       </span>
     </Link>
   )
