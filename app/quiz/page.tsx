@@ -596,88 +596,184 @@ function ResultsDashboard({
 
 // ── Calculating screen ────────────────────────────────────────────────────────
 
-const calcSteps = [
-  { task: 'Analyzing your business stage', benefit: 'We tailor every recommendation to where you actually are — no generic playbooks.' },
-  { task: 'Mapping your goals to proven channels', benefit: 'Hewn Life builds strategies around outcomes, not vanity metrics.' },
-  { task: 'Identifying your highest-leverage services', benefit: 'AI-accelerated execution means we move 3× faster than a traditional agency.' },
-  { task: 'Matching you to the right starting tier', benefit: 'You only invest in what moves the needle — nothing you don\'t need.' },
-  { task: 'Building your personalized recommendation', benefit: 'Senior strategy and craft, without the senior-agency invoice.' },
+const calcScenes = [
+  {
+    eyebrow: 'Step 1 · Your website',
+    headline: 'A conversion-ready site, live in days.',
+    sub: 'Our AI-accelerated build process ships a polished website while traditional agencies are still scheduling the kickoff call.',
+  },
+  {
+    eyebrow: 'Step 2 · Reach',
+    headline: 'Ads & content that actually get seen.',
+    sub: 'We launch and manage campaigns across search and social — real reach and engagement, without the bloated agency retainer.',
+  },
+  {
+    eyebrow: 'Step 3 · Revenue',
+    headline: 'Watch the sales roll in.',
+    sub: 'Every channel pointed at one outcome: more customers and more revenue — at a fraction of the cost of building it in-house.',
+  },
 ]
 
+const SCENE_MS = 2800
+
 function CalculatingScreen({ onDone }: { onDone: () => void }) {
-  const [active, setActive] = useState(0)
+  const [scene, setScene] = useState(0)
+  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    const perStep = 1600
-    const timers = calcSteps.map((_, i) =>
-      setTimeout(() => setActive(i + 1), perStep * (i + 1))
-    )
-    const done = setTimeout(onDone, perStep * calcSteps.length + 700)
+    const t1 = setTimeout(() => setScene(1), SCENE_MS)
+    const t2 = setTimeout(() => setScene(2), SCENE_MS * 2)
+    const done = setTimeout(onDone, SCENE_MS * 3)
+    // Kick the progress bar to 100% over the full duration.
+    const p = requestAnimationFrame(() => setProgress(100))
     return () => {
-      timers.forEach(clearTimeout)
-      clearTimeout(done)
+      clearTimeout(t1); clearTimeout(t2); clearTimeout(done)
+      cancelAnimationFrame(p)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const currentBenefit = calcSteps[Math.min(active, calcSteps.length - 1)].benefit
+  const likeCount = useCountUp(2847, scene >= 1, 2000)
+  const revenueCount = useCountUp(4250, scene >= 2, 2000)
+  const current = calcScenes[scene]
 
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center px-6 py-32">
-      <div className="max-w-xl w-full text-center">
-        {/* Pulsing machine core */}
-        <div className="relative mx-auto mb-12 w-28 h-28 flex items-center justify-center">
-          <span className="absolute inset-0 rounded-full border border-[#8B5CF6]/20 animate-ping" style={{ animationDuration: '2s' }} />
-          <span className="absolute inset-2 rounded-full border border-[#8B5CF6]/15 animate-ping" style={{ animationDuration: '2.6s' }} />
-          <span className="absolute inset-0 rounded-full blur-2xl bg-[#8B5CF6]/10" />
-          <svg className="relative w-12 h-12 animate-spin text-[#8B5CF6]" style={{ animationDuration: '3s' }} viewBox="0 0 24 24" fill="none">
-            <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            <circle cx="12" cy="12" r="3.5" stroke="currentColor" strokeWidth="1.5" />
-          </svg>
-        </div>
-
-        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#6BAD3D] mb-8">
-          Building your assessment
+    <main className="min-h-screen bg-white flex items-center justify-center px-6 py-28">
+      <div className="max-w-md w-full">
+        <p className="text-center font-mono text-[10px] uppercase tracking-[0.22em] text-[#6BAD3D] mb-6">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#6BAD3D] animate-pulse mr-2 align-middle" />
+          Building your growth plan
         </p>
 
-        {/* Task checklist */}
-        <div className="space-y-3 text-left mb-10">
-          {calcSteps.map((s, i) => {
-            const isDone = i < active
-            const isCurrent = i === active
-            return (
-              <div
-                key={i}
-                className={`flex items-center gap-3 transition-all duration-500 ${
-                  isDone || isCurrent ? 'opacity-100' : 'opacity-30'
-                }`}
-              >
-                <span className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${
-                  isDone ? 'bg-[#6BAD3D]' : isCurrent ? 'border border-[#8B5CF6]' : 'border border-black/20'
-                }`}>
-                  {isDone ? (
-                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
-                      <path d="M2.5 6.5l2.2 2.2L9.5 3.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  ) : isCurrent ? (
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-pulse" />
-                  ) : null}
-                </span>
-                <span className={`font-body text-[15px] ${isDone ? 'text-[#A89F92]' : isCurrent ? 'text-[#0D0D0D]' : 'text-[#C4BDB5]'}`}>
-                  {s.task}{isCurrent && <span className="inline-block animate-pulse">…</span>}
-                </span>
+        {/* Device frame */}
+        <div className="relative rounded-[28px] border border-black/[0.08] bg-[#F9F7F3] shadow-[0_24px_60px_-20px_rgba(0,0,0,0.18)] overflow-hidden">
+          {/* Browser chrome */}
+          <div className="flex items-center gap-1.5 px-5 py-3.5 border-b border-black/[0.06] bg-white">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
+            <span className="ml-3 flex-1 h-5 rounded-full bg-[#F2ECE0]" />
+          </div>
+
+          {/* Scene stage */}
+          <div className="relative h-[300px] flex items-center justify-center px-7">
+            {/* ── Scene 0: website building ── */}
+            {scene === 0 && (
+              <div key="s0" className="w-full animate-fade-up">
+                <div className="rounded-2xl border border-black/[0.07] bg-white p-4 shadow-sm">
+                  <div className="build-block h-20 rounded-xl bg-gradient-to-br from-[#8B5CF6] to-[#6BAD3D]" style={{ animationDelay: '0ms' }} />
+                  <div className="build-block h-3 w-3/4 rounded-full bg-black/10 mt-4" style={{ animationDelay: '300ms' }} />
+                  <div className="build-block h-3 w-1/2 rounded-full bg-black/10 mt-2.5" style={{ animationDelay: '500ms' }} />
+                  <div className="flex gap-3 mt-4">
+                    <div className="build-block h-14 flex-1 rounded-xl bg-black/[0.05]" style={{ animationDelay: '750ms' }} />
+                    <div className="build-block h-14 flex-1 rounded-xl bg-black/[0.05]" style={{ animationDelay: '900ms' }} />
+                  </div>
+                  <div className="build-block mt-4 h-9 w-32 rounded-full bg-[#8B5CF6]" style={{ animationDelay: '1150ms' }} />
+                </div>
+                <div className="build-badge mt-4 flex items-center justify-center gap-2" style={{ animationDelay: '1500ms' }}>
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#6BAD3D]/10 border border-[#6BAD3D]/30 px-3 py-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D] animate-pulse" />
+                    <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#6BAD3D]">Published · Live</span>
+                  </span>
+                </div>
               </div>
-            )
-          })}
+            )}
+
+            {/* ── Scene 1: social engagement ── */}
+            {scene === 1 && (
+              <div key="s1" className="w-full animate-fade-up">
+                <div className="rounded-2xl border border-black/[0.07] bg-white p-4 shadow-sm">
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <span className="w-9 h-9 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#6BAD3D]" />
+                    <div>
+                      <div className="h-2.5 w-24 rounded-full bg-black/15" />
+                      <div className="h-2 w-16 rounded-full bg-black/10 mt-1.5" />
+                    </div>
+                  </div>
+                  <div className="h-28 rounded-xl bg-gradient-to-br from-[#F2ECE0] to-[#E5E1DA] mb-3 flex items-center justify-center overflow-hidden relative">
+                    {/* floating hearts */}
+                    {[0,1,2,3,4].map(i => (
+                      <span key={i} className="heart-float absolute text-[#EF4444]" style={{ left: `${15 + i*18}%`, animationDelay: `${i*260}ms` }}>♥</span>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <span className="flex items-center gap-1.5 text-[#EF4444]">
+                      <span className="heart-pop text-[20px]">♥</span>
+                      <span className="font-display text-[18px] text-[#0D0D0D] tabular-nums">{likeCount.toLocaleString()}</span>
+                    </span>
+                    <span className="font-body text-[13px] text-[#A89F92]">likes this week</span>
+                    <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.14em] text-[#6BAD3D]">↑ 312%</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ── Scene 2: purchase / revenue ── */}
+            {scene === 2 && (
+              <div key="s2" className="w-full animate-fade-up">
+                <div className="rounded-2xl border border-black/[0.07] bg-white p-4 shadow-sm">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#8B5CF6] to-[#6BAD3D] flex-shrink-0" />
+                    <div className="flex-1">
+                      <div className="h-2.5 w-28 rounded-full bg-black/15" />
+                      <div className="h-2 w-20 rounded-full bg-black/10 mt-2" />
+                    </div>
+                  </div>
+                  <div className="checkout-confirm flex items-center justify-center gap-2 rounded-full bg-[#6BAD3D] py-3 mb-4">
+                    <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.5l2.2 2.2L9.5 3.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span className="font-body font-semibold text-[14px] text-white">Order confirmed</span>
+                  </div>
+                  <div className="text-center">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-1">Revenue today</p>
+                    <p className="font-display text-[44px] leading-none text-[#0D0D0D] tabular-nums">${revenueCount.toLocaleString()}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Rotating benefit message */}
-        <div className="min-h-[60px] flex items-center justify-center">
-          <p key={active} className="font-display italic text-[19px] md:text-[22px] text-[#3D3A36] leading-snug animate-fade-up">
-            &ldquo;{currentBenefit}&rdquo;
-          </p>
+        {/* Copy */}
+        <div className="text-center mt-7 min-h-[120px]">
+          <p key={`e${scene}`} className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#8B5CF6] mb-3 animate-fade-up">{current.eyebrow}</p>
+          <h2 key={`h${scene}`} className="hero-heading text-[24px] md:text-[28px] text-[#0D0D0D] leading-tight mb-3 animate-fade-up">{current.headline}</h2>
+          <p key={`s${scene}`} className="font-body text-[14px] text-[#6B6560] leading-relaxed max-w-sm mx-auto animate-fade-up">{current.sub}</p>
+        </div>
+
+        {/* Progress bar */}
+        <div className="mt-7 h-1 bg-black/[0.06] rounded-full overflow-hidden">
+          <div className="h-full rounded-full bg-[#8B5CF6]" style={{ width: `${progress}%`, transition: `width ${SCENE_MS * 3}ms linear` }} />
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes buildIn {
+          from { opacity: 0; transform: translateY(8px) scale(0.97); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .build-block { opacity: 0; animation: buildIn 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+        .build-badge { opacity: 0; animation: buildIn 0.5s ease forwards; }
+        @keyframes heartPop {
+          0% { transform: scale(0.5); opacity: 0.4; }
+          50% { transform: scale(1.3); }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        .heart-pop { display: inline-block; animation: heartPop 0.6s ease forwards; }
+        @keyframes heartFloat {
+          0% { transform: translateY(40px) scale(0.6); opacity: 0; }
+          30% { opacity: 1; }
+          100% { transform: translateY(-70px) scale(1.1); opacity: 0; }
+        }
+        .heart-float { bottom: 0; font-size: 18px; animation: heartFloat 1.8s ease-in infinite; }
+        @keyframes confirmIn {
+          0% { transform: scale(0.85); opacity: 0; }
+          60% { transform: scale(1.04); }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        .checkout-confirm { animation: confirmIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+      `}</style>
     </main>
   )
 }
