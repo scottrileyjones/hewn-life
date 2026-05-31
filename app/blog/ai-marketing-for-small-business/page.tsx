@@ -13,7 +13,7 @@ export default function Post() {
       excerpt: 'Not hype. Not fear. A straight answer about what AI can and can\'t do for your marketing right now.',
       date: 'May 2026',
       readTime: '8 min read',
-      image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_788,c_fill/v1780097464/collabstr-bM2nm41YaeA-unsplash_gspy6l.jpg',
+      image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_788,c_fill/v1780207388/data_team_ztea9x.jpg',
     }}>
       <p>
         Two years ago the honest answer to this question was "kind of, but not really." Today it's different. AI has moved from a productivity novelty to a genuine operational advantage — and small businesses that understand what it can actually do are running circles around competitors who are still waiting for it to "mature."
