@@ -1,11 +1,44 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import CalButton from '@/components/CalButton'
 
 const QUIZ_HERO_IMAGE =
   'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_1600,c_fill/v1779578220/main-sample.png'
+
+// ── Revenue slider stops ──────────────────────────────────────────────────────
+
+const REVENUE_STOPS = [
+  { value: 0, label: 'Pre-revenue' },
+  { value: 50000, label: '$50K' },
+  { value: 100000, label: '$100K' },
+  { value: 250000, label: '$250K' },
+  { value: 500000, label: '$500K' },
+  { value: 750000, label: '$750K' },
+  { value: 1000000, label: '$1M' },
+  { value: 1500000, label: '$1.5M' },
+  { value: 2000000, label: '$2M' },
+  { value: 3000000, label: '$3M' },
+  { value: 5000000, label: '$5M' },
+  { value: 7500000, label: '$7.5M' },
+  { value: 10000000, label: '$10M' },
+  { value: 15000000, label: '$15M' },
+  { value: 20000000, label: '$20M' },
+  { value: 30000000, label: '$30M' },
+  { value: 50000000, label: '$50M' },
+  { value: 75000000, label: '$75M' },
+  { value: 100000000, label: '$100M' },
+  { value: 100000001, label: '$100M+' },
+]
+
+function revenueLabel(idx: number): string {
+  return REVENUE_STOPS[idx]?.label ?? '$0'
+}
+
+function revenueValue(idx: number): number {
+  return REVENUE_STOPS[idx]?.value ?? 0
+}
 
 // ── Questions ────────────────────────────────────────────────────────────────
 
@@ -182,7 +215,6 @@ function computeResult(answers: Record<string, string>): 'hewn' | 'wrought' | 'f
   return 'hewn'
 }
 
-// The match score of the recommended tier — higher means a stronger fit.
 function computeScore(answers: Record<string, string>): number {
   const totals = { hewn: 0, wrought: 0, forged: 0 }
   questions.forEach(q => {
@@ -259,17 +291,14 @@ type RoiProjection = {
   annualMaxRaw: number
 }
 
-function computeRoi(answers: Record<string, string>, tierKey: 'hewn' | 'wrought' | 'forged'): RoiProjection {
-  const revenueBase: Record<string, number> = { pre: 0, early: 125000, growth: 600000, scale: 1500000 }
-  const revenueLabel: Record<string, string> = { pre: 'Pre-revenue', early: '~$125K / yr', growth: '~$600K / yr', scale: '~$1.5M+ / yr' }
-
+function computeRoi(annualRevenue: number, revLabel: string, tierKey: 'hewn' | 'wrought' | 'forged'): RoiProjection {
   const liftRange: Record<string, [number, number]> = {
     hewn:   [0.18, 0.32],
     wrought:[0.38, 0.65],
     forged: [0.65, 1.20],
   }
 
-  const base = revenueBase[answers.stage] ?? 125000
+  const base = annualRevenue
   const [lo, hi] = liftRange[tierKey]
 
   const newLo = Math.round(base * lo)
@@ -278,14 +307,13 @@ function computeRoi(answers: Record<string, string>, tierKey: 'hewn' | 'wrought'
   const fmt = (n: number) =>
     n >= 1000000 ? `$${(n / 1000000).toFixed(1)}M` : n >= 1000 ? `$${Math.round(n / 1000)}K` : `$${n}`
 
-  // Annual retainer cost
   const cost: Record<string, number> = { hewn: 30000, wrought: 60000, forged: 114000 }
   const annualCost = cost[tierKey]
   const annualMin = fmt(Math.max(0, newLo - annualCost))
   const annualMax = fmt(Math.max(0, newHi - annualCost))
 
   return {
-    revenueLabel: revenueLabel[answers.stage] ?? '~$125K / yr',
+    revenueLabel: revLabel,
     conservativeLift: Math.round(lo * 100),
     aggressiveLift: Math.round(hi * 100),
     conservativeNew: fmt(newLo),
@@ -297,7 +325,7 @@ function computeRoi(answers: Record<string, string>, tierKey: 'hewn' | 'wrought'
   }
 }
 
-// ── Results dashboard (full-screen takeover) ──────────────────────────────────
+// ── Results dashboard ─────────────────────────────────────────────────────────
 
 function useCountUp(target: number, active: boolean, duration = 1800): number {
   const [val, setVal] = useState(0)
@@ -336,7 +364,10 @@ function ResultsDashboard({
   onRestart: () => void
 }) {
   const [phase, setPhase] = useState(0)
-  // phase 1=roi hero, 2=health gauge, 3=bars, 4=services, 5=tier+cta
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 })
+  }, [])
 
   useEffect(() => {
     const t = [
@@ -357,14 +388,14 @@ function ResultsDashboard({
   const firstName = contact.name ? contact.name.split(' ')[0] : null
 
   return (
-    <div className="fixed inset-0 z-[100] overflow-y-auto bg-[#0D0D0D]">
+    <div className="min-h-screen bg-[#F9F7F3]">
       {/* ── Top bar ── */}
-      <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 bg-[#0D0D0D]/90 backdrop-blur-md border-b border-white/[0.06]">
+      <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 bg-white/90 backdrop-blur-md border-b border-black/[0.06]">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-[#6BAD3D] animate-pulse" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">Growth Opportunity Report</span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#A89F92]">Growth Opportunity Report</span>
         </div>
-        <button onClick={onRestart} className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/30 hover:text-white/60 transition-colors">
+        <button onClick={onRestart} className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] hover:text-[#6B6560] transition-colors">
           ← Retake
         </button>
       </div>
@@ -376,63 +407,55 @@ function ResultsDashboard({
           <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#6BAD3D] mb-5">
             {firstName ? `${firstName}'s Assessment` : 'Your Assessment'} · {tier.name} Tier Match
           </p>
-          <h1 className="hero-heading text-[36px] md:text-[56px] text-white leading-[1.04] mb-4">
+          <h1 className="hero-heading text-[36px] md:text-[56px] text-[#0D0D0D] leading-[1.04] mb-4">
             You have a real<br />
             <span className="accent" style={{ color: '#6BAD3D' }}>revenue opportunity.</span>
           </h1>
-          <p className="font-body text-base text-white/50 max-w-xl">
+          <p className="font-body text-base text-[#6B6560] max-w-xl">
             Based on your answers, here's what the numbers say — and what's within reach if you execute.
           </p>
         </div>
 
         {/* ── ROI hero ── */}
         <div className={`mb-6 transition-all duration-700 ${phase >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#13101A] to-[#0D0D0D] border border-white/[0.06] p-8 md:p-12">
-            {/* Animated glow rings */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none">
-              <div className="absolute inset-0 rounded-full border border-[#8B5CF6]/10 animate-ping" style={{ animationDuration: '3s' }} />
-              <div className="absolute inset-8 rounded-full border border-[#6BAD3D]/8 animate-ping" style={{ animationDuration: '4s', animationDelay: '0.5s' }} />
-            </div>
-            <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full blur-3xl bg-[#8B5CF6]/15 pointer-events-none" />
-            <div className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full blur-3xl bg-[#6BAD3D]/10 pointer-events-none" />
+          <div className="relative rounded-3xl overflow-hidden bg-white border border-black/[0.07] shadow-[0_4px_40px_-8px_rgba(0,0,0,0.08)] p-8 md:p-12">
+            <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full blur-3xl bg-[#8B5CF6]/8 pointer-events-none" />
+            <div className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full blur-3xl bg-[#6BAD3D]/8 pointer-events-none" />
 
             <div className="relative">
-              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/30 mb-6">Revenue Opportunity · {roi.revenueLabel} current stage</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#A89F92] mb-6">Revenue Opportunity · {roi.revenueLabel} current revenue</p>
 
               <div className="grid md:grid-cols-2 gap-8 md:gap-12 mb-10">
-                {/* Big number */}
                 <div>
                   <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#6BAD3D] mb-3">Potential New Revenue</p>
-                  <div className="font-display text-[64px] md:text-[80px] leading-none text-white mb-2 tabular-nums">
+                  <div className="font-display text-[64px] md:text-[80px] leading-none text-[#0D0D0D] mb-2 tabular-nums">
                     {fmtCompact(roiCount)}
                   </div>
-                  <p className="font-body text-[14px] text-white/40">additional annual revenue — aggressive case</p>
+                  <p className="font-body text-[14px] text-[#A89F92]">additional annual revenue — aggressive case</p>
                 </div>
-                {/* Net ROI */}
                 <div className="flex flex-col justify-center">
                   <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#8B5CF6] mb-3">Net ROI After Retainer</p>
                   <div className="font-display text-[48px] md:text-[60px] leading-none mb-2 tabular-nums" style={{ color: '#8B5CF6' }}>
                     {fmtCompact(netCount)}
                   </div>
-                  <p className="font-body text-[14px] text-white/40">profit above {tier.price} investment</p>
+                  <p className="font-body text-[14px] text-[#A89F92]">profit above {tier.price} investment</p>
                 </div>
               </div>
 
-              {/* Stat row */}
               <div className="grid grid-cols-3 gap-4">
                 {[
                   { label: 'Revenue Lift Range', val: `${roi.conservativeLift}–${roi.aggressiveLift}%` },
                   { label: 'Conservative Case', val: roi.conservativeNew },
                   { label: 'Annual Retainer', val: tier.price.split(' ')[0] },
                 ].map(s => (
-                  <div key={s.label} className="bg-white/[0.04] rounded-2xl p-4 border border-white/[0.06]">
-                    <p className="font-mono text-[9px] uppercase tracking-[0.14em] text-white/30 mb-2">{s.label}</p>
-                    <p className="font-display text-[22px] leading-none text-white">{s.val}</p>
+                  <div key={s.label} className="bg-[#F9F7F3] rounded-2xl p-4 border border-black/[0.06]">
+                    <p className="font-mono text-[9px] uppercase tracking-[0.14em] text-[#A89F92] mb-2">{s.label}</p>
+                    <p className="font-display text-[22px] leading-none text-[#0D0D0D]">{s.val}</p>
                   </div>
                 ))}
               </div>
 
-              <p className="font-body text-[11px] text-white/20 mt-6 leading-relaxed">
+              <p className="font-body text-[11px] text-[#C4BDB5] mt-6 leading-relaxed">
                 Projections based on industry ROAS benchmarks for businesses at your stage and tier. Actual results vary. Not a guarantee.
               </p>
             </div>
@@ -441,30 +464,30 @@ function ResultsDashboard({
 
         {/* ── Marketing health ── */}
         <div className={`mb-6 transition-all duration-700 delay-100 ${phase >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="bg-[#111] rounded-3xl border border-white/[0.06] p-8 md:p-10">
+          <div className="bg-white rounded-3xl border border-black/[0.07] shadow-[0_4px_40px_-8px_rgba(0,0,0,0.06)] p-8 md:p-10">
             <div className="grid md:grid-cols-[auto_1fr] gap-8 items-center">
               {/* Dial */}
               <div className="flex flex-col items-center">
-                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/30 mb-5">Marketing Health</p>
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92] mb-5">Marketing Health</p>
                 <div className="relative w-40 h-40">
                   <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
-                    <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="8" />
                     <circle
                       cx="60" cy="60" r="50" fill="none" strokeWidth="8"
                       stroke={scoreColor} strokeLinecap="round"
                       strokeDasharray={`${phase >= 2 ? (health.overall / 100) * 314 : 0} 314`}
-                      style={{ transition: 'stroke-dasharray 1.4s cubic-bezier(0.34,1.56,0.64,1)', filter: `drop-shadow(0 0 8px ${scoreColor}60)` }}
+                      style={{ transition: 'stroke-dasharray 1.4s cubic-bezier(0.34,1.56,0.64,1)', filter: `drop-shadow(0 0 6px ${scoreColor}50)` }}
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="font-display text-[44px] leading-none text-white tabular-nums">{scoreCount}</span>
-                    <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-white/30">/ 100</span>
+                    <span className="font-display text-[44px] leading-none text-[#0D0D0D] tabular-nums">{scoreCount}</span>
+                    <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[#A89F92]">/ 100</span>
                   </div>
                 </div>
                 <span className="mt-4 font-mono text-[11px] px-4 py-1.5 rounded-full border" style={{ color: scoreColor, borderColor: `${scoreColor}40`, background: `${scoreColor}12` }}>
                   {scoreLabel}
                 </span>
-                <p className="font-body text-[12px] text-white/30 text-center mt-3 max-w-[160px]">
+                <p className="font-body text-[12px] text-[#A89F92] text-center mt-3 max-w-[160px]">
                   {health.overall < 40 ? 'Big gap = big opportunity.' : health.overall < 65 ? 'Solid base, accelerate now.' : 'Strong — time to scale.'}
                 </p>
               </div>
@@ -478,18 +501,17 @@ function ResultsDashboard({
                     <div key={cat.label} style={{ transitionDelay: active ? `${i * 100}ms` : '0ms' }}
                       className={`transition-all duration-500 ${active ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}>
                       <div className="flex items-center justify-between mb-1.5">
-                        <span className="font-body text-[13px] text-white/70">{cat.label}</span>
+                        <span className="font-body text-[13px] text-[#3D3A36]">{cat.label}</span>
                         <span className="font-mono text-[12px] tabular-nums" style={{ color: c }}>{cat.score}/100</span>
                       </div>
-                      <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
+                      <div className="h-1.5 bg-black/[0.06] rounded-full overflow-hidden">
                         <div className="h-full rounded-full" style={{
                           width: active ? `${cat.score}%` : '0%',
                           background: c,
-                          boxShadow: `0 0 8px ${c}50`,
                           transition: `width 1s cubic-bezier(0.34,1.56,0.64,1) ${i * 120}ms`,
                         }} />
                       </div>
-                      <p className="font-body text-[11px] text-white/25 mt-1">{cat.description}</p>
+                      <p className="font-body text-[11px] text-[#A89F92] mt-1">{cat.description}</p>
                     </div>
                   )
                 })}
@@ -500,16 +522,16 @@ function ResultsDashboard({
 
         {/* ── Recommended services ── */}
         <div className={`mb-6 transition-all duration-700 ${phase >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="bg-[#111] rounded-3xl border border-white/[0.06] p-8 md:p-10">
-            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/30 mb-2">Recommended Service Mix</p>
-            <h2 className="hero-heading text-[24px] md:text-[32px] text-white leading-tight mb-8">
+          <div className="bg-white rounded-3xl border border-black/[0.07] shadow-[0_4px_40px_-8px_rgba(0,0,0,0.06)] p-8 md:p-10">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92] mb-2">Recommended Service Mix</p>
+            <h2 className="hero-heading text-[24px] md:text-[32px] text-[#0D0D0D] leading-tight mb-8">
               The channels that'll <span className="accent" style={{ color: '#6BAD3D' }}>move the needle.</span>
             </h2>
             <div className="grid md:grid-cols-2 gap-3">
               {services.map((svc, i) => (
                 <div
                   key={i}
-                  className={`flex items-start gap-3 p-5 bg-white/[0.04] border border-white/[0.06] rounded-2xl transition-all duration-500 ${phase >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+                  className={`flex items-start gap-3 p-5 bg-[#F9F7F3] border border-black/[0.06] rounded-2xl transition-all duration-500 ${phase >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
                   style={{ transitionDelay: `${i * 80}ms` }}
                 >
                   <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#6BAD3D] flex items-center justify-center">
@@ -518,8 +540,8 @@ function ResultsDashboard({
                     </svg>
                   </span>
                   <div>
-                    <p className="font-display font-semibold text-[15px] text-white mb-0.5">{svc.label}</p>
-                    <p className="font-body text-[12px] text-white/40 leading-relaxed">{svc.reason}</p>
+                    <p className="font-display font-semibold text-[15px] text-[#0D0D0D] mb-0.5">{svc.label}</p>
+                    <p className="font-body text-[12px] text-[#A89F92] leading-relaxed">{svc.reason}</p>
                   </div>
                 </div>
               ))}
@@ -529,9 +551,9 @@ function ResultsDashboard({
 
         {/* ── Tier + CTA ── */}
         <div className={`mb-6 transition-all duration-700 ${phase >= 5 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="relative rounded-3xl overflow-hidden p-8 md:p-12" style={{ background: tierKey === 'hewn' ? '#1A1815' : '#17131F' }}>
-            <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full blur-3xl opacity-40 pointer-events-none" style={{ background: tier.color }} />
-            <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: tier.color }} />
+          <div className="relative rounded-3xl overflow-hidden p-8 md:p-12 bg-[#0D0D0D]">
+            <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full blur-3xl opacity-30 pointer-events-none" style={{ background: tier.color }} />
+            <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full blur-3xl opacity-15 pointer-events-none" style={{ background: tier.color }} />
             <div className="relative">
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: tier.color }}>
                 Your Starting Point · {tierKey === 'hewn' ? 'Foundation' : tierKey === 'wrought' ? 'Growth' : 'Scale'}
@@ -542,7 +564,7 @@ function ResultsDashboard({
               <p className="font-body text-[15px] text-white/50 leading-relaxed max-w-lg mb-10">{tier.description}</p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <CalButton
-                  className="inline-flex items-center justify-center font-body font-semibold px-8 py-4 rounded-full transition-all duration-200 hover:-translate-y-0.5 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.5)]"
+                  className="inline-flex items-center justify-center font-body font-semibold px-8 py-4 rounded-full transition-all duration-200 hover:-translate-y-0.5"
                   style={{ background: tier.color, color: 'white' }}
                 >
                   Book a Discovery Call →
@@ -557,12 +579,12 @@ function ResultsDashboard({
 
         {/* ── Not ready yet ── */}
         <div className={`transition-all duration-700 ${phase >= 5 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-white/[0.03] border border-white/[0.06] rounded-3xl p-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-white border border-black/[0.07] rounded-3xl p-8">
             <div>
-              <p className="font-display font-semibold text-[17px] text-white mb-1">Not ready for a retainer?</p>
-              <p className="font-body text-[14px] text-white/40">Start with our Website in a Week — fully built for a flat $1,000.</p>
+              <p className="font-display font-semibold text-[17px] text-[#0D0D0D] mb-1">Not ready for a retainer?</p>
+              <p className="font-body text-[14px] text-[#A89F92]">Start with our Website in a Week — fully built for a flat $1,000.</p>
             </div>
-            <Link href="/website-in-a-week" className="flex-shrink-0 inline-flex items-center justify-center border border-white/15 text-white font-body font-medium px-8 py-4 rounded-full hover:border-white/30 transition-all duration-200 whitespace-nowrap">
+            <Link href="/website-in-a-week" className="flex-shrink-0 inline-flex items-center justify-center border border-black/[0.12] text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200 whitespace-nowrap">
               Site in a Week →
             </Link>
           </div>
@@ -602,13 +624,13 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
   const currentBenefit = calcSteps[Math.min(active, calcSteps.length - 1)].benefit
 
   return (
-    <main className="min-h-screen bg-[#0D0D0D] flex items-center justify-center px-6 py-32">
+    <main className="min-h-screen bg-white flex items-center justify-center px-6 py-32">
       <div className="max-w-xl w-full text-center">
         {/* Pulsing machine core */}
         <div className="relative mx-auto mb-12 w-28 h-28 flex items-center justify-center">
-          <span className="absolute inset-0 rounded-full border border-[#8B5CF6]/30 animate-ping" style={{ animationDuration: '2s' }} />
-          <span className="absolute inset-2 rounded-full border border-[#8B5CF6]/20 animate-ping" style={{ animationDuration: '2.6s' }} />
-          <span className="absolute inset-0 rounded-full blur-2xl bg-[#8B5CF6]/30" />
+          <span className="absolute inset-0 rounded-full border border-[#8B5CF6]/20 animate-ping" style={{ animationDuration: '2s' }} />
+          <span className="absolute inset-2 rounded-full border border-[#8B5CF6]/15 animate-ping" style={{ animationDuration: '2.6s' }} />
+          <span className="absolute inset-0 rounded-full blur-2xl bg-[#8B5CF6]/10" />
           <svg className="relative w-12 h-12 animate-spin text-[#8B5CF6]" style={{ animationDuration: '3s' }} viewBox="0 0 24 24" fill="none">
             <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             <circle cx="12" cy="12" r="3.5" stroke="currentColor" strokeWidth="1.5" />
@@ -632,7 +654,7 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
                 }`}
               >
                 <span className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${
-                  isDone ? 'bg-[#6BAD3D]' : isCurrent ? 'border border-[#8B5CF6]' : 'border border-white/20'
+                  isDone ? 'bg-[#6BAD3D]' : isCurrent ? 'border border-[#8B5CF6]' : 'border border-black/20'
                 }`}>
                   {isDone ? (
                     <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
@@ -642,7 +664,7 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
                     <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-pulse" />
                   ) : null}
                 </span>
-                <span className={`font-body text-[15px] ${isDone ? 'text-white/50' : isCurrent ? 'text-white' : 'text-white/40'}`}>
+                <span className={`font-body text-[15px] ${isDone ? 'text-[#A89F92]' : isCurrent ? 'text-[#0D0D0D]' : 'text-[#C4BDB5]'}`}>
                   {s.task}{isCurrent && <span className="inline-block animate-pulse">…</span>}
                 </span>
               </div>
@@ -652,8 +674,8 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
 
         {/* Rotating benefit message */}
         <div className="min-h-[60px] flex items-center justify-center">
-          <p key={active} className="font-display italic text-[19px] md:text-[22px] text-white/90 leading-snug animate-fade-up">
-            “{currentBenefit}”
+          <p key={active} className="font-display italic text-[19px] md:text-[22px] text-[#3D3A36] leading-snug animate-fade-up">
+            &ldquo;{currentBenefit}&rdquo;
           </p>
         </div>
       </div>
@@ -736,7 +758,7 @@ function CaptureScreen({
                 type="text"
                 value={contact.company}
                 onChange={e => setContact(c => ({ ...c, company: e.target.value }))}
-                placeholder="Costco"
+                placeholder="Acme Co."
                 className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all"
               />
             </div>
@@ -806,13 +828,159 @@ function CaptureScreen({
   )
 }
 
+// ── Revenue slider screen ─────────────────────────────────────────────────────
+
+function RevenueSliderScreen({
+  revenueIdx,
+  setRevenueIdx,
+  onBack,
+  onNext,
+  totalQuestions,
+}: {
+  revenueIdx: number
+  setRevenueIdx: (v: number) => void
+  onBack: () => void
+  onNext: () => void
+  totalQuestions: number
+}) {
+  const sliderRef = useRef<HTMLInputElement>(null)
+  const val = REVENUE_STOPS[revenueIdx]
+
+  return (
+    <main className="min-h-screen bg-white">
+      <div className="pt-28 pb-24 px-6 lg:px-12">
+        <div className="max-w-2xl mx-auto">
+          {/* Progress bar */}
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-3">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
+                Question {totalQuestions + 1} of {totalQuestions + 1}
+              </p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">100%</p>
+            </div>
+            <div className="h-1 bg-black/[0.06] rounded-full overflow-hidden">
+              <div className="h-full rounded-full transition-all duration-500" style={{ width: '100%', background: '#8B5CF6' }} />
+            </div>
+          </div>
+
+          {/* Question */}
+          <div className="mb-10">
+            <h2 className="hero-heading text-[28px] md:text-[36px] text-[#0D0D0D] leading-tight mb-3">
+              What is your current annual revenue?
+            </h2>
+            <p className="font-body text-[15px] text-[#A89F92] leading-relaxed italic">
+              This is the most important number for calculating your real ROI.
+            </p>
+          </div>
+
+          {/* Slider */}
+          <div className="mb-12">
+            {/* Big value display */}
+            <div className="text-center mb-8">
+              <div className="inline-flex flex-col items-center gap-2 bg-[#F9F7F3] border border-black/[0.07] rounded-3xl px-10 py-6">
+                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">Annual Revenue</span>
+                <span className="font-display text-[56px] md:text-[72px] leading-none text-[#0D0D0D] tabular-nums">
+                  {val.label}
+                </span>
+                {revenueIdx === 0 && (
+                  <span className="font-body text-[13px] text-[#A89F92]">We&apos;ll base projections on market entry benchmarks</span>
+                )}
+                {revenueIdx === REVENUE_STOPS.length - 1 && (
+                  <span className="font-body text-[13px] text-[#6BAD3D]">Impressive — let&apos;s talk scale</span>
+                )}
+              </div>
+            </div>
+
+            {/* Range input */}
+            <div className="px-2">
+              <input
+                ref={sliderRef}
+                type="range"
+                min={0}
+                max={REVENUE_STOPS.length - 1}
+                step={1}
+                value={revenueIdx}
+                onChange={e => setRevenueIdx(Number(e.target.value))}
+                className="w-full h-2 appearance-none rounded-full cursor-pointer"
+                style={{
+                  background: `linear-gradient(to right, #8B5CF6 ${(revenueIdx / (REVENUE_STOPS.length - 1)) * 100}%, #E5E1DA ${(revenueIdx / (REVENUE_STOPS.length - 1)) * 100}%)`,
+                }}
+              />
+              <div className="flex justify-between mt-3">
+                <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-[#C4BDB5]">$0</span>
+                <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-[#C4BDB5]">$100M+</span>
+              </div>
+            </div>
+
+            {/* Tick marks / milestone labels */}
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
+              {[0, 3, 6, 10, 12, 16, 19].map(i => (
+                <button
+                  key={i}
+                  onClick={() => setRevenueIdx(i)}
+                  className={`font-mono text-[10px] px-3 py-1.5 rounded-full border transition-all duration-200 ${
+                    revenueIdx === i
+                      ? 'border-[#8B5CF6] bg-[#8B5CF6]/[0.06] text-[#8B5CF6]'
+                      : 'border-black/[0.08] text-[#A89F92] hover:border-black/20'
+                  }`}
+                >
+                  {REVENUE_STOPS[i].label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <div className="flex items-center justify-between">
+            <button
+              onClick={onBack}
+              className="font-body text-sm text-[#A89F92] hover:text-[#6B6560] transition-colors"
+            >
+              ← Back
+            </button>
+            <button
+              onClick={onNext}
+              className="inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 bg-[#8B5CF6] text-white hover:bg-[#7C3AED] shadow-[0_8px_30px_-8px_rgba(139,92,246,0.5)] hover:-translate-y-0.5"
+            >
+              See My Results →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        input[type='range']::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: white;
+          border: 2px solid #8B5CF6;
+          box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+          cursor: pointer;
+        }
+        input[type='range']::-moz-range-thumb {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: white;
+          border: 2px solid #8B5CF6;
+          box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+          cursor: pointer;
+        }
+      `}</style>
+    </main>
+  )
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function Quiz() {
-  const [step, setStep] = useState<'intro' | number | 'capture' | 'calculating' | 'results'>('intro')
+  const [step, setStep] = useState<'intro' | number | 'revenue' | 'capture' | 'calculating' | 'results'>('intro')
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [selected, setSelected] = useState<string | null>(null)
   const [contact, setContact] = useState({ name: '', company: '', email: '', phone: '', state: '' })
+  const [revenueIdx, setRevenueIdx] = useState(0)
 
   const currentQ = typeof step === 'number' ? questions[step] : null
   const progress = typeof step === 'number' ? ((step + 1) / questions.length) * 100 : step === 'results' ? 100 : 0
@@ -829,7 +997,7 @@ export default function Quiz() {
     if (typeof step === 'number' && step < questions.length - 1) {
       setStep(step + 1)
     } else {
-      setStep('capture')
+      setStep('revenue')
     }
   }
 
@@ -848,9 +1016,9 @@ export default function Quiz() {
     setAnswers({})
     setSelected(null)
     setContact({ name: '', company: '', email: '', phone: '', state: '' })
+    setRevenueIdx(0)
   }
 
-  // Map raw answer values to their human-readable labels for the CRM.
   function readableAnswers(): Record<string, string> {
     const out: Record<string, string> = {}
     questions.forEach(q => {
@@ -877,10 +1045,11 @@ export default function Quiz() {
           services: svc,
           answers: readableAnswers(),
           score: computeScore(answers),
+          annualRevenue: revenueValue(revenueIdx),
+          annualRevenueLabel: revenueLabel(revenueIdx),
         }),
       })
     } catch {
-      // Don't block the user's results on a CRM hiccup — log only.
       console.error('Lead submission failed')
     }
   }
@@ -888,24 +1057,21 @@ export default function Quiz() {
   const tier = step === 'results' ? tiers[computeResult(answers)] : null
   const services = step === 'results' ? getServices(answers) : []
 
-  // ── Intro (landing page) ──────────────────────────────────────────────────
+  // ── Intro ─────────────────────────────────────────────────────────────────
   if (step === 'intro') {
     return (
-      <main className="min-h-screen bg-[#0D0D0D]">
-        {/* ── Hero ── */}
+      <main className="min-h-screen bg-white">
         <section className="relative min-h-screen flex flex-col overflow-hidden">
-          {/* Background image */}
-          <div className="absolute inset-0">
+          {/* Image — right half on desktop, hidden on mobile */}
+          <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden lg:block">
             <Image
               src={QUIZ_HERO_IMAGE}
               alt=""
               fill
               priority
-              className="object-cover object-[70%_center] lg:object-[60%_center]"
+              className="object-cover object-top"
             />
-            {/* Gradients for legibility — strong on mobile bottom, left on desktop */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-[#0D0D0D]/70 to-[#0D0D0D]/30 lg:bg-gradient-to-r lg:from-[#0D0D0D] lg:via-[#0D0D0D]/85 lg:to-transparent" />
-            <div className="absolute inset-0 lg:hidden bg-gradient-to-b from-[#0D0D0D]/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/20 to-transparent" />
           </div>
 
           {/* Content */}
@@ -913,31 +1079,31 @@ export default function Quiz() {
             <div className="max-w-7xl mx-auto w-full">
               <div className="max-w-xl">
                 <div className="animate-fade-up">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-[#6BAD3D]/40 bg-[#6BAD3D]/10 px-4 py-1.5 mb-6">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-[#6BAD3D]/30 bg-[#6BAD3D]/[0.06] px-4 py-1.5 mb-6">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D] animate-pulse" />
                     <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#6BAD3D]">Free ROI Assessment</span>
                   </span>
 
-                  <h1 className="hero-heading text-[40px] md:text-[64px] text-white leading-[1.02] mb-5">
+                  <h1 className="hero-heading text-[40px] md:text-[64px] text-[#0D0D0D] leading-[1.02] mb-5">
                     See what growth<br />
                     <span className="accent" style={{ color: '#6BAD3D' }}>is worth to you.</span>
                   </h1>
 
-                  <p className="font-body text-lg text-white/70 leading-relaxed mb-8 max-w-md">
+                  <p className="font-body text-lg text-[#6B6560] leading-relaxed mb-8 max-w-md">
                     Answer 7 quick questions and get a personalized report — your marketing health score, the exact services you need, and the revenue you could unlock.
                   </p>
 
                   <button
                     onClick={() => setStep(0)}
-                    className="w-full sm:w-auto inline-flex items-center justify-center bg-[#8B5CF6] text-white font-body font-semibold text-[17px] px-10 py-5 rounded-full hover:bg-[#7C3AED] transition-all duration-200 shadow-[0_12px_40px_-8px_rgba(139,92,246,0.6)] hover:-translate-y-0.5"
+                    className="w-full sm:w-auto inline-flex items-center justify-center bg-[#8B5CF6] text-white font-body font-semibold text-[17px] px-10 py-5 rounded-full hover:bg-[#7C3AED] transition-all duration-200 shadow-[0_12px_40px_-8px_rgba(139,92,246,0.35)] hover:-translate-y-0.5"
                   >
                     Calculate My ROI →
                   </button>
 
                   <div className="flex items-center gap-5 mt-6">
-                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/40">⚡ 2 minutes</span>
-                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/40">✓ No sales call</span>
-                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/40">✓ Instant results</span>
+                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#A89F92]">⚡ 2 minutes</span>
+                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#A89F92]">✓ No sales call</span>
+                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#A89F92]">✓ Instant results</span>
                   </div>
                 </div>
               </div>
@@ -945,7 +1111,7 @@ export default function Quiz() {
           </div>
 
           {/* Bottom value strip */}
-          <div className="relative border-t border-white/[0.08] bg-[#0D0D0D]/60 backdrop-blur-sm">
+          <div className="relative border-t border-black/[0.06] bg-white">
             <div className="max-w-7xl mx-auto px-6 lg:px-12 py-6 grid grid-cols-3 gap-4">
               {[
                 { stat: 'ROI', label: 'projection for your stage' },
@@ -953,7 +1119,7 @@ export default function Quiz() {
                 { stat: 'Plan', label: 'matched to your goals' },
               ].map(s => (
                 <div key={s.stat} className="text-center sm:text-left">
-                  <p className="font-display text-[22px] md:text-[28px] leading-none text-white mb-1">{s.stat}</p>
+                  <p className="font-display text-[22px] md:text-[28px] leading-none text-[#0D0D0D] mb-1">{s.stat}</p>
                   <p className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.14em] text-[#8B5CF6]">{s.label}</p>
                 </div>
               ))}
@@ -964,16 +1130,29 @@ export default function Quiz() {
     )
   }
 
-  // ── Capture ──────────────────────────────────────────────────────────────────
+  // ── Revenue slider ────────────────────────────────────────────────────────
+  if (step === 'revenue') {
+    return (
+      <RevenueSliderScreen
+        revenueIdx={revenueIdx}
+        setRevenueIdx={setRevenueIdx}
+        onBack={() => {
+          setStep(questions.length - 1)
+          setSelected(answers[questions[questions.length - 1].id] || null)
+        }}
+        onNext={() => setStep('capture')}
+        totalQuestions={questions.length}
+      />
+    )
+  }
+
+  // ── Capture ───────────────────────────────────────────────────────────────
   if (step === 'capture') {
     return (
       <CaptureScreen
         contact={contact}
         setContact={setContact}
-        onBack={() => {
-          setStep(questions.length - 1)
-          setSelected(answers[questions[questions.length - 1].id] || null)
-        }}
+        onBack={() => setStep('revenue')}
         onSubmit={() => {
           submitLead()
           setStep('calculating')
@@ -982,7 +1161,7 @@ export default function Quiz() {
     )
   }
 
-  // ── Calculating ──────────────────────────────────────────────────────────────
+  // ── Calculating ───────────────────────────────────────────────────────────
   if (step === 'calculating') {
     return <CalculatingScreen onDone={() => setStep('results')} />
   }
@@ -991,7 +1170,7 @@ export default function Quiz() {
   if (step === 'results' && tier) {
     const tierKey = computeResult(answers)
     const health = computeHealthScore(answers)
-    const roi = computeRoi(answers, tierKey)
+    const roi = computeRoi(revenueValue(revenueIdx), revenueLabel(revenueIdx), tierKey)
     return (
       <ResultsDashboard
         contact={contact}
@@ -1005,7 +1184,7 @@ export default function Quiz() {
     )
   }
 
-  // ── Question step ──────────────────────────────────────────────────────────
+  // ── Question step ─────────────────────────────────────────────────────────
   if (!currentQ) return null
 
   return (
@@ -1016,7 +1195,7 @@ export default function Quiz() {
           <div className="mb-10">
             <div className="flex items-center justify-between mb-3">
               <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
-                Question {(step as number) + 1} of {questions.length}
+                Question {(step as number) + 1} of {questions.length + 1}
               </p>
               <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
                 {Math.round(progress)}%
@@ -1086,7 +1265,7 @@ export default function Quiz() {
                   : 'bg-black/[0.06] text-black/30 cursor-not-allowed'
               }`}
             >
-              {typeof step === 'number' && step === questions.length - 1 ? 'See My Results →' : 'Next →'}
+              {typeof step === 'number' && step === questions.length - 1 ? 'Almost done →' : 'Next →'}
             </button>
           </div>
         </div>
