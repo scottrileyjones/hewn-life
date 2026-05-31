@@ -13,6 +13,7 @@ export default function Post() {
       excerpt: 'Google isn\'t the only game in town anymore. Here\'s how to show up in ChatGPT, Perplexity, and AI Overviews before your competitors figure it out.',
       date: 'May 2026',
       readTime: '9 min read',
+      image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_788,c_fill/v1779578220/main-sample.png',
     }}>
       <p>
         Search is in the middle of the most significant structural shift since Google replaced the directory. For two decades, ranking in search meant ranking on Google. Today, a growing percentage of searches — especially research-intent queries — never reach Google at all. They go to ChatGPT, Perplexity, Claude, or they get answered directly by Google's own AI Overview before the user ever clicks a result.

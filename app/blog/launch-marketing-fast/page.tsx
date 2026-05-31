@@ -13,6 +13,7 @@ export default function Post() {
       excerpt: 'Speed is now a real competitive advantage. Here\'s what\'s possible in 7 days when you have the right team and the right tools.',
       date: 'May 2026',
       readTime: '6 min read',
+      image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_788,c_fill/v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg',
     }}>
       <p>
         There's a version of this story that plays out at thousands of small businesses every year. You know you need better marketing. You spend two weeks researching agencies. You have four sales calls. You wait six weeks for a proposal. You negotiate. You start. And three months after the decision, you're finally running ads.

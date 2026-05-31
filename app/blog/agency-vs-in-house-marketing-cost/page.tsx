@@ -13,6 +13,7 @@ export default function Post() {
       excerpt: 'The math most businesses get wrong. Here\'s what in-house marketing actually costs — and why the agency case is stronger than it looks.',
       date: 'May 2026',
       readTime: '7 min read',
+      image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_788,c_fill/v1780097464/soundtrap-c_S99FlDqSw-unsplash_mtpxgd.jpg',
     }}>
       <p>
         Every business owner eventually faces this question. You've been outsourcing your marketing and you're wondering if it's time to bring it in-house. Or you're building from scratch and trying to decide which path makes more sense. Either way, most people underestimate the true cost of in-house — often by a lot.
