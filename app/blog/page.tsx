@@ -13,7 +13,7 @@ const posts = [
     readTime: '9 min read',
     featured: true,
     href: '/blog/answer-engine-optimization-small-business',
-    image: IMG('v1779578220/main-sample.png', 1000, 562),
+    image: IMG('v1780207193/girl_online_shopping_lqod5j.jpg', 1000, 562),
   },
   {
     category: 'AI & Marketing',
