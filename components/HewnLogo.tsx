@@ -9,8 +9,8 @@ interface HewnLogoProps {
 export default function HewnLogo({ dark = true, size = 'md', mono = false }: HewnLogoProps) {
   const markSize = size === 'sm' ? 24 : size === 'lg' ? 44 : 32
   const textSize = size === 'sm' ? 'text-xl' : size === 'lg' ? 'text-4xl' : 'text-[26px]'
-  const markColor = mono ? 'text-[#A89F92]' : dark ? 'text-[#0D0D0D]' : 'text-white'
-  const wordColor = mono ? 'text-[#A89F92]' : dark ? 'text-[#0D0D0D]' : 'text-white'
+  const markColor = dark ? 'text-[#0D0D0D]' : 'text-white'
+  const wordColor = dark ? 'text-[#0D0D0D]' : 'text-white'
   const accentClass = mono ? wordColor : 'text-[#6BAD3D]'
 
   return (
