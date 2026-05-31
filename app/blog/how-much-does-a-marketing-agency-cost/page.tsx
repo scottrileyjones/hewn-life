@@ -13,6 +13,7 @@ export default function Post() {
       excerpt: 'Real numbers, no fluff. What small businesses actually pay — and how to know if you\'re overpaying.',
       date: 'May 2026',
       readTime: '7 min read',
+      image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_788,c_fill/v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg',
     }}>
       <p>
         If you've ever Googled "how much does a marketing agency cost" and ended up more confused than when you started, you're not alone. The range is absurd — from $500 a month to $50,000 a month — and most of the content out there is written by agencies with a vested interest in making their pricing look reasonable.

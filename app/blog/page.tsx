@@ -1,4 +1,8 @@
 import Link from 'next/link'
+import Image from 'next/image'
+
+const IMG = (path: string, w: number, h: number) =>
+  `https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_${w},h_${h},c_fill/${path}`
 
 const posts = [
   {
@@ -9,6 +13,7 @@ const posts = [
     readTime: '9 min read',
     featured: true,
     href: '/blog/answer-engine-optimization-small-business',
+    image: IMG('v1779578220/main-sample.png', 1000, 562),
   },
   {
     category: 'AI & Marketing',
@@ -18,6 +23,7 @@ const posts = [
     readTime: '8 min read',
     featured: false,
     href: '/blog/ai-marketing-for-small-business',
+    image: IMG('v1780097464/collabstr-bM2nm41YaeA-unsplash_gspy6l.jpg', 700, 460),
   },
   {
     category: 'Pricing & Value',
@@ -27,6 +33,7 @@ const posts = [
     readTime: '7 min read',
     featured: false,
     href: '/blog/how-much-does-a-marketing-agency-cost',
+    image: IMG('v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg', 700, 460),
   },
   {
     category: 'Pricing & Value',
@@ -36,6 +43,7 @@ const posts = [
     readTime: '7 min read',
     featured: false,
     href: '/blog/agency-vs-in-house-marketing-cost',
+    image: IMG('v1780097464/soundtrap-c_S99FlDqSw-unsplash_mtpxgd.jpg', 700, 460),
   },
   {
     category: 'AI & Marketing',
@@ -45,6 +53,7 @@ const posts = [
     readTime: '6 min read',
     featured: false,
     href: '/blog/launch-marketing-fast',
+    image: IMG('v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg', 700, 460),
   },
   {
     category: 'Brand Strategy',
@@ -54,6 +63,7 @@ const posts = [
     readTime: '6 min read',
     featured: false,
     href: '/blog',
+    image: IMG('v1780097464/collabstr-bM2nm41YaeA-unsplash_gspy6l.jpg', 700, 460),
   },
 ]
 
@@ -81,11 +91,11 @@ export default function Blog() {
       {/* ── FEATURED POST ── */}
       <section className="py-12 px-6 lg:px-12 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
-          <div className="lg:col-span-3">
-            <div className="aspect-[16/9] bg-[#F0F7EB] rounded-3xl flex items-center justify-center">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-[#6BAD3D]/40">Featured Image</p>
+          <Link href={featured.href} className="lg:col-span-3 group block">
+            <div className="relative aspect-[16/9] rounded-3xl overflow-hidden">
+              <Image src={featured.image} alt="" fill priority className="object-cover group-hover:scale-[1.02] transition-transform duration-500" sizes="(max-width: 1024px) 100vw, 720px" />
             </div>
-          </div>
+          </Link>
           <div className="lg:col-span-2">
             <span className="inline-block bg-[#E9D5FF] text-[#6D28D9] font-body text-[11px] font-medium px-3 py-1 rounded-full uppercase tracking-wider mb-5">
               {featured.category}
@@ -109,8 +119,8 @@ export default function Blog() {
             {grid.map((post, i) => (
               <Link key={i} href={post.href} className="group">
               <article className="group cursor-pointer">
-                <div className="aspect-[16/9] bg-[#F7F6F3] rounded-2xl mb-6 overflow-hidden group-hover:bg-[#F0F7EB] transition-colors flex items-center justify-center">
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-black/20">Post Image</p>
+                <div className="relative aspect-[16/9] rounded-2xl mb-6 overflow-hidden">
+                  <Image src={post.image} alt="" fill className="object-cover group-hover:scale-[1.03] transition-transform duration-500" sizes="(max-width: 768px) 100vw, 380px" />
                 </div>
                 <p className="font-body text-[11px] uppercase tracking-[0.15em] text-[#8B5CF6] mb-2">{post.category}</p>
                 <h3 className="font-display font-semibold text-[22px] leading-tight text-[#0D0D0D] mb-3 group-hover:text-[#6BAD3D] transition-colors">

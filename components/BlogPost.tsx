@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import CalButton from '@/components/CalButton'
 
 export interface BlogPostMeta {
@@ -7,6 +8,7 @@ export interface BlogPostMeta {
   excerpt: string
   date: string
   readTime: string
+  image?: string
 }
 
 interface Props {
@@ -14,23 +16,38 @@ interface Props {
   children: React.ReactNode
 }
 
+const CTA_IMAGE =
+  'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_900,c_fill/v1780097464/collabstr-bM2nm41YaeA-unsplash_gspy6l.jpg'
+
 export function BlogCta({ text = "Ready to stop reading and start growing?" }: { text?: string }) {
   return (
-    <div className="my-12 rounded-3xl bg-[#6BAD3D] p-10 md:p-12 text-center">
-      <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/60 mb-4">Work with us</p>
-      <h3 className="font-display font-bold text-[28px] md:text-[32px] text-white leading-tight mb-6 max-w-lg mx-auto">{text}</h3>
-      <CalButton className="inline-flex items-center bg-white text-[#0D0D0D] font-body font-semibold px-8 py-4 rounded-full hover:bg-white/90 transition-all duration-200">
-        Book a Free Discovery Call →
-      </CalButton>
+    <div className="my-14 overflow-hidden rounded-[28px] bg-[#1A1815] grid md:grid-cols-[1.4fr_1fr]">
+      {/* Copy — uses div/span to stay out of prose styling */}
+      <div className="p-9 md:p-11 flex flex-col justify-center">
+        <span className="block font-mono text-[10px] uppercase tracking-[0.22em] text-[#8FC765] mb-4">Work with us</span>
+        <span className="block font-display font-semibold text-[26px] md:text-[30px] text-white leading-[1.15] mb-6">{text}</span>
+        <div>
+          <CalButton className="inline-flex items-center bg-[#8B5CF6] text-white font-body font-semibold px-7 py-3.5 rounded-full hover:bg-[#7C3AED] transition-all duration-200 hover:-translate-y-0.5">
+            Book a Free Discovery Call →
+          </CalButton>
+        </div>
+        <span className="block font-body text-[12px] text-white/40 mt-4">No pitch decks. No pressure. Just a direct conversation.</span>
+      </div>
+      {/* Image */}
+      <div className="relative min-h-[220px] md:min-h-full">
+        <Image src={CTA_IMAGE} alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 360px" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1A1815] via-[#1A1815]/20 to-transparent" />
+      </div>
     </div>
   )
 }
 
 export default function BlogPost({ meta, children }: Props) {
+  const heroImage = meta.image
   return (
     <div className="bg-white">
       {/* Hero */}
-      <section className="pt-32 pb-12 px-6 lg:px-12 border-b border-black/[0.06]">
+      <section className="pt-32 pb-10 px-6 lg:px-12">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center gap-3 mb-6">
             <Link href="/blog" className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92] hover:text-[#6B6560] transition-colors">
@@ -51,8 +68,19 @@ export default function BlogPost({ meta, children }: Props) {
         </div>
       </section>
 
+      {/* Hero image */}
+      {heroImage && (
+        <section className="px-6 lg:px-12 mb-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="relative aspect-[16/9] rounded-3xl overflow-hidden">
+              <Image src={heroImage} alt="" fill priority className="object-cover" sizes="(max-width: 1024px) 100vw, 896px" />
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Body */}
-      <section className="py-16 px-6 lg:px-12">
+      <section className="py-12 px-6 lg:px-12">
         <div className="max-w-3xl mx-auto">
           <div className="prose-hewn">
             {children}
