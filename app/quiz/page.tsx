@@ -10,7 +10,7 @@ const QUIZ_HERO_IMAGE =
 // ── Revenue slider stops ──────────────────────────────────────────────────────
 
 const REVENUE_STOPS = [
-  { value: 0, label: 'Pre-revenue' },
+  { value: 0, label: '$0' },
   { value: 50000, label: '$50K' },
   { value: 100000, label: '$100K' },
   { value: 250000, label: '$250K' },
@@ -899,7 +899,7 @@ function RevenueSliderScreen({
                   {val.label}
                 </span>
                 {revenueIdx === 0 && (
-                  <span className="font-body text-[13px] text-[#A89F92]">We&apos;ll base projections on market entry benchmarks</span>
+                  <span className="font-body text-[13px] text-[#A89F92]">Pre-revenue — we&apos;ll base projections on market entry benchmarks</span>
                 )}
                 {revenueIdx === REVENUE_STOPS.length - 1 && (
                   <span className="font-body text-[13px] text-[#6BAD3D]">Impressive — let&apos;s talk scale</span>
@@ -930,7 +930,7 @@ function RevenueSliderScreen({
 
             {/* Tick marks / milestone labels */}
             <div className="mt-6 flex flex-wrap justify-center gap-2">
-              {[0, 3, 6, 10, 12, 16, 19].map(i => (
+              {[0, 3, 6, 10, 12, 16, 19].map((i) => (
                 <button
                   key={i}
                   onClick={() => setRevenueIdx(i)}
