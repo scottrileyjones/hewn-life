@@ -1,8 +1,11 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import CalButton from '@/components/CalButton'
-import SectionEyebrow from '@/components/SectionEyebrow'
+
+const QUIZ_HERO_IMAGE =
+  'https://res.cloudinary.com/dnstpvgmv/image/upload/v1759178490/u9385715703_A_confident_African_American_female_entrepreneur__67de8de9-21cf-43e9-b389-cd87a8c4ce1b_0_qiqkmwf.png'
 
 // ── Questions ────────────────────────────────────────────────────────────────
 
@@ -885,45 +888,76 @@ export default function Quiz() {
   const tier = step === 'results' ? tiers[computeResult(answers)] : null
   const services = step === 'results' ? getServices(answers) : []
 
-  // ── Intro ──────────────────────────────────────────────────────────────────
+  // ── Intro (landing page) ──────────────────────────────────────────────────
   if (step === 'intro') {
     return (
-      <main className="min-h-screen bg-white">
-        <section className="pt-36 pb-24 px-6 lg:px-12">
-          <div className="max-w-2xl mx-auto text-center">
-            <SectionEyebrow text="Marketing Assessment" light />
-            <h1 className="hero-heading text-[44px] md:text-[60px] text-[#0D0D0D] leading-[1.04] mt-4 mb-6">
-              Find out exactly<br />
-              <span className="accent" style={{ color: '#6BAD3D' }}>what you need.</span>
-            </h1>
-            <p className="font-body text-lg text-[#6B6560] leading-relaxed mb-4 max-w-xl mx-auto">
-              Seven questions. Two minutes. A clear, honest recommendation on which services and tier will actually move the needle for your business — no sales call required.
-            </p>
-            <p className="font-body text-sm text-[#A89F92] mb-12">
-              Used by founders and marketing leads to cut through the noise and start with what matters.
-            </p>
-            <button
-              onClick={() => setStep(0)}
-              className="inline-flex items-center justify-center bg-[#8B5CF6] text-white font-body font-medium px-10 py-4 rounded-full hover:bg-[#7C3AED] transition-all duration-200 shadow-[0_8px_30px_-8px_rgba(139,92,246,0.5)] hover:shadow-[0_12px_40px_-8px_rgba(139,92,246,0.7)] hover:-translate-y-0.5"
-            >
-              Start the Assessment →
-            </button>
+      <main className="min-h-screen bg-[#0D0D0D]">
+        {/* ── Hero ── */}
+        <section className="relative min-h-screen flex flex-col overflow-hidden">
+          {/* Background image */}
+          <div className="absolute inset-0">
+            <Image
+              src={QUIZ_HERO_IMAGE}
+              alt=""
+              fill
+              priority
+              className="object-cover object-[70%_center] lg:object-[60%_center]"
+            />
+            {/* Gradients for legibility — strong on mobile bottom, left on desktop */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-[#0D0D0D]/70 to-[#0D0D0D]/30 lg:bg-gradient-to-r lg:from-[#0D0D0D] lg:via-[#0D0D0D]/85 lg:to-transparent" />
+            <div className="absolute inset-0 lg:hidden bg-gradient-to-b from-[#0D0D0D]/60 to-transparent" />
           </div>
-        </section>
 
-        {/* Social proof strip */}
-        <section className="bg-[#F9F7F3] py-16 px-6 lg:px-12 border-t border-black/[0.06]">
-          <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-8">
-            {[
-              { stat: '2 min', label: 'to complete' },
-              { stat: '7', label: 'targeted questions' },
-              { stat: '100%', label: 'personalized output' },
-            ].map(s => (
-              <div key={s.stat} className="text-center">
-                <p className="font-display text-[48px] leading-none text-[#0D0D0D] mb-2">{s.stat}</p>
-                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#8B5CF6]">{s.label}</p>
+          {/* Content */}
+          <div className="relative flex-1 flex items-center px-6 lg:px-12 pt-28 pb-10">
+            <div className="max-w-7xl mx-auto w-full">
+              <div className="max-w-xl">
+                <div className="animate-fade-up">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-[#6BAD3D]/40 bg-[#6BAD3D]/10 px-4 py-1.5 mb-6">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D] animate-pulse" />
+                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#6BAD3D]">Free ROI Assessment</span>
+                  </span>
+
+                  <h1 className="hero-heading text-[40px] md:text-[64px] text-white leading-[1.02] mb-5">
+                    See what growth<br />
+                    <span className="accent" style={{ color: '#6BAD3D' }}>is worth to you.</span>
+                  </h1>
+
+                  <p className="font-body text-lg text-white/70 leading-relaxed mb-8 max-w-md">
+                    Answer 7 quick questions and get a personalized report — your marketing health score, the exact services you need, and the revenue you could unlock.
+                  </p>
+
+                  <button
+                    onClick={() => setStep(0)}
+                    className="w-full sm:w-auto inline-flex items-center justify-center bg-[#8B5CF6] text-white font-body font-semibold text-[17px] px-10 py-5 rounded-full hover:bg-[#7C3AED] transition-all duration-200 shadow-[0_12px_40px_-8px_rgba(139,92,246,0.6)] hover:-translate-y-0.5"
+                  >
+                    Calculate My ROI →
+                  </button>
+
+                  <div className="flex items-center gap-5 mt-6">
+                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/40">⚡ 2 minutes</span>
+                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/40">✓ No sales call</span>
+                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/40">✓ Instant results</span>
+                  </div>
+                </div>
               </div>
-            ))}
+            </div>
+          </div>
+
+          {/* Bottom value strip */}
+          <div className="relative border-t border-white/[0.08] bg-[#0D0D0D]/60 backdrop-blur-sm">
+            <div className="max-w-7xl mx-auto px-6 lg:px-12 py-6 grid grid-cols-3 gap-4">
+              {[
+                { stat: 'ROI', label: 'projection for your stage' },
+                { stat: 'Health', label: 'score across 4 areas' },
+                { stat: 'Plan', label: 'matched to your goals' },
+              ].map(s => (
+                <div key={s.stat} className="text-center sm:text-left">
+                  <p className="font-display text-[22px] md:text-[28px] leading-none text-white mb-1">{s.stat}</p>
+                  <p className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.14em] text-[#8B5CF6]">{s.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       </main>
