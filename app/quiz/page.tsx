@@ -684,7 +684,7 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
 
 // ── Capture screen ────────────────────────────────────────────────────────────
 
-interface Contact { name: string; company: string; email: string; phone: string; state: string }
+interface Contact { name: string; company: string; email: string; phone: string; state: string; notes: string }
 
 const US_STATES = [
   'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
@@ -810,6 +810,19 @@ function CaptureScreen({
                   <option key={s} value={s} className="text-[#0D0D0D]">{s}</option>
                 ))}
               </select>
+            </div>
+            <div>
+              <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-2 block">
+                Anything else we should know? <span className="text-black/25 normal-case tracking-normal">(optional)</span>
+              </label>
+              <textarea
+                name="notes"
+                rows={3}
+                value={contact.notes}
+                onChange={e => setContact(c => ({ ...c, notes: e.target.value }))}
+                placeholder="Tell us anything about your business, goals, or challenges that would help us tailor your plan."
+                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all resize-none"
+              />
             </div>
           </div>
 
@@ -995,7 +1008,7 @@ export default function Quiz() {
   const [step, setStep] = useState<'intro' | number | 'revenue' | 'capture' | 'calculating' | 'results'>('intro')
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [selected, setSelected] = useState<string | null>(null)
-  const [contact, setContact] = useState({ name: '', company: '', email: '', phone: '', state: '' })
+  const [contact, setContact] = useState({ name: '', company: '', email: '', phone: '', state: '', notes: '' })
   const [revenueIdx, setRevenueIdx] = useState(0)
 
   // The revenue slider is the first step; downstream scoring still expects a
@@ -1046,7 +1059,7 @@ export default function Quiz() {
     setStep('intro')
     setAnswers({})
     setSelected(null)
-    setContact({ name: '', company: '', email: '', phone: '', state: '' })
+    setContact({ name: '', company: '', email: '', phone: '', state: '', notes: '' })
     setRevenueIdx(0)
   }
 
@@ -1072,6 +1085,7 @@ export default function Quiz() {
           email: contact.email,
           phone: contact.phone,
           state: contact.state,
+          notes: contact.notes,
           tier: tiers[tierKey].name,
           services: svc,
           answers: readableAnswers(),
