@@ -931,7 +931,7 @@ function CaptureScreen({
               </span>
             </span>
             <span className="font-body text-[13px] text-[#6B6560] leading-relaxed">
-              I agree to receive my results and occasional marketing communications from Hewn Life, and consent to my information being used as described in the <Link href="/legal/privacy" className="text-[#8B5CF6] underline hover:text-[#7C3AED]">privacy policy</Link>. I can unsubscribe anytime.
+              I agree to receive my results and occasional marketing communications from Hewn Life, and consent to my information being used as described in the <Link href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="text-[#8B5CF6] underline hover:text-[#7C3AED]">privacy policy</Link>. I can unsubscribe anytime.
             </span>
           </label>
 
