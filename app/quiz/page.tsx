@@ -40,20 +40,19 @@ function revenueValue(idx: number): number {
   return REVENUE_STOPS[idx]?.value ?? 0
 }
 
+// Derive the business-stage bucket the rest of the scoring relies on from the
+// real annual-revenue number the user gave us on the slider.
+function revenueStage(idx: number): 'pre' | 'early' | 'growth' | 'scale' {
+  const v = revenueValue(idx)
+  if (v <= 0) return 'pre'
+  if (v < 250000) return 'early'
+  if (v < 1000000) return 'growth'
+  return 'scale'
+}
+
 // ── Questions ────────────────────────────────────────────────────────────────
 
 const questions = [
-  {
-    id: 'stage',
-    question: 'Where is your business right now?',
-    subtitle: 'Be honest — there\'s no wrong answer, just a wrong starting point.',
-    options: [
-      { label: 'Pre-launch or just getting started', value: 'pre', score: { hewn: 3, wrought: 0, forged: 0 } },
-      { label: 'Live but under $250K in annual revenue', value: 'early', score: { hewn: 2, wrought: 1, forged: 0 } },
-      { label: '$250K–$1M and growing steadily', value: 'growth', score: { hewn: 0, wrought: 3, forged: 1 } },
-      { label: '$1M+ and ready to scale aggressively', value: 'scale', score: { hewn: 0, wrought: 1, forged: 3 } },
-    ],
-  },
   {
     id: 'goal',
     question: 'What\'s your single most important goal in the next 90 days?',
@@ -850,13 +849,13 @@ function RevenueSliderScreen({
   setRevenueIdx,
   onBack,
   onNext,
-  totalQuestions,
+  totalSteps,
 }: {
   revenueIdx: number
   setRevenueIdx: (v: number) => void
   onBack: () => void
   onNext: () => void
-  totalQuestions: number
+  totalSteps: number
 }) {
   const sliderRef = useRef<HTMLInputElement>(null)
   const val = REVENUE_STOPS[revenueIdx]
@@ -869,12 +868,14 @@ function RevenueSliderScreen({
           <div className="mb-10">
             <div className="flex items-center justify-between mb-3">
               <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
-                Question {totalQuestions + 1} of {totalQuestions + 1}
+                Question 1 of {totalSteps}
               </p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">100%</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
+                {Math.round((1 / totalSteps) * 100)}%
+              </p>
             </div>
             <div className="h-1 bg-black/[0.06] rounded-full overflow-hidden">
-              <div className="h-full rounded-full transition-all duration-500" style={{ width: '100%', background: '#8B5CF6' }} />
+              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${(1 / totalSteps) * 100}%`, background: '#8B5CF6' }} />
             </div>
           </div>
 
@@ -997,8 +998,17 @@ export default function Quiz() {
   const [contact, setContact] = useState({ name: '', company: '', email: '', phone: '', state: '' })
   const [revenueIdx, setRevenueIdx] = useState(0)
 
+  // The revenue slider is the first step; downstream scoring still expects a
+  // `stage` answer, so we derive it from the revenue number.
+  const scoredAnswers = { ...answers, stage: revenueStage(revenueIdx) }
+
+  const totalSteps = questions.length + 1 // +1 for the revenue slider
   const currentQ = typeof step === 'number' ? questions[step] : null
-  const progress = typeof step === 'number' ? ((step + 1) / questions.length) * 100 : step === 'results' ? 100 : 0
+  // Revenue is step 1; question index N is step N+2.
+  const progress =
+    step === 'revenue' ? (1 / totalSteps) * 100
+    : typeof step === 'number' ? ((step + 2) / totalSteps) * 100
+    : step === 'results' ? 100 : 0
 
   // Always start each step at the top of the page.
   useEffect(() => {
@@ -1017,7 +1027,7 @@ export default function Quiz() {
     if (typeof step === 'number' && step < questions.length - 1) {
       setStep(step + 1)
     } else {
-      setStep('revenue')
+      setStep('capture')
     }
   }
 
@@ -1026,7 +1036,8 @@ export default function Quiz() {
       setStep(step - 1)
       setSelected(answers[questions[step - 1].id] || null)
     } else if (typeof step === 'number' && step === 0) {
-      setStep('intro')
+      // First question goes back to the revenue slider.
+      setStep('revenue')
       setSelected(null)
     }
   }
@@ -1049,8 +1060,8 @@ export default function Quiz() {
   }
 
   async function submitLead() {
-    const tierKey = computeResult(answers)
-    const svc = getServices(answers).map(s => s.label)
+    const tierKey = computeResult(scoredAnswers)
+    const svc = getServices(scoredAnswers).map(s => s.label)
     try {
       await fetch('/api/quiz-lead', {
         method: 'POST',
@@ -1064,7 +1075,7 @@ export default function Quiz() {
           tier: tiers[tierKey].name,
           services: svc,
           answers: readableAnswers(),
-          score: computeScore(answers),
+          score: computeScore(scoredAnswers),
           annualRevenue: revenueValue(revenueIdx),
           annualRevenueLabel: revenueLabel(revenueIdx),
         }),
@@ -1074,8 +1085,8 @@ export default function Quiz() {
     }
   }
 
-  const tier = step === 'results' ? tiers[computeResult(answers)] : null
-  const services = step === 'results' ? getServices(answers) : []
+  const tier = step === 'results' ? tiers[computeResult(scoredAnswers)] : null
+  const services = step === 'results' ? getServices(scoredAnswers) : []
 
   // ── Intro ─────────────────────────────────────────────────────────────────
   if (step === 'intro') {
@@ -1114,7 +1125,7 @@ export default function Quiz() {
                   </p>
 
                   <button
-                    onClick={() => setStep(0)}
+                    onClick={() => setStep('revenue')}
                     className="w-full sm:w-auto inline-flex items-center justify-center bg-[#8B5CF6] text-white font-body font-semibold text-[17px] px-10 py-5 rounded-full hover:bg-[#7C3AED] transition-all duration-200 shadow-[0_12px_40px_-8px_rgba(139,92,246,0.35)] hover:-translate-y-0.5"
                   >
                     Calculate My ROI →
@@ -1156,12 +1167,9 @@ export default function Quiz() {
       <RevenueSliderScreen
         revenueIdx={revenueIdx}
         setRevenueIdx={setRevenueIdx}
-        onBack={() => {
-          setStep(questions.length - 1)
-          setSelected(answers[questions[questions.length - 1].id] || null)
-        }}
-        onNext={() => setStep('capture')}
-        totalQuestions={questions.length}
+        onBack={() => setStep('intro')}
+        onNext={() => setStep(0)}
+        totalSteps={totalSteps}
       />
     )
   }
@@ -1172,7 +1180,10 @@ export default function Quiz() {
       <CaptureScreen
         contact={contact}
         setContact={setContact}
-        onBack={() => setStep('revenue')}
+        onBack={() => {
+          setStep(questions.length - 1)
+          setSelected(answers[questions[questions.length - 1].id] || null)
+        }}
         onSubmit={() => {
           submitLead()
           setStep('calculating')
@@ -1188,8 +1199,8 @@ export default function Quiz() {
 
   // ── Results dashboard ─────────────────────────────────────────────────────
   if (step === 'results' && tier) {
-    const tierKey = computeResult(answers)
-    const health = computeHealthScore(answers)
+    const tierKey = computeResult(scoredAnswers)
+    const health = computeHealthScore(scoredAnswers)
     const roi = computeRoi(revenueValue(revenueIdx), revenueLabel(revenueIdx), tierKey)
     return (
       <ResultsDashboard
@@ -1215,7 +1226,7 @@ export default function Quiz() {
           <div className="mb-10">
             <div className="flex items-center justify-between mb-3">
               <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
-                Question {(step as number) + 1} of {questions.length + 1}
+                Question {(step as number) + 2} of {totalSteps}
               </p>
               <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
                 {Math.round(progress)}%
