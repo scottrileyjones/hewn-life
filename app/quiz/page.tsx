@@ -389,21 +389,21 @@ function ResultsDashboard({
 
   return (
     <div className="min-h-screen bg-[#F9F7F3]">
-      {/* ── Top bar ── */}
-      <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 bg-white/90 backdrop-blur-md border-b border-black/[0.06]">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#6BAD3D] animate-pulse" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#A89F92]">Growth Opportunity Report</span>
-        </div>
-        <button onClick={onRestart} className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] hover:text-[#6B6560] transition-colors">
-          ← Retake
-        </button>
-      </div>
+      <div className="px-6 lg:px-12 max-w-4xl mx-auto pb-24 pt-28">
 
-      <div className="px-6 lg:px-12 max-w-4xl mx-auto pb-24">
+        {/* ── Report label + retake ── */}
+        <div className="flex items-center justify-between mb-10">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#6BAD3D] animate-pulse" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#A89F92]">Growth Opportunity Report</span>
+          </div>
+          <button onClick={onRestart} className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] hover:text-[#6B6560] transition-colors">
+            ← Retake
+          </button>
+        </div>
 
         {/* ── Hero headline ── */}
-        <div className={`pt-16 pb-12 transition-all duration-700 ${phase >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        <div className={`pb-12 transition-all duration-700 ${phase >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
           <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#6BAD3D] mb-5">
             {firstName ? `${firstName}'s Assessment` : 'Your Assessment'} · {tier.name} Tier Match
           </p>
@@ -999,6 +999,11 @@ export default function Quiz() {
 
   const currentQ = typeof step === 'number' ? questions[step] : null
   const progress = typeof step === 'number' ? ((step + 1) / questions.length) * 100 : step === 'results' ? 100 : 0
+
+  // Always start each step at the top of the page.
+  useEffect(() => {
+    window.scrollTo({ top: 0 })
+  }, [step])
 
   function handleSelect(value: string) {
     setSelected(value)
