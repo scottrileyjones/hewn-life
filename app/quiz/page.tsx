@@ -250,8 +250,10 @@ type RoiProjection = {
   aggressiveLift: number
   conservativeNew: string
   aggressiveNew: string
+  aggressiveNewRaw: number
   annualMin: string
   annualMax: string
+  annualMaxRaw: number
 }
 
 function computeRoi(answers: Record<string, string>, tierKey: 'hewn' | 'wrought' | 'forged'): RoiProjection {
@@ -285,9 +287,287 @@ function computeRoi(answers: Record<string, string>, tierKey: 'hewn' | 'wrought'
     aggressiveLift: Math.round(hi * 100),
     conservativeNew: fmt(newLo),
     aggressiveNew: fmt(newHi),
+    aggressiveNewRaw: newHi,
     annualMin,
     annualMax,
+    annualMaxRaw: Math.max(0, newHi - annualCost),
   }
+}
+
+// ── Results dashboard (full-screen takeover) ──────────────────────────────────
+
+function useCountUp(target: number, active: boolean, duration = 1800): number {
+  const [val, setVal] = useState(0)
+  useEffect(() => {
+    if (!active) return
+    let raf = 0
+    const start = performance.now()
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration)
+      const eased = 1 - Math.pow(1 - t, 3)
+      setVal(Math.round(target * eased))
+      if (t < 1) raf = requestAnimationFrame(tick)
+      else setVal(target)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [active, target, duration])
+  return val
+}
+
+function fmtCompact(n: number): string {
+  if (n >= 1000000) return `$${(n / 1000000).toFixed(1)}M`
+  if (n >= 1000) return `$${Math.round(n / 1000)}K`
+  return `$${n}`
+}
+
+function ResultsDashboard({
+  contact, tier, tierKey, health, roi, services, onRestart,
+}: {
+  contact: Contact
+  tier: typeof tiers['hewn']
+  tierKey: 'hewn' | 'wrought' | 'forged'
+  health: ReturnType<typeof computeHealthScore>
+  roi: RoiProjection
+  services: ServiceFlag[]
+  onRestart: () => void
+}) {
+  const [phase, setPhase] = useState(0)
+  // phase 1=roi hero, 2=health gauge, 3=bars, 4=services, 5=tier+cta
+
+  useEffect(() => {
+    const t = [
+      setTimeout(() => setPhase(1), 300),
+      setTimeout(() => setPhase(2), 1600),
+      setTimeout(() => setPhase(3), 2400),
+      setTimeout(() => setPhase(4), 3000),
+      setTimeout(() => setPhase(5), 3600),
+    ]
+    return () => t.forEach(clearTimeout)
+  }, [])
+
+  const roiCount = useCountUp(roi.aggressiveNewRaw, phase >= 1, 2000)
+  const netCount = useCountUp(roi.annualMaxRaw, phase >= 1, 2200)
+  const scoreCount = useCountUp(health.overall, phase >= 2, 1400)
+  const scoreColor = health.overall >= 65 ? '#6BAD3D' : health.overall >= 40 ? '#F59E0B' : '#EF4444'
+  const scoreLabel = health.overall >= 65 ? 'Strong Foundation' : health.overall >= 40 ? 'Room to Grow' : 'Significant Gap'
+  const firstName = contact.name ? contact.name.split(' ')[0] : null
+
+  return (
+    <div className="fixed inset-0 z-[100] overflow-y-auto bg-[#0D0D0D]">
+      {/* ── Top bar ── */}
+      <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 bg-[#0D0D0D]/90 backdrop-blur-md border-b border-white/[0.06]">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-[#6BAD3D] animate-pulse" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">Growth Opportunity Report</span>
+        </div>
+        <button onClick={onRestart} className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/30 hover:text-white/60 transition-colors">
+          ← Retake
+        </button>
+      </div>
+
+      <div className="px-6 lg:px-12 max-w-4xl mx-auto pb-24">
+
+        {/* ── Hero headline ── */}
+        <div className={`pt-16 pb-12 transition-all duration-700 ${phase >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#6BAD3D] mb-5">
+            {firstName ? `${firstName}'s Assessment` : 'Your Assessment'} · {tier.name} Tier Match
+          </p>
+          <h1 className="hero-heading text-[36px] md:text-[56px] text-white leading-[1.04] mb-4">
+            You have a real<br />
+            <span className="accent" style={{ color: '#6BAD3D' }}>revenue opportunity.</span>
+          </h1>
+          <p className="font-body text-base text-white/50 max-w-xl">
+            Based on your answers, here's what the numbers say — and what's within reach if you execute.
+          </p>
+        </div>
+
+        {/* ── ROI hero ── */}
+        <div className={`mb-6 transition-all duration-700 ${phase >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#13101A] to-[#0D0D0D] border border-white/[0.06] p-8 md:p-12">
+            {/* Animated glow rings */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none">
+              <div className="absolute inset-0 rounded-full border border-[#8B5CF6]/10 animate-ping" style={{ animationDuration: '3s' }} />
+              <div className="absolute inset-8 rounded-full border border-[#6BAD3D]/8 animate-ping" style={{ animationDuration: '4s', animationDelay: '0.5s' }} />
+            </div>
+            <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full blur-3xl bg-[#8B5CF6]/15 pointer-events-none" />
+            <div className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full blur-3xl bg-[#6BAD3D]/10 pointer-events-none" />
+
+            <div className="relative">
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/30 mb-6">Revenue Opportunity · {roi.revenueLabel} current stage</p>
+
+              <div className="grid md:grid-cols-2 gap-8 md:gap-12 mb-10">
+                {/* Big number */}
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#6BAD3D] mb-3">Potential New Revenue</p>
+                  <div className="font-display text-[64px] md:text-[80px] leading-none text-white mb-2 tabular-nums">
+                    {fmtCompact(roiCount)}
+                  </div>
+                  <p className="font-body text-[14px] text-white/40">additional annual revenue — aggressive case</p>
+                </div>
+                {/* Net ROI */}
+                <div className="flex flex-col justify-center">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#8B5CF6] mb-3">Net ROI After Retainer</p>
+                  <div className="font-display text-[48px] md:text-[60px] leading-none mb-2 tabular-nums" style={{ color: '#8B5CF6' }}>
+                    {fmtCompact(netCount)}
+                  </div>
+                  <p className="font-body text-[14px] text-white/40">profit above {tier.price} investment</p>
+                </div>
+              </div>
+
+              {/* Stat row */}
+              <div className="grid grid-cols-3 gap-4">
+                {[
+                  { label: 'Revenue Lift Range', val: `${roi.conservativeLift}–${roi.aggressiveLift}%` },
+                  { label: 'Conservative Case', val: roi.conservativeNew },
+                  { label: 'Annual Retainer', val: tier.price.split(' ')[0] },
+                ].map(s => (
+                  <div key={s.label} className="bg-white/[0.04] rounded-2xl p-4 border border-white/[0.06]">
+                    <p className="font-mono text-[9px] uppercase tracking-[0.14em] text-white/30 mb-2">{s.label}</p>
+                    <p className="font-display text-[22px] leading-none text-white">{s.val}</p>
+                  </div>
+                ))}
+              </div>
+
+              <p className="font-body text-[11px] text-white/20 mt-6 leading-relaxed">
+                Projections based on industry ROAS benchmarks for businesses at your stage and tier. Actual results vary. Not a guarantee.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Marketing health ── */}
+        <div className={`mb-6 transition-all duration-700 delay-100 ${phase >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-[#111] rounded-3xl border border-white/[0.06] p-8 md:p-10">
+            <div className="grid md:grid-cols-[auto_1fr] gap-8 items-center">
+              {/* Dial */}
+              <div className="flex flex-col items-center">
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/30 mb-5">Marketing Health</p>
+                <div className="relative w-40 h-40">
+                  <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
+                    <circle
+                      cx="60" cy="60" r="50" fill="none" strokeWidth="8"
+                      stroke={scoreColor} strokeLinecap="round"
+                      strokeDasharray={`${phase >= 2 ? (health.overall / 100) * 314 : 0} 314`}
+                      style={{ transition: 'stroke-dasharray 1.4s cubic-bezier(0.34,1.56,0.64,1)', filter: `drop-shadow(0 0 8px ${scoreColor}60)` }}
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="font-display text-[44px] leading-none text-white tabular-nums">{scoreCount}</span>
+                    <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-white/30">/ 100</span>
+                  </div>
+                </div>
+                <span className="mt-4 font-mono text-[11px] px-4 py-1.5 rounded-full border" style={{ color: scoreColor, borderColor: `${scoreColor}40`, background: `${scoreColor}12` }}>
+                  {scoreLabel}
+                </span>
+                <p className="font-body text-[12px] text-white/30 text-center mt-3 max-w-[160px]">
+                  {health.overall < 40 ? 'Big gap = big opportunity.' : health.overall < 65 ? 'Solid base, accelerate now.' : 'Strong — time to scale.'}
+                </p>
+              </div>
+
+              {/* Category bars */}
+              <div className="space-y-5">
+                {health.categories.map((cat, i) => {
+                  const c = cat.score >= 65 ? '#6BAD3D' : cat.score >= 40 ? '#F59E0B' : '#EF4444'
+                  const active = phase >= 3
+                  return (
+                    <div key={cat.label} style={{ transitionDelay: active ? `${i * 100}ms` : '0ms' }}
+                      className={`transition-all duration-500 ${active ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="font-body text-[13px] text-white/70">{cat.label}</span>
+                        <span className="font-mono text-[12px] tabular-nums" style={{ color: c }}>{cat.score}/100</span>
+                      </div>
+                      <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
+                        <div className="h-full rounded-full" style={{
+                          width: active ? `${cat.score}%` : '0%',
+                          background: c,
+                          boxShadow: `0 0 8px ${c}50`,
+                          transition: `width 1s cubic-bezier(0.34,1.56,0.64,1) ${i * 120}ms`,
+                        }} />
+                      </div>
+                      <p className="font-body text-[11px] text-white/25 mt-1">{cat.description}</p>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Recommended services ── */}
+        <div className={`mb-6 transition-all duration-700 ${phase >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-[#111] rounded-3xl border border-white/[0.06] p-8 md:p-10">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/30 mb-2">Recommended Service Mix</p>
+            <h2 className="hero-heading text-[24px] md:text-[32px] text-white leading-tight mb-8">
+              The channels that'll <span className="accent" style={{ color: '#6BAD3D' }}>move the needle.</span>
+            </h2>
+            <div className="grid md:grid-cols-2 gap-3">
+              {services.map((svc, i) => (
+                <div
+                  key={i}
+                  className={`flex items-start gap-3 p-5 bg-white/[0.04] border border-white/[0.06] rounded-2xl transition-all duration-500 ${phase >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+                  style={{ transitionDelay: `${i * 80}ms` }}
+                >
+                  <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#6BAD3D] flex items-center justify-center">
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.5l2.2 2.2L9.5 3.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <p className="font-display font-semibold text-[15px] text-white mb-0.5">{svc.label}</p>
+                    <p className="font-body text-[12px] text-white/40 leading-relaxed">{svc.reason}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Tier + CTA ── */}
+        <div className={`mb-6 transition-all duration-700 ${phase >= 5 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="relative rounded-3xl overflow-hidden p-8 md:p-12" style={{ background: tierKey === 'hewn' ? '#1A1815' : '#17131F' }}>
+            <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full blur-3xl opacity-40 pointer-events-none" style={{ background: tier.color }} />
+            <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: tier.color }} />
+            <div className="relative">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: tier.color }}>
+                Your Starting Point · {tierKey === 'hewn' ? 'Foundation' : tierKey === 'wrought' ? 'Growth' : 'Scale'}
+              </p>
+              <h3 className="font-display text-[52px] leading-none text-white mb-1">{tier.name}</h3>
+              <p className="font-body text-[28px] font-light text-white/50 mb-5">{tier.price}</p>
+              <p className="font-display italic text-[20px] text-white/90 mb-3">{tier.tagline}</p>
+              <p className="font-body text-[15px] text-white/50 leading-relaxed max-w-lg mb-10">{tier.description}</p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <CalButton
+                  className="inline-flex items-center justify-center font-body font-semibold px-8 py-4 rounded-full transition-all duration-200 hover:-translate-y-0.5 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.5)]"
+                  style={{ background: tier.color, color: 'white' }}
+                >
+                  Book a Discovery Call →
+                </CalButton>
+                <Link href={tier.href} className="inline-flex items-center justify-center border border-white/15 text-white font-body font-medium px-8 py-4 rounded-full hover:border-white/30 transition-all duration-200">
+                  See Full Pricing
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Not ready yet ── */}
+        <div className={`transition-all duration-700 ${phase >= 5 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-white/[0.03] border border-white/[0.06] rounded-3xl p-8">
+            <div>
+              <p className="font-display font-semibold text-[17px] text-white mb-1">Not ready for a retainer?</p>
+              <p className="font-body text-[14px] text-white/40">Start with our Website in a Week — fully built for a flat $1,000.</p>
+            </div>
+            <Link href="/website-in-a-week" className="flex-shrink-0 inline-flex items-center justify-center border border-white/15 text-white font-body font-medium px-8 py-4 rounded-full hover:border-white/30 transition-all duration-200 whitespace-nowrap">
+              Site in a Week →
+            </Link>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  )
 }
 
 // ── Calculating screen ────────────────────────────────────────────────────────
@@ -678,187 +958,16 @@ export default function Quiz() {
     const tierKey = computeResult(answers)
     const health = computeHealthScore(answers)
     const roi = computeRoi(answers, tierKey)
-    const scoreColor = health.overall >= 65 ? '#6BAD3D' : health.overall >= 40 ? '#F59E0B' : '#EF4444'
-    const scoreLabel = health.overall >= 65 ? 'Strong' : health.overall >= 40 ? 'Developing' : 'Critical'
-
     return (
-      <main className="min-h-screen bg-[#F9F7F3]">
-
-        {/* ── Header ── */}
-        <section className="pt-36 pb-16 px-6 lg:px-12 bg-[#0D0D0D]">
-          <div className="max-w-4xl mx-auto">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#6BAD3D] mb-4">Marketing Assessment Report</p>
-            <h1 className="hero-heading text-[36px] md:text-[52px] text-white leading-tight mb-4">
-              {contact.name ? `${contact.name.split(' ')[0]}'s` : 'Your'} Growth<br />
-              <span className="accent" style={{ color: '#6BAD3D' }}>Opportunity Report.</span>
-            </h1>
-            <p className="font-body text-base text-white/50">
-              Based on your answers — here's an honest read of where you stand and what's possible.
-            </p>
-          </div>
-        </section>
-
-        {/* ── Score + categories ── */}
-        <section className="px-6 lg:px-12 py-12">
-          <div className="max-w-4xl mx-auto grid md:grid-cols-[auto_1fr] gap-6 items-start">
-
-            {/* Overall score dial */}
-            <div className="bg-white rounded-3xl p-8 flex flex-col items-center justify-center min-w-[200px] border border-black/[0.06]">
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92] mb-4">Marketing Health</p>
-              <div className="relative w-36 h-36 mb-4">
-                <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
-                  <circle cx="60" cy="60" r="50" fill="none" stroke="#F0EDE8" strokeWidth="10" />
-                  <circle
-                    cx="60" cy="60" r="50" fill="none" strokeWidth="10"
-                    stroke={scoreColor}
-                    strokeLinecap="round"
-                    strokeDasharray={`${(health.overall / 100) * 314} 314`}
-                    style={{ transition: 'stroke-dasharray 1.2s ease' }}
-                  />
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="font-display text-[40px] leading-none text-[#0D0D0D]">{health.overall}</span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#A89F92]">/ 100</span>
-                </div>
-              </div>
-              <span className="font-body text-sm font-medium px-4 py-1.5 rounded-full" style={{ background: `${scoreColor}18`, color: scoreColor }}>
-                {scoreLabel}
-              </span>
-            </div>
-
-            {/* Category breakdown */}
-            <div className="bg-white rounded-3xl p-8 border border-black/[0.06]">
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92] mb-6">Score Breakdown</p>
-              <div className="space-y-5">
-                {health.categories.map(cat => {
-                  const c = cat.score >= 65 ? '#6BAD3D' : cat.score >= 40 ? '#F59E0B' : '#EF4444'
-                  return (
-                    <div key={cat.label}>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="font-body text-[14px] font-medium text-[#0D0D0D]">{cat.label}</span>
-                        <span className="font-mono text-[13px]" style={{ color: c }}>{cat.score}/100</span>
-                      </div>
-                      <div className="h-1.5 bg-[#F0EDE8] rounded-full overflow-hidden">
-                        <div className="h-full rounded-full transition-all duration-1000" style={{ width: `${cat.score}%`, background: c }} />
-                      </div>
-                      <p className="font-body text-[12px] text-[#A89F92] mt-1 leading-snug">{cat.description}</p>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── ROI Projection ── */}
-        <section className="px-6 lg:px-12 pb-12">
-          <div className="max-w-4xl mx-auto bg-[#0D0D0D] rounded-3xl p-8 md:p-12 relative overflow-hidden">
-            <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: tier.color }} />
-            <div className="relative">
-              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#6BAD3D] mb-4">ROI Projection</p>
-              <h2 className="hero-heading text-[28px] md:text-[38px] text-white leading-tight mb-2">
-                What working with Hewn<br />
-                <span className="accent" style={{ color: '#6BAD3D' }}>could be worth to you.</span>
-              </h2>
-              <p className="font-body text-[14px] text-white/40 mb-10">
-                Based on your current revenue stage ({roi.revenueLabel}) and the {tier.name} tier.
-                Projections are directional estimates based on industry benchmarks — not guarantees.
-              </p>
-
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-                {[
-                  { label: 'Est. Revenue Lift', value: `${roi.conservativeLift}–${roi.aggressiveLift}%`, sub: 'year-over-year' },
-                  { label: 'New Revenue (Low)', value: roi.conservativeNew, sub: 'conservative case' },
-                  { label: 'New Revenue (High)', value: roi.aggressiveNew, sub: 'aggressive case' },
-                  { label: 'Net ROI Range', value: `${roi.annualMin}–${roi.annualMax}`, sub: 'after retainer cost' },
-                ].map(s => (
-                  <div key={s.label} className="bg-white/[0.06] rounded-2xl p-5">
-                    <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/40 mb-2">{s.label}</p>
-                    <p className="font-display text-[26px] md:text-[30px] leading-none text-white mb-1">{s.value}</p>
-                    <p className="font-mono text-[9px] uppercase tracking-[0.12em]" style={{ color: tier.color }}>{s.sub}</p>
-                  </div>
-                ))}
-              </div>
-
-              <p className="font-body text-[12px] text-white/25 leading-relaxed max-w-xl">
-                Lift percentages derived from aggregate client outcomes and industry ROAS benchmarks for businesses at comparable stages. Actual results vary based on market, execution, and competitive factors.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Recommended services ── */}
-        <section className="px-6 lg:px-12 pb-12">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-3xl p-8 md:p-10 border border-black/[0.06]">
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92] mb-2">Recommended Services</p>
-              <h2 className="hero-heading text-[26px] md:text-[34px] text-[#0D0D0D] leading-tight mb-8">
-                Your personalized <span className="accent" style={{ color: '#6BAD3D' }}>service mix.</span>
-              </h2>
-              <div className="space-y-3">
-                {services.map((svc, i) => (
-                  <div key={i} className="flex items-start gap-4 p-5 bg-[#F9F7F3] rounded-2xl">
-                    <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#6BAD3D] flex items-center justify-center">
-                      <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
-                        <path d="M2.5 6.5l2.2 2.2L9.5 3.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </span>
-                    <div>
-                      <p className="font-display font-semibold text-[16px] text-[#0D0D0D] mb-0.5">{svc.label}</p>
-                      <p className="font-body text-[13px] text-[#6B6560] leading-relaxed">{svc.reason}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Tier recommendation ── */}
-        <section className="px-6 lg:px-12 pb-12">
-          <div className="max-w-4xl mx-auto">
-            <div className="rounded-3xl p-8 md:p-12 text-white relative overflow-hidden" style={{ background: tierKey === 'hewn' ? '#1A1815' : '#17131F' }}>
-              <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl opacity-30 pointer-events-none" style={{ background: tier.color }} />
-              <div className="relative">
-                <p className="font-mono text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: tier.color }}>
-                  Recommended Plan · {tierKey === 'hewn' ? 'Foundation' : tierKey === 'wrought' ? 'Growth' : 'Scale'}
-                </p>
-                <h3 className="font-display text-[44px] leading-none text-white mb-1">{tier.name}</h3>
-                <p className="font-body text-[26px] font-light text-white/60 mb-5">{tier.price}</p>
-                <p className="font-display italic text-[19px] text-white/90 mb-3">{tier.tagline}</p>
-                <p className="font-body text-[14px] text-white/55 leading-relaxed max-w-lg mb-10">{tier.description}</p>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <CalButton className="inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 hover:-translate-y-0.5" style={{ background: tier.color, color: 'white' }}>
-                    Book a Discovery Call
-                  </CalButton>
-                  <Link href={tier.href} className="inline-flex items-center justify-center border border-white/20 text-white font-body font-medium px-8 py-4 rounded-full hover:border-white/40 transition-all duration-200">
-                    See Full Pricing
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── One-off option ── */}
-        <section className="px-6 lg:px-12 pb-12">
-          <div className="max-w-4xl mx-auto bg-white rounded-3xl p-8 border border-black/[0.06] flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-              <p className="font-display font-semibold text-[18px] text-[#0D0D0D] mb-1">Not ready for a retainer?</p>
-              <p className="font-body text-[14px] text-[#6B6560]">Start with our Website in a Week — a fully built custom site for a flat $1,000.</p>
-            </div>
-            <Link href="/website-in-a-week" className="flex-shrink-0 inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200 whitespace-nowrap">
-              Site in a Week →
-            </Link>
-          </div>
-        </section>
-
-        <div className="py-8 px-6 flex justify-center">
-          <button onClick={handleRestart} className="font-body text-sm text-[#A89F92] hover:text-[#6B6560] transition-colors">
-            ← Retake the assessment
-          </button>
-        </div>
-      </main>
+      <ResultsDashboard
+        contact={contact}
+        tier={tier}
+        tierKey={tierKey}
+        health={health}
+        roi={roi}
+        services={services}
+        onRestart={handleRestart}
+      />
     )
   }
 
