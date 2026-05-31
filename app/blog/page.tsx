@@ -23,7 +23,7 @@ const posts = [
     readTime: '8 min read',
     featured: false,
     href: '/blog/ai-marketing-for-small-business',
-    image: IMG('v1780097464/collabstr-bM2nm41YaeA-unsplash_gspy6l.jpg', 700, 460),
+    image: IMG('v1780207388/data_team_ztea9x.jpg', 700, 460),
   },
   {
     category: 'Pricing & Value',
