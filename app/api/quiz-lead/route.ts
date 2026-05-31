@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       'Submission Timestamp': new Date().toISOString(),
       'Lead Source': 'Quiz',
       'Quiz Score': typeof score === 'number' ? score : undefined,
-      'Annual Revenue': annualRevenueLabel || '',
+      'Annual Revenue': typeof annualRevenue === 'number' ? annualRevenue : undefined,
     }
 
     const res = await fetch(
