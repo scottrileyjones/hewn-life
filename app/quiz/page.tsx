@@ -5,7 +5,7 @@ import Image from 'next/image'
 import CalButton from '@/components/CalButton'
 
 const QUIZ_HERO_IMAGE =
-  'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_1600,c_fill/v1780277632/web_developer_upcugn.jpg'
+  'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_1600,c_fill/v1780278857/jakub-zerdzicki-4rTXOMv28VA-unsplash_ui8wm1.jpg'
 
 // ── Revenue slider stops ──────────────────────────────────────────────────────
 
@@ -1336,8 +1336,8 @@ export default function Quiz() {
   // ── Intro ─────────────────────────────────────────────────────────────────
   if (step === 'intro') {
     return (
-      <main className="min-h-screen bg-white">
-        <section className="relative min-h-screen flex flex-col overflow-hidden">
+      <main className="h-[100dvh] bg-white flex flex-col">
+        <section className="relative flex-1 flex flex-col overflow-hidden">
           {/* Image — right half on desktop, hidden on mobile */}
           <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden lg:block">
             <Image
@@ -1345,13 +1345,13 @@ export default function Quiz() {
               alt=""
               fill
               priority
-              className="object-cover object-top"
+              className="object-cover object-center"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-white via-white/20 to-transparent" />
           </div>
 
           {/* Content */}
-          <div className="relative flex-1 flex items-center px-6 lg:px-12 pt-28 pb-10">
+          <div className="relative flex-1 flex items-start lg:items-center px-6 lg:px-12 pt-24 pb-6">
             <div className="max-w-7xl mx-auto w-full">
               <div className="max-w-xl">
                 <div className="animate-fade-up">
