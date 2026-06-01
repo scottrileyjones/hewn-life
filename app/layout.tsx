@@ -4,6 +4,7 @@ import './globals.css'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import CookieConsent from '@/components/CookieConsent'
+import QuizPopup from '@/components/QuizPopup'
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -66,6 +67,7 @@ export default function RootLayout({
         <main>{children}</main>
         <Footer />
         <CookieConsent />
+        <QuizPopup />
       </body>
     </html>
   )
