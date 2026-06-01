@@ -59,7 +59,7 @@ function HeroImageCard() {
     <div className="rounded-3xl overflow-hidden aspect-[4/5] w-full relative">
       <Image src={PHOTOS.hero} alt="Creative professional at work" fill className="object-cover" priority />
       <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent" />
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 w-[80%] backdrop-blur-sm rounded-xl px-4 py-3"
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 w-[80%] rounded-xl px-4 py-3"
         style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.05) 100%)', border: '1px solid rgba(255,255,255,0.20)', boxShadow: '0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12)' }}>
         <div className="flex items-center justify-between mb-2.5">
           <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/50">Monthly Snapshot</p>
@@ -142,7 +142,7 @@ export default function Home() {
             <Image src={PHOTOS.hero} alt="Creative professional at work" fill className="object-cover object-top" priority />
             <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-4">
-              <div className="backdrop-blur-md rounded-xl p-4" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%)', border: '1px solid rgba(255,255,255,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15)' }}>
+              <div className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%)', border: '1px solid rgba(255,255,255,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15)' }}>
                 <div className="flex items-center justify-between mb-3">
                   <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/50">Monthly Snapshot</p>
                   <span className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-body font-medium text-[#A78BFA]" style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.35)' }}>
