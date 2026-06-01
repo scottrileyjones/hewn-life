@@ -77,7 +77,7 @@ export default function QuizPopup() {
             {/* Heading */}
             <h2 className="font-display font-bold text-[28px] text-white leading-tight mb-3">
               Not sure where<br />
-              to <span className="italic" style={{ color: '#6BAD3D' }}>start?</span>
+              to <span className="font-display italic" style={{ color: '#6BAD3D' }}>start?</span>
             </h2>
 
             <p className="font-body text-sm text-white/60 leading-relaxed mb-7">
