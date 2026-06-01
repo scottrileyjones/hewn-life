@@ -406,7 +406,7 @@ function ResultsDashboard({
           <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#6BAD3D] mb-5">
             {firstName ? `${firstName}'s Assessment` : 'Your Assessment'} · {tier.name} Tier Match
           </p>
-          <h1 className="hero-heading text-[36px] md:text-[56px] text-[#0D0D0D] leading-[1.04] mb-4">
+          <h1 className="hero-heading text-[26px] md:text-[56px] text-[#0D0D0D] leading-[1.04] mb-4">
             You have a real<br />
             <span className="accent" style={{ color: '#6BAD3D' }}>revenue opportunity.</span>
           </h1>
@@ -427,14 +427,14 @@ function ResultsDashboard({
               <div className="grid md:grid-cols-2 gap-8 md:gap-12 mb-10">
                 <div>
                   <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#6BAD3D] mb-3">Potential New Revenue</p>
-                  <div className="font-display text-[64px] md:text-[80px] leading-none text-[#0D0D0D] mb-2 tabular-nums">
+                  <div className="font-display text-[40px] md:text-[64px] lg:text-[80px] leading-none text-[#0D0D0D] mb-2 tabular-nums">
                     {fmtCompact(roiCount)}
                   </div>
                   <p className="font-body text-[14px] text-[#A89F92]">additional annual revenue — aggressive case</p>
                 </div>
                 <div className="flex flex-col justify-center">
                   <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#8B5CF6] mb-3">Net ROI After Retainer</p>
-                  <div className="font-display text-[48px] md:text-[60px] leading-none mb-2 tabular-nums" style={{ color: '#8B5CF6' }}>
+                  <div className="font-display text-[32px] md:text-[48px] lg:text-[60px] leading-none mb-2 tabular-nums" style={{ color: '#8B5CF6' }}>
                     {fmtCompact(netCount)}
                   </div>
                   <p className="font-body text-[14px] text-[#A89F92]">profit above {tier.price} investment</p>
@@ -479,7 +479,7 @@ function ResultsDashboard({
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="font-display text-[44px] leading-none text-[#0D0D0D] tabular-nums">{scoreCount}</span>
+                    <span className="font-display text-[34px] md:text-[44px] leading-none text-[#0D0D0D] tabular-nums">{scoreCount}</span>
                     <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[#A89F92]">/ 100</span>
                   </div>
                 </div>
@@ -557,7 +557,7 @@ function ResultsDashboard({
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: tier.color }}>
                 Your Starting Point · {tierKey === 'hewn' ? 'Foundation' : tierKey === 'wrought' ? 'Growth' : 'Scale'}
               </p>
-              <h3 className="font-display text-[52px] leading-none text-white mb-1">{tier.name}</h3>
+              <h3 className="font-display text-[34px] md:text-[52px] leading-none text-white mb-1">{tier.name}</h3>
               <p className="font-body text-[28px] font-light text-white/50 mb-5">{tier.price}</p>
               <p className="font-display italic text-[20px] text-white/90 mb-3">{tier.tagline}</p>
               <p className="font-body text-[15px] text-white/50 leading-relaxed max-w-lg mb-10">{tier.description}</p>
@@ -727,7 +727,7 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
                   </div>
                   <div className="text-center">
                     <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-1">Revenue today</p>
-                    <p className="font-display text-[44px] leading-none text-[#0D0D0D] tabular-nums">${revenueCount.toLocaleString()}</p>
+                    <p className="font-display text-[32px] md:text-[44px] leading-none text-[#0D0D0D] tabular-nums">${revenueCount.toLocaleString()}</p>
                   </div>
                 </div>
               </div>
@@ -1017,7 +1017,7 @@ function RevenueSliderScreen({
             <div className="text-center mb-8">
               <div className="inline-flex flex-col items-center gap-2 bg-[#F9F7F3] border border-black/[0.07] rounded-3xl px-10 py-6">
                 <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">Annual Revenue</span>
-                <span className="font-display text-[56px] md:text-[72px] leading-none text-[#0D0D0D] tabular-nums">
+                <span className="font-display text-[36px] md:text-[56px] lg:text-[72px] leading-none text-[#0D0D0D] tabular-nums">
                   {val.label}
                 </span>
                 {revenueIdx === 0 && (
@@ -1320,7 +1320,7 @@ export default function Quiz() {
                     <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#6BAD3D]">Free ROI Assessment</span>
                   </span>
 
-                  <h1 className="hero-heading text-[40px] md:text-[64px] text-[#0D0D0D] leading-[1.02] mb-5">
+                  <h1 className="hero-heading text-[26px] md:text-[40px] lg:text-[64px] text-[#0D0D0D] leading-[1.02] mb-5">
                     See what growth<br />
                     <span className="accent" style={{ color: '#6BAD3D' }}>is worth to you.</span>
                   </h1>

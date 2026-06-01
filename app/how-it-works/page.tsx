@@ -49,7 +49,7 @@ export default function HowItWorks() {
         <div className="max-w-7xl mx-auto">
           <div className="animate-fade-up max-w-2xl">
             <SectionEyebrow text="How It Works" light />
-            <h1 className="hero-heading text-[44px] md:text-[60px] text-[#0D0D0D] mb-6 leading-[1.05]">
+            <h1 className="hero-heading text-[28px] md:text-[44px] lg:text-[60px] text-[#0D0D0D] mb-6 leading-[1.05]">
               Most agencies sell campaigns.<br />
               <span className="accent" style={{ color: '#6BAD3D' }}>We build systems.</span>
             </h1>
@@ -75,7 +75,7 @@ export default function HowItWorks() {
           {/* Section heading */}
           <div className="mb-16 pb-10 border-b border-black/[0.08]">
             <SectionEyebrow text="The Process" light />
-            <h2 className="hero-heading text-[36px] md:text-[52px] text-[#0D0D0D] leading-tight mt-3">
+            <h2 className="hero-heading text-[24px] md:text-[36px] lg:text-[52px] text-[#0D0D0D] leading-tight mt-3">
               From first call<br />
               <span className="accent" style={{ color: '#6BAD3D' }}>to market leader.</span>
             </h2>
@@ -118,7 +118,7 @@ export default function HowItWorks() {
 
           <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-16 mb-14 items-end">
             <div>
-              <h2 className="hero-heading text-[36px] md:text-[52px] text-white leading-tight">
+              <h2 className="hero-heading text-[24px] md:text-[36px] lg:text-[52px] text-white leading-tight">
                 What used to take<br />
                 <span className="accent" style={{ color: '#6BAD3D' }}>weeks takes hours.</span>
               </h2>
@@ -165,7 +165,7 @@ export default function HowItWorks() {
           </div>
 
           <div className="mb-12">
-            <h2 className="hero-heading text-[36px] md:text-[52px] text-[#0D0D0D] leading-tight mb-4">
+            <h2 className="hero-heading text-[24px] md:text-[36px] lg:text-[52px] text-[#0D0D0D] leading-tight mb-4">
               Assets you own.<br />
               <span className="accent" style={{ color: '#6BAD3D' }}>Systems that compound.</span>
             </h2>
@@ -177,7 +177,7 @@ export default function HowItWorks() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/[0.08]">
             <div className="bg-[#F9F7F3] p-10">
               <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-black/30 mb-3">Hewn — Tier 01</p>
-              <p className="font-display text-[64px] leading-none text-[#0D0D0D] mb-1"><CountUp value={String(hewnAssets.length)} /></p>
+              <p className="font-display text-[44px] md:text-[64px] leading-none text-[#0D0D0D] mb-1"><CountUp value={String(hewnAssets.length)} /></p>
               <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#6BAD3D] mb-8">deliverables built & owned</p>
               <ul className="space-y-3">
                 {hewnAssets.map(a => (
@@ -190,7 +190,7 @@ export default function HowItWorks() {
             </div>
             <div className="bg-[#0D0D0D] p-10">
               <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/25 mb-3">Forged — Tier 02</p>
-              <p className="font-display text-[64px] leading-none text-white mb-1"><CountUp value={String(hewnAssets.length + forgedAssets.length)} /></p>
+              <p className="font-display text-[44px] md:text-[64px] leading-none text-white mb-1"><CountUp value={String(hewnAssets.length + forgedAssets.length)} /></p>
               <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#6BAD3D] mb-3">deliverables built & owned</p>
               <p className="font-mono text-[9px] text-white/20 mb-6">Everything in Hewn, plus:</p>
               <ul className="space-y-3">
@@ -204,7 +204,7 @@ export default function HowItWorks() {
             </div>
             <div className="bg-[#F9F7F3] p-10">
               <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-black/30 mb-3">Carved — Tier 03</p>
-              <p className="font-display text-[64px] leading-none text-[#0D0D0D] mb-1"><CountUp value={String(hewnAssets.length + forgedAssets.length + carvedAssets.length)} /></p>
+              <p className="font-display text-[44px] md:text-[64px] leading-none text-[#0D0D0D] mb-1"><CountUp value={String(hewnAssets.length + forgedAssets.length + carvedAssets.length)} /></p>
               <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#6BAD3D] mb-3">deliverables built & owned</p>
               <p className="font-mono text-[9px] text-black/25 mb-6">Everything in Forged, plus:</p>
               <ul className="space-y-3">
@@ -238,7 +238,7 @@ export default function HowItWorks() {
           </div>
 
           <div className="mb-12">
-            <h2 className="hero-heading text-[36px] md:text-[52px] text-[#0D0D0D] leading-tight">
+            <h2 className="hero-heading text-[24px] md:text-[36px] lg:text-[52px] text-[#0D0D0D] leading-tight">
               You will always know<br />
               <span className="accent" style={{ color: '#6BAD3D' }}>exactly what&apos;s happening.</span>
             </h2>

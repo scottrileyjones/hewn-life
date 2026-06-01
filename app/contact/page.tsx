@@ -11,7 +11,7 @@ export default function Contact() {
           <div className="animate-fade-up">
             <SectionEyebrow text="Let's Talk" />
           </div>
-          <h1 className="hero-heading text-[56px] md:text-[80px] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
+          <h1 className="hero-heading text-[30px] sm:text-[42px] md:text-[80px] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
             Tell us about your business. We&apos;ll tell you what&apos;s <span style={{color: '#6BAD3D'}} className="accent">possible.</span>
           </h1>
           <p className="font-body text-lg text-ash max-w-xl animate-fade-up delay-2 leading-relaxed">
@@ -71,7 +71,7 @@ export default function Contact() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">
             <SectionEyebrow text="Common Questions" />
-            <h2 className="font-display font-normal italic text-[40px] leading-tight text-cream">
+            <h2 className="font-display font-normal italic text-[26px] md:text-[40px] leading-tight text-cream">
               Answers before you ask.
             </h2>
           </div>
