@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import SectionEyebrow from '@/components/SectionEyebrow'
 import CtaBanner from '@/components/CtaBanner'
 import BuildWeek from '@/components/BuildWeek'
@@ -42,18 +43,29 @@ export default function WebsiteInAWeek() {
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="pt-36 pb-20 px-6 lg:px-12 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="animate-fade-up max-w-3xl">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-white pt-24 pb-16 px-6 lg:px-12">
+        {/* Image — right half on desktop */}
+        <div className="absolute right-0 top-0 bottom-0 w-[45%] hidden lg:block">
+          <Image
+            src="https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_1600,c_fill/v1780277632/web_developer_upcugn.jpg"
+            alt=""
+            fill
+            priority
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/10 to-transparent" />
+        </div>
+        <div className="relative max-w-7xl mx-auto w-full">
+          <div className="animate-fade-up max-w-xl">
             <SectionEyebrow text="Website in a Week" light />
             <h1 className="hero-heading fluid-hero text-[#0D0D0D] mb-6 leading-[1.04]">
               A real website.<br />
               <span className="accent" style={{ color: '#6BAD3D' }}>In one week. $1,000.</span>
             </h1>
-            <p className="font-body text-lg text-[#6B6560] max-w-xl leading-relaxed mb-4">
-              Design, copy, development, and hosting — a fully functioning custom site with a few features built in, live in five business days. Built for mobile and desktop. No Figma required. Laser speed with AI.
+            <p className="font-body text-lg text-[#6B6560] max-w-lg leading-relaxed mb-4">
+              Design, copy, development, and hosting — a fully functioning custom site, live in five business days. Built for mobile and desktop. No Figma required. Laser speed with AI.
             </p>
-            <p className="font-body text-base text-[#3D3A36] max-w-xl leading-relaxed mb-10">
+            <p className="font-body text-base text-[#3D3A36] max-w-lg leading-relaxed mb-10">
               We do the heavy lifting. You take it over the moment it&apos;s live.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
