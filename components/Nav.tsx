@@ -57,16 +57,18 @@ export default function Nav() {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="/quiz"
+            <a
+              href="https://hewnlife.myassembly.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className={`font-body text-sm font-medium px-5 py-2.5 rounded-full border transition-all duration-200 ${
                 darkHero
-                  ? 'border-[#8B5CF6] text-[#A78BFA] hover:border-[#A78BFA] hover:bg-[#8B5CF6]/10'
-                  : 'border-[#8B5CF6] text-[#8B5CF6] hover:bg-[#8B5CF6]/10'
+                  ? 'border-white/30 text-white/70 hover:border-white/60 hover:text-white'
+                  : 'border-black/15 text-[#0D0D0D]/70 hover:border-black/30 hover:text-[#0D0D0D]'
               }`}
             >
-              Take the Quiz
-            </Link>
+              Client Login
+            </a>
             <CalButton className={`font-body text-sm font-medium px-5 py-2.5 rounded-full transition-all duration-200 ${
               darkHero ? 'bg-white text-[#0D0D0D] hover:bg-white/90' : 'bg-[#0D0D0D] text-white hover:bg-[#222]'
             }`}>
@@ -104,13 +106,15 @@ export default function Nav() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/quiz"
-              className="font-display font-bold text-3xl text-[#8B5CF6] hover:text-[#7C3AED] transition-colors"
+            <a
+              href="https://hewnlife.myassembly.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-display font-bold text-3xl text-[#0D0D0D]/40 hover:text-[#0D0D0D] transition-colors"
               onClick={() => setMenuOpen(false)}
             >
-              Take the Quiz
-            </Link>
+              Client Login
+            </a>
           </div>
           <CalButton
             className="mt-4 bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200"
