@@ -102,7 +102,7 @@ export default function QuizPopup() {
             <Link
               href="/quiz"
               onClick={dismiss}
-              className="flex items-center justify-center gap-2 w-full bg-[#6BAD3D] text-white font-body font-semibold text-sm px-6 py-4 rounded-full hover:bg-[#5a9432] transition-colors mb-3"
+              className="flex items-center justify-center gap-2 w-full bg-[#8B5CF6] text-white font-body font-semibold text-sm px-6 py-4 rounded-full hover:bg-[#7C3AED] transition-colors mb-3"
             >
               Take the Free Assessment
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
