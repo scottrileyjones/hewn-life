@@ -87,15 +87,15 @@ export default function Blog() {
     <div className="bg-white">
 
       {/* ── HERO ── */}
-      <section className="pt-20 md:pt-32 pb-12 md:pb-16 px-6 lg:px-12 max-w-7xl mx-auto">
-        <div className="animate-fade-up max-w-3xl">
-          <div className="inline-flex items-center gap-2 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-4 py-1.5 mb-8">
+      <section className="pt-20 md:pt-24 pb-8 px-6 lg:px-12 max-w-7xl mx-auto">
+        <div className="animate-fade-up max-w-2xl">
+          <div className="inline-flex items-center gap-2 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-4 py-1.5 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
             <span className="font-body text-xs font-medium tracking-wide">Insights</span>
           </div>
-          <h1 className="hero-heading fluid-hero text-[#0D0D0D] leading-[0.98]">
+          <h1 className="font-display font-bold text-[40px] md:text-[56px] text-[#0D0D0D] leading-[1.05]">
             Ideas on marketing, growth, and building businesses that actually{' '}
-            <span className="accent" style={{ color: '#6BAD3D' }}>work.</span>
+            <span className="font-accent italic" style={{ color: '#6BAD3D' }}>work.</span>
           </h1>
         </div>
       </section>
