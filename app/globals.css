@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  overscroll-behavior: none;
+}
+
 :root {
   --color-obsidian: #181714;
   --color-charcoal: #242220;
