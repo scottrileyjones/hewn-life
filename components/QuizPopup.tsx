@@ -42,17 +42,18 @@ export default function QuizPopup() {
         style={{ opacity: visible ? 1 : 0 }}
       />
 
-      {/* Panel */}
+      {/* Panel — centered, never touching screen edges */}
       <div
-        className="fixed z-[91] bottom-0 left-0 right-0 sm:bottom-auto sm:left-auto sm:right-6 sm:top-1/2 sm:-translate-y-1/2 sm:w-[400px] transition-all duration-400"
-        style={{
-          opacity: visible ? 1 : 0,
-          transform: visible
-            ? 'translateY(0) translateX(0)'
-            : 'translateY(40px) translateX(0)',
-        }}
+        className="fixed z-[91] inset-0 flex items-center justify-center p-5 pointer-events-none"
       >
-        <div className="bg-[#0D0D0D] rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.5)]">
+        <div
+          className="w-full max-w-[400px] pointer-events-auto transition-all duration-400"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0) scale(1)' : 'translateY(24px) scale(0.97)',
+          }}
+        >
+        <div className="bg-[#0D0D0D]/80 backdrop-blur-xl rounded-3xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.5)]">
           {/* Green accent bar */}
           <div className="h-1 bg-[#6BAD3D]" />
 
@@ -116,6 +117,7 @@ export default function QuizPopup() {
               No thanks, I&apos;ll figure it out myself
             </button>
           </div>
+        </div>
         </div>
       </div>
     </>
