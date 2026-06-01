@@ -71,8 +71,8 @@ export default function Home() {
               AI killed the agency.{' '}
               <span className="accent" style={{ color: '#6BAD3D' }}>Good.</span>
             </h1>
-            <p className="font-body text-lg text-[#6B6560] max-w-md mb-10 leading-relaxed">
-              You were never paying for strategy — you were paying for bloat. AI now handles the technical work at speed. Hewn Life brings what AI can&apos;t: thirty years of taste, trend instinct, and the vision to see what&apos;s coming before your competitors do.
+            <p className="font-body text-lg text-[#6B6560] max-w-sm mb-10 leading-relaxed">
+              Senior strategy. AI speed. Flat fees. No bloat.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <CalButton className="w-full sm:w-auto inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
