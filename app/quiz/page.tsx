@@ -864,7 +864,7 @@ function CaptureScreen({
 
   return (
     <main className="min-h-screen bg-white">
-      <div className="pt-28 pb-24 px-6 lg:px-12">
+      <div className="pt-20 md:pt-28 pb-16 md:pb-24 px-6 lg:px-12">
         <div className="max-w-md mx-auto">
           <div className="text-center mb-10">
             <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[#6BAD3D] mb-5">
@@ -1024,7 +1024,7 @@ function RevenueSliderScreen({
 
   return (
     <main className="min-h-screen bg-white">
-      <div className="pt-28 pb-24 px-6 lg:px-12">
+      <div className="pt-20 md:pt-28 pb-16 md:pb-24 px-6 lg:px-12">
         <div className="max-w-2xl mx-auto">
           {/* Progress bar */}
           <div className="mb-10">
@@ -1171,7 +1171,7 @@ function NotesScreen({
   const pct = (stepNumber / totalSteps) * 100
   return (
     <main className="min-h-screen bg-white">
-      <div className="pt-28 pb-24 px-6 lg:px-12">
+      <div className="pt-20 md:pt-28 pb-16 md:pb-24 px-6 lg:px-12">
         <div className="max-w-2xl mx-auto">
           {/* Progress bar */}
           <div className="mb-10">
@@ -1468,7 +1468,7 @@ export default function Quiz() {
 
   return (
     <main className="min-h-screen bg-white">
-      <div className="pt-28 pb-24 px-6 lg:px-12">
+      <div className="pt-20 md:pt-28 pb-16 md:pb-24 px-6 lg:px-12">
         <div className="max-w-2xl mx-auto">
           {/* Progress bar */}
           <div className="mb-10">

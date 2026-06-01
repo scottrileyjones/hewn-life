@@ -298,7 +298,7 @@ export default function Pricing() {
     <>
       {/* Hero — unchanged */}
       <section
-        className="min-h-[70vh] flex items-end pb-24 relative overflow-hidden pt-32"
+        className="flex items-start md:items-end pt-20 md:pt-40 pb-16 md:pb-24 relative overflow-hidden"
         style={{ background: `radial-gradient(ellipse at 70% 30%, rgba(124,181,80,0.10) 0%, transparent 55%), #1A1815` }}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
