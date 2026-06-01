@@ -1,14 +1,61 @@
-import Image from 'next/image'
 import SectionEyebrow from '@/components/SectionEyebrow'
 import CtaBanner from '@/components/CtaBanner'
-import CountUp from '@/components/CountUp'
+import HybridInfographic from '@/components/HybridInfographic'
 
-const values = [
-  { num: '01', title: 'Human Taste Above All', desc: 'AI amplifies our work — it never replaces the judgment, taste, and empathy that great marketing demands.' },
-  { num: '02', title: 'Radical Transparency', desc: "Flat fees. Clear deliverables. No hidden percentages. You always know exactly what you're getting and what it costs." },
-  { num: '03', title: 'Speed and Scale', desc: 'We move with the urgency of a startup and the precision of a seasoned agency, using AI to compress timelines without sacrificing quality.' },
-  { num: '04', title: 'Psychological Nuance', desc: 'Great marketing speaks to the human behind the customer. We study behavior, motivation, and decision-making deeply.' },
-  { num: '05', title: 'Craftsmanship', desc: 'Every piece of work we produce is built with intention and attention to detail — from brand strategy to a single social post.' },
+const principles = [
+  {
+    num: '01',
+    title: 'Human Taste Above All',
+    desc: 'AI amplifies our work — it never replaces the judgment, taste, and empathy that great marketing demands.',
+  },
+  {
+    num: '02',
+    title: 'Right Tool, Right Task',
+    desc: "We don't force AI where human judgment is irreplaceable, and we don't waste human hours on work machines do better.",
+  },
+  {
+    num: '03',
+    title: 'Radical Transparency',
+    desc: 'Flat fees. Clear deliverables. No hidden percentages or inflated retainers covering under-utilized agency headcount.',
+  },
+  {
+    num: '04',
+    title: 'Speed Without Shortcuts',
+    desc: 'AI compresses timelines dramatically — but every output goes through strategic review before it reaches you.',
+  },
+  {
+    num: '05',
+    title: 'Specialist Depth On Demand',
+    desc: 'When a project calls for a specific creative voice or technical skill, we bring in the right specialist — not a generalist.',
+  },
+]
+
+const teamNodes = [
+  {
+    role: 'Senior Strategist',
+    owns: 'Brand positioning, campaign architecture, client advisory',
+    type: 'human',
+  },
+  {
+    role: 'Creative Director',
+    owns: 'Visual identity, narrative, emotional tone',
+    type: 'human',
+  },
+  {
+    role: 'AI Research Engine',
+    owns: 'Market analysis, competitive intel, trend mapping',
+    type: 'ai',
+  },
+  {
+    role: 'AI Production Layer',
+    owns: 'Content at scale, copy variations, SEO drafts',
+    type: 'ai',
+  },
+  {
+    role: 'Specialist Network',
+    owns: 'Photography, dev, media buying — recruited per project',
+    type: 'flex',
+  },
 ]
 
 export default function About() {
@@ -18,90 +65,113 @@ export default function About() {
       <section className="min-h-[70vh] flex items-end pb-24 relative overflow-hidden pt-32" style={{background: `radial-gradient(ellipse at 70% 30%, rgba(124,181,80,0.10) 0%, transparent 55%), #1A1815`}}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="animate-fade-up">
-            <SectionEyebrow text="Our Story" />
+            <SectionEyebrow text="Our Methodology" />
           </div>
           <h1 className="hero-heading text-[56px] md:text-[80px] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
-            We believe marketing is the <span style={{color: '#6BAD3D'}} className="accent">life</span> of your business — not an afterthought.
+            Built for the era where <span style={{color: '#7CB550'}} className="accent">intelligence</span> is the advantage.
           </h1>
-          <p className="font-body text-lg text-ash max-w-xl animate-fade-up delay-2 leading-relaxed">
-            Hewn Life was built on a simple but radical conviction: premium marketing should not require a massive agency with bloated overhead and hidden fees.
+          <p className="font-body text-lg text-ash max-w-2xl animate-fade-up delay-2 leading-relaxed">
+            We are a hybrid marketing team — senior strategists, specialist creatives, and AI systems working in a model designed to deliver the quality of a top-tier agency at a fraction of the overhead.
           </p>
         </div>
       </section>
 
-      {/* The Founder */}
+      {/* The model explained */}
       <section className="bg-bone py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
             <div>
-              <div className="aspect-[4/5] relative rounded-2xl overflow-hidden bg-oat border border-moss/20">
-                <Image
-                  src="https://res.cloudinary.com/dsx2wcqte/image/upload/dfdadb94b85aba15_xniyua"
-                  alt="Scott Jones, Founder of Hewn Life"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            </div>
-            <div>
-              <SectionEyebrow text="The Founder" light />
-              <h2 className="font-display font-medium text-[40px] leading-tight text-ink mb-8">
-                Thirty years of business. One mission.
+              <SectionEyebrow text="How We're Built" light />
+              <h2 className="font-display font-medium text-[40px] leading-tight text-ink mb-6">
+                The best agencies of the next decade won't look like the last one.
               </h2>
-              <div className="space-y-4 mb-10">
-                <p className="font-body text-base text-slate leading-relaxed">
-                  Scott Jones, founder of Hewn Life, brings thirty years of business acumen to every client engagement. Having built, scaled, and operated multiple companies, Scott understands that marketing is not a department — it is the living expression of your business in the world.
-                </p>
-                <p className="font-body text-base text-slate leading-relaxed">
-                  After decades of working with agencies, freelancers, and in-house teams, Scott built Hewn Life to deliver what he always wished existed: a full-service marketing partner with the strategy of a CMO, the execution of a seasoned team, and the transparency of a trusted advisor.
-                </p>
-              </div>
-              <div className="grid grid-cols-3 gap-6 mb-10">
-                {[
-                  { num: '30', label: 'years in business' },
-                  { num: '10M+', label: 'in managed revenue' },
-                  { num: '100s', label: 'of businesses advised' },
-                ].map((stat, i) => (
-                  <div key={i}>
-                    <p className="font-display font-bold text-[36px] text-amethyst"><CountUp value={stat.num} /></p>
-                    <p className="font-body text-xs text-slate mt-1">{stat.label}</p>
+              <p className="font-body text-base text-slate leading-relaxed mb-4">
+                Traditional agencies carry enormous overhead — layers of account management, underutilized staff, and inflated retainers. You pay for the building, not the output.
+              </p>
+              <p className="font-body text-base text-slate leading-relaxed">
+                We built a different model. Senior strategists own the work that requires taste and judgment. AI systems handle the volume, velocity, and analysis work that doesn't. And when a project demands a specific specialist skill, we recruit it — rather than employing it at cost all year.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-4">
+              {teamNodes.map((node) => (
+                <div
+                  key={node.role}
+                  className="flex items-start gap-4 rounded-xl border p-5"
+                  style={{
+                    borderColor: node.type === 'ai' ? 'rgba(124,181,80,0.25)' : node.type === 'flex' ? 'rgba(168,159,146,0.3)' : 'rgba(74,83,72,0.25)',
+                    background: node.type === 'ai' ? 'rgba(124,181,80,0.04)' : node.type === 'flex' ? 'rgba(168,159,146,0.05)' : 'rgba(74,83,72,0.04)',
+                  }}
+                >
+                  <div
+                    className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
+                    style={{ background: node.type === 'ai' ? '#7CB550' : node.type === 'flex' ? '#A89F92' : '#4A5348' }}
+                  />
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="font-body font-semibold text-[13px] text-ink">{node.role}</p>
+                      <span
+                        className="font-mono text-[9px] uppercase tracking-[0.15em] px-2 py-0.5 rounded-full"
+                        style={{
+                          background: node.type === 'ai' ? 'rgba(124,181,80,0.15)' : node.type === 'flex' ? 'rgba(168,159,146,0.15)' : 'rgba(74,83,72,0.12)',
+                          color: node.type === 'ai' ? '#4A5348' : node.type === 'flex' ? '#6B6560' : '#4A5348',
+                        }}
+                      >
+                        {node.type === 'ai' ? 'AI' : node.type === 'flex' ? 'On-demand' : 'Human'}
+                      </span>
+                    </div>
+                    <p className="font-body text-[12px] text-slate leading-relaxed">{node.owns}</p>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Core Values */}
-      <section className="bg-moss py-24 md:py-32">
+      {/* WSJ-style Infographic */}
+      <section className="bg-[#F8F5EF] py-24 md:py-32 border-y border-black/[0.06]">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16 px-6">
+            <SectionEyebrow text="The Hybrid Advantage" light />
+            <h2 className="font-display font-medium text-[40px] leading-tight text-ink mb-4">
+              Where every task goes — and why.
+            </h2>
+            <p className="font-body text-base text-slate max-w-xl mx-auto">
+              This is how we allocate work across the team. AI handles scale and speed. Humans own strategy and taste. Specialists deliver depth. Clients get all three.
+            </p>
+          </div>
+          <HybridInfographic />
+        </div>
+      </section>
+
+      {/* Principles */}
+      <section className="bg-[#4A5348] py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">
             <SectionEyebrow text="What We Stand For" />
             <h2 className="font-display font-bold text-[44px] leading-tight text-cream">
-              Five values that drive every decision.
+              Five principles that drive every decision.
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {values.map((value) => (
-              <div key={value.num} className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-8">
-                <p className="font-display font-bold text-[48px] text-ember/20 leading-none mb-4">{value.num}</p>
-                <p className="font-body font-semibold text-[13px] text-cream mb-3">{value.title}</p>
-                <p className="font-body text-sm text-ash leading-relaxed">{value.desc}</p>
+            {principles.map((p) => (
+              <div key={p.num} className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-8">
+                <p className="font-display font-bold text-[48px] text-[#7CB550]/20 leading-none mb-4">{p.num}</p>
+                <p className="font-body font-semibold text-[13px] text-cream mb-3">{p.title}</p>
+                <p className="font-body text-sm text-ash leading-relaxed">{p.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Philosophy */}
+      {/* Philosophy pull-quote */}
       <section className="bg-bone py-24 md:py-32">
         <div className="max-w-2xl mx-auto px-6 text-center">
           <blockquote className="font-display font-medium text-[36px] leading-snug text-ink mb-8">
             &ldquo;The name &lsquo;Hewn&rsquo; reflects the meticulous process of taking raw material and carving out something truly beautiful and valuable.&rdquo;
           </blockquote>
-          <p className="font-body text-sm text-slate">— Scott Jones, Founder</p>
+          <p className="font-body text-sm text-slate">— Hewn Life</p>
         </div>
       </section>
 
