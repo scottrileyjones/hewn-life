@@ -6,6 +6,9 @@ html, body {
   overscroll-behavior: none;
 }
 
+body.checkout-mode header,
+body.checkout-mode footer { display: none !important; }
+
 :root {
   --color-obsidian: #181714;
   --color-charcoal: #242220;
