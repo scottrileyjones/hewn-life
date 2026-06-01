@@ -14,7 +14,7 @@ export default function CtaBanner({
   return (
     <section className="bg-moss py-24 md:py-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center">
-        <h2 className="font-display font-bold text-[30px] md:text-[52px] leading-tight text-bone mb-6 max-w-2xl mx-auto">
+        <h2 className="font-display font-bold fluid-h2 leading-tight text-bone mb-6 max-w-2xl mx-auto">
           {headline}
         </h2>
         <p className="font-body text-base text-bone/70 max-w-xl mx-auto mb-10">

@@ -46,7 +46,7 @@ export default function WebsiteInAWeek() {
         <div className="max-w-7xl mx-auto">
           <div className="animate-fade-up max-w-3xl">
             <SectionEyebrow text="Website in a Week" light />
-            <h1 className="hero-heading text-[28px] md:text-[44px] lg:text-[64px] text-[#0D0D0D] mb-6 leading-[1.04]">
+            <h1 className="hero-heading fluid-hero text-[#0D0D0D] mb-6 leading-[1.04]">
               A real website.<br />
               <span className="accent" style={{ color: '#6BAD3D' }}>In one week. $1,000.</span>
             </h1>
@@ -78,7 +78,7 @@ export default function WebsiteInAWeek() {
             { num: '100%', label: 'yours to keep' },
           ].map((s, i) => (
             <div key={i} className="text-center md:text-left">
-              <p className="font-display text-[28px] md:text-[40px] lg:text-[52px] leading-none text-white mb-2"><CountUp value={s.num} /></p>
+              <p className="font-display fluid-stat leading-none text-white mb-2"><CountUp value={s.num} /></p>
               <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#6BAD3D]">{s.label}</p>
             </div>
           ))}
@@ -90,7 +90,7 @@ export default function WebsiteInAWeek() {
         <div className="max-w-7xl mx-auto">
           <div className="mb-16 max-w-2xl">
             <SectionEyebrow text="The Build Week" light />
-            <h2 className="hero-heading text-[36px] md:text-[52px] text-[#0D0D0D] leading-tight mt-3">
+            <h2 className="hero-heading fluid-h2 text-[#0D0D0D] leading-tight mt-3">
               Watch it come together.<br />
               <span className="accent" style={{ color: '#6BAD3D' }}>Day by day.</span>
             </h2>
@@ -117,7 +117,7 @@ export default function WebsiteInAWeek() {
         <div className="max-w-7xl mx-auto grid md:grid-cols-[1fr_1.2fr] gap-16 items-start">
           <div>
             <SectionEyebrow text="What's Included" light />
-            <h2 className="hero-heading text-[24px] md:text-[36px] lg:text-[48px] text-[#0D0D0D] leading-tight mt-3 mb-5">
+            <h2 className="hero-heading fluid-h2 text-[#0D0D0D] leading-tight mt-3 mb-5">
               Everything you need<br />
               <span className="accent" style={{ color: '#6BAD3D' }}>to go live.</span>
             </h2>
@@ -143,7 +143,7 @@ export default function WebsiteInAWeek() {
         <div className="max-w-3xl mx-auto">
           <div className="mb-14">
             <SectionEyebrow text="Questions" light />
-            <h2 className="hero-heading text-[24px] md:text-[36px] lg:text-[48px] text-[#0D0D0D] leading-tight mt-3">
+            <h2 className="hero-heading fluid-h2 text-[#0D0D0D] leading-tight mt-3">
               The honest <span className="accent" style={{ color: '#6BAD3D' }}>answers.</span>
             </h2>
           </div>

@@ -81,7 +81,7 @@ export default function Blog() {
             <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
             <span className="font-body text-xs font-medium tracking-wide">Insights</span>
           </div>
-          <h1 className="hero-heading text-[28px] md:text-[48px] lg:text-[64px] text-[#0D0D0D] leading-[0.98]">
+          <h1 className="hero-heading fluid-hero text-[#0D0D0D] leading-[0.98]">
             Ideas on marketing, growth, and building businesses that actually{' '}
             <span className="accent" style={{ color: '#6BAD3D' }}>work.</span>
           </h1>
@@ -151,7 +151,7 @@ export default function Blog() {
       <section className="py-16 px-6 lg:px-12 max-w-7xl mx-auto pb-24">
         <div className="bg-[#6BAD3D] rounded-3xl p-12 md:p-16 text-center">
           <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/60 mb-6">Ready to talk?</p>
-          <h2 className="font-display font-bold text-[26px] md:text-[40px] leading-tight text-white mb-8 max-w-xl mx-auto">
+          <h2 className="font-display font-bold fluid-h2 leading-tight text-white mb-8 max-w-xl mx-auto">
             Stop reading. Start growing.
           </h2>
           <Link

@@ -406,7 +406,7 @@ function ResultsDashboard({
           <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#6BAD3D] mb-5">
             {firstName ? `${firstName}'s Assessment` : 'Your Assessment'} · {tier.name} Tier Match
           </p>
-          <h1 className="hero-heading text-[26px] md:text-[56px] text-[#0D0D0D] leading-[1.04] mb-4">
+          <h1 className="hero-heading fluid-hero text-[#0D0D0D] leading-[1.04] mb-4">
             You have a real<br />
             <span className="accent" style={{ color: '#6BAD3D' }}>revenue opportunity.</span>
           </h1>
@@ -427,7 +427,7 @@ function ResultsDashboard({
               <div className="grid md:grid-cols-2 gap-8 md:gap-12 mb-10">
                 <div>
                   <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#6BAD3D] mb-3">Potential New Revenue</p>
-                  <div className="font-display text-[40px] md:text-[64px] lg:text-[80px] leading-none text-[#0D0D0D] mb-2 tabular-nums">
+                  <div className="font-display fluid-stat leading-none text-[#0D0D0D] mb-2 tabular-nums">
                     {fmtCompact(roiCount)}
                   </div>
                   <p className="font-body text-[14px] text-[#A89F92]">additional annual revenue — aggressive case</p>
