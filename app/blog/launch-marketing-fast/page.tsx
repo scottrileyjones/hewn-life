@@ -18,6 +18,43 @@ export const metadata: Metadata = {
   },
 }
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'How fast can a small business launch its marketing?',
+      acceptedAnswer: { '@type': 'Answer', text: 'With the right agency and AI-powered tools, a small business can go from zero to a live website, active social profiles, and running paid campaigns within one week. Brand strategy and positioning take slightly longer to get right — typically 2–3 weeks — but execution can begin in parallel. AI tooling has compressed what used to take 3–6 months into weeks.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'What can you realistically launch in one week of marketing?',
+      acceptedAnswer: { '@type': 'Answer', text: 'In one week you can realistically launch: a professional website, Google Business Profile setup, core social media profiles, a basic email capture sequence, and initial paid search or social campaigns. Brand guidelines and a content strategy can also be drafted in week one. The first week is about getting the machine running — optimization happens in weeks 2–8.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'Why does marketing launch speed matter?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Marketing speed matters because of compounding. A business that launches its marketing in week one and a competitor that launches in month three aren\'t just three months apart — the early mover has data, optimized campaigns, and growing organic reach. The laggard is starting from zero against a moving target. Every week of delay is a week of compound data and momentum lost.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'How much does it cost to launch a small business website quickly?',
+      acceptedAnswer: { '@type': 'Answer', text: 'A professional small business website can be launched in one week for $1,000 with services like Website in a Week — a flat-fee service that delivers a complete, live website in 7 days. Traditional agency website projects cost $15,000–$40,000 and take 6–12 weeks. AI-powered build processes have compressed both the timeline and the cost significantly.' },
+    },
+  ],
+}
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.hewn.life' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.hewn.life/blog' },
+    { '@type': 'ListItem', position: 3, name: 'From Zero to Live in a Week', item: 'https://www.hewn.life/blog/launch-marketing-fast' },
+  ],
+}
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -25,7 +62,8 @@ const jsonLd = {
   description: 'Speed is now a competitive advantage in marketing. Here\'s what\'s possible when you stop waiting for the perfect plan and start building the machine.',
   image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg',
   datePublished: '2026-05-01',
-  author: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
+  dateModified: '2026-05-01',
+  author: { '@type': 'Person', name: 'Scott Jones', jobTitle: 'Founder', url: 'https://www.hewn.life/about' },
   publisher: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   url: 'https://www.hewn.life/blog/launch-marketing-fast',
   mainEntityOfPage: 'https://www.hewn.life/blog/launch-marketing-fast',
@@ -36,6 +74,8 @@ export default function Post() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
     <BlogPost relatedPosts={related} meta={{
       category: 'AI & Marketing',
       title: 'From Zero to Live in a Week: How Fast a Small Business Can Launch Modern Marketing',
@@ -53,6 +93,23 @@ export default function Post() {
       <p>
         Speed is no longer just an operational preference. It's a genuine competitive advantage. And the combination of AI tooling and lean agency models has made a level of speed possible that simply wasn't realistic three years ago.
       </p>
+
+      <div className="my-10 rounded-2xl border border-black/[0.07] bg-[#F9F7F4] overflow-hidden">
+        <div className="px-7 py-5 border-b border-black/[0.07]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#A89F92]">Quick answers</p>
+        </div>
+        {[
+          { q: 'How fast can a small business launch its marketing?', a: 'With the right agency and AI tools, a small business can go from zero to a live website, active social profiles, and running paid campaigns within one week. Brand strategy takes 2–3 weeks to get right. Execution can begin in parallel.' },
+          { q: 'What can you realistically launch in one week?', a: 'A professional website, Google Business Profile, core social media profiles, a basic email capture sequence, and initial paid campaigns. Brand guidelines and a content strategy can also be drafted in week one.' },
+          { q: 'Why does marketing launch speed matter?', a: 'Marketing compounds. A business that launches in week one and a competitor that launches in month three aren\'t just three months apart — the early mover has data, optimized campaigns, and growing organic reach. Every week of delay is compounding momentum lost.' },
+          { q: 'How much does it cost to launch a small business website fast?', a: 'A professional website can be launched in one week for $1,000 with a flat-fee service. Traditional agency projects cost $15,000–$40,000 and take 6–12 weeks. AI-powered build processes have compressed both the timeline and the cost significantly.' },
+        ].map(({ q, a }, i) => (
+          <div key={i} className="px-7 py-6 border-b border-black/[0.07] last:border-0">
+            <p className="font-display font-semibold text-[16px] text-[#0D0D0D] mb-2">{q}</p>
+            <p className="font-body text-sm text-[#6B6560] leading-relaxed">{a}</p>
+          </div>
+        ))}
+      </div>
 
       <h2>What the industry says about timelines</h2>
       <p>

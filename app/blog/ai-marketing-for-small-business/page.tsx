@@ -18,6 +18,43 @@ export const metadata: Metadata = {
   },
 }
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Can AI really run small business marketing?',
+      acceptedAnswer: { '@type': 'Answer', text: 'AI can handle high-volume, repeatable marketing tasks extremely well in 2026 — content production, ad copy variations, keyword research, email sequences, and reporting. What it cannot replace is strategic direction, brand voice, customer relationships, and creative judgment. The best small business marketing programs use AI for execution while keeping humans in charge of strategy.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'What marketing tasks can AI do for a small business?',
+      acceptedAnswer: { '@type': 'Answer', text: 'AI can currently handle: blog and content drafts, social media captions, ad copy variations, email sequence generation, keyword research, performance reporting, basic SEO audits, and customer segmentation. These tasks still benefit from human review and strategic direction, but AI dramatically speeds up the execution layer.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'What can\'t AI do in marketing?',
+      acceptedAnswer: { '@type': 'Answer', text: 'AI cannot replace: original brand strategy and positioning, nuanced customer relationships, crisis communications, creative campaigns requiring genuine cultural insight, and the judgment calls that come from deep business context. AI amplifies good strategy — it cannot create it.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is an AI-powered marketing agency better than a traditional one?',
+      acceptedAnswer: { '@type': 'Answer', text: 'AI-integrated agencies can deliver comparable or better output at lower cost because their execution layer is more efficient. The key differentiator is whether human strategic oversight is still in place. An AI-first agency that removes human judgment entirely is not better — one that uses AI to amplify experienced strategists is.' },
+    },
+  ],
+}
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.hewn.life' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.hewn.life/blog' },
+    { '@type': 'ListItem', position: 3, name: 'Can AI Really Run Your Small Business Marketing?', item: 'https://www.hewn.life/blog/ai-marketing-for-small-business' },
+  ],
+}
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -25,7 +62,8 @@ const jsonLd = {
   description: 'AI marketing for small business is no longer hype. Here\'s what\'s genuinely possible, what still requires humans, and how to make it work for you.',
   image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780207388/data_team_ztea9x.jpg',
   datePublished: '2026-05-12',
-  author: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
+  dateModified: '2026-05-12',
+  author: { '@type': 'Person', name: 'Scott Jones', jobTitle: 'Founder', url: 'https://www.hewn.life/about' },
   publisher: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   url: 'https://www.hewn.life/blog/ai-marketing-for-small-business',
   mainEntityOfPage: 'https://www.hewn.life/blog/ai-marketing-for-small-business',
@@ -36,6 +74,8 @@ export default function Post() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
     <BlogPost relatedPosts={related} meta={{
       category: 'AI & Marketing',
       title: 'Can AI Really Run Your Small Business Marketing? What\'s Actually Possible in 2026',
@@ -50,6 +90,23 @@ export default function Post() {
       <p>
         Let's be direct about what's real and what's still exaggerated.
       </p>
+
+      <div className="my-10 rounded-2xl border border-black/[0.07] bg-[#F9F7F4] overflow-hidden">
+        <div className="px-7 py-5 border-b border-black/[0.07]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#A89F92]">Quick answers</p>
+        </div>
+        {[
+          { q: 'Can AI really run small business marketing?', a: 'AI handles high-volume execution well — content drafts, ad copy, keyword research, email sequences, reporting. It cannot replace strategic direction, brand voice, or customer relationships. The best programs use AI for execution with humans in charge of strategy.' },
+          { q: 'What marketing tasks can AI do right now?', a: 'Blog and content drafts, social media captions, ad copy variations, email sequences, keyword research, performance reporting, basic SEO audits, and customer segmentation — all faster and cheaper than before, all still benefiting from human review.' },
+          { q: 'What can\'t AI do in marketing?', a: 'Original brand strategy, nuanced customer relationships, crisis communications, and creative campaigns requiring genuine cultural insight. AI amplifies good strategy — it cannot create it.' },
+          { q: 'Is an AI-powered marketing agency better than a traditional one?', a: 'AI-integrated agencies deliver comparable or better output at lower cost. The key: human strategic oversight must still be in place. AI speeds up execution — it doesn\'t replace experienced judgment.' },
+        ].map(({ q, a }, i) => (
+          <div key={i} className="px-7 py-6 border-b border-black/[0.07] last:border-0">
+            <p className="font-display font-semibold text-[16px] text-[#0D0D0D] mb-2">{q}</p>
+            <p className="font-body text-sm text-[#6B6560] leading-relaxed">{a}</p>
+          </div>
+        ))}
+      </div>
 
       <h2>What AI does well right now</h2>
       <p>
