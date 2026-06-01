@@ -58,35 +58,38 @@ function HeroImageCard() {
   return (
     <div className="rounded-3xl overflow-hidden aspect-[4/5] w-full relative">
       <Image src={PHOTOS.hero} alt="Creative professional at work" fill className="object-cover" priority />
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[88%] bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-black/[0.06] p-5">
+      {/* Gradient fade at bottom so card reads cleanly */}
+      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[88%] backdrop-blur-md rounded-2xl p-5"
+        style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%)', border: '1px solid rgba(255,255,255,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15)' }}>
         <div className="flex items-center justify-between mb-4">
-          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-black/40">Monthly Snapshot</p>
-          <span className="flex items-center gap-1.5 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-2.5 py-1 text-[10px] font-body font-medium">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/50">Monthly Snapshot</p>
+          <span className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-body font-medium text-[#6BAD3D]" style={{ background: 'rgba(107,173,61,0.15)', border: '1px solid rgba(107,173,61,0.3)' }}>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D]" />
             Live
           </span>
         </div>
         <div className="space-y-3">
           <div>
             <div className="flex items-end justify-between mb-1">
-              <span className="font-body text-xs text-black/50">Revenue attributed</span>
+              <span className="font-body text-xs text-white/50">Revenue attributed</span>
               <span className="flex items-center gap-1 font-body text-[11px] font-semibold text-[#6BAD3D]">
                 <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none"><path d="M2 9l4-4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 +34%
               </span>
             </div>
-            <p className="font-display font-bold text-[22px] leading-none text-[#0D0D0D]">$48,200</p>
+            <p className="font-display font-bold text-[22px] leading-none text-white">$48,200</p>
           </div>
           <div className="flex items-end gap-1.5 h-10 pt-1">
             {[30, 52, 44, 70, 58, 85, 100].map((h, i) => (
-              <div key={i} className="flex-1 rounded-sm" style={{ height: `${h}%`, background: i === 6 ? '#6BAD3D' : `rgba(107,173,61,${0.15 + i * 0.08})` }} />
+              <div key={i} className="flex-1 rounded-sm" style={{ height: `${h}%`, background: i === 6 ? '#6BAD3D' : `rgba(107,173,61,${0.15 + i * 0.1})` }} />
             ))}
           </div>
-          <div className="flex gap-4 pt-1 border-t border-black/[0.06]">
+          <div className="flex gap-4 pt-1" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
             {[{ label: 'Leads', value: '142' }, { label: 'ROAS', value: '4.8×' }, { label: 'CAC', value: '$112' }].map(m => (
               <div key={m.label}>
-                <p className="font-body text-[10px] text-black/40 mb-0.5">{m.label}</p>
-                <p className="font-body font-semibold text-sm text-[#0D0D0D]">{m.value}</p>
+                <p className="font-body text-[10px] text-white/40 mb-0.5">{m.label}</p>
+                <p className="font-body font-semibold text-sm text-white">{m.value}</p>
               </div>
             ))}
           </div>
@@ -140,19 +143,20 @@ export default function Home() {
         <div className="flex-1 lg:hidden relative min-h-0 px-6 pb-6 pt-4">
           <div className="rounded-2xl overflow-hidden h-full relative">
             <Image src={PHOTOS.hero} alt="Creative professional at work" fill className="object-cover object-top" priority />
+            <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-4">
-              <div className="bg-white/95 backdrop-blur-md rounded-xl shadow-xl border border-black/[0.06] p-4">
+              <div className="backdrop-blur-md rounded-xl p-4" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%)', border: '1px solid rgba(255,255,255,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15)' }}>
                 <div className="flex items-center justify-between mb-3">
-                  <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-black/40">Monthly Snapshot</p>
-                  <span className="flex items-center gap-1.5 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-2.5 py-1 text-[10px] font-body font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
+                  <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/50">Monthly Snapshot</p>
+                  <span className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-body font-medium text-[#6BAD3D]" style={{ background: 'rgba(107,173,61,0.15)', border: '1px solid rgba(107,173,61,0.3)' }}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D]" />
                     Live
                   </span>
                 </div>
                 <div className="flex items-end justify-between">
                   <div>
-                    <p className="font-body text-[10px] text-black/40 mb-0.5">Revenue attributed</p>
-                    <p className="font-display font-bold text-[20px] leading-none text-[#0D0D0D]">$48,200</p>
+                    <p className="font-body text-[10px] text-white/40 mb-0.5">Revenue attributed</p>
+                    <p className="font-display font-bold text-[20px] leading-none text-white">$48,200</p>
                   </div>
                   <span className="flex items-center gap-1 font-body text-[11px] font-semibold text-[#6BAD3D]">
                     <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none"><path d="M2 9l4-4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
