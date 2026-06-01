@@ -11,4 +11,4 @@ Disallow: /font-options/
 Sitemap: https://www.hewn.life/sitemap.xml
 
 # IndexNow
-IndexNow: https://www.hewn.life/hewn9f4a2b8c1d3e5f607890abcdef1234567.txt
+IndexNow: https://www.hewn.life/d6e84087d5ec485f91c0ce789525779f.txt
