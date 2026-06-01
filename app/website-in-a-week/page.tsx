@@ -6,6 +6,23 @@ import CalButton from '@/components/CalButton'
 import CountUp from '@/components/CountUp'
 import Link from 'next/link'
 
+const STRIPE_LINK = process.env.NEXT_PUBLIC_STRIPE_LINK_WEBSITE_IN_A_WEEK ?? ''
+
+function StartButton({ className }: { className?: string }) {
+  if (STRIPE_LINK) {
+    return (
+      <a href={STRIPE_LINK} className={className}>
+        Start My Website
+      </a>
+    )
+  }
+  return (
+    <CalButton className={className}>
+      Start My Website
+    </CalButton>
+  )
+}
+
 export const metadata = {
   title: 'Website in a Week — Hewn Life',
   description: 'A fully functioning, custom website designed, written, built, and hosted in one week — starting at $1,000. Built for mobile and desktop. No Figma. Laser speed with AI.',
@@ -71,9 +88,7 @@ export default function WebsiteInAWeek() {
               Custom design, copy, development, and hosting — live in five business days. No Figma. AI speed.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
-              <CalButton className="w-full sm:w-auto inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
-                Start My Website
-              </CalButton>
+              <StartButton className="w-full sm:w-auto inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200" />
               <Link href="#how" className="w-full sm:w-auto inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200">
                 See How It Works
               </Link>
@@ -145,9 +160,7 @@ export default function WebsiteInAWeek() {
           <BuildWeek />
 
           <div className="mt-20 flex flex-col sm:flex-row justify-center gap-3">
-            <CalButton className="inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
-              Start My Website
-            </CalButton>
+            <StartButton className="inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200" />
             <Link href="/pricing" className="inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200">
               See Plans & Pricing
             </Link>
