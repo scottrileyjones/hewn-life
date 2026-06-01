@@ -67,7 +67,7 @@ export default function About() {
           <div className="animate-fade-up">
             <SectionEyebrow text="Our Methodology" />
           </div>
-          <h1 className="hero-heading text-[56px] md:text-[80px] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
+          <h1 className="hero-heading text-[36px] sm:text-[48px] md:text-[80px] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
             Built for the era where <span style={{color: '#7CB550'}} className="accent">intelligence</span> is the advantage.
           </h1>
           <p className="font-body text-lg text-ash max-w-2xl animate-fade-up delay-2 leading-relaxed">
@@ -82,7 +82,7 @@ export default function About() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
             <div>
               <SectionEyebrow text="How We're Built" light />
-              <h2 className="font-display font-medium text-[40px] leading-tight text-ink mb-6">
+              <h2 className="font-display font-medium text-[28px] md:text-[40px] leading-tight text-ink mb-6">
                 The best agencies of the next decade won't look like the last one.
               </h2>
               <p className="font-body text-base text-slate leading-relaxed mb-4">
@@ -133,7 +133,7 @@ export default function About() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 px-6">
             <SectionEyebrow text="The Hybrid Advantage" light />
-            <h2 className="font-display font-medium text-[40px] leading-tight text-ink mb-4">
+            <h2 className="font-display font-medium text-[28px] md:text-[40px] leading-tight text-ink mb-4">
               Where every task goes — and why.
             </h2>
             <p className="font-body text-base text-slate max-w-xl mx-auto">
@@ -149,7 +149,7 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">
             <SectionEyebrow text="What We Stand For" />
-            <h2 className="font-display font-bold text-[44px] leading-tight text-cream">
+            <h2 className="font-display font-bold text-[28px] md:text-[44px] leading-tight text-cream">
               Five principles that drive every decision.
             </h2>
           </div>
@@ -168,7 +168,7 @@ export default function About() {
       {/* Philosophy pull-quote */}
       <section className="bg-bone py-24 md:py-32">
         <div className="max-w-2xl mx-auto px-6 text-center">
-          <blockquote className="font-display font-medium text-[36px] leading-snug text-ink mb-8">
+          <blockquote className="font-display font-medium text-[24px] md:text-[36px] leading-snug text-ink mb-8">
             &ldquo;The name &lsquo;Hewn&rsquo; reflects the meticulous process of taking raw material and carving out something truly beautiful and valuable.&rdquo;
           </blockquote>
           <p className="font-body text-sm text-slate">— Hewn Life</p>
