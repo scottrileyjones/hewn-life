@@ -45,7 +45,7 @@ export default function HowItWorks() {
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="pt-36 pb-20 px-6 lg:px-12 bg-white">
+      <section className="pt-20 md:pt-36 pb-12 md:pb-20 px-6 lg:px-12 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="animate-fade-up max-w-2xl">
             <SectionEyebrow text="How It Works" light />
@@ -57,10 +57,10 @@ export default function HowItWorks() {
               We deploy AI to compress months of work into days — cutting costs without cutting corners. Then we layer in the design taste and market instinct that actually wins.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
-              <CalButton className="inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
+              <CalButton className="w-full sm:w-auto inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
                 Book a Discovery Call
               </CalButton>
-              <Link href="/pricing" className="inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200">
+              <Link href="/pricing" className="w-full sm:w-auto inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200">
                 See Plans & Pricing
               </Link>
             </div>

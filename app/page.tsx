@@ -59,8 +59,8 @@ export default function Home() {
     <div className="bg-white">
 
       {/* ── HERO ── */}
-      <section className="pt-32 pb-16 px-6 lg:px-12 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+      <section className="pt-20 md:pt-32 pb-12 md:pb-16 px-6 lg:px-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left — copy */}
           <div className="animate-fade-up">
             <div className="inline-flex items-center gap-2 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-4 py-1.5 mb-8">
@@ -75,10 +75,10 @@ export default function Home() {
               You were never paying for strategy — you were paying for bloat. AI now handles the technical work at speed. Hewn Life brings what AI can&apos;t: thirty years of taste, trend instinct, and the vision to see what&apos;s coming before your competitors do.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
-              <CalButton className="inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
+              <CalButton className="w-full sm:w-auto inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
                 Book a Discovery Call
               </CalButton>
-              <Link href="/pricing" className="inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 hover:bg-black/[0.02] transition-all duration-200">
+              <Link href="/pricing" className="w-full sm:w-auto inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 hover:bg-black/[0.02] transition-all duration-200">
                 See Plans & Pricing
               </Link>
             </div>

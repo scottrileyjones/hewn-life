@@ -43,7 +43,7 @@ export default function WebsiteInAWeek() {
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-white pt-24 pb-16 px-6 lg:px-12">
+      <section className="relative flex items-center overflow-hidden bg-white pt-20 md:pt-32 pb-12 md:pb-20 px-6 lg:px-12">
         {/* Image — right half on desktop */}
         <div className="absolute right-0 top-0 bottom-0 w-[45%] hidden lg:block">
           <Image
@@ -69,10 +69,10 @@ export default function WebsiteInAWeek() {
               We do the heavy lifting. You take it over the moment it&apos;s live.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
-              <CalButton className="inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
+              <CalButton className="w-full sm:w-auto inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
                 Start My Website
               </CalButton>
-              <Link href="#how" className="inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200">
+              <Link href="#how" className="w-full sm:w-auto inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200">
                 See How It Works
               </Link>
             </div>

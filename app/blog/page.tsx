@@ -75,7 +75,7 @@ export default function Blog() {
     <div className="bg-white">
 
       {/* ── HERO ── */}
-      <section className="pt-32 pb-16 px-6 lg:px-12 max-w-7xl mx-auto">
+      <section className="pt-20 md:pt-32 pb-12 md:pb-16 px-6 lg:px-12 max-w-7xl mx-auto">
         <div className="animate-fade-up max-w-3xl">
           <div className="inline-flex items-center gap-2 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-4 py-1.5 mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
