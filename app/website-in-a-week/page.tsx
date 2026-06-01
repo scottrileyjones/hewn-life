@@ -6,12 +6,19 @@ import CalButton from '@/components/CalButton'
 import CountUp from '@/components/CountUp'
 import Link from 'next/link'
 
-const STRIPE_LINK = process.env.NEXT_PUBLIC_STRIPE_LINK_WEBSITE_IN_A_WEEK ?? ''
+const WIAW_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_PRICE_WEBSITE_IN_A_WEEK ?? ''
 
 function StartButton({ className }: { className?: string }) {
-  if (STRIPE_LINK) {
+  if (WIAW_PRICE_ID) {
+    const qs = new URLSearchParams({
+      priceId: WIAW_PRICE_ID,
+      mode: 'payment',
+      name: 'Website in a Week',
+      price: '1000',
+      tier: 'website-in-a-week',
+    })
     return (
-      <a href={STRIPE_LINK} className={className}>
+      <a href={`/checkout?${qs.toString()}`} className={className}>
         Start My Website
       </a>
     )
