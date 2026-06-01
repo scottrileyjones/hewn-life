@@ -12,9 +12,10 @@ import CalButton from '@/components/CalButton'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
 
-const PRODUCT_META: Record<string, { color: string; highlights: string[] }> = {
+const PRODUCT_META: Record<string, { color: string; label: string; highlights: string[] }> = {
   hewn: {
     color: '#B87A40',
+    label: 'Tier 01',
     highlights: [
       'Brand strategy, visual identity & style guide',
       'Custom website + SEO foundation',
@@ -24,6 +25,7 @@ const PRODUCT_META: Record<string, { color: string; highlights: string[] }> = {
   },
   wrought: {
     color: '#9BA4AE',
+    label: 'Tier 02',
     highlights: [
       'Everything in Hewn',
       'Paid media management + sales funnels',
@@ -33,6 +35,7 @@ const PRODUCT_META: Record<string, { color: string; highlights: string[] }> = {
   },
   forged: {
     color: '#C9A84C',
+    label: 'Tier 03 · Full Service',
     highlights: [
       'Everything in Wrought',
       'Review generation, UGC & referral program',
@@ -42,6 +45,7 @@ const PRODUCT_META: Record<string, { color: string; highlights: string[] }> = {
   },
   'website-in-a-week': {
     color: '#6BAD3D',
+    label: 'One-time project',
     highlights: [
       'Custom design — mobile & desktop',
       'Conversion-focused copywriting',
@@ -74,91 +78,80 @@ function OrderSummary({
   tier: string
 }) {
   const meta = PRODUCT_META[tier] ?? PRODUCT_META['website-in-a-week']
+  const priceLabel = mode === 'subscription'
+    ? billing === 'annual' ? '/yr' : '/mo'
+    : ''
+
   return (
-    <div className="bg-white border border-black/10 rounded-2xl overflow-hidden">
-      <div className="h-1.5" style={{ background: meta.color }} />
-      <div className="p-6 md:p-8">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#6B6560] mb-1">
-          Your Order
+    <div className="rounded-2xl overflow-hidden bg-[#0D0D0D] shadow-[0_24px_60px_rgba(0,0,0,0.25)]">
+
+      {/* Accent header */}
+      <div className="px-8 pt-8 pb-6" style={{ borderBottom: `1px solid rgba(255,255,255,0.07)` }}>
+        <p className="font-mono text-[10px] uppercase tracking-[0.28em] mb-3" style={{ color: meta.color }}>
+          {meta.label}
         </p>
-        <p className="font-display font-bold text-[26px] text-[#0D0D0D] leading-tight mb-1">
+        <p className="font-display font-bold text-[36px] text-white leading-none mb-2">
           {name}
         </p>
-        <p className="font-body text-xs text-[#6B6560] mb-6">
-          {mode === 'subscription' ? `${billing} billing` : 'One-time payment'}
+        <p className="font-body text-xs text-white/30">
+          {mode === 'subscription' ? `Billed ${billing}` : 'One-time · no recurring fees'}
         </p>
+      </div>
 
-        <ul className="space-y-2.5 mb-6 pb-6 border-b border-black/[0.06]">
+      {/* Highlights */}
+      <div className="px-8 py-6" style={{ borderBottom: `1px solid rgba(255,255,255,0.07)` }}>
+        <ul className="space-y-3">
           {meta.highlights.map((h, i) => (
-            <li key={i} className="flex items-start gap-2.5">
+            <li key={i} className="flex items-start gap-3">
               <span
-                className="flex-shrink-0 mt-0.5 w-4 h-4 rounded-full flex items-center justify-center"
-                style={{ background: meta.color + '22' }}
+                className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-full flex items-center justify-center"
+                style={{ background: meta.color + '30' }}
               >
-                <svg
-                  className="w-2.5 h-2.5"
-                  style={{ color: meta.color }}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={3}
-                >
+                <svg className="w-3 h-3" style={{ color: meta.color }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </span>
-              <span className="font-body text-xs text-[#6B6560]">{h}</span>
+              <span className="font-body text-sm text-white/70 leading-snug">{h}</span>
             </li>
           ))}
         </ul>
+      </div>
 
-        <div className="flex items-end justify-between mb-1">
-          <span className="font-body text-sm text-[#6B6560]">
-            {mode === 'subscription'
-              ? billing === 'annual'
-                ? 'Annual total'
-                : 'Monthly'
-              : 'Project fee'}
-          </span>
-          <span className="font-display font-bold text-[32px] text-[#0D0D0D] leading-none">
-            ${price.toLocaleString()}
-          </span>
-        </div>
-        {mode === 'subscription' && (
-          <p className="text-right font-body text-xs text-[#6B6560]/60 mb-4">
-            /{billing === 'annual' ? 'year' : 'month'}
+      {/* Price */}
+      <div className="px-8 py-6" style={{ borderBottom: `1px solid rgba(255,255,255,0.07)` }}>
+        <div className="flex items-end justify-between">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/30">
+            {mode === 'subscription' ? (billing === 'annual' ? 'Annual total' : 'Monthly') : 'Project fee'}
           </p>
-        )}
+          <div className="text-right">
+            <span className="font-display font-bold text-[42px] text-white leading-none">
+              ${price.toLocaleString()}
+            </span>
+            {priceLabel && (
+              <span className="font-body text-sm text-white/40 ml-1">{priceLabel}</span>
+            )}
+          </div>
+        </div>
+      </div>
 
-        <div className="pt-4 border-t border-black/[0.06] space-y-2.5 mt-2">
+      {/* Trust */}
+      <div className="px-8 py-5">
+        <div className="space-y-2.5">
           {[
-            {
-              icon: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z',
-              text: 'Secured by Stripe',
-            },
-            {
-              icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
-              text: 'Onboarding within 48 hours',
-            },
-            {
-              icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
-              text: mode === 'subscription' ? 'Cancel anytime' : 'Satisfaction guaranteed',
-            },
+            { icon: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z', text: 'Secured by Stripe' },
+            { icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', text: 'Onboarding within 48 hours' },
+            { icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', text: mode === 'subscription' ? 'Cancel anytime' : 'Satisfaction guaranteed' },
           ].map((item, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <svg
-                className="w-3.5 h-3.5 text-[#6BAD3D] flex-shrink-0"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
+            <div key={i} className="flex items-center gap-2.5">
+              <svg className="w-3.5 h-3.5 flex-shrink-0" style={{ color: meta.color }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
               </svg>
-              <span className="font-body text-xs text-[#6B6560]">{item.text}</span>
+              <span className="font-body text-xs text-white/40">{item.text}</span>
             </div>
           ))}
         </div>
       </div>
+
     </div>
   )
 }
