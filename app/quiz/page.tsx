@@ -479,7 +479,7 @@ function ResultsDashboard({
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="font-display text-[34px] md:text-[44px] leading-none text-[#0D0D0D] tabular-nums">{scoreCount}</span>
+                    <span className="font-display fluid-stat leading-none text-[#0D0D0D] tabular-nums">{scoreCount}</span>
                     <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[#A89F92]">/ 100</span>
                   </div>
                 </div>
@@ -727,7 +727,7 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
                   </div>
                   <div className="text-center">
                     <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-1">Revenue today</p>
-                    <p className="font-display text-[32px] md:text-[44px] leading-none text-[#0D0D0D] tabular-nums">${revenueCount.toLocaleString()}</p>
+                    <p className="font-display fluid-stat leading-none text-[#0D0D0D] tabular-nums">${revenueCount.toLocaleString()}</p>
                   </div>
                 </div>
               </div>
