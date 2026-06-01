@@ -55,9 +55,9 @@ export const metadata: Metadata = {
     locale: 'en_US',
     images: [
       {
-        url: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1779578220/main-sample.png',
-        width: 1200,
-        height: 630,
+        url: 'https://res.cloudinary.com/dsx2wcqte/image/upload/v1780344752/opengraph-image_vvlapa.png',
+        width: 2400,
+        height: 1260,
         alt: 'Hewn Life — AI-Era Marketing Agency',
       },
     ],
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Hewn Life — AI-Era Marketing Agency',
     description: 'Thirty years of human business acumen. The speed and scale of AI. Premium full-service marketing at a fraction of the traditional cost.',
-    images: ['https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1779578220/main-sample.png'],
+    images: ['https://res.cloudinary.com/dsx2wcqte/image/upload/v1780344752/opengraph-image_vvlapa.png'],
   },
   robots: {
     index: true,
