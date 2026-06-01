@@ -8,7 +8,7 @@ import {
   useElements,
 } from '@stripe/react-stripe-js'
 import { useSearchParams } from 'next/navigation'
-import Link from 'next/link'
+import CalButton from '@/components/CalButton'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
 
@@ -351,12 +351,12 @@ export default function CheckoutClient() {
       <div className="min-h-screen bg-[#F9F7F3] flex items-center justify-center px-6">
         <div className="text-center">
           <p className="font-body text-[#6B6560] mb-6">No plan selected.</p>
-          <Link
+          <a
             href="/pricing"
             className="font-body text-sm font-medium text-[#6BAD3D] hover:underline"
           >
             ← Back to Pricing
-          </Link>
+          </a>
         </div>
       </div>
     )
@@ -535,10 +535,10 @@ export default function CheckoutClient() {
                   </button>
 
                   <p className="text-center font-body text-xs text-[#6B6560]/50">
-                    Questions?{' '}
-                    <Link href="/contact" className="text-[#6BAD3D] hover:underline">
-                      Let&apos;s talk first
-                    </Link>
+                    Have questions first?{' '}
+                    <CalButton className="text-[#6BAD3D] hover:underline">
+                      Book a free call
+                    </CalButton>
                   </p>
                 </form>
               </>
