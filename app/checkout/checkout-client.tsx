@@ -14,7 +14,7 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY 
 
 const PRODUCT_META: Record<string, { color: string; label: string; highlights: string[] }> = {
   hewn: {
-    color: '#B87A40',
+    color: '#6BAD3D',
     label: 'Tier 01',
     highlights: [
       'Brand strategy, visual identity & style guide',
@@ -24,7 +24,7 @@ const PRODUCT_META: Record<string, { color: string; label: string; highlights: s
     ],
   },
   wrought: {
-    color: '#9BA4AE',
+    color: '#8B5CF6',
     label: 'Tier 02',
     highlights: [
       'Everything in Hewn',
@@ -34,7 +34,7 @@ const PRODUCT_META: Record<string, { color: string; label: string; highlights: s
     ],
   },
   forged: {
-    color: '#C9A84C',
+    color: '#8B5CF6',
     label: 'Tier 03 · Full Service',
     highlights: [
       'Everything in Wrought',
