@@ -54,24 +54,69 @@ const comparisonRows = [
   { service: 'Strategic Advisory / CMO', traditional: '$5,000–$15,000/month', hewn: 'Included' },
 ]
 
+function HeroImageCard() {
+  return (
+    <div className="rounded-3xl overflow-hidden aspect-[4/5] w-full relative">
+      <Image src={PHOTOS.hero} alt="Creative professional at work" fill className="object-cover" priority />
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[88%] bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-black/[0.06] p-5">
+        <div className="flex items-center justify-between mb-4">
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-black/40">Monthly Snapshot</p>
+          <span className="flex items-center gap-1.5 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-2.5 py-1 text-[10px] font-body font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
+            Live
+          </span>
+        </div>
+        <div className="space-y-3">
+          <div>
+            <div className="flex items-end justify-between mb-1">
+              <span className="font-body text-xs text-black/50">Revenue attributed</span>
+              <span className="flex items-center gap-1 font-body text-[11px] font-semibold text-[#6BAD3D]">
+                <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none"><path d="M2 9l4-4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                +34%
+              </span>
+            </div>
+            <p className="font-display font-bold text-[22px] leading-none text-[#0D0D0D]">$48,200</p>
+          </div>
+          <div className="flex items-end gap-1.5 h-10 pt-1">
+            {[30, 52, 44, 70, 58, 85, 100].map((h, i) => (
+              <div key={i} className="flex-1 rounded-sm" style={{ height: `${h}%`, background: i === 6 ? '#6BAD3D' : `rgba(107,173,61,${0.15 + i * 0.08})` }} />
+            ))}
+          </div>
+          <div className="flex gap-4 pt-1 border-t border-black/[0.06]">
+            {[{ label: 'Leads', value: '142' }, { label: 'ROAS', value: '4.8×' }, { label: 'CAC', value: '$112' }].map(m => (
+              <div key={m.label}>
+                <p className="font-body text-[10px] text-black/40 mb-0.5">{m.label}</p>
+                <p className="font-body font-semibold text-sm text-[#0D0D0D]">{m.value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Home() {
   return (
     <div className="bg-white">
 
       {/* ── HERO ── */}
-      <section className="pt-20 md:pt-32 pb-12 md:pb-16 px-6 lg:px-12 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left — copy */}
-          <div className="animate-fade-up">
-            <div className="inline-flex items-center gap-2 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-4 py-1.5 mb-8">
+      {/* Mobile: full-viewport flex column — content top, image fills remaining height */}
+      {/* Desktop: 2-column grid, constrained width */}
+      <section className="flex flex-col h-[100dvh] lg:h-auto lg:block lg:pt-32 lg:pb-16 lg:px-12 lg:max-w-7xl lg:mx-auto">
+
+        {/* Content */}
+        <div className="animate-fade-up px-6 pt-20 pb-6 lg:p-0 lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-4 py-1.5 mb-5 lg:mb-8">
               <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
               <span className="font-body text-xs font-medium tracking-wide">The End of Agency Bloat</span>
             </div>
-            <h1 className="hero-heading fluid-hero text-[#0D0D0D] mb-8 leading-[0.95]">
+            <h1 className="hero-heading fluid-hero text-[#0D0D0D] mb-4 lg:mb-8 leading-[0.95]">
               AI killed the agency.{' '}
               <span className="accent" style={{ color: '#6BAD3D' }}>Good.</span>
             </h1>
-            <p className="font-body text-lg text-[#6B6560] max-w-sm mb-10 leading-relaxed">
+            <p className="font-body text-base lg:text-lg text-[#6B6560] max-w-sm mb-6 lg:mb-10 leading-relaxed">
               Senior strategy. AI speed. Flat fees. No bloat.
               <br /><span className="text-[#0D0D0D]/70">Full-service marketing for businesses ready to grow.</span>
             </p>
@@ -85,61 +130,40 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right — photo card */}
-          <div className="animate-fade-up delay-2 relative">
-            <div className="rounded-3xl overflow-hidden aspect-[4/5] w-full relative">
-              <Image src={PHOTOS.hero} alt="Creative professional at work" fill className="object-cover" priority />
+          {/* Right — photo card (desktop only in grid, hidden on mobile here) */}
+          <div className="hidden lg:block animate-fade-up delay-2 relative">
+            <HeroImageCard />
+          </div>
+        </div>
 
-              {/* Analytics overlay card */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[88%] bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-black/[0.06] p-5">
-                <div className="flex items-center justify-between mb-4">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-black/40">Monthly Snapshot</p>
+        {/* Mobile image — flex-1 fills remaining viewport height */}
+        <div className="flex-1 lg:hidden relative min-h-0 px-6 pb-6 pt-4">
+          <div className="rounded-2xl overflow-hidden h-full relative">
+            <Image src={PHOTOS.hero} alt="Creative professional at work" fill className="object-cover object-top" priority />
+            <div className="absolute inset-x-0 bottom-0 p-4">
+              <div className="bg-white/95 backdrop-blur-md rounded-xl shadow-xl border border-black/[0.06] p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-black/40">Monthly Snapshot</p>
                   <span className="flex items-center gap-1.5 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-2.5 py-1 text-[10px] font-body font-medium">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
                     Live
                   </span>
                 </div>
-
-                <div className="space-y-3">
-                  {/* Revenue row */}
+                <div className="flex items-end justify-between">
                   <div>
-                    <div className="flex items-end justify-between mb-1">
-                      <span className="font-body text-xs text-black/50">Revenue attributed</span>
-                      <span className="flex items-center gap-1 font-body text-[11px] font-semibold text-[#6BAD3D]">
-                        <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none"><path d="M2 9l4-4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                        +34%
-                      </span>
-                    </div>
-                    <p className="font-display font-bold text-[22px] leading-none text-[#0D0D0D]">$48,200</p>
+                    <p className="font-body text-[10px] text-black/40 mb-0.5">Revenue attributed</p>
+                    <p className="font-display font-bold text-[20px] leading-none text-[#0D0D0D]">$48,200</p>
                   </div>
-
-                  {/* Bar chart */}
-                  <div className="flex items-end gap-1.5 h-10 pt-1">
-                    {[30, 52, 44, 70, 58, 85, 100].map((h, i) => (
-                      <div key={i} className="flex-1 rounded-sm" style={{ height: `${h}%`, background: i === 6 ? '#6BAD3D' : `rgba(107,173,61,${0.15 + i * 0.08})` }} />
-                    ))}
-                  </div>
-
-                  {/* Sub-metrics */}
-                  <div className="flex gap-4 pt-1 border-t border-black/[0.06]">
-                    <div>
-                      <p className="font-body text-[10px] text-black/40 mb-0.5">Leads</p>
-                      <p className="font-body font-semibold text-sm text-[#0D0D0D]">142</p>
-                    </div>
-                    <div>
-                      <p className="font-body text-[10px] text-black/40 mb-0.5">ROAS</p>
-                      <p className="font-body font-semibold text-sm text-[#0D0D0D]">4.8×</p>
-                    </div>
-                    <div>
-                      <p className="font-body text-[10px] text-black/40 mb-0.5">CAC</p>
-                      <p className="font-body font-semibold text-sm text-[#0D0D0D]">$112</p>
-                    </div>
-                  </div>
+                  <span className="flex items-center gap-1 font-body text-[11px] font-semibold text-[#6BAD3D]">
+                    <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none"><path d="M2 9l4-4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    +34% this month
+                  </span>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
       </section>
 
       {/* ── TECH BAR ── */}
