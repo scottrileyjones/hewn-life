@@ -63,8 +63,8 @@ export default function Nav() {
               rel="noopener noreferrer"
               className={`font-body text-sm font-medium px-5 py-2.5 rounded-full border transition-all duration-200 ${
                 darkHero
-                  ? 'border-white/30 text-white/70 hover:border-white/60 hover:text-white'
-                  : 'border-black/15 text-[#0D0D0D]/70 hover:border-black/30 hover:text-[#0D0D0D]'
+                  ? 'border-[#8B5CF6] text-[#A78BFA] hover:border-[#A78BFA] hover:bg-[#8B5CF6]/10'
+                  : 'border-[#8B5CF6] text-[#8B5CF6] hover:bg-[#8B5CF6]/10'
               }`}
             >
               Client Login
