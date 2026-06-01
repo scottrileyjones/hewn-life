@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
-import BlogPost, { BlogCta } from '@/components/BlogPost'
+import BlogPost, { BlogCta, ALL_POSTS } from '@/components/BlogPost'
+
+const related = ALL_POSTS.filter(p => p.href !== '/blog/ai-marketing-for-small-business').slice(0, 3)
 
 export const metadata: Metadata = {
   title: 'Can AI Really Run Your Small Business Marketing? What\'s Actually Possible in 2026',
@@ -10,7 +12,7 @@ export const metadata: Metadata = {
     description: 'AI marketing for small business is no longer hype. Here\'s what\'s genuinely possible, what still requires humans, and how to make it work for you.',
     url: 'https://www.hewn.life/blog/ai-marketing-for-small-business',
     type: 'article',
-    publishedTime: '2026-05-01',
+    publishedTime: '2026-05-12',
     authors: ['Hewn Life'],
     images: [{ url: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780207388/data_team_ztea9x.jpg', width: 1200, height: 630 }],
   },
@@ -22,7 +24,7 @@ const jsonLd = {
   headline: 'Can AI Really Run Your Small Business Marketing? What\'s Actually Possible in 2026',
   description: 'AI marketing for small business is no longer hype. Here\'s what\'s genuinely possible, what still requires humans, and how to make it work for you.',
   image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780207388/data_team_ztea9x.jpg',
-  datePublished: '2026-05-01',
+  datePublished: '2026-05-12',
   author: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   publisher: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   url: 'https://www.hewn.life/blog/ai-marketing-for-small-business',
@@ -34,7 +36,7 @@ export default function Post() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-    <BlogPost meta={{
+    <BlogPost relatedPosts={related} meta={{
       category: 'AI & Marketing',
       title: 'Can AI Really Run Your Small Business Marketing? What\'s Actually Possible in 2026',
       excerpt: 'Not hype. Not fear. A straight answer about what AI can and can\'t do for your marketing right now.',

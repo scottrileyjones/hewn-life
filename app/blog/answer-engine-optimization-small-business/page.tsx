@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
-import BlogPost, { BlogCta } from '@/components/BlogPost'
+import BlogPost, { BlogCta, ALL_POSTS } from '@/components/BlogPost'
+
+const related = ALL_POSTS.filter(p => p.href !== '/blog/answer-engine-optimization-small-business').slice(0, 3)
 
 export const metadata: Metadata = {
   title: 'Answer Engine Optimization (AEO): How Small Businesses Get Found in AI Search',
@@ -10,7 +12,7 @@ export const metadata: Metadata = {
     description: 'Google isn\'t the only game in town anymore. Here\'s how small businesses can show up in ChatGPT, Perplexity, and AI Overviews — before your competitors figure it out.',
     url: 'https://www.hewn.life/blog/answer-engine-optimization-small-business',
     type: 'article',
-    publishedTime: '2026-05-01',
+    publishedTime: '2026-05-15',
     authors: ['Hewn Life'],
     images: [{ url: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780207193/girl_online_shopping_lqod5j.jpg', width: 1200, height: 630 }],
   },
@@ -22,7 +24,7 @@ const jsonLd = {
   headline: 'Answer Engine Optimization (AEO): How Small Businesses Get Found in AI Search',
   description: 'Google isn\'t the only game in town anymore. Here\'s how small businesses can show up in ChatGPT, Perplexity, and AI Overviews — before your competitors figure it out.',
   image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780207193/girl_online_shopping_lqod5j.jpg',
-  datePublished: '2026-05-01',
+  datePublished: '2026-05-15',
   author: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   publisher: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   url: 'https://www.hewn.life/blog/answer-engine-optimization-small-business',
@@ -34,7 +36,7 @@ export default function Post() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-    <BlogPost meta={{
+    <BlogPost relatedPosts={related} meta={{
       category: 'SEO',
       title: 'Answer Engine Optimization (AEO): How Small Businesses Get Found in AI Search',
       excerpt: 'Google isn\'t the only game in town anymore. Here\'s how to show up in ChatGPT, Perplexity, and AI Overviews before your competitors figure it out.',
