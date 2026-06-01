@@ -104,7 +104,7 @@ body {
   fluid-h3     → smaller h2/h3  (≈22px → 40px)
   fluid-stat   → decorative nums (≈36px → 64px)
 */
-.fluid-hero  { font-size: clamp(2.625rem, 1.25rem + 5.5vw, 6.25rem); line-height: 1.08; }
+.fluid-hero  { font-size: clamp(2.625rem, 1.25rem + 4vw, 5rem); line-height: 1.08; }
 .fluid-h2    { font-size: clamp(2rem,     1.125rem + 3vw,   3.5rem);  line-height: 1.18; }
 .fluid-h3    { font-size: clamp(1.75rem,  1rem + 2.5vw,    3.125rem); line-height: 1.22; }
 .fluid-stat  { font-size: clamp(2.75rem,  1.25rem + 5vw,   5rem);    line-height: 1; }
