@@ -305,7 +305,7 @@ export default function Pricing() {
           <div className="animate-fade-up">
             <SectionEyebrow text="Transparent Pricing" />
           </div>
-          <h1 className="hero-heading text-[56px] md:text-[80px] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
+          <h1 className="hero-heading text-[32px] sm:text-[44px] md:text-[80px] text-cream max-w-4xl mb-8 animate-fade-up delay-1">
             Pick a plan. Check out. We <span style={{ color: '#6BAD3D' }} className="accent">get to work.</span>
           </h1>
           <p className="font-body text-lg text-ash max-w-xl animate-fade-up delay-2 leading-relaxed mb-10">
@@ -327,7 +327,7 @@ export default function Pricing() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center mb-14">
             <SectionEyebrow text="Monthly Retainers" light />
-            <h2 className="font-display font-semibold text-[40px] text-ink mt-5 mb-3">Three tiers. No contracts. No agency tax.</h2>
+            <h2 className="font-display font-semibold text-[24px] md:text-[40px] text-ink mt-5 mb-3">Three tiers. No contracts. No agency tax.</h2>
             <p className="font-display font-medium text-lg text-slate/70 mb-10">We charge what a freelancer costs and deliver what an agency can&apos;t.</p>
 
 
@@ -406,13 +406,13 @@ export default function Pricing() {
                               <span className={`font-mono text-[10px] uppercase tracking-widest font-medium ${isFeatured ? 'text-[#A78BFA]' : 'text-ember'}`}>Save 20%</span>
                             </div>
                             <div className="flex items-end gap-1">
-                              <span className={`font-display font-bold text-[52px] leading-none ${isFeatured ? 'text-white' : 'text-ink'}`}>${price.toLocaleString()}</span>
+                              <span className={`font-display font-bold text-[36px] md:text-[52px] leading-none ${isFeatured ? 'text-white' : 'text-ink'}`}>${price.toLocaleString()}</span>
                               <span className={`font-body text-sm mb-1.5 ${isFeatured ? 'text-white/50' : 'text-slate/60'}`}>/mo, billed annually</span>
                             </div>
                           </>
                         ) : (
                           <div className="flex items-end gap-1">
-                            <span className={`font-display font-bold text-[52px] leading-none ${isFeatured ? 'text-white' : 'text-ink'}`}>${price.toLocaleString()}</span>
+                            <span className={`font-display font-bold text-[36px] md:text-[52px] leading-none ${isFeatured ? 'text-white' : 'text-ink'}`}>${price.toLocaleString()}</span>
                             <span className={`font-body text-sm mb-1.5 ${isFeatured ? 'text-white/50' : 'text-slate/60'}`}>/mo</span>
                           </div>
                         )}
@@ -505,7 +505,7 @@ export default function Pricing() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="mb-12">
             <SectionEyebrow text="À La Carte" />
-            <h2 className="font-display font-semibold text-[40px] text-cream mb-3">Just need one thing?</h2>
+            <h2 className="font-display font-semibold text-[26px] md:text-[40px] text-cream mb-3">Just need one thing?</h2>
             <p className="font-body text-base text-ash">Order exactly what you need. Flat fees, fast execution.</p>
           </div>
 
@@ -664,7 +664,7 @@ export default function Pricing() {
       <section className="bg-obsidian py-24 md:py-32">
         <div className="max-w-2xl mx-auto px-6 text-center">
           <SectionEyebrow text="Not Sure Where to Start?" />
-          <h2 className="font-display font-bold text-[48px] leading-tight text-cream mb-6">
+          <h2 className="font-display font-bold text-[28px] md:text-[48px] leading-tight text-cream mb-6">
             Let&apos;s figure it out <span style={{ color: '#6BAD3D' }} className="accent">together.</span>
           </h2>
           <p className="font-body text-base text-ash max-w-lg mx-auto mb-10">

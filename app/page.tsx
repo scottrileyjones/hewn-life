@@ -67,7 +67,7 @@ export default function Home() {
               <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
               <span className="font-body text-xs font-medium tracking-wide">The End of Agency Bloat</span>
             </div>
-            <h1 className="hero-heading text-[52px] md:text-[68px] lg:text-[72px] text-[#0D0D0D] mb-8 leading-[0.95]">
+            <h1 className="hero-heading text-[34px] sm:text-[52px] md:text-[68px] lg:text-[72px] text-[#0D0D0D] mb-8 leading-[0.95]">
               AI killed the agency.{' '}
               <span className="accent" style={{ color: '#6BAD3D' }}>Good.</span>
             </h1>
@@ -166,7 +166,7 @@ export default function Home() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((s, i) => (
             <div key={i} className="rounded-2xl p-6 flex flex-col justify-between min-h-[140px]" style={{ background: s.bg }}>
-              <p className="font-display font-bold text-[44px] leading-none" style={{ color: s.text }}><CountUp value={s.value} /></p>
+              <p className="font-display font-bold text-[32px] md:text-[44px] leading-none" style={{ color: s.text }}><CountUp value={s.value} /></p>
               <p className="font-body text-sm leading-snug mt-3" style={{ color: s.text === '#ffffff' ? 'rgba(255,255,255,0.7)' : '#6B6560' }}>{s.label}</p>
             </div>
           ))}
@@ -185,7 +185,7 @@ export default function Home() {
             <div className="inline-flex items-center gap-2 bg-black/[0.04] rounded-full px-4 py-1.5 mb-6">
               <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-black/50">What Makes Us Different</span>
             </div>
-            <h2 className="font-display font-bold text-[40px] leading-tight text-[#0D0D0D] mb-6">
+            <h2 className="font-display font-bold text-[26px] md:text-[40px] leading-tight text-[#0D0D0D] mb-6">
               Premium marketing. Flat fees. Zero agency tax.
             </h2>
             <p className="font-body text-base text-[#6B6560] mb-8 leading-relaxed">
@@ -215,7 +215,7 @@ export default function Home() {
             <div className="inline-flex items-center gap-2 bg-black/[0.04] rounded-full px-4 py-1.5 mb-4">
               <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-black/50">How We Work</span>
             </div>
-            <h2 className="font-display font-bold text-[44px] leading-tight text-[#0D0D0D]">
+            <h2 className="font-display font-bold text-[28px] md:text-[44px] leading-tight text-[#0D0D0D]">
               Six pillars.<br />One mission.
             </h2>
           </div>
@@ -245,7 +245,7 @@ export default function Home() {
       <section className="py-16 px-6 lg:px-12 max-w-7xl mx-auto">
         <div className="bg-[#0D0D0D] rounded-3xl p-12 md:p-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <p className="font-display font-bold text-[64px] text-[#6BAD3D] leading-none mb-6">&ldquo;</p>
+            <p className="font-display font-bold text-[44px] md:text-[64px] text-[#6BAD3D] leading-none mb-6">&ldquo;</p>
             <blockquote className="font-display font-semibold text-[28px] md:text-[32px] leading-snug text-white mb-8">
               Hewn Life didn&apos;t just run our marketing. They rebuilt how we think about our business.
             </blockquote>
@@ -323,7 +323,7 @@ export default function Home() {
           <div className="bg-[#8B5CF6] p-12 md:p-16 flex flex-col justify-between">
             <div>
               <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/60 mb-6">Get Started</p>
-              <h2 className="font-display font-bold text-[40px] leading-tight text-white mb-6">
+              <h2 className="font-display font-bold text-[26px] md:text-[40px] leading-tight text-white mb-6">
                 Ready to stop paying the agency tax?
               </h2>
               <p className="font-body text-base text-white/80 mb-10 leading-relaxed">
