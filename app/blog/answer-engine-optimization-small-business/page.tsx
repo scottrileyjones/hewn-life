@@ -18,6 +18,38 @@ export const metadata: Metadata = {
   },
 }
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is Answer Engine Optimization (AEO)?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Answer Engine Optimization (AEO) is the practice of structuring your web content so AI-powered search engines — like ChatGPT, Perplexity, and Google AI Overviews — can easily extract and cite your content as a direct answer. It involves clear question-and-answer formatting, FAQ sections, structured data markup, and leading with the answer rather than burying it.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'How do I get my business to show up in ChatGPT and AI search results?',
+      acceptedAnswer: { '@type': 'Answer', text: 'To show up in ChatGPT and AI search results: (1) Format your content with clear question headings and direct answers in the first two sentences. (2) Add FAQ sections to your key pages. (3) Get cited on other reputable sites. (4) Keep your Google Business Profile complete and accurate. (5) Use structured data (JSON-LD schema) on your pages. AI systems favor content that is structured, credible, and clearly answers specific questions.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is the difference between AEO and traditional SEO?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Traditional SEO optimizes for ranking in Google\'s 10 blue links by targeting keywords, building backlinks, and improving technical performance. AEO (Answer Engine Optimization) optimizes for being cited directly by AI systems like ChatGPT, Perplexity, and Google AI Overviews. AEO focuses on content structure, direct answers, and entity clarity rather than keyword density. Both are important — AEO is a layer on top of good SEO, not a replacement for it.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'How long does AEO take to work for a small business?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Most small businesses see measurable improvements in AI search visibility within 4–8 weeks of implementing basic AEO practices. This includes adding FAQ sections, restructuring existing content to lead with direct answers, and ensuring consistent entity information across their site and Google Business Profile. More competitive niches may take longer.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is AEO worth it for small businesses?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Yes — small businesses are actually well-positioned for AEO. AI search systems favor geographic specificity and niche expertise, which is where small businesses can genuinely compete. A focused local business that structures its content well can outperform large national brands for local and niche queries in AI search, even without a massive backlink profile.' },
+    },
+  ],
+}
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -36,6 +68,7 @@ export default function Post() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
     <BlogPost relatedPosts={related} meta={{
       category: 'SEO',
       title: 'Answer Engine Optimization (AEO): How Small Businesses Get Found in AI Search',
@@ -50,6 +83,35 @@ export default function Post() {
       <p>
         This is not a distant threat. It's already happening. And for small businesses that position early, it's a significant opportunity.
       </p>
+
+      <div className="my-10 rounded-2xl border border-black/[0.07] bg-[#F9F7F4] overflow-hidden">
+        <div className="px-7 py-5 border-b border-black/[0.07]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#A89F92]">Quick answers</p>
+        </div>
+        {[
+          {
+            q: 'What is Answer Engine Optimization (AEO)?',
+            a: 'AEO is the practice of structuring your content so AI-powered search engines — ChatGPT, Perplexity, Google AI Overviews — can easily extract and cite it as a direct answer. It prioritizes clear question-and-answer formatting, structured data, and leading with the answer.',
+          },
+          {
+            q: 'How do I get my business to show up in ChatGPT?',
+            a: 'Use question-based headings with direct answers in the first two sentences. Add FAQ sections to key pages. Keep your Google Business Profile complete. Use JSON-LD schema markup. Get cited on credible external sites. AI systems favor structured, credible, direct content.',
+          },
+          {
+            q: 'What\'s the difference between AEO and traditional SEO?',
+            a: 'Traditional SEO targets keyword rankings in Google\'s blue links via backlinks and technical performance. AEO optimizes for being cited by AI systems directly. Both matter — AEO is a layer on top of good SEO, not a replacement.',
+          },
+          {
+            q: 'How long does AEO take to work for a small business?',
+            a: 'Most small businesses see measurable improvements in 4–8 weeks after restructuring content to lead with direct answers, adding FAQ sections, and cleaning up their Google Business Profile.',
+          },
+        ].map(({ q, a }, i) => (
+          <div key={i} className="px-7 py-6 border-b border-black/[0.07] last:border-0">
+            <p className="font-display font-semibold text-[16px] text-[#0D0D0D] mb-2">{q}</p>
+            <p className="font-body text-sm text-[#6B6560] leading-relaxed">{a}</p>
+          </div>
+        ))}
+      </div>
 
       <h2>AEO and GEO — what's the actual difference?</h2>
       <p>
