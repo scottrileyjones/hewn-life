@@ -6,7 +6,7 @@ html, body {
   overscroll-behavior: none;
 }
 
-body.checkout-mode header,
+body.checkout-mode nav,
 body.checkout-mode footer { display: none !important; }
 
 :root {
