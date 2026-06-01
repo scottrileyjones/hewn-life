@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
-import BlogPost, { BlogCta } from '@/components/BlogPost'
+import BlogPost, { BlogCta, ALL_POSTS } from '@/components/BlogPost'
+
+const related = ALL_POSTS.filter(p => p.href !== '/blog/how-much-does-a-marketing-agency-cost').slice(0, 3)
 
 export const metadata: Metadata = {
   title: 'How Much Does a Marketing Agency Cost for a Small Business in 2026?',
@@ -10,7 +12,7 @@ export const metadata: Metadata = {
     description: 'Real numbers, no fluff. What small businesses actually pay for marketing agencies in 2026 — and how to know if you\'re getting a good deal.',
     url: 'https://www.hewn.life/blog/how-much-does-a-marketing-agency-cost',
     type: 'article',
-    publishedTime: '2026-05-01',
+    publishedTime: '2026-05-08',
     authors: ['Hewn Life'],
     images: [{ url: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg', width: 1200, height: 630 }],
   },
@@ -22,7 +24,7 @@ const jsonLd = {
   headline: 'How Much Does a Marketing Agency Cost for a Small Business in 2026?',
   description: 'Real numbers, no fluff. What small businesses actually pay for marketing agencies in 2026 — and how to know if you\'re getting a good deal.',
   image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg',
-  datePublished: '2026-05-01',
+  datePublished: '2026-05-08',
   author: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   publisher: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   url: 'https://www.hewn.life/blog/how-much-does-a-marketing-agency-cost',
@@ -34,7 +36,7 @@ export default function Post() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-    <BlogPost meta={{
+    <BlogPost relatedPosts={related} meta={{
       category: 'Pricing & Value',
       title: 'How Much Does a Marketing Agency Cost for a Small Business in 2026?',
       excerpt: 'Real numbers, no fluff. What small businesses actually pay — and how to know if you\'re overpaying.',

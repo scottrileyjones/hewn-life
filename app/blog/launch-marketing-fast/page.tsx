@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
-import BlogPost, { BlogCta } from '@/components/BlogPost'
+import BlogPost, { BlogCta, ALL_POSTS } from '@/components/BlogPost'
+
+const related = ALL_POSTS.filter(p => p.href !== '/blog/launch-marketing-fast').slice(0, 3)
 
 export const metadata: Metadata = {
   title: 'From Zero to Live in a Week: How Fast a Small Business Can Launch Modern Marketing',
@@ -34,7 +36,7 @@ export default function Post() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-    <BlogPost meta={{
+    <BlogPost relatedPosts={related} meta={{
       category: 'AI & Marketing',
       title: 'From Zero to Live in a Week: How Fast a Small Business Can Launch Modern Marketing',
       excerpt: 'Speed is now a real competitive advantage. Here\'s what\'s possible in 7 days when you have the right team and the right tools.',

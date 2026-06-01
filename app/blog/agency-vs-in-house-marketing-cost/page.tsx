@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
-import BlogPost, { BlogCta } from '@/components/BlogPost'
+import BlogPost, { BlogCta, ALL_POSTS } from '@/components/BlogPost'
+
+const related = ALL_POSTS.filter(p => p.href !== '/blog/agency-vs-in-house-marketing-cost').slice(0, 3)
 
 export const metadata: Metadata = {
   title: 'Hiring a Marketing Agency vs. Doing It In-House: The Real Cost Comparison (2026)',
@@ -10,7 +12,7 @@ export const metadata: Metadata = {
     description: 'The math most businesses get wrong. A real cost breakdown of agency vs. in-house marketing for small and mid-size businesses in 2026.',
     url: 'https://www.hewn.life/blog/agency-vs-in-house-marketing-cost',
     type: 'article',
-    publishedTime: '2026-05-01',
+    publishedTime: '2026-05-05',
     authors: ['Hewn Life'],
     images: [{ url: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780097464/soundtrap-c_S99FlDqSw-unsplash_mtpxgd.jpg', width: 1200, height: 630 }],
   },
@@ -22,7 +24,7 @@ const jsonLd = {
   headline: 'Hiring a Marketing Agency vs. Doing It In-House: The Real Cost Comparison (2026)',
   description: 'The math most businesses get wrong. A real cost breakdown of agency vs. in-house marketing for small and mid-size businesses in 2026.',
   image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780097464/soundtrap-c_S99FlDqSw-unsplash_mtpxgd.jpg',
-  datePublished: '2026-05-01',
+  datePublished: '2026-05-05',
   author: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   publisher: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   url: 'https://www.hewn.life/blog/agency-vs-in-house-marketing-cost',
@@ -34,7 +36,7 @@ export default function Post() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-    <BlogPost meta={{
+    <BlogPost relatedPosts={related} meta={{
       category: 'Pricing & Value',
       title: 'Hiring a Marketing Agency vs. Doing It In-House: The Real Cost Comparison',
       excerpt: 'The math most businesses get wrong. Here\'s what in-house marketing actually costs — and why the agency case is stronger than it looks.',

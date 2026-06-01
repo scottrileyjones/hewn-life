@@ -14,9 +14,47 @@ export const metadata: Metadata = {
   },
 }
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Do you require long-term contracts?',
+      acceptedAnswer: { '@type': 'Answer', text: 'No. We work on monthly agreements. We earn your continued business by delivering results.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'What businesses are the best fit for Hewn Life?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Established businesses doing $500K+ in annual revenue that are ready to invest in marketing as a growth driver — not a cost center.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'Who will actually be doing my work?',
+      acceptedAnswer: { '@type': 'Answer', text: 'The founder oversees every account directly. You are not handed off to a junior account manager. You get the experience you are paying for.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'How is this different from hiring a freelancer?',
+      acceptedAnswer: { '@type': 'Answer', text: 'A freelancer executes tasks. Hewn Life operates as your fractional CMO — strategic, embedded, and building systems that outlast any single deliverable.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'What if I just need one specific project?',
+      acceptedAnswer: { '@type': 'Answer', text: 'We offer clear à la carte flat-fee services for one-off needs. No retainer required.' },
+    },
+    {
+      '@type': 'Question',
+      name: "What's your process for getting started?",
+      acceptedAnswer: { '@type': 'Answer', text: 'Book a discovery call. We do a deep-dive into your business (weeks 1–2), then launch a Foundation Sprint (weeks 3–8) to get your brand, website, and core systems live.' },
+    },
+  ],
+}
+
 export default function Contact() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       {/* Hero */}
       <section className="flex items-start md:items-end pt-20 md:pt-40 pb-16 md:pb-24 relative overflow-hidden" style={{background: `radial-gradient(ellipse at 70% 30%, rgba(124,181,80,0.10) 0%, transparent 55%), #1A1815`}}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
