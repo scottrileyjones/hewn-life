@@ -1348,15 +1348,24 @@ export default function Quiz() {
 
           {/* Bottom value strip */}
           <div className="relative border-t border-black/[0.06] bg-white">
-            <div className="max-w-7xl mx-auto px-6 lg:px-12 py-6 grid grid-cols-3 gap-4">
+            <div className="max-w-7xl mx-auto px-6 lg:px-12 py-5 grid grid-cols-1 sm:grid-cols-3 gap-px bg-black/[0.06]">
               {[
-                { stat: 'ROI', label: 'projection for your stage' },
-                { stat: 'Health', label: 'score across 4 areas' },
-                { stat: 'Plan', label: 'matched to your goals' },
+                {
+                  heading: 'Scored across 4 dimensions',
+                  detail: 'Brand · Digital · Paid · Retention — each ranked by impact for your goals',
+                },
+                {
+                  heading: 'Calibrated to your revenue stage',
+                  detail: 'Pre-revenue to $50M+ — the model adjusts so results are never generic',
+                },
+                {
+                  heading: 'A plan, not a PDF',
+                  detail: 'Specific services ranked by ROI for your budget and 90-day priorities',
+                },
               ].map(s => (
-                <div key={s.stat} className="text-center sm:text-left">
-                  <p className="font-display text-[22px] md:text-[28px] leading-none text-[#0D0D0D] mb-1">{s.stat}</p>
-                  <p className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.14em] text-[#8B5CF6]">{s.label}</p>
+                <div key={s.heading} className="bg-white px-6 py-5">
+                  <p className="font-body font-semibold text-[13px] text-[#0D0D0D] mb-1">{s.heading}</p>
+                  <p className="font-body text-[12px] text-[#6B6560] leading-snug">{s.detail}</p>
                 </div>
               ))}
             </div>
