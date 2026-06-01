@@ -1336,8 +1336,9 @@ export default function Quiz() {
   // ── Intro ─────────────────────────────────────────────────────────────────
   if (step === 'intro') {
     return (
-      <main className="h-[100dvh] bg-white flex flex-col">
-        <section className="relative flex-1 flex flex-col overflow-hidden">
+      <main className="flex flex-col" style={{ height: '100dvh' }}>
+        {/* Hero — flex-1 so it fills remaining space; overflow-hidden clips the image only */}
+        <section className="relative flex-1 overflow-hidden">
           {/* Image — right half on desktop, hidden on mobile */}
           <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden lg:block">
             <Image
@@ -1351,32 +1352,32 @@ export default function Quiz() {
           </div>
 
           {/* Content */}
-          <div className="relative flex-1 flex items-start lg:items-center px-6 lg:px-12 pt-24 pb-6">
+          <div className="relative h-full flex items-start lg:items-center px-6 lg:px-12 pt-20 pb-4">
             <div className="max-w-7xl mx-auto w-full">
               <div className="max-w-xl">
                 <div className="animate-fade-up">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-[#6BAD3D]/30 bg-[#6BAD3D]/[0.06] px-4 py-1.5 mb-6">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-[#6BAD3D]/30 bg-[#6BAD3D]/[0.06] px-4 py-1.5 mb-5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D] animate-pulse" />
                     <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#6BAD3D]">Free ROI Assessment</span>
                   </span>
 
-                  <h1 className="hero-heading fluid-hero text-[#0D0D0D] leading-[1.02] mb-5">
+                  <h1 className="hero-heading fluid-hero text-[#0D0D0D] leading-[1.02] mb-4">
                     See what growth<br />
                     <span className="accent" style={{ color: '#6BAD3D' }}>is worth to you.</span>
                   </h1>
 
-                  <p className="font-body text-lg text-[#6B6560] leading-relaxed mb-8 max-w-md">
+                  <p className="font-body text-base lg:text-lg text-[#6B6560] leading-relaxed mb-6 max-w-md">
                     Answer 7 quick questions and get a personalized report — your marketing health score, the exact services you need, and the revenue you could unlock.
                   </p>
 
                   <button
                     onClick={() => setStep('revenue')}
-                    className="w-full sm:w-auto inline-flex items-center justify-center bg-[#8B5CF6] text-white font-body font-semibold text-[17px] px-10 py-5 rounded-full hover:bg-[#7C3AED] transition-all duration-200 shadow-[0_12px_40px_-8px_rgba(139,92,246,0.35)] hover:-translate-y-0.5"
+                    className="w-full sm:w-auto inline-flex items-center justify-center bg-[#8B5CF6] text-white font-body font-semibold text-[17px] px-10 py-4 rounded-full hover:bg-[#7C3AED] transition-all duration-200 shadow-[0_12px_40px_-8px_rgba(139,92,246,0.35)] hover:-translate-y-0.5"
                   >
                     Calculate My ROI →
                   </button>
 
-                  <div className="flex items-center gap-5 mt-6">
+                  <div className="flex items-center gap-5 mt-5">
                     <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#A89F92]">⚡ 2 minutes</span>
                     <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#A89F92]">✓ No sales call</span>
                     <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#A89F92]">✓ Instant results</span>
@@ -1385,12 +1386,12 @@ export default function Quiz() {
               </div>
             </div>
           </div>
-
-          {/* Bottom value strip — animated outcome ticker */}
-          <div className="relative border-t border-black/[0.06] bg-white overflow-hidden">
-            <OutcomeTicker />
-          </div>
         </section>
+
+        {/* Ticker — sibling to the section, never clipped by overflow-hidden above */}
+        <div className="flex-shrink-0 border-t border-black/[0.06] bg-white overflow-hidden">
+          <OutcomeTicker />
+        </div>
       </main>
     )
   }
