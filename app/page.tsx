@@ -73,6 +73,7 @@ export default function Home() {
             </h1>
             <p className="font-body text-lg text-[#6B6560] max-w-sm mb-10 leading-relaxed">
               Senior strategy. AI speed. Flat fees. No bloat.
+              <br /><span className="text-[#0D0D0D]/70">Full-service marketing for businesses ready to grow.</span>
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <CalButton className="w-full sm:w-auto inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
