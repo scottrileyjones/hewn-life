@@ -43,8 +43,11 @@ export default function WebsiteInAWeek() {
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="relative flex items-center overflow-hidden bg-white pt-20 md:pt-32 pb-12 md:pb-20 px-6 lg:px-12">
-        {/* Image — right half on desktop */}
+      {/* Mobile: full-viewport flex column — content top, image + stats fill remaining height */}
+      {/* Desktop: split layout with image on right */}
+      <section className="flex flex-col h-[100dvh] lg:h-auto lg:relative lg:flex lg:items-center lg:overflow-hidden lg:bg-white lg:pt-32 lg:pb-20 lg:px-12">
+
+        {/* Desktop image — right half */}
         <div className="absolute right-0 top-0 bottom-0 w-[45%] hidden lg:block">
           <Image
             src="https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_1600,c_fill/v1780277632/web_developer_upcugn.jpg"
@@ -55,18 +58,17 @@ export default function WebsiteInAWeek() {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-white via-white/10 to-transparent" />
         </div>
-        <div className="relative max-w-7xl mx-auto w-full">
+
+        {/* Content */}
+        <div className="relative lg:max-w-7xl lg:mx-auto lg:w-full px-6 lg:px-0 pt-20 lg:pt-0 pb-5 lg:pb-0">
           <div className="animate-fade-up max-w-xl">
             <SectionEyebrow text="Website in a Week" light />
-            <h1 className="hero-heading fluid-hero text-[#0D0D0D] mb-6 leading-[1.04]">
+            <h1 className="hero-heading fluid-hero text-[#0D0D0D] mb-4 leading-[1.04]">
               A real website.<br />
               <span className="accent" style={{ color: '#6BAD3D' }}>In one week. $1,000.</span>
             </h1>
-            <p className="font-body text-lg text-[#6B6560] max-w-lg leading-relaxed mb-4">
-              Design, copy, development, and hosting — a fully functioning custom site, live in five business days. Built for mobile and desktop. No Figma required. Laser speed with AI.
-            </p>
-            <p className="font-body text-base text-[#3D3A36] max-w-lg leading-relaxed mb-10">
-              We do the heavy lifting. You take it over the moment it&apos;s live.
+            <p className="font-body text-base lg:text-lg text-[#6B6560] max-w-lg leading-relaxed mb-6 lg:mb-10">
+              Custom design, copy, development, and hosting — live in five business days. No Figma. AI speed.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <CalButton className="w-full sm:w-auto inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
@@ -78,10 +80,39 @@ export default function WebsiteInAWeek() {
             </div>
           </div>
         </div>
+
+        {/* Mobile: image fills remaining height with stat strip overlaid */}
+        <div className="flex-1 lg:hidden relative min-h-0 px-6 pb-6 pt-3">
+          <div className="rounded-2xl overflow-hidden h-full relative">
+            <Image
+              src="https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_1600,c_fill/v1780277632/web_developer_upcugn.jpg"
+              alt=""
+              fill
+              priority
+              className="object-cover object-top"
+            />
+            <div className="absolute inset-x-0 bottom-0 p-4">
+              <div className="bg-[#0D0D0D]/90 backdrop-blur-md rounded-xl p-4 grid grid-cols-4 gap-2">
+                {[
+                  { num: '$1K', label: 'flat fee' },
+                  { num: '5d', label: 'to live' },
+                  { num: '0', label: 'figma' },
+                  { num: '100%', label: 'yours' },
+                ].map((s, i) => (
+                  <div key={i} className="text-center">
+                    <p className="font-display font-bold text-[18px] leading-none text-white mb-1">{s.num}</p>
+                    <p className="font-mono text-[8px] uppercase tracking-[0.12em] text-[#6BAD3D]">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
       </section>
 
-      {/* ── Stat strip ───────────────────────────────────────── */}
-      <section className="bg-[#0D0D0D] py-12 px-6 lg:px-12">
+      {/* ── Stat strip — desktop only ────────────────────────── */}
+      <section className="hidden lg:block bg-[#0D0D0D] py-12 px-6 lg:px-12">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
             { num: '$1,000', label: 'flat. no surprises.' },
