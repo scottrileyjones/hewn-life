@@ -9,6 +9,46 @@ const QUIZ_HERO_IMAGE =
 
 // ── Revenue slider stops ──────────────────────────────────────────────────────
 
+// ── Outcome ticker ────────────────────────────────────────────────────────────
+
+const TICKER_ITEMS = [
+  { label: 'Revenue opportunity', value: '$340K', color: '#6BAD3D' },
+  { label: 'Marketing health score', value: '71 / 100', color: '#8B5CF6' },
+  { label: 'Top priority', value: 'Paid Media', color: '#0D0D0D' },
+  { label: 'Revenue opportunity', value: '$1.2M', color: '#6BAD3D' },
+  { label: 'Health score', value: '58 / 100', color: '#8B5CF6' },
+  { label: 'Biggest gap', value: 'Brand Messaging', color: '#0D0D0D' },
+  { label: 'Revenue opportunity', value: '$88K', color: '#6BAD3D' },
+  { label: 'Marketing health score', value: '83 / 100', color: '#8B5CF6' },
+  { label: 'Top priority', value: 'SEO & Content', color: '#0D0D0D' },
+  { label: 'Revenue opportunity', value: '$520K', color: '#6BAD3D' },
+  { label: 'Health score', value: '47 / 100', color: '#8B5CF6' },
+  { label: 'Biggest gap', value: 'Email & Retention', color: '#0D0D0D' },
+]
+
+function OutcomeTicker() {
+  const items = [...TICKER_ITEMS, ...TICKER_ITEMS] // duplicate for seamless loop
+  return (
+    <div className="relative py-4 select-none">
+      {/* fade edges */}
+      <div className="absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, white, transparent)' }} />
+      <div className="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, white, transparent)' }} />
+      <div className="flex gap-3 ticker-track">
+        {items.map((item, i) => (
+          <div
+            key={i}
+            className="flex-shrink-0 flex items-center gap-2.5 border border-black/[0.08] rounded-full px-4 py-2 bg-white"
+          >
+            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-[#A89F92]">{item.label}</span>
+            <span className="w-px h-3 bg-black/[0.10]" />
+            <span className="font-display font-semibold text-[14px]" style={{ color: item.color }}>{item.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 const REVENUE_STOPS = [
   { value: 0, label: '$0' },
   { value: 50000, label: '$50K' },
@@ -1346,29 +1386,9 @@ export default function Quiz() {
             </div>
           </div>
 
-          {/* Bottom value strip */}
-          <div className="relative border-t border-black/[0.06] bg-white">
-            <div className="max-w-7xl mx-auto px-6 lg:px-12 py-5 grid grid-cols-1 sm:grid-cols-3 gap-px bg-black/[0.06]">
-              {[
-                {
-                  heading: 'Scored across 4 dimensions',
-                  detail: 'Brand · Digital · Paid · Retention — each ranked by impact for your goals',
-                },
-                {
-                  heading: 'Calibrated to your revenue stage',
-                  detail: 'Pre-revenue to $50M+ — the model adjusts so results are never generic',
-                },
-                {
-                  heading: 'A plan, not a PDF',
-                  detail: 'Specific services ranked by ROI for your budget and 90-day priorities',
-                },
-              ].map(s => (
-                <div key={s.heading} className="bg-white px-6 py-5">
-                  <p className="font-body font-semibold text-[13px] text-[#0D0D0D] mb-1">{s.heading}</p>
-                  <p className="font-body text-[12px] text-[#6B6560] leading-snug">{s.detail}</p>
-                </div>
-              ))}
-            </div>
+          {/* Bottom value strip — animated outcome ticker */}
+          <div className="relative border-t border-black/[0.06] bg-white overflow-hidden">
+            <OutcomeTicker />
           </div>
         </section>
       </main>
