@@ -21,6 +21,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import SectionEyebrow from '@/components/SectionEyebrow'
 import Link from 'next/link'
 import Cal, { getCalApi } from '@calcom/embed-react'
@@ -251,10 +252,9 @@ function CalEmbed() {
 }
 
 export default function Pricing() {
+  const router = useRouter()
   const [annual, setAnnual] = useState(false)
   const [expanded, setExpanded] = useState<TierSlug | null>(null)
-  const [loadingTier, setLoadingTier] = useState<string | null>(null)
-  const [checkoutError, setCheckoutError] = useState<string | null>(null)
   const [calOpen, setCalOpen] = useState(false)
   const [showStickyBar, setShowStickyBar] = useState(false)
   const plansRef = useRef<HTMLElement>(null)
@@ -270,27 +270,21 @@ export default function Pricing() {
     return () => obs.disconnect()
   }, [])
 
-  const handleStripeCheckout = useCallback(async (slug: TierSlug) => {
-    setLoadingTier(slug)
-    setCheckoutError(null)
-    try {
-      const priceId = PRICE_IDS[slug][annual ? 'annual' : 'monthly']
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ priceId, mode: 'subscription' }),
-      })
-      const { url, error } = await res.json() as { url?: string; error?: string }
-      if (error) throw new Error(error)
-      if (url) {
-        window.open(url, '_blank')
-        setLoadingTier(null)
-      } else throw new Error('No checkout URL returned')
-    } catch (err) {
-      setCheckoutError(err instanceof Error ? err.message : 'Something went wrong')
-      setLoadingTier(null)
-    }
-  }, [annual])
+  const handleStripeCheckout = useCallback((slug: TierSlug) => {
+    const tier = tiers.find(t => t.slug === slug)!
+    const price = annual ? tier.price.annual : tier.price.monthly
+    const priceId = PRICE_IDS[slug][annual ? 'annual' : 'monthly']
+    const billing = annual ? 'annual' : 'monthly'
+    const qs = new URLSearchParams({
+      priceId,
+      mode: 'subscription',
+      name: tier.name,
+      price: String(price),
+      billing,
+      tier: slug,
+    })
+    router.push(`/checkout?${qs.toString()}`)
+  }, [annual, router])
 
   const handleForgedClick = useCallback(() => handleStripeCheckout('forged'), [handleStripeCheckout])
 
@@ -345,16 +339,11 @@ export default function Pricing() {
             </div>
           </div>
 
-          {checkoutError && (
-            <div className="mb-6 bg-red-50 border border-red-200 rounded-xl px-5 py-4 text-center">
-              <p className="font-body text-sm text-red-700">{checkoutError}</p>
-            </div>
-          )}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
             {tiers.map((tier, i) => {
               const price = annual ? tier.price.annual : tier.price.monthly
               const isFeatured = tier.slug === 'wrought'
-              const isLoading = loadingTier === tier.slug
+              const isLoading = false
               const isExpanded = expanded === tier.slug
 
               return (
@@ -442,14 +431,10 @@ export default function Pricing() {
                               : 'bg-[#8B5CF6] text-white hover:bg-[#7C3AED]'
                           }`}
                         >
-                          {isLoading ? (
-                            <><Spinner /> Redirecting…</>
-                          ) : (
-                            <>
-                              <svg className="w-3.5 h-3.5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                              Get {tier.name} — ${price.toLocaleString()}/mo
-                            </>
-                          )}
+                          <>
+                          <svg className="w-3.5 h-3.5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                          Get {tier.name} — ${price.toLocaleString()}/mo
+                        </>
                         </button>
 
                         <p className="text-center mb-6">
@@ -689,10 +674,10 @@ export default function Pricing() {
         </p>
         <button
           onClick={handleForgedClick}
-          disabled={loadingTier === 'forged'}
+          disabled={false}
           className="flex items-center gap-2 bg-bone text-moss font-body font-semibold text-sm px-6 py-3 rounded-full hover:bg-white transition-colors disabled:opacity-70 flex-shrink-0"
         >
-          {loadingTier === 'forged' ? <><Spinner /> Redirecting…</> : 'Start with Forged →'}
+          Start with Forged →
         </button>
       </div>
     </>
