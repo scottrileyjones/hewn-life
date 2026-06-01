@@ -36,12 +36,26 @@ export async function POST(request: Request) {
         expand: ['latest_invoice.payment_intent'],
       })
 
-      const invoice = subscription.latest_invoice as Stripe.Invoice & {
+      const invoice = subscription.latest_invoice as (Stripe.Invoice & {
         payment_intent: Stripe.PaymentIntent | null
-      }
-      const paymentIntent = invoice.payment_intent as Stripe.PaymentIntent
+      }) | null
 
-      return NextResponse.json({ clientSecret: paymentIntent.client_secret })
+      const clientSecret = invoice?.payment_intent?.client_secret
+
+      if (!clientSecret) {
+        // Fallback: retrieve the payment intent directly from the subscription's pending setup
+        if (subscription.pending_setup_intent) {
+          const setupIntent = await stripe.setupIntents.retrieve(
+            typeof subscription.pending_setup_intent === 'string'
+              ? subscription.pending_setup_intent
+              : subscription.pending_setup_intent.id
+          )
+          return NextResponse.json({ clientSecret: setupIntent.client_secret, mode: 'setup' })
+        }
+        return NextResponse.json({ error: 'Could not create payment session. Please try again.' }, { status: 500 })
+      }
+
+      return NextResponse.json({ clientSecret })
     } else {
       const price = await stripe.prices.retrieve(priceId)
 
