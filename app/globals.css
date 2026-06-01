@@ -73,6 +73,20 @@ body {
   letter-spacing: 0;
 }
 
+/*
+  Fluid heading scale — font-size using clamp() so text scales
+  smoothly with viewport width and never orphans a single word.
+
+  fluid-hero   → page h1s  (≈30px → 80px)
+  fluid-h2     → section h2s  (≈22px → 44px)
+  fluid-h3     → smaller section headings  (≈20px → 40px)
+  fluid-stat   → large decorative numbers  (≈32px → 64px)
+*/
+.fluid-hero  { font-size: clamp(1.875rem, 1rem + 4.5vw, 5rem); }
+.fluid-h2    { font-size: clamp(1.375rem, 0.875rem + 2.5vw, 2.75rem); }
+.fluid-h3    { font-size: clamp(1.25rem,  0.75rem + 2vw,   2.5rem); }
+.fluid-stat  { font-size: clamp(2rem,     1rem + 4vw,      4rem); }
+
 /* Brand guide hero headline — tight tracking, compressed leading */
 .hero-heading {
   font-family: var(--font-display);

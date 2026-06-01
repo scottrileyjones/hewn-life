@@ -14,7 +14,7 @@ export default function ThankYou() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h1 className="font-display font-bold text-[28px] sm:text-[36px] md:text-[60px] leading-tight text-ink mb-6">
+        <h1 className="font-display font-bold fluid-hero leading-tight text-ink mb-6">
           You&apos;re in.<br />Let&apos;s get to work.
         </h1>
         <p className="font-body text-base text-slate max-w-md mx-auto mb-10 leading-relaxed">
