@@ -1,6 +1,18 @@
+import type { Metadata } from 'next'
 import SectionEyebrow from '@/components/SectionEyebrow'
 import CtaBanner from '@/components/CtaBanner'
 import ProcessTimeline from '@/components/ProcessTimeline'
+
+export const metadata: Metadata = {
+  title: 'How Hewn Life Works — From Onboarding to Full Execution',
+  description: 'We onboard in 48 hours and run your full marketing program from day one. See exactly how Hewn Life delivers — strategy, creative, paid media, SEO, and more.',
+  alternates: { canonical: 'https://www.hewn.life/how-it-works' },
+  openGraph: {
+    title: 'How Hewn Life Works — From Onboarding to Full Execution',
+    description: 'We onboard in 48 hours and run your full marketing program from day one. See exactly how Hewn Life delivers — strategy, creative, paid media, SEO, and more.',
+    url: 'https://www.hewn.life/how-it-works',
+  },
+}
 import CalButton from '@/components/CalButton'
 import CountUp from '@/components/CountUp'
 import Link from 'next/link'

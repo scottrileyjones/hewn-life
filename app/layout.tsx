@@ -38,8 +38,14 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.hewn.life'),
-  title: 'Hewn Life — Carved from the raw. Built for the future.',
+  title: {
+    default: 'Hewn Life — AI-Era Marketing Agency',
+    template: '%s | Hewn Life',
+  },
   description: 'Premium AI-era marketing agency combining thirty years of human business acumen with the speed and scale of AI. Flat fees. Full transparency.',
+  alternates: {
+    canonical: 'https://www.hewn.life',
+  },
   openGraph: {
     title: 'Hewn Life — AI-Era Marketing Agency',
     description: 'Thirty years of human business acumen. The speed and scale of AI. Premium full-service marketing at a fraction of the traditional cost.',
@@ -47,11 +53,30 @@ export const metadata: Metadata = {
     siteName: 'Hewn Life',
     type: 'website',
     locale: 'en_US',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1779578220/main-sample.png',
+        width: 1200,
+        height: 630,
+        alt: 'Hewn Life — AI-Era Marketing Agency',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Hewn Life — AI-Era Marketing Agency',
     description: 'Thirty years of human business acumen. The speed and scale of AI. Premium full-service marketing at a fraction of the traditional cost.',
+    images: ['https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1779578220/main-sample.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 }
 
@@ -63,6 +88,28 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${plusJakarta.variable} ${dmSans.variable} ${interTight.variable} ${playfair.variable}`}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'MarketingAgency',
+              name: 'Hewn Life',
+              url: 'https://www.hewn.life',
+              logo: 'https://www.hewn.life/images/hewn-logo.png',
+              description: 'Premium AI-era marketing agency combining thirty years of human business acumen with the speed and scale of AI.',
+              address: { '@type': 'PostalAddress', addressCountry: 'US' },
+              contactPoint: {
+                '@type': 'ContactPoint',
+                contactType: 'customer service',
+                url: 'https://www.hewn.life/contact',
+              },
+              sameAs: [],
+              priceRange: '$$',
+              areaServed: 'US',
+            }),
+          }}
+        />
         <Nav />
         <main>{children}</main>
         <Footer />

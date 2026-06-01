@@ -1,12 +1,39 @@
+import type { Metadata } from 'next'
 import BlogPost, { BlogCta } from '@/components/BlogPost'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'How Much Does a Marketing Agency Cost for a Small Business in 2026?',
   description: 'Real numbers, no fluff. What small businesses actually pay for marketing agencies in 2026 — and how to know if you\'re getting a good deal.',
+  alternates: { canonical: 'https://www.hewn.life/blog/how-much-does-a-marketing-agency-cost' },
+  openGraph: {
+    title: 'How Much Does a Marketing Agency Cost for a Small Business in 2026?',
+    description: 'Real numbers, no fluff. What small businesses actually pay for marketing agencies in 2026 — and how to know if you\'re getting a good deal.',
+    url: 'https://www.hewn.life/blog/how-much-does-a-marketing-agency-cost',
+    type: 'article',
+    publishedTime: '2026-05-01',
+    authors: ['Hewn Life'],
+    images: [{ url: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg', width: 1200, height: 630 }],
+  },
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: 'How Much Does a Marketing Agency Cost for a Small Business in 2026?',
+  description: 'Real numbers, no fluff. What small businesses actually pay for marketing agencies in 2026 — and how to know if you\'re getting a good deal.',
+  image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg',
+  datePublished: '2026-05-01',
+  author: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
+  publisher: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
+  url: 'https://www.hewn.life/blog/how-much-does-a-marketing-agency-cost',
+  mainEntityOfPage: 'https://www.hewn.life/blog/how-much-does-a-marketing-agency-cost',
+  keywords: 'marketing agency cost, agency pricing, small business marketing budget, how much does an agency cost',
 }
 
 export default function Post() {
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <BlogPost meta={{
       category: 'Pricing & Value',
       title: 'How Much Does a Marketing Agency Cost for a Small Business in 2026?',
@@ -91,5 +118,6 @@ export default function Post() {
         That's what we built Hewn Life around. If that sounds like what you've been looking for, start with <a href="/quiz">our free ROI assessment</a> — it takes seven minutes and gives you a real revenue projection based on your actual numbers.
       </p>
     </BlogPost>
+    </>
   )
 }

@@ -1,5 +1,17 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
+
+export const metadata: Metadata = {
+  title: 'Marketing Insights & Strategy — The Hewn Life Blog',
+  description: 'Practical marketing strategy for small and mid-size businesses. AI marketing, SEO, agency costs, and growth tactics from the team at Hewn Life.',
+  alternates: { canonical: 'https://www.hewn.life/blog' },
+  openGraph: {
+    title: 'Marketing Insights & Strategy — The Hewn Life Blog',
+    description: 'Practical marketing strategy for small and mid-size businesses. AI marketing, SEO, agency costs, and growth tactics from the team at Hewn Life.',
+    url: 'https://www.hewn.life/blog',
+  },
+}
 
 const IMG = (path: string, w: number, h: number) =>
   `https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_${w},h_${h},c_fill/${path}`
