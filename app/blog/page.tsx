@@ -112,9 +112,11 @@ export default function Blog() {
             <span className="inline-block bg-[#E9D5FF] text-[#6D28D9] font-body text-[11px] font-medium px-3 py-1 rounded-full uppercase tracking-wider mb-5">
               {featured.category}
             </span>
-            <h2 className="font-display font-bold text-[32px] leading-tight text-[#0D0D0D] mb-4">
-              {featured.title}
-            </h2>
+            <Link href={featured.href}>
+              <h2 className="font-display font-bold text-[32px] leading-tight text-[#0D0D0D] mb-4 hover:text-[#6BAD3D] transition-colors">
+                {featured.title}
+              </h2>
+            </Link>
             <p className="font-body text-[12px] text-[#6B6560] mb-4">{featured.date} · {featured.readTime}</p>
             <p className="font-body text-base text-[#6B6560] leading-relaxed mb-6">{featured.excerpt}</p>
             <Link href={featured.href} className="font-body text-sm font-medium text-[#6BAD3D] hover:underline underline-offset-4">
