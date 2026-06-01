@@ -5,7 +5,7 @@ import Image from 'next/image'
 import CalButton from '@/components/CalButton'
 
 const QUIZ_HERO_IMAGE =
-  'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_1600,c_fill/v1779578220/main-sample.png'
+  'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_1600,c_fill/v1780277632/web_developer_upcugn.jpg'
 
 // ── Revenue slider stops ──────────────────────────────────────────────────────
 
