@@ -18,6 +18,43 @@ export const metadata: Metadata = {
   },
 }
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Is it cheaper to hire in-house marketing or use an agency?',
+      acceptedAnswer: { '@type': 'Answer', text: 'For most businesses under $2M in revenue, an agency is significantly cheaper than in-house when you account for the full cost. A mid-level marketing hire costs $97,000–$112,000 fully loaded (salary + taxes + benefits + tools). A full-service agency retainer typically runs $2,500–$5,000/month ($30,000–$60,000/year) and covers multiple specialists across strategy, creative, SEO, paid media, and analytics.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is the true cost of hiring an in-house marketer?',
+      acceptedAnswer: { '@type': 'Answer', text: 'The fully-loaded cost of any employee runs 1.3–1.5× their base salary. A $75,000 marketing manager actually costs $97,000–$112,000 when you include payroll taxes, health insurance, retirement contributions, equipment, tools, training, and management time. They also cover only one skill set — typically either creative or analytical, not both.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'When does in-house marketing make more sense than an agency?',
+      acceptedAnswer: { '@type': 'Answer', text: 'In-house marketing makes sense when you\'re spending over $10,000/month on agency fees and need someone fully embedded in your business. For companies between $5M and $20M in revenue, a hybrid model often works best: one or two internal strategists handling brand and strategy, with an agency handling execution, paid media, and specialized functions.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'What does an agency get you that an in-house hire can\'t?',
+      acceptedAnswer: { '@type': 'Answer', text: 'An agency covers a full range of specializations — brand strategy, creative, SEO, paid media, analytics, automation — at the cost of one employee. In-house hires are generalists or specialists in one area. Agencies also bring cross-industry pattern recognition, established vendor relationships, and infrastructure you\'d spend months building internally.' },
+    },
+  ],
+}
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.hewn.life' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.hewn.life/blog' },
+    { '@type': 'ListItem', position: 3, name: 'Agency vs. In-House Marketing Cost', item: 'https://www.hewn.life/blog/agency-vs-in-house-marketing-cost' },
+  ],
+}
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -25,7 +62,8 @@ const jsonLd = {
   description: 'The math most businesses get wrong. A real cost breakdown of agency vs. in-house marketing for small and mid-size businesses in 2026.',
   image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780097464/soundtrap-c_S99FlDqSw-unsplash_mtpxgd.jpg',
   datePublished: '2026-05-05',
-  author: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
+  dateModified: '2026-05-05',
+  author: { '@type': 'Person', name: 'Scott Jones', jobTitle: 'Founder', url: 'https://www.hewn.life/about' },
   publisher: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   url: 'https://www.hewn.life/blog/agency-vs-in-house-marketing-cost',
   mainEntityOfPage: 'https://www.hewn.life/blog/agency-vs-in-house-marketing-cost',
@@ -36,6 +74,8 @@ export default function Post() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
     <BlogPost relatedPosts={related} meta={{
       category: 'Pricing & Value',
       title: 'Hiring a Marketing Agency vs. Doing It In-House: The Real Cost Comparison',
@@ -50,6 +90,23 @@ export default function Post() {
       <p>
         Let's put real numbers on both sides.
       </p>
+
+      <div className="my-10 rounded-2xl border border-black/[0.07] bg-[#F9F7F4] overflow-hidden">
+        <div className="px-7 py-5 border-b border-black/[0.07]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#A89F92]">Quick answers</p>
+        </div>
+        {[
+          { q: 'Is it cheaper to hire in-house or use an agency?', a: 'For most businesses under $2M revenue, an agency is significantly cheaper. A mid-level marketing hire costs $97K–$112K fully loaded. A full-service agency retainer runs $2,500–$5,000/month ($30K–$60K/year) and covers multiple specialists.' },
+          { q: 'What is the true cost of hiring an in-house marketer?', a: 'The fully-loaded cost is 1.3–1.5× base salary. A $75K marketing manager actually costs $97K–$112K including payroll taxes, benefits, equipment, tools, training, and management time — before they produce a single piece of content.' },
+          { q: 'When does in-house make more sense than an agency?', a: 'When you\'re spending over $10,000/month on agency fees and need someone fully embedded in your business. For companies between $5M–$20M in revenue, a hybrid model often works best: internal strategists plus an agency for execution.' },
+          { q: 'What does an agency get you that in-house can\'t?', a: 'Coverage across all specializations — brand, creative, SEO, paid media, analytics, automation — at the cost of one employee. Plus cross-industry pattern recognition, established vendor relationships, and infrastructure you\'d spend months building internally.' },
+        ].map(({ q, a }, i) => (
+          <div key={i} className="px-7 py-6 border-b border-black/[0.07] last:border-0">
+            <p className="font-display font-semibold text-[16px] text-[#0D0D0D] mb-2">{q}</p>
+            <p className="font-body text-sm text-[#6B6560] leading-relaxed">{a}</p>
+          </div>
+        ))}
+      </div>
 
       <h2>The real cost of one in-house marketer</h2>
       <p>

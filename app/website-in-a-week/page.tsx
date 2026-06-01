@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import SectionEyebrow from '@/components/SectionEyebrow'
 import CtaBanner from '@/components/CtaBanner'
@@ -5,6 +6,18 @@ import BuildWeek from '@/components/BuildWeek'
 import CalButton from '@/components/CalButton'
 import CountUp from '@/components/CountUp'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Website in a Week — Professional Small Business Website for $1,000',
+  description: 'A complete, professional small business website — live in 7 days for a flat $1,000. No bloated timelines. No surprise invoices. Built and launched by Hewn Life.',
+  alternates: { canonical: 'https://www.hewn.life/website-in-a-week' },
+  openGraph: {
+    title: 'Website in a Week — Professional Small Business Website for $1,000',
+    description: 'A complete, professional small business website — live in 7 days for a flat $1,000. No bloated timelines. No surprise invoices.',
+    url: 'https://www.hewn.life/website-in-a-week',
+    images: [{ url: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1779578220/main-sample.png', width: 1200, height: 630 }],
+  },
+}
 
 const WIAW_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_PRICE_WEBSITE_IN_A_WEEK ?? ''
 
@@ -30,10 +43,6 @@ function StartButton({ className }: { className?: string }) {
   )
 }
 
-export const metadata = {
-  title: 'Website in a Week — Hewn Life',
-  description: 'A fully functioning, custom website designed, written, built, and hosted in one week — starting at $1,000. Built for mobile and desktop. No Figma. Laser speed with AI.',
-}
 
 const included = [
   'Custom design — mobile & desktop',
@@ -63,9 +72,20 @@ const faqs = [
   },
 ]
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+}
+
 export default function WebsiteInAWeek() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       {/* ── Hero ─────────────────────────────────────────────── */}
       {/* Mobile: full-viewport flex column — content top, image + stats fill remaining height */}
       {/* Desktop: split layout with image on right */}

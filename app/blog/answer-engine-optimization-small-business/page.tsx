@@ -57,11 +57,22 @@ const jsonLd = {
   description: 'Google isn\'t the only game in town anymore. Here\'s how small businesses can show up in ChatGPT, Perplexity, and AI Overviews — before your competitors figure it out.',
   image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780207193/girl_online_shopping_lqod5j.jpg',
   datePublished: '2026-05-15',
-  author: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
+  dateModified: '2026-05-15',
+  author: { '@type': 'Person', name: 'Scott Jones', jobTitle: 'Founder', url: 'https://www.hewn.life/about' },
   publisher: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   url: 'https://www.hewn.life/blog/answer-engine-optimization-small-business',
   mainEntityOfPage: 'https://www.hewn.life/blog/answer-engine-optimization-small-business',
   keywords: 'answer engine optimization, AEO, AI search, small business SEO, ChatGPT visibility, Perplexity optimization',
+}
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.hewn.life' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.hewn.life/blog' },
+    { '@type': 'ListItem', position: 3, name: 'Answer Engine Optimization (AEO)', item: 'https://www.hewn.life/blog/answer-engine-optimization-small-business' },
+  ],
 }
 
 export default function Post() {
@@ -69,6 +80,7 @@ export default function Post() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
     <BlogPost relatedPosts={related} meta={{
       category: 'SEO',
       title: 'Answer Engine Optimization (AEO): How Small Businesses Get Found in AI Search',
