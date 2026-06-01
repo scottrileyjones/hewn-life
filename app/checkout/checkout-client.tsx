@@ -192,8 +192,7 @@ function PaymentForm() {
     <form onSubmit={handleSubmit} className="space-y-6">
       <PaymentElement
         options={{
-          layout: 'tabs',
-          wallets: { applePay: 'auto', googlePay: 'auto' },
+          layout: { type: 'tabs', defaultCollapsed: false },
         }}
       />
 
