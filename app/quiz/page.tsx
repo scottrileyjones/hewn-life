@@ -1338,8 +1338,8 @@ export default function Quiz() {
     return (
       <main className="flex flex-col" style={{ height: '100dvh' }}>
         {/* Hero — flex-1 so it fills remaining space; overflow-hidden clips the image only */}
-        <section className="relative flex-1 overflow-hidden">
-          {/* Image — right half on desktop, hidden on mobile */}
+        <section className="relative flex-1 overflow-hidden flex flex-col lg:block">
+          {/* Image — right half on desktop, bottom fill on mobile */}
           <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden lg:block">
             <Image
               src={QUIZ_HERO_IMAGE}
@@ -1352,7 +1352,7 @@ export default function Quiz() {
           </div>
 
           {/* Content */}
-          <div className="relative h-full flex items-start lg:items-center px-6 lg:px-12 pt-20 pb-4">
+          <div className="relative lg:h-full flex items-start lg:items-center px-6 lg:px-12 pt-20 pb-4">
             <div className="max-w-7xl mx-auto w-full">
               <div className="max-w-xl">
                 <div className="animate-fade-up">
@@ -1385,6 +1385,18 @@ export default function Quiz() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Mobile image — fills remaining space below content */}
+          <div className="relative flex-1 lg:hidden min-h-[120px]">
+            <Image
+              src={QUIZ_HERO_IMAGE}
+              alt=""
+              fill
+              priority
+              className="object-cover object-top"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-transparent" />
           </div>
         </section>
 
