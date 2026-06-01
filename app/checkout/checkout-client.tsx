@@ -4,7 +4,6 @@ import { loadStripe } from '@stripe/stripe-js'
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { useSearchParams } from 'next/navigation'
 import HewnLogo from '@/components/HewnLogo'
-import CalButton from '@/components/CalButton'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
 
@@ -455,7 +454,7 @@ export default function CheckoutClient() {
 
                   <p className="text-center font-body text-xs text-[#6B6560]/50">
                     Have questions first?{' '}
-                    <CalButton className="hover:underline" style={{ color: meta.color }}>Book a free call</CalButton>
+                    <a href="https://cal.com/scott-hewn/discovery" target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: meta.color }}>Book a free call</a>
                   </p>
                 </form>
               </>
