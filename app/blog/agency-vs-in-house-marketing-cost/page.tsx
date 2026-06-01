@@ -1,12 +1,39 @@
+import type { Metadata } from 'next'
 import BlogPost, { BlogCta } from '@/components/BlogPost'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Hiring a Marketing Agency vs. Doing It In-House: The Real Cost Comparison (2026)',
   description: 'The math most businesses get wrong. A real cost breakdown of agency vs. in-house marketing for small and mid-size businesses in 2026.',
+  alternates: { canonical: 'https://www.hewn.life/blog/agency-vs-in-house-marketing-cost' },
+  openGraph: {
+    title: 'Hiring a Marketing Agency vs. Doing It In-House: The Real Cost Comparison (2026)',
+    description: 'The math most businesses get wrong. A real cost breakdown of agency vs. in-house marketing for small and mid-size businesses in 2026.',
+    url: 'https://www.hewn.life/blog/agency-vs-in-house-marketing-cost',
+    type: 'article',
+    publishedTime: '2026-05-01',
+    authors: ['Hewn Life'],
+    images: [{ url: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780097464/soundtrap-c_S99FlDqSw-unsplash_mtpxgd.jpg', width: 1200, height: 630 }],
+  },
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: 'Hiring a Marketing Agency vs. Doing It In-House: The Real Cost Comparison (2026)',
+  description: 'The math most businesses get wrong. A real cost breakdown of agency vs. in-house marketing for small and mid-size businesses in 2026.',
+  image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780097464/soundtrap-c_S99FlDqSw-unsplash_mtpxgd.jpg',
+  datePublished: '2026-05-01',
+  author: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
+  publisher: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
+  url: 'https://www.hewn.life/blog/agency-vs-in-house-marketing-cost',
+  mainEntityOfPage: 'https://www.hewn.life/blog/agency-vs-in-house-marketing-cost',
+  keywords: 'agency vs in-house marketing, marketing agency cost comparison, in-house marketing cost, hiring a marketing team',
 }
 
 export default function Post() {
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <BlogPost meta={{
       category: 'Pricing & Value',
       title: 'Hiring a Marketing Agency vs. Doing It In-House: The Real Cost Comparison',
@@ -92,5 +119,6 @@ export default function Post() {
         Our <a href="/pricing">pricing page</a> breaks down exactly what each tier of Hewn Life includes, and our <a href="/quiz">ROI assessment</a> will show you what that investment could generate based on your actual revenue. It takes less than ten minutes and gives you a real baseline for the conversation.
       </p>
     </BlogPost>
+    </>
   )
 }

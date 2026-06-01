@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Disallow: /api/
+Disallow: /checkout/
+Disallow: /thank-you/
+Disallow: /brand/
+Disallow: /palette/
+Disallow: /font-options/
+
+Sitemap: https://www.hewn.life/sitemap.xml

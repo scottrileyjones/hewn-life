@@ -1,12 +1,39 @@
+import type { Metadata } from 'next'
 import BlogPost, { BlogCta } from '@/components/BlogPost'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Can AI Really Run Your Small Business Marketing? What\'s Actually Possible in 2026',
   description: 'AI marketing for small business is no longer hype. Here\'s what\'s genuinely possible, what still requires humans, and how to make it work for you.',
+  alternates: { canonical: 'https://www.hewn.life/blog/ai-marketing-for-small-business' },
+  openGraph: {
+    title: 'Can AI Really Run Your Small Business Marketing? What\'s Actually Possible in 2026',
+    description: 'AI marketing for small business is no longer hype. Here\'s what\'s genuinely possible, what still requires humans, and how to make it work for you.',
+    url: 'https://www.hewn.life/blog/ai-marketing-for-small-business',
+    type: 'article',
+    publishedTime: '2026-05-01',
+    authors: ['Hewn Life'],
+    images: [{ url: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780207388/data_team_ztea9x.jpg', width: 1200, height: 630 }],
+  },
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: 'Can AI Really Run Your Small Business Marketing? What\'s Actually Possible in 2026',
+  description: 'AI marketing for small business is no longer hype. Here\'s what\'s genuinely possible, what still requires humans, and how to make it work for you.',
+  image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780207388/data_team_ztea9x.jpg',
+  datePublished: '2026-05-01',
+  author: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
+  publisher: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
+  url: 'https://www.hewn.life/blog/ai-marketing-for-small-business',
+  mainEntityOfPage: 'https://www.hewn.life/blog/ai-marketing-for-small-business',
+  keywords: 'AI marketing, small business marketing, AI tools, marketing automation, 2026',
 }
 
 export default function Post() {
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <BlogPost meta={{
       category: 'AI & Marketing',
       title: 'Can AI Really Run Your Small Business Marketing? What\'s Actually Possible in 2026',
@@ -93,5 +120,6 @@ export default function Post() {
         If that approach resonates with you, start with our <a href="/quiz">free ROI assessment</a>. It'll give you a honest projection of what your revenue could look like — and show you exactly which services make sense for where you are right now.
       </p>
     </BlogPost>
+    </>
   )
 }

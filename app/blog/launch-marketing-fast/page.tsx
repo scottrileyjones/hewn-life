@@ -1,12 +1,39 @@
+import type { Metadata } from 'next'
 import BlogPost, { BlogCta } from '@/components/BlogPost'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'From Zero to Live in a Week: How Fast a Small Business Can Launch Modern Marketing',
   description: 'Speed is now a competitive advantage in marketing. Here\'s what\'s possible when you stop waiting for the perfect plan and start building the machine.',
+  alternates: { canonical: 'https://www.hewn.life/blog/launch-marketing-fast' },
+  openGraph: {
+    title: 'From Zero to Live in a Week: How Fast a Small Business Can Launch Modern Marketing',
+    description: 'Speed is now a competitive advantage in marketing. Here\'s what\'s possible when you stop waiting for the perfect plan and start building the machine.',
+    url: 'https://www.hewn.life/blog/launch-marketing-fast',
+    type: 'article',
+    publishedTime: '2026-05-01',
+    authors: ['Hewn Life'],
+    images: [{ url: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg', width: 1200, height: 630 }],
+  },
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: 'From Zero to Live in a Week: How Fast a Small Business Can Launch Modern Marketing',
+  description: 'Speed is now a competitive advantage in marketing. Here\'s what\'s possible when you stop waiting for the perfect plan and start building the machine.',
+  image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg',
+  datePublished: '2026-05-01',
+  author: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
+  publisher: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
+  url: 'https://www.hewn.life/blog/launch-marketing-fast',
+  mainEntityOfPage: 'https://www.hewn.life/blog/launch-marketing-fast',
+  keywords: 'launch marketing fast, small business marketing launch, marketing speed, rapid marketing setup',
 }
 
 export default function Post() {
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <BlogPost meta={{
       category: 'AI & Marketing',
       title: 'From Zero to Live in a Week: How Fast a Small Business Can Launch Modern Marketing',
@@ -110,5 +137,6 @@ export default function Post() {
         Either way — start now. The compounding clock is already running.
       </p>
     </BlogPost>
+    </>
   )
 }

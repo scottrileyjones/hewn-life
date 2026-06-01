@@ -1,12 +1,39 @@
+import type { Metadata } from 'next'
 import BlogPost, { BlogCta } from '@/components/BlogPost'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Answer Engine Optimization (AEO): How Small Businesses Get Found in AI Search',
   description: 'Google isn\'t the only game in town anymore. Here\'s how small businesses can show up in ChatGPT, Perplexity, and AI Overviews — before your competitors figure it out.',
+  alternates: { canonical: 'https://www.hewn.life/blog/answer-engine-optimization-small-business' },
+  openGraph: {
+    title: 'Answer Engine Optimization (AEO): How Small Businesses Get Found in AI Search',
+    description: 'Google isn\'t the only game in town anymore. Here\'s how small businesses can show up in ChatGPT, Perplexity, and AI Overviews — before your competitors figure it out.',
+    url: 'https://www.hewn.life/blog/answer-engine-optimization-small-business',
+    type: 'article',
+    publishedTime: '2026-05-01',
+    authors: ['Hewn Life'],
+    images: [{ url: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780207193/girl_online_shopping_lqod5j.jpg', width: 1200, height: 630 }],
+  },
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: 'Answer Engine Optimization (AEO): How Small Businesses Get Found in AI Search',
+  description: 'Google isn\'t the only game in town anymore. Here\'s how small businesses can show up in ChatGPT, Perplexity, and AI Overviews — before your competitors figure it out.',
+  image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780207193/girl_online_shopping_lqod5j.jpg',
+  datePublished: '2026-05-01',
+  author: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
+  publisher: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
+  url: 'https://www.hewn.life/blog/answer-engine-optimization-small-business',
+  mainEntityOfPage: 'https://www.hewn.life/blog/answer-engine-optimization-small-business',
+  keywords: 'answer engine optimization, AEO, AI search, small business SEO, ChatGPT visibility, Perplexity optimization',
 }
 
 export default function Post() {
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <BlogPost meta={{
       category: 'SEO',
       title: 'Answer Engine Optimization (AEO): How Small Businesses Get Found in AI Search',
@@ -93,5 +120,6 @@ export default function Post() {
         Start with our <a href="/quiz">free marketing assessment</a> — it includes a look at your current digital presence and will give you a clear starting point for where search fits in your growth plan.
       </p>
     </BlogPost>
+    </>
   )
 }

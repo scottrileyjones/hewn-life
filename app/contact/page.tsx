@@ -1,6 +1,18 @@
+import type { Metadata } from 'next'
 import SectionEyebrow from '@/components/SectionEyebrow'
 import ContactForm from '@/components/ContactForm'
 import FaqAccordion from '@/components/FaqAccordion'
+
+export const metadata: Metadata = {
+  title: 'Contact Hewn Life — Talk to a Real Strategist',
+  description: 'Have a question or ready to get started? Reach out to Hewn Life. We respond fast — usually same day.',
+  alternates: { canonical: 'https://www.hewn.life/contact' },
+  openGraph: {
+    title: 'Contact Hewn Life — Talk to a Real Strategist',
+    description: 'Have a question or ready to get started? Reach out to Hewn Life. We respond fast — usually same day.',
+    url: 'https://www.hewn.life/contact',
+  },
+}
 
 export default function Contact() {
   return (
