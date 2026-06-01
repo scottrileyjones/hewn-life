@@ -63,8 +63,8 @@ function HeroImageCard() {
         style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.05) 100%)', border: '1px solid rgba(255,255,255,0.20)', boxShadow: '0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12)' }}>
         <div className="flex items-center justify-between mb-2.5">
           <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/50">Monthly Snapshot</p>
-          <span className="flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-body font-medium text-[#A78BFA]" style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.35)' }}>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-pulse" />
+          <span className="animate-live-pulse flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-body font-medium text-[#A78BFA]" style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.35)' }}>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
             Live
           </span>
         </div>
@@ -145,8 +145,8 @@ export default function Home() {
               <div className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%)', border: '1px solid rgba(255,255,255,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15)' }}>
                 <div className="flex items-center justify-between mb-3">
                   <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/50">Monthly Snapshot</p>
-                  <span className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-body font-medium text-[#A78BFA]" style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.35)' }}>
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-pulse" />
+                  <span className="animate-live-pulse flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-body font-medium text-[#A78BFA]" style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.35)' }}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
                     Live
                   </span>
                 </div>
