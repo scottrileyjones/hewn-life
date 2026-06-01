@@ -50,7 +50,7 @@ export async function POST(request: Request) {
         currency: price.currency,
         customer: customer.id,
         metadata: metadata ?? {},
-        automatic_payment_methods: { enabled: true },
+        payment_method_types: ['card', 'klarna', 'afterpay_clearpay', 'affirm'],
       })
 
       return NextResponse.json({ clientSecret: paymentIntent.client_secret })
