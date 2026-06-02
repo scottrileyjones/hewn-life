@@ -56,7 +56,7 @@ const comparisonRows = [
 
 function HeroImageCard() {
   return (
-    <div className="rounded-3xl overflow-hidden aspect-[4/5] w-full relative">
+    <div className="rounded-3xl overflow-hidden w-full relative h-[clamp(420px,62vh,680px)]">
       <Image src={PHOTOS.hero} alt="Creative professional at work" fill className="object-cover" priority />
       <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent" />
       <div className="absolute bottom-5 left-1/2 -translate-x-1/2 w-[80%] rounded-xl px-4 py-3"
