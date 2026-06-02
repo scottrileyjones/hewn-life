@@ -5,6 +5,7 @@ import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import CookieConsent from '@/components/CookieConsent'
 import QuizPopup from '@/components/QuizPopup'
+import GoogleTagManager, { GoogleTagManagerNoScript } from '@/components/GoogleTagManager'
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -87,7 +88,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${plusJakarta.variable} ${dmSans.variable} ${interTight.variable} ${playfair.variable}`}>
+      <head>
+        <GoogleTagManager />
+      </head>
       <body>
+        <GoogleTagManagerNoScript />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

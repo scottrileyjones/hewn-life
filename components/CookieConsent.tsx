@@ -1,8 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-
-const STORAGE_KEY = 'hewn-cookie-consent'
+import { CONSENT_STORAGE_KEY as STORAGE_KEY, updateConsent } from '@/lib/gtm'
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false)
@@ -27,6 +26,8 @@ export default function CookieConsent() {
     } catch {
       /* ignore storage failures */
     }
+    // Tell Google Consent Mode about the visitor's choice.
+    updateConsent(choice)
     setVisible(false)
   }
 
