@@ -56,3 +56,41 @@ export function sendGTMEvent(event: string, data: Record<string, unknown> = {}) 
   window.dataLayer = window.dataLayer || []
   window.dataLayer.push({ event, ...data })
 }
+
+export interface PurchaseItem {
+  item_id?: string
+  item_name?: string
+  price?: number
+  quantity?: number
+}
+
+export interface PurchasePayload {
+  transaction_id: string
+  value: number
+  currency?: string
+  items?: PurchaseItem[]
+}
+
+/**
+ * Fire a GA4 ecommerce `purchase` event through the dataLayer. Configure a
+ * GA4 Event tag in GTM listening for the `purchase` event to record the
+ * conversion. We clear the previous `ecommerce` object first, per Google's
+ * recommendation, so values don't bleed between events.
+ *
+ * GA4 only writes the conversion when analytics consent is granted; under
+ * Consent Mode it will still model conversions from the cookieless signal.
+ */
+export function trackPurchase(payload: PurchasePayload) {
+  if (typeof window === 'undefined') return
+  window.dataLayer = window.dataLayer || []
+  window.dataLayer.push({ ecommerce: null })
+  window.dataLayer.push({
+    event: 'purchase',
+    ecommerce: {
+      transaction_id: payload.transaction_id,
+      value: payload.value,
+      currency: payload.currency ?? 'USD',
+      items: payload.items ?? [],
+    },
+  })
+}
