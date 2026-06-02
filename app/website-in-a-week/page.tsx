@@ -163,7 +163,7 @@ export default function WebsiteInAWeek() {
             { num: '100%', label: 'yours to keep' },
           ].map((s, i) => (
             <div key={i} className="text-center md:text-left">
-              <p className="font-display fluid-stat leading-none text-white mb-2"><CountUp value={s.num} /></p>
+              <p className="font-display font-bold leading-none text-white mb-2 whitespace-nowrap text-[2.5rem] xl:text-[3.25rem]"><CountUp value={s.num} /></p>
               <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#6BAD3D]">{s.label}</p>
             </div>
           ))}
