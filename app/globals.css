@@ -139,6 +139,10 @@ body {
 */
 @media (min-width: 1024px) and (max-width: 1400px) {
   body { zoom: 0.87; }
+  /* `zoom` scales viewport units too, so a 100dvh section would paint at 87% of
+     the screen and leave a gap below it. Counter-scale full-viewport sections so
+     they stay flush to the screen edges. Keep this factor in sync with the zoom. */
+  .viewport-fill { min-height: calc(100dvh / 0.87); }
 }
 
 /* Brand guide hero headline — tight tracking, compressed leading */

@@ -88,8 +88,11 @@ export default function WebsiteInAWeek() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       {/* ── Hero ─────────────────────────────────────────────── */}
       {/* Mobile: full-viewport flex column — content top, image + stats fill remaining height */}
-      {/* Desktop: split layout with image on right */}
-      <section className="flex flex-col h-[100dvh] lg:h-auto lg:relative lg:flex lg:items-center lg:overflow-hidden lg:bg-white lg:pt-32 lg:pb-20 lg:px-12">
+      {/* Desktop: hero + stat strip together fill one viewport so the dark strip
+          sits flush against the bottom of the screen. `viewport-fill` compensates
+          for the iPad-landscape zoom (see globals.css) so it stays flush there too. */}
+      <div className="viewport-fill lg:flex lg:flex-col lg:min-h-[100dvh]">
+      <section className="flex flex-col h-[100dvh] lg:h-auto lg:flex-1 lg:relative lg:flex lg:items-center lg:justify-center lg:overflow-hidden lg:bg-white lg:pt-32 lg:pb-20 lg:px-12">
 
         {/* Desktop image — right half */}
         <div className="absolute right-0 top-0 bottom-0 w-[45%] hidden lg:block">
@@ -169,6 +172,7 @@ export default function WebsiteInAWeek() {
           ))}
         </div>
       </section>
+      </div>
 
       {/* ── Build Week animation ─────────────────────────────── */}
       <section id="how" className="bg-white py-24 md:py-32 px-6 lg:px-12 border-b border-black/[0.06]">
