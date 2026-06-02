@@ -1,13 +1,34 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import PurchaseTracker from '@/components/PurchaseTracker'
 
 export const metadata: Metadata = {
   title: 'You\'re in — Hewn Life',
 }
 
-export default function ThankYou() {
+const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v)
+
+export default function ThankYou({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}) {
+  const transactionId = first(searchParams.payment_intent)
+  const status = first(searchParams.redirect_status)
+  const valueRaw = first(searchParams.value)
+  const value = valueRaw ? Number(valueRaw) : undefined
+  const itemName = first(searchParams.item_name)
+  const itemId = first(searchParams.item_id)
+
   return (
     <div className="min-h-screen bg-bone flex items-center justify-center px-6 py-32">
+      <PurchaseTracker
+        transactionId={transactionId}
+        value={value}
+        itemId={itemId}
+        itemName={itemName}
+        status={status}
+      />
       <div className="text-center max-w-xl">
         <div className="w-16 h-16 rounded-full bg-moss/10 flex items-center justify-center mx-auto mb-8">
           <svg className="w-8 h-8 text-moss" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

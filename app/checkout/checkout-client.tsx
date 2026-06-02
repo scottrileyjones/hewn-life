@@ -198,7 +198,10 @@ function OrderSummary({ name, price, billing, mode, tier }: {
 
 // ── Payment form ──────────────────────────────────────
 
-function PaymentForm({ color }: { color: string }) {
+function PaymentForm({ color, order }: {
+  color: string
+  order: { name: string; price: number; tier: string; mode: string }
+}) {
   const stripe = useStripe()
   const elements = useElements()
   const [loading, setLoading] = useState(false)
@@ -209,9 +212,16 @@ function PaymentForm({ color }: { color: string }) {
     if (!stripe || !elements) return
     setLoading(true)
     setError('')
+    // Pass order details to /thank-you so it can fire the GA4 purchase
+    // conversion. Stripe appends payment_intent & redirect_status itself.
+    const returnUrl = new URL('/thank-you', window.location.origin)
+    returnUrl.searchParams.set('value', String(order.price))
+    if (order.name) returnUrl.searchParams.set('item_name', order.name)
+    if (order.tier) returnUrl.searchParams.set('item_id', order.tier)
+    returnUrl.searchParams.set('mode', order.mode)
     const { error: confirmError } = await stripe.confirmPayment({
       elements,
-      confirmParams: { return_url: `${window.location.origin}/thank-you` },
+      confirmParams: { return_url: returnUrl.toString() },
     })
     if (confirmError) {
       setError(confirmError.message ?? 'Payment failed. Please try again.')
@@ -469,7 +479,7 @@ export default function CheckoutClient() {
                 </p>
                 {clientSecret && (
                   <Elements stripe={stripePromise} options={{ clientSecret, appearance }}>
-                    <PaymentForm color={meta.color} />
+                    <PaymentForm color={meta.color} order={{ name, price, tier, mode }} />
                   </Elements>
                 )}
               </>
