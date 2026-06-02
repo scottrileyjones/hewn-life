@@ -119,21 +119,24 @@ body {
 .fluid-stat  { font-size: clamp(2.75rem,  1.25rem + 5vw,   5rem);    line-height: 1; }
 
 /*
-  iPad-landscape (and narrow-desktop) scaling.
+  iPad-landscape scaling.
 
   The desktop tier of this layout activates at the `lg` breakpoint (1024px) but
-  was visually tuned for ≥1280px (`xl`) screens. iPad landscape sits right in
-  between (~1080–1194px), so the full desktop design renders but reads ~10% too
-  large for the screen. Rather than re-tune every component, we keep the desktop
-  layout intact and uniformly scale it down in just this band — making a ~1180px
-  iPad present like the ~1300px screen the design targets.
+  was visually tuned for the wider screens above it. iPad landscape sits in the
+  1024–1366px range (11" ≈ 1180–1194px, 12.9" = 1366px), so the full desktop
+  design renders but reads ~10% too large for the screen. Rather than re-tune
+  every component, we keep the desktop layout intact and uniformly scale it down
+  across this range.
 
   `zoom` is used deliberately: Safari (the iPad browser) supports it natively and,
   unlike `transform: scale`, it keeps fixed/sticky elements (nav, cookie banner,
-  checkout summary) correctly positioned. Phones, iPad portrait (<1024px), and
-  real desktops (≥1280px) are untouched. Tune the single value below to taste.
+  checkout summary) correctly positioned. Phones and iPad portrait (<1024px) keep
+  their mobile layout untouched; desktops wider than 1366px are untouched.
+
+  Note: this is width-based, so a desktop browser window in the 1024–1366px range
+  scales too (the layout is fluid, so this is harmless). Tune the value to taste.
 */
-@media (min-width: 1024px) and (max-width: 1279.98px) {
+@media (min-width: 1024px) and (max-width: 1366px) {
   body { zoom: 0.9; }
 }
 
