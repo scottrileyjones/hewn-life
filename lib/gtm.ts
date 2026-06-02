@@ -72,25 +72,44 @@ export interface PurchasePayload {
 }
 
 /**
- * Fire a GA4 ecommerce `purchase` event through the dataLayer. Configure a
- * GA4 Event tag in GTM listening for the `purchase` event to record the
- * conversion. We clear the previous `ecommerce` object first, per Google's
- * recommendation, so values don't bleed between events.
+ * Push a GA4 ecommerce event through the dataLayer. We clear the previous
+ * `ecommerce` object first, per Google's recommendation, so values don't bleed
+ * between events. Set up matching GA4 Event tags in GTM (with "Send Ecommerce
+ * data" → Data Layer) to record each one.
+ */
+function trackEcommerce(event: string, ecommerce: Record<string, unknown>) {
+  if (typeof window === 'undefined') return
+  window.dataLayer = window.dataLayer || []
+  window.dataLayer.push({ ecommerce: null })
+  window.dataLayer.push({ event, ecommerce })
+}
+
+/**
+ * GA4 `begin_checkout` — fire when a visitor reaches the checkout page with a
+ * selected plan.
+ */
+export function trackBeginCheckout(value: number, items: PurchaseItem[] = [], currency = 'USD') {
+  trackEcommerce('begin_checkout', { value, currency, items })
+}
+
+/**
+ * GA4 `add_payment_info` — fire when a visitor reaches the payment step.
+ */
+export function trackAddPaymentInfo(value: number, items: PurchaseItem[] = [], currency = 'USD') {
+  trackEcommerce('add_payment_info', { value, currency, items })
+}
+
+/**
+ * GA4 `purchase` conversion — fire on /thank-you after a successful payment.
  *
  * GA4 only writes the conversion when analytics consent is granted; under
  * Consent Mode it will still model conversions from the cookieless signal.
  */
 export function trackPurchase(payload: PurchasePayload) {
-  if (typeof window === 'undefined') return
-  window.dataLayer = window.dataLayer || []
-  window.dataLayer.push({ ecommerce: null })
-  window.dataLayer.push({
-    event: 'purchase',
-    ecommerce: {
-      transaction_id: payload.transaction_id,
-      value: payload.value,
-      currency: payload.currency ?? 'USD',
-      items: payload.items ?? [],
-    },
+  trackEcommerce('purchase', {
+    transaction_id: payload.transaction_id,
+    value: payload.value,
+    currency: payload.currency ?? 'USD',
+    items: payload.items ?? [],
   })
 }

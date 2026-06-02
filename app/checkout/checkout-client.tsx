@@ -1,9 +1,10 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { useSearchParams } from 'next/navigation'
 import HewnLogo from '@/components/HewnLogo'
+import { trackBeginCheckout, trackAddPaymentInfo } from '@/lib/gtm'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
 
@@ -286,6 +287,22 @@ export default function CheckoutClient() {
     document.body.classList.add('checkout-mode')
     return () => document.body.classList.remove('checkout-mode')
   }, [])
+
+  // GA4 ecommerce funnel: begin_checkout when a valid plan loads,
+  // add_payment_info when the payment step is reached.
+  const items = [{ item_id: tier || 'website-in-a-week', item_name: name, price, quantity: 1 }]
+  const beganCheckout = useRef(false)
+  useEffect(() => {
+    if (beganCheckout.current || !priceId || !name) return
+    beganCheckout.current = true
+    trackBeginCheckout(price, items)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [priceId, name])
+
+  useEffect(() => {
+    if (step === 'payment') trackAddPaymentInfo(price, items)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step])
 
   const handleInfoSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
