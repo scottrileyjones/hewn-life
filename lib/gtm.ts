@@ -5,7 +5,9 @@
 // visitor accepts via the cookie banner). These helpers let the rest of the
 // app update consent and push custom events into the dataLayer.
 
-export const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID
+// GTM container ID. Falls back to the Hewn Life container so analytics work
+// out of the box; override per-environment with NEXT_PUBLIC_GTM_ID if needed.
+export const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID ?? 'GTM-5D8JJD5R'
 
 // Shared with components/CookieConsent.tsx so the banner and analytics agree
 // on where the visitor's choice is stored.
