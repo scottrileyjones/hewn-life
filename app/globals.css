@@ -138,7 +138,7 @@ body {
   scales too (the layout is fluid, so this is harmless). Tune the value to taste.
 */
 @media (min-width: 1024px) and (max-width: 1400px) {
-  body { zoom: 0.9; }
+  body { zoom: 0.87; }
 }
 
 /* Brand guide hero headline — tight tracking, compressed leading */
