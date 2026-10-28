@@ -6,14 +6,16 @@ import HewnLogo from './HewnLogo'
 import CalButton from './CalButton'
 
 const navLinks = [
-  { href: '/', label: 'Home' },
+  { href: '/how-it-works', label: 'How it works' },
   { href: '/services', label: 'Services' },
   { href: '/dashboard', label: 'Dashboard' },
-  { href: '/how-it-works', label: 'How It Works' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/about', label: 'About' },
-  { href: '/blog', label: 'Blog' },
+  { href: '/blog', label: 'Journal' },
 ]
+
+// Older pages that still open on a dark hero.
+const DARK_HERO = ['/about', '/contact', '/pricing']
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
@@ -22,6 +24,7 @@ export default function Nav() {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40)
+    handleScroll()
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -30,78 +33,75 @@ export default function Nav() {
     setMenuOpen(false)
   }, [pathname])
 
-  const darkHero = !scrolled && (['/', '/about', '/contact', '/pricing', '/services', '/dashboard'].includes(pathname))
+  const darkHero = !scrolled && DARK_HERO.includes(pathname)
 
   return (
     <>
-      <nav className={`fixed top-0 w-full z-50 h-16 md:h-18 transition-all duration-300 ${
-        scrolled ? 'bg-white/90 backdrop-blur-md border-b border-black/[0.06]' : 'bg-transparent'
+      <nav className={`fixed top-0 z-50 h-16 w-full transition-all duration-300 ${
+        scrolled ? 'border-b border-ink/[0.06] bg-bone/90 backdrop-blur-md' : 'bg-transparent'
       }`}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 h-full flex items-center justify-between">
+        <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-5 px-5">
           <HewnLogo dark={!darkHero} />
 
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map(link => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`font-mono text-[11px] uppercase tracking-[0.18em] transition-colors duration-200 ${
-                  darkHero
-                    ? pathname === link.href ? 'text-white' : 'text-white/50 hover:text-white'
-                    : pathname === link.href ? 'text-[#0D0D0D]' : 'text-[#0D0D0D]/50 hover:text-[#0D0D0D]'
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+          <div className="hidden items-center gap-7 lg:flex">
+            {navLinks.map(link => {
+              const active = pathname === link.href || pathname.startsWith(link.href + '/')
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`font-body text-sm transition-colors duration-200 ${
+                    darkHero
+                      ? active ? 'text-white' : 'text-white/60 hover:text-white'
+                      : active ? 'text-ink' : 'text-ink/60 hover:text-ink'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              )
+            })}
           </div>
 
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden items-center gap-4 lg:flex">
             <a
               href="https://hewnlife.myassembly.com"
               target="_blank"
               rel="noopener noreferrer"
-              className={`font-body text-sm font-medium px-5 py-2.5 rounded-full border transition-all duration-200 ${
-                darkHero
-                  ? 'border-[#8B5CF6] text-[#A78BFA] hover:border-[#A78BFA] hover:bg-[#8B5CF6]/10'
-                  : 'border-[#8B5CF6] text-[#8B5CF6] hover:bg-[#8B5CF6]/10'
-              }`}
+              className={`font-body text-sm transition-colors ${darkHero ? 'text-white/70 hover:text-white' : 'text-ink/60 hover:text-ink'}`}
             >
-              Client Login
+              Client login
             </a>
-            <CalButton className={`font-body text-sm font-medium px-5 py-2.5 rounded-full transition-all duration-200 ${
-              darkHero ? 'bg-white text-[#0D0D0D] hover:bg-white/90' : 'bg-[#0D0D0D] text-white hover:bg-[#222]'
+            <CalButton className={`rounded-full px-[18px] py-2.5 font-body text-sm font-medium transition-all duration-200 ${
+              darkHero ? 'bg-white text-ink hover:bg-mist' : 'bg-forest text-mist hover:bg-forest-2'
             }`}>
-              Book a Call
+              Book a call
             </CalButton>
           </div>
 
-          {/* Mobile hamburger */}
           <button
-            className="md:hidden p-2"
+            className="p-2 lg:hidden"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
+            aria-expanded={menuOpen}
           >
-            <div className="w-6 flex flex-col gap-1.5">
-              <span className={`block h-[1.5px] transition-all duration-300 ${darkHero ? 'bg-white' : 'bg-[#0D0D0D]'} ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-              <span className={`block h-[1.5px] transition-all duration-300 ${darkHero ? 'bg-white' : 'bg-[#0D0D0D]'} ${menuOpen ? 'opacity-0' : ''}`} />
-              <span className={`block h-[1.5px] transition-all duration-300 ${darkHero ? 'bg-white' : 'bg-[#0D0D0D]'} ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+            <div className="flex w-6 flex-col gap-1.5">
+              <span className={`block h-[1.5px] transition-all duration-300 ${darkHero ? 'bg-white' : 'bg-ink'} ${menuOpen ? 'translate-y-2 rotate-45' : ''}`} />
+              <span className={`block h-[1.5px] transition-all duration-300 ${darkHero ? 'bg-white' : 'bg-ink'} ${menuOpen ? 'opacity-0' : ''}`} />
+              <span className={`block h-[1.5px] transition-all duration-300 ${darkHero ? 'bg-white' : 'bg-ink'} ${menuOpen ? '-translate-y-2 -rotate-45' : ''}`} />
             </div>
           </button>
         </div>
       </nav>
 
-      {/* Mobile menu overlay */}
       {menuOpen && (
-        <div className="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center gap-10 md:hidden">
+        <div className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-10 bg-bone lg:hidden">
           <HewnLogo size="lg" />
-          <div className="flex flex-col items-center gap-8 mt-4">
-            {navLinks.map(link => (
+          <div className="mt-4 flex flex-col items-center gap-7">
+            {[{ href: '/', label: 'Home' }, ...navLinks].map(link => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-display font-bold text-3xl text-[#0D0D0D] hover:text-[#6BAD3D] transition-colors"
+                className="font-display text-3xl font-medium tracking-[-0.03em] text-ink transition-colors hover:text-forest"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
@@ -111,17 +111,17 @@ export default function Nav() {
               href="https://hewnlife.myassembly.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-display font-bold text-3xl text-[#0D0D0D]/40 hover:text-[#0D0D0D] transition-colors"
+              className="font-display text-3xl font-medium tracking-[-0.03em] text-ink/40 transition-colors hover:text-ink"
               onClick={() => setMenuOpen(false)}
             >
-              Client Login
+              Client login
             </a>
           </div>
           <CalButton
-            className="mt-4 bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200"
+            className="mt-2 rounded-full bg-forest px-8 py-4 font-body font-medium text-mist transition-all duration-200 hover:bg-forest-2"
             onClick={() => setMenuOpen(false)}
           >
-            Book a Call
+            Book a call
           </CalButton>
         </div>
       )}

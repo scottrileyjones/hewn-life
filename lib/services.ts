@@ -7,6 +7,8 @@
  * weekly cadence that keeps it compounding.
  */
 
+import type { GlyphKey } from './strata'
+
 export type TierSlug = 'hewn' | 'wrought' | 'forged'
 
 export interface Pillar {
@@ -27,10 +29,8 @@ export interface Pillar {
   deliverables: string[]
   /** Lowest tier that includes this pillar. */
   tier: TierSlug
-  accent: string
-  tint: string
-  /** SVG path data, 24×24 stroke icon. */
-  icon: string[]
+  /** Key into the Strata glyph set (lib/strata.ts). */
+  glyph: GlyphKey
 }
 
 export const pillars: Pillar[] = [
@@ -57,9 +57,7 @@ export const pillars: Pillar[] = [
     ],
     deliverables: ['Growth model & unit economics', 'Nine-pillar gap analysis', 'Quarterly roadmap', 'Monthly marketing P&L'],
     tier: 'hewn',
-    accent: '#3D4A3F',
-    tint: '#EEF1EC',
-    icon: ['M9 18h6', 'M10 21h4', 'M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.3 1 2.5h6c0-1.2.3-1.8 1-2.5A6 6 0 0 0 12 3z'],
+    glyph: 'strategy',
   },
   {
     slug: 'performance-media',
@@ -84,9 +82,7 @@ export const pillars: Pillar[] = [
     ],
     deliverables: ['Meta + Google campaign management', 'Weekly creative testing', 'Retargeting program', 'Live performance dashboard'],
     tier: 'wrought',
-    accent: '#B5621C',
-    tint: '#F7F0EB',
-    icon: ['M3 17l6-6 4 4 8-8', 'M21 7v5h-5'],
+    glyph: 'media',
   },
   {
     slug: 'creative-production',
@@ -111,9 +107,7 @@ export const pillars: Pillar[] = [
     ],
     deliverables: ['Ad creative matrix', 'AI video, static + motion', 'Landing page variants', 'Winner library'],
     tier: 'wrought',
-    accent: '#8B5CF6',
-    tint: '#F3EBFF',
-    icon: ['M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4L12 3z', 'M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z'],
+    glyph: 'creative',
   },
   {
     slug: 'seo-aeo',
@@ -138,9 +132,7 @@ export const pillars: Pillar[] = [
     ],
     deliverables: ['Technical + on-page SEO', 'Cornerstone content cluster', 'AI citation tracking', 'Google Business Profile'],
     tier: 'hewn',
-    accent: '#3D7FA4',
-    tint: '#EBF3F7',
-    icon: ['M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z', 'M21 21l-4.3-4.3'],
+    glyph: 'seo',
   },
   {
     slug: 'creators',
@@ -165,9 +157,7 @@ export const pillars: Pillar[] = [
     ],
     deliverables: ['Creator + UGC program', 'Personalized creator pages', 'Review generation system', 'Referral program'],
     tier: 'forged',
-    accent: '#A43D3D',
-    tint: '#F7EBEB',
-    icon: ['M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z', 'M19 10v2a7 7 0 0 1-14 0v-2', 'M12 19v3'],
+    glyph: 'creators',
   },
   {
     slug: 'lifecycle',
@@ -192,9 +182,7 @@ export const pillars: Pillar[] = [
     ],
     deliverables: ['Email + SMS automation', 'CRM setup & pipeline', 'Onboarding + win-back flows', 'Booking & follow-up systems'],
     tier: 'wrought',
-    accent: '#6BAD3D',
-    tint: '#F0F7EB',
-    icon: ['M17 2l4 4-4 4', 'M3 11v-1a4 4 0 0 1 4-4h14', 'M7 22l-4-4 4-4', 'M21 13v1a4 4 0 0 1-4 4H3'],
+    glyph: 'lifecycle',
   },
   {
     slug: 'data-attribution',
@@ -219,9 +207,7 @@ export const pillars: Pillar[] = [
     ],
     deliverables: ['Tracking + server-side events', 'Live growth dashboard', 'Strategy verdicts', 'Cohort reporting'],
     tier: 'wrought',
-    accent: '#44514D',
-    tint: '#ECEFEE',
-    icon: ['M3 3v18h18', 'M7 15l3-3 3 3 5-6'],
+    glyph: 'data',
   },
   {
     slug: 'social',
@@ -246,9 +232,7 @@ export const pillars: Pillar[] = [
     ],
     deliverables: ['Content pillars + calendar', 'Monthly batch production', 'Community management', 'Video repurposing'],
     tier: 'hewn',
-    accent: '#7A4A9A',
-    tint: '#F3EBF7',
-    icon: ['M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.9-.9L3 21l1.9-5.1A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5z'],
+    glyph: 'social',
   },
   {
     slug: 'brand',
@@ -273,9 +257,7 @@ export const pillars: Pillar[] = [
     ],
     deliverables: ['Positioning + messaging', 'Logo + visual identity', 'Brand style guide', 'Proof library'],
     tier: 'hewn',
-    accent: '#0D0D0D',
-    tint: '#EDEAE4',
-    icon: ['M12 3L3 8l9 5 9-5-9-5z', 'M3 13l9 5 9-5', 'M3 18l9 5 9-5'],
+    glyph: 'brand',
   },
 ]
 
@@ -291,25 +273,25 @@ export const funnel = [
     stage: 'Top · Cold', name: 'Awareness', goal: 'Stop the scroll, earn cheap attention.',
     creative: ['Raw UGC hooks', 'Founder / expert', 'Problem-aware', 'Myth-bust'],
     landsOn: 'Educational article or advertorial', benchmark: 'CTR 1–3% · lowest CPM wins',
-    bg: '#3D4A3F', fg: '#ffffff',
+    bg: '#2A4A32', fg: '#F4F2EC',
   },
   {
     stage: 'Middle · Warm', name: 'Consideration', goal: 'Build trust, qualify real intent.',
     creative: ['UGC testimonial', 'Before / after', 'Expert read', 'Comparison'],
     landsOn: 'Quiz or interactive tool', benchmark: 'Quiz completion 40–60%',
-    bg: '#8B5CF6', fg: '#ffffff',
+    bg: '#1E3826', fg: '#F4F2EC',
   },
   {
     stage: 'Bottom · Hot', name: 'Conversion', goal: 'Turn intent into a customer.',
     creative: ['Offer / guarantee', 'Social proof', 'Retargeting', 'Results page'],
     landsOn: 'Tailored results page → checkout or booking', benchmark: 'Quiz funnel 2–3× a static page',
-    bg: '#0D0D0D', fg: '#ffffff',
+    bg: '#0D0D0D', fg: '#F4F2EC',
   },
   {
     stage: 'Post-purchase', name: 'Retention', goal: 'Repeat, referrals, reviews.',
     creative: ['Lifecycle email + SMS', 'Win-back', 'Customer stories', 'Referral'],
     landsOn: 'CRM flows and customer hub', benchmark: 'Retention worth 3–5× equal CAC cuts',
-    bg: '#6BAD3D', fg: '#0D0D0D',
+    bg: '#D6F28B', fg: '#1E3826',
   },
 ]
 

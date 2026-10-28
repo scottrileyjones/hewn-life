@@ -39,11 +39,11 @@ export const client = {
 
 export const strategies: Strategy[] = [
   { id: 'founder', name: 'Founder-led video', platform: 'Meta', color: '#6BAD3D', spend: 210, cpa: 118 },
-  { id: 'nonbrand', name: 'Non-brand search', platform: 'Google', color: '#3D7FA4', spend: 185, cpa: 172 },
-  { id: 'seasonal', name: 'Seasonal tune-up offer', platform: 'Meta', color: '#B5621C', spend: 120, cpa: 205 },
-  { id: 'ugc', name: 'UGC and customer stories', platform: 'Meta', color: '#8B5CF6', spend: 95, cpa: 104 },
-  { id: 'brand', name: 'Brand search', platform: 'Google', color: '#C4B5FD', spend: 42, cpa: 48 },
-  { id: 'retarget', name: 'Retargeting', platform: 'Meta', color: '#E0DBD2', spend: 38, cpa: 96 },
+  { id: 'nonbrand', name: 'Non-brand search', platform: 'Google', color: '#9DB98A', spend: 185, cpa: 172 },
+  { id: 'seasonal', name: 'Seasonal tune-up offer', platform: 'Meta', color: '#D9893F', spend: 120, cpa: 205 },
+  { id: 'ugc', name: 'UGC and customer stories', platform: 'Meta', color: '#C9CEC6', spend: 95, cpa: 104 },
+  { id: 'brand', name: 'Brand search', platform: 'Google', color: '#5E7A62', spend: 42, cpa: 48 },
+  { id: 'retarget', name: 'Retargeting', platform: 'Meta', color: '#D6F28B', spend: 38, cpa: 96 },
   { id: 'other', name: 'Other', platform: 'Meta', color: '#6B6560', spend: 22, cpa: 480 },
 ]
 
