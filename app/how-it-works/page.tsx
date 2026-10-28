@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import SectionEyebrow from '@/components/SectionEyebrow'
 import CtaBanner from '@/components/CtaBanner'
 import ProcessTimeline from '@/components/ProcessTimeline'
 
@@ -16,6 +15,8 @@ export const metadata: Metadata = {
 import CalButton from '@/components/CalButton'
 import CountUp from '@/components/CountUp'
 import Link from 'next/link'
+import { PageHero, SectionHead, ForestBand, h2Class, btnLight, btnGlass, btnForest } from '@/components/strata/Page'
+import { Check } from '@/components/strata/Glyph'
 
 const hewnAssets = [
   'Brand strategy & positioning',
@@ -27,7 +28,7 @@ const hewnAssets = [
   'Google Business Profile setup',
 ]
 
-const forgedAssets = [
+const wroughtAssets = [
   'Paid media campaigns (Google + Meta)',
   'Sales funnels & landing pages',
   'Marketing automation sequences',
@@ -37,7 +38,7 @@ const forgedAssets = [
   'Retention & re-engagement campaigns',
 ]
 
-const carvedAssets = [
+const forgedAssets = [
   'Review generation system',
   'UGC strategy & campaigns',
   'Referral program with tracking',
@@ -54,229 +55,111 @@ const cadence = [
 ]
 
 export default function HowItWorks() {
+  const tiers = [
+    { name: 'Hewn', tier: 'Plan 01', count: hewnAssets.length, items: hewnAssets, lead: null },
+    { name: 'Wrought', tier: 'Plan 02', count: hewnAssets.length + wroughtAssets.length, items: wroughtAssets, lead: 'Everything in Hewn, plus:' },
+    { name: 'Forged', tier: 'Plan 03', count: hewnAssets.length + wroughtAssets.length + forgedAssets.length, items: forgedAssets, lead: 'Everything in Wrought, plus:' },
+  ]
+
   return (
-    <>
-      {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="pt-20 md:pt-36 pb-12 md:pb-20 px-6 lg:px-12 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="animate-fade-up max-w-2xl">
-            <SectionEyebrow text="How It Works" light />
-            <h1 className="hero-heading fluid-hero text-[#0D0D0D] mb-6 leading-[1.05]">
-              Most agencies sell campaigns.<br />
-              <span className="accent" style={{ color: '#6BAD3D' }}>We build systems.</span>
-            </h1>
-            <p className="font-body text-lg text-[#6B6560] max-w-xl leading-relaxed mb-10">
-              We deploy AI to compress months of work into days — cutting costs without cutting corners. Then we layer in the design taste and market instinct that actually wins.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <CalButton className="w-full sm:w-auto inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
-                Book a Discovery Call
-              </CalButton>
-              <Link href="/pricing" className="w-full sm:w-auto inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200">
-                See Plans & Pricing
-              </Link>
-            </div>
-          </div>
+    <div className="bg-bone text-ink">
+      <PageHero
+        pill="How it works"
+        title={<>Most agencies sell campaigns. <em className="accent text-lime">We build systems.</em></>}
+        lede="We use AI to compress months of work into days, cutting cost without cutting corners. Then we add the design taste and market instinct that actually win."
+        seed={61}
+      >
+        <CalButton className={btnLight}>Book a discovery call</CalButton>
+        <Link href="/pricing" className={btnGlass}>See plans &amp; pricing</Link>
+      </PageHero>
+
+      {/* ── PROCESS ── */}
+      <section className="mx-auto max-w-7xl px-5 py-24">
+        <SectionHead center pill="The process" title="From first call to market leader." lede="Four phases. AI compressing every stage. A system you own at the end." />
+        <ProcessTimeline />
+        <div className="mt-16 flex flex-col justify-center gap-2.5 sm:flex-row">
+          <CalButton className={btnForest}>Book a discovery call</CalButton>
+          <Link href="/pricing" className="inline-flex items-center justify-center rounded-full border border-ink/15 px-6 py-3.5 font-body text-[15px] font-medium transition hover:border-ink/40">See plans &amp; pricing</Link>
         </div>
+        <p className="mt-10 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-ink/50">AI-compressed timelines compared with the traditional agency average · internal benchmarks, 2024–2025</p>
       </section>
 
-      {/* ── Process Timeline ──────────────────────────────────── */}
-      <section className="bg-white pb-28 px-6 lg:px-12 border-b border-black/[0.06]">
-        <div className="max-w-7xl mx-auto">
-
-          {/* Section heading */}
-          <div className="mb-16 pb-10 border-b border-black/[0.08]">
-            <SectionEyebrow text="The Process" light />
-            <h2 className="hero-heading fluid-h2 text-[#0D0D0D] leading-tight mt-3">
-              From first call<br />
-              <span className="accent" style={{ color: '#6BAD3D' }}>to market leader.</span>
-            </h2>
-            <p className="font-body text-base text-[#6B6560] max-w-lg mt-5 leading-relaxed">
-              Four phases. AI compressing every stage. A system you own at the end.
-            </p>
+      {/* ── SPEED ── */}
+      <ForestBand>
+        <div className="mb-10 grid items-end gap-8 lg:grid-cols-2">
+          <div>
+            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-mist/70">AI compression</span>
+            <h2 className={`${h2Class} mt-3.5 text-[clamp(30px,3.4vw,46px)]`}>What used to take weeks takes hours.</h2>
           </div>
-
-          <ProcessTimeline />
-
-          {/* CTA buttons */}
-          <div className="mt-16 flex flex-col sm:flex-row justify-center gap-3">
-            <CalButton className="inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
-              Book a Discovery Call
-            </CalButton>
-            <Link href="/pricing" className="inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200">
-              See Plans & Pricing
-            </Link>
-          </div>
-
-          {/* Footnote annotation */}
-          <div className="mt-14 pt-6 border-t border-black/[0.06] flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-8">
-            <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-black/20">* AI-compressed timeline vs. traditional agency average</p>
-            <div className="hidden md:block flex-1 h-[0.5px] bg-black/[0.06]" />
-            <p className="font-mono text-[9px] text-black/20">Source: internal benchmarks, 2024–2025</p>
-          </div>
+          <p className="max-w-[32em] font-body text-mist/75 lg:justify-self-end">AI doesn&apos;t replace the strategy. It removes the delay. Every hour saved on execution goes back into the craft and judgment that move the numbers.</p>
         </div>
-      </section>
-
-      {/* ── Speed Table ───────────────────────────────────────── */}
-      <section className="bg-[#0D0D0D] py-24 md:py-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-
-          <div className="flex items-center gap-4 mb-14 pb-6 border-b border-white/[0.08]">
-            <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/20">Fig. 2</span>
-            <div className="flex-1 h-[0.5px] bg-white/10" />
-            <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/20">AI Compression — Before vs. Now</span>
-            <div className="w-8 h-[0.5px] bg-white/10" />
+        <div className="overflow-hidden rounded-[22px] border border-mist/[0.1]">
+          <div className="grid grid-cols-[1fr_110px_120px] bg-forest-2 px-5 py-3.5 font-mono text-[10px] uppercase tracking-[0.16em] text-mist/60 sm:grid-cols-[1fr_160px_160px] sm:px-8">
+            <span>Task</span><span>Traditional</span><span className="text-lime">With AI</span>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-16 mb-14 items-end">
-            <div>
-              <h2 className="hero-heading fluid-h2 text-white leading-tight">
-                What used to take<br />
-                <span className="accent" style={{ color: '#6BAD3D' }}>weeks takes hours.</span>
-              </h2>
+          {[
+            ['Deep market and competitor analysis', 'weeks', 'hours'],
+            ['Ad creative variations at scale', 'days', 'minutes'],
+            ['Campaign setup and launch', 'weeks', '48 hours'],
+            ['Performance reporting', 'monthly', 'real-time'],
+            ['Trend and competitor monitoring', 'quarterly', 'continuous'],
+            ['Ad optimization', 'manual, periodic', 'always on'],
+          ].map(([task, before, after]) => (
+            <div key={task} className="grid grid-cols-[1fr_110px_120px] items-center border-t border-mist/[0.08] px-5 py-4 sm:grid-cols-[1fr_160px_160px] sm:px-8">
+              <span className="pr-4 font-body text-sm text-mist/85">{task}</span>
+              <span className="font-mono text-[11px] text-mist/45 line-through">{before}</span>
+              <span className="font-mono text-[11px] text-lime">{after}</span>
             </div>
-            <p className="font-body text-base text-white/50 leading-relaxed max-w-md self-end">
-              AI doesn&apos;t replace the strategy — it eliminates the delay. Every hour we save on execution is redirected into the craft and judgment that actually moves the needle.
-            </p>
-          </div>
+          ))}
+        </div>
+      </ForestBand>
 
-          <div className="border border-white/[0.08] divide-y divide-white/[0.06]">
-            {/* Header */}
-            <div className="grid grid-cols-[1fr_130px_160px] px-6 md:px-10 py-4 bg-white/[0.03]">
-              <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-white/20">Task</span>
-              <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-white/20">Traditional</span>
-              <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#6BAD3D]/70">With AI</span>
-            </div>
-            {[
-              ['Deep market & competitor analysis', 'weeks',            'hours'],
-              ['Ad creative variations at scale',   'days',             'minutes'],
-              ['Campaign setup & launch',           'weeks',            '48 hours'],
-              ['Performance reporting',             'monthly',          'real-time'],
-              ['Trend & competitor monitoring',     'quarterly review', 'continuous'],
-              ['Ad model optimization',             'manual, periodic', 'always on'],
-            ].map(([task, before, after]) => (
-              <div key={task} className="grid grid-cols-[1fr_130px_160px] px-6 md:px-10 py-5 items-center hover:bg-white/[0.02] transition-colors">
-                <span className="font-body text-sm text-white/60 pr-4">{task}</span>
-                <span className="font-mono text-[11px] text-white/20 line-through">{before}</span>
-                <span className="font-mono text-[11px] text-[#6BAD3D]">{after}</span>
+      {/* ── ASSETS BY PLAN ── */}
+      <section className="mx-auto max-w-7xl px-5 py-24">
+        <SectionHead pill="What you own" title="Assets you own. Systems that compound." lede="No proprietary tools. No lock-in. Every deliverable is yours from day one." />
+        <div className="grid gap-3 md:grid-cols-3">
+          {tiers.map((t, i) => {
+            const feat = i === 1
+            return (
+              <div key={t.name} className={`rounded-[22px] p-7 ${feat ? 'bg-forest text-mist' : 'border border-ink/[0.08] bg-white'}`}>
+                <p className={`font-mono text-[10px] uppercase tracking-[0.18em] ${feat ? 'text-mist/60' : 'text-ink/55'}`}>{t.name} · {t.tier}</p>
+                <p className="mt-3 font-display text-6xl font-medium leading-none tracking-[-0.04em]"><CountUp value={String(t.count)} /></p>
+                <p className={`mt-1 font-body text-sm ${feat ? 'text-lime' : 'text-forest'}`}>deliverables built and owned</p>
+                {t.lead && <p className={`mt-5 font-body text-xs ${feat ? 'text-mist/60' : 'text-ink/55'}`}>{t.lead}</p>}
+                <ul className="mt-4 space-y-2.5">
+                  {t.items.map(a => (
+                    <li key={a} className="grid grid-cols-[16px_1fr] items-start gap-2.5 font-body text-sm">
+                      <Check className="mt-[3px] h-4 w-4" />
+                      <span className={feat ? 'text-mist/85' : 'text-ink/75'}>{a}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            ))}
-          </div>
+            )
+          })}
         </div>
+        <div className="mt-6 text-right"><Link href="/pricing" className="font-body text-sm font-medium text-forest underline underline-offset-4">See pricing for each plan →</Link></div>
       </section>
 
-      {/* ── What You Get ─────────────────────────────────────── */}
-      <section className="bg-[#F9F7F3] py-24 md:py-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-
-          <div className="flex items-center gap-4 mb-14 pb-6 border-b border-black/[0.08]">
-            <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-black/25">Fig. 3</span>
-            <div className="flex-1 h-[0.5px] bg-black/10" />
-            <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-black/25">Assets You Own — By Tier</span>
-            <div className="w-8 h-[0.5px] bg-black/10" />
-          </div>
-
-          <div className="mb-12">
-            <h2 className="hero-heading fluid-h2 text-[#0D0D0D] leading-tight mb-4">
-              Assets you own.<br />
-              <span className="accent" style={{ color: '#6BAD3D' }}>Systems that compound.</span>
-            </h2>
-            <p className="font-body text-sm text-[#6B6560] max-w-md leading-relaxed">
-              No proprietary tools. No lock-in. Every deliverable is yours from day one.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/[0.08]">
-            <div className="bg-[#F9F7F3] p-10">
-              <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-black/30 mb-3">Hewn — Tier 01</p>
-              <p className="font-display fluid-stat leading-none text-[#0D0D0D] mb-1"><CountUp value={String(hewnAssets.length)} /></p>
-              <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#6BAD3D] mb-8">deliverables built & owned</p>
-              <ul className="space-y-3">
-                {hewnAssets.map(a => (
-                  <li key={a} className="grid grid-cols-[12px_1fr] gap-2 items-start">
-                    <span className="font-mono text-[9px] text-[#6BAD3D] mt-[4px]">—</span>
-                    <span className="font-body text-sm text-[#6B6560] leading-snug">{a}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="bg-[#0D0D0D] p-10">
-              <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/25 mb-3">Forged — Tier 02</p>
-              <p className="font-display fluid-stat leading-none text-white mb-1"><CountUp value={String(hewnAssets.length + forgedAssets.length)} /></p>
-              <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#6BAD3D] mb-3">deliverables built & owned</p>
-              <p className="font-mono text-[9px] text-white/20 mb-6">Everything in Hewn, plus:</p>
-              <ul className="space-y-3">
-                {forgedAssets.map(a => (
-                  <li key={a} className="grid grid-cols-[12px_1fr] gap-2 items-start">
-                    <span className="font-mono text-[9px] text-[#6BAD3D] mt-[4px]">—</span>
-                    <span className="font-body text-sm text-white/60 leading-snug">{a}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="bg-[#F9F7F3] p-10">
-              <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-black/30 mb-3">Carved — Tier 03</p>
-              <p className="font-display fluid-stat leading-none text-[#0D0D0D] mb-1"><CountUp value={String(hewnAssets.length + forgedAssets.length + carvedAssets.length)} /></p>
-              <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#6BAD3D] mb-3">deliverables built & owned</p>
-              <p className="font-mono text-[9px] text-black/25 mb-6">Everything in Forged, plus:</p>
-              <ul className="space-y-3">
-                {carvedAssets.map(a => (
-                  <li key={a} className="grid grid-cols-[12px_1fr] gap-2 items-start">
-                    <span className="font-mono text-[9px] text-[#6BAD3D] mt-[4px]">—</span>
-                    <span className="font-body text-sm text-[#6B6560] leading-snug">{a}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <div className="mt-8 flex justify-end">
-            <Link href="/pricing" className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[#6BAD3D] hover:opacity-70 transition-opacity">
-              See pricing for each tier <span>→</span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Communication Cadence ─────────────────────────────── */}
-      <section className="bg-white py-24 md:py-32 border-t border-black/[0.06]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-
-          <div className="flex items-center gap-4 mb-14 pb-6 border-b border-black/[0.08]">
-            <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-black/25">Fig. 4</span>
-            <div className="flex-1 h-[0.5px] bg-black/10" />
-            <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-black/25">Communication Cadence</span>
-            <div className="w-8 h-[0.5px] bg-black/10" />
-          </div>
-
-          <div className="mb-12">
-            <h2 className="hero-heading fluid-h2 text-[#0D0D0D] leading-tight">
-              You will always know<br />
-              <span className="accent" style={{ color: '#6BAD3D' }}>exactly what&apos;s happening.</span>
-            </h2>
-          </div>
-
-          <div className="flex flex-col divide-y divide-black/[0.07]">
-            {cadence.map((c, i) => (
-              <div key={i} className="grid grid-cols-1 md:grid-cols-[100px_200px_160px_1fr] gap-4 md:gap-12 py-8 items-center">
-                <div>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-black/30 mb-2">{c.freq}</p>
-                  <div className="flex gap-1.5">
-                    {Array.from({ length: 4 }).map((_, j) => (
-                      <div key={j} className={`w-2 h-2 rounded-full ${j < c.dots ? 'bg-[#6BAD3D]' : 'bg-black/8'}`} />
-                    ))}
-                  </div>
-                </div>
-                <p className="font-display font-medium text-[28px] text-[#0D0D0D] leading-none">{c.title}</p>
-                <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-black/30">{c.detail}</p>
-                <p className="font-body text-sm text-[#6B6560] leading-relaxed">{c.desc}</p>
+      {/* ── CADENCE ── */}
+      <section className="mx-auto max-w-7xl px-5 pb-12">
+        <SectionHead pill="Communication" title="You will always know exactly what's happening." />
+        <div className="grid gap-3 md:grid-cols-3">
+          {cadence.map(c => (
+            <div key={c.title} className="flex flex-col rounded-[22px] border border-ink/[0.08] bg-white p-7">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/55">{c.freq}</span>
+                <span className="flex gap-1">{Array.from({ length: 4 }).map((_, j) => <span key={j} className={`h-3.5 w-[3px] ${j < c.dots ? 'bg-lichen' : 'bg-ink/10'}`} />)}</span>
               </div>
-            ))}
-          </div>
+              <p className="mt-6 font-display text-[26px] font-medium tracking-[-0.03em]">{c.title}</p>
+              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-forest">{c.detail}</p>
+              <p className="mt-4 font-body text-sm text-ink/70">{c.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       <CtaBanner />
-    </>
+    </div>
   )
 }

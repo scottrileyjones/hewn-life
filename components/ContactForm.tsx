@@ -12,8 +12,8 @@ export default function ContactForm() {
   if (submitted) {
     return (
       <div className="text-center py-12">
-        <h3 className="font-display text-3xl text-ink mb-4">Thank you.</h3>
-        <p className="font-body text-slate">We&apos;ll review your submission and be in touch within one business day.</p>
+        <h3 className="font-display font-medium tracking-[-0.03em] text-3xl text-ink mb-4">Thank you.</h3>
+        <p className="font-body text-ink/70">We&apos;ll review your submission and be in touch within one business day.</p>
       </div>
     )
   }
@@ -26,7 +26,7 @@ export default function ContactForm() {
           <input
             type="text"
             required
-            className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all"
+            className="w-full border border-ink/[0.12] rounded-[14px] px-4 py-3 font-body text-sm text-ink bg-white focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest transition-all"
             placeholder="Jane Smith"
           />
         </div>
@@ -35,7 +35,7 @@ export default function ContactForm() {
           <input
             type="text"
             required
-            className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all"
+            className="w-full border border-ink/[0.12] rounded-[14px] px-4 py-3 font-body text-sm text-ink bg-white focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest transition-all"
             placeholder="Acme Roofing Co."
           />
         </div>
@@ -46,7 +46,7 @@ export default function ContactForm() {
           <input
             type="email"
             required
-            className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all"
+            className="w-full border border-ink/[0.12] rounded-[14px] px-4 py-3 font-body text-sm text-ink bg-white focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest transition-all"
             placeholder="jane@example.com"
           />
         </div>
@@ -54,7 +54,7 @@ export default function ContactForm() {
           <label className="block font-body text-sm text-ink mb-2">Phone Number</label>
           <input
             type="tel"
-            className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all"
+            className="w-full border border-ink/[0.12] rounded-[14px] px-4 py-3 font-body text-sm text-ink bg-white focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest transition-all"
             placeholder="(555) 000-0000"
           />
         </div>
@@ -62,7 +62,7 @@ export default function ContactForm() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block font-body text-sm text-ink mb-2">Monthly Revenue (approx.)</label>
-          <select className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all">
+          <select className="w-full border border-ink/[0.12] rounded-[14px] px-4 py-3 font-body text-sm text-ink bg-white focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest transition-all">
             <option value="">Select range</option>
             <option>Under $500K</option>
             <option>$500K–$1M</option>
@@ -73,11 +73,11 @@ export default function ContactForm() {
         </div>
         <div>
           <label className="block font-body text-sm text-ink mb-2">Which package interests you?</label>
-          <select className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all">
+          <select className="w-full border border-ink/[0.12] rounded-[14px] px-4 py-3 font-body text-sm text-ink bg-white focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest transition-all">
             <option value="">Select package</option>
             <option>Hewn — $2,500/mo</option>
-            <option>Forged — $5,000/mo</option>
-            <option>Carved — $9,500/mo</option>
+            <option>Wrought — $5,000/mo</option>
+            <option>Forged — $9,500/mo</option>
             <option>Not sure yet</option>
             <option>À la carte project</option>
           </select>
@@ -88,7 +88,7 @@ export default function ContactForm() {
         <textarea
           required
           rows={4}
-          className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all resize-none"
+          className="w-full border border-ink/[0.12] rounded-[14px] px-4 py-3 font-body text-sm text-ink bg-white focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest transition-all resize-none"
           placeholder="Tell us what you're struggling with..."
         />
       </div>
@@ -96,17 +96,17 @@ export default function ContactForm() {
         <label className="block font-body text-sm text-ink mb-2">How did you hear about us?</label>
         <input
           type="text"
-          className="w-full border border-black/10 rounded-xl px-4 py-3 font-body text-sm text-ink bg-white focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember transition-all"
+          className="w-full border border-ink/[0.12] rounded-[14px] px-4 py-3 font-body text-sm text-ink bg-white focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest transition-all"
           placeholder="Optional"
         />
       </div>
       <button
         type="submit"
-        className="w-full bg-ember text-iron font-body font-medium py-4 rounded-full hover:brightness-110 hover:scale-[1.01] transition-all duration-300"
+        className="w-full bg-forest text-mist font-body font-medium py-4 rounded-full hover:bg-forest-2 transition-all duration-300"
       >
-        Book My Discovery Call
+        Send and book my call
       </button>
-      <p className="font-body font-light text-[12px] text-slate text-center">
+      <p className="font-body font-light text-[12px] text-ink/70 text-center">
         We respect your privacy. Your information is never shared or sold.
       </p>
     </form>
