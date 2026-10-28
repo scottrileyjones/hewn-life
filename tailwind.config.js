@@ -26,6 +26,14 @@ module.exports = {
         marble:  '#EDEAE4',
         ash:     '#9A9590',
         ink:     '#0D0D0D',
+        // Strata (v3): forest bands, lime highlights, dawn light
+        forest:  '#1E3826',
+        'forest-2': '#2A4A32',
+        lime:    '#D6F28B',
+        dawn:    '#D9893F',
+        paper:   '#FFFFFF',
+        sand:    '#E9E5DB',
+        mist:    '#F4F2EC',
         // Purple accent
         amethyst:'#8B5CF6',
         lilac:   '#E9D5FF',

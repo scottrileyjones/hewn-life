@@ -2,8 +2,10 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import CalButton from '@/components/CalButton'
-import Pill, { PillarIcon } from '@/components/Pill'
+import Terrain from '@/components/strata/Terrain'
+import { Glyph, Pill, Check } from '@/components/strata/Glyph'
 import { pillars, getPillar, tierNames } from '@/lib/services'
+import { colors } from '@/lib/strata'
 
 export function generateStaticParams() {
   return pillars.map(p => ({ slug: p.slug }))
@@ -19,6 +21,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   }
 }
 
+const phaseColor = [colors.forest2, colors.lichen, colors.lime]
+
 export default function PillarPage({ params }: { params: { slug: string } }) {
   const p = getPillar(params.slug)
   if (!p) notFound()
@@ -28,98 +32,96 @@ export default function PillarPage({ params }: { params: { slug: string } }) {
   const next = pillars[(idx + 1) % pillars.length]
 
   return (
-    <div className="bg-bone">
+    <div className="bg-bone pb-24 pt-20 text-ink">
       {/* ── HEADER ── */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-12 pt-28 lg:pt-36 pb-12">
-        <Link href="/services" className="font-body text-sm text-slate hover:text-iron transition-colors">← All services</Link>
-        <div className="flex items-start gap-5 mt-8">
-          <span className="hidden sm:flex w-16 h-16 rounded-2xl items-center justify-center flex-shrink-0 bg-iron">
-            <PillarIcon paths={p.icon} color="#6BAD3D" className="w-7 h-7" />
+      <section className="mx-auto max-w-7xl px-5 pb-12 pt-10 lg:pt-14">
+        <Link href="/services" className="font-body text-sm text-ink/60 transition-colors hover:text-ink">← All services</Link>
+        <div className="mt-8 flex items-start gap-5">
+          <span className="hidden h-16 w-16 flex-shrink-0 items-center justify-center rounded-[18px] bg-forest sm:flex">
+            <Glyph name={p.glyph} fg={colors.mist} accent={colors.lichen} size={38} />
           </span>
           <div>
             <Pill>Playbook {p.num} · Modeled on {p.modeledOn}</Pill>
-            <h1 className="hero-heading fluid-hero text-iron mt-4">{p.name}</h1>
-            <p className="accent text-xl md:text-2xl text-slate mt-3">{p.deck}</p>
+            <h1 className="mt-4 font-display text-[clamp(40px,5.4vw,76px)] font-medium leading-none tracking-[-0.045em]">{p.name}</h1>
+            <p className="accent mt-3 text-xl text-ink/70 md:text-2xl">{p.deck}</p>
           </div>
         </div>
       </section>
 
       {/* ── PLAYBOOK ── */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-12 pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-6">
-          {/* Left column */}
-          <div className="space-y-4">
-            <div className="rounded-3xl bg-iron text-white p-7">
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ember">Accountable for</p>
+      <section className="mx-auto max-w-7xl px-5 pb-20">
+        <div className="grid gap-3.5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+          <div className="space-y-3.5">
+            <div className="relative isolate overflow-hidden rounded-[22px] p-7 text-mist">
+              <Terrain scene="amber" seed={60 + idx} className="-z-20" />
+              <div className="absolute inset-0 -z-10 bg-[rgba(20,16,10,.55)]" />
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-lime">Accountable for</p>
               <div className="mt-4 space-y-3">
                 {p.accountableFor.map(k => (
-                  <div key={k} className="flex items-center justify-between border-b border-white/10 pb-3 last:border-0 last:pb-0">
-                    <span className="font-display font-semibold text-lg">{k}</span>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/40">Live</span>
+                  <div key={k} className="flex items-center justify-between border-b border-mist/15 pb-3 last:border-0 last:pb-0">
+                    <span className="font-display text-lg font-medium">{k}</span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-mist/60">Live</span>
                   </div>
                 ))}
               </div>
-              <p className="font-body text-xs text-white/45 mt-5">Tracked daily in your growth dashboard.</p>
+              <p className="mt-5 font-body text-xs text-mist/70">Tracked daily in your growth dashboard.</p>
             </div>
 
-            <div className="rounded-3xl bg-white border border-black/[0.06] p-7">
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ash mb-5">Across the rollout</p>
+            <div className="rounded-[22px] border border-ink/[0.08] bg-white p-7">
+              <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.2em] text-ink/55">Across the rollout</p>
               <ol className="space-y-5">
                 {p.rollout.map((r, i) => (
                   <li key={r.phase} className="flex gap-4">
-                    <span className="w-2.5 h-2.5 rounded-full mt-1.5 flex-shrink-0" style={{ background: ['#3D4A3F', '#8B5CF6', '#6BAD3D'][i] }} />
+                    <span className="mt-1 h-4 w-[5px] flex-shrink-0" style={{ background: phaseColor[i] }} />
                     <div>
-                      <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron font-semibold">{r.phase}</p>
-                      <p className="font-body text-sm text-slate mt-1">{r.body}</p>
+                      <p className="font-mono text-[11px] font-medium uppercase tracking-[0.16em]">{r.phase}</p>
+                      <p className="mt-1 font-body text-sm text-ink/70">{r.body}</p>
                     </div>
                   </li>
                 ))}
               </ol>
             </div>
 
-            <div className="rounded-3xl p-7" style={{ background: p.tint }}>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-iron/50 mb-4">What you get</p>
+            <div className="rounded-[22px] bg-forest p-7 text-mist">
+              <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.2em] text-mist/65">What you get</p>
               <ul className="space-y-2.5">
                 {p.deliverables.map(d => (
-                  <li key={d} className="flex items-center gap-3 font-body text-sm text-iron">
-                    <svg className="w-4 h-4 flex-shrink-0 text-ember" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                  <li key={d} className="flex items-center gap-3 font-body text-sm">
+                    <svg viewBox="0 0 100 100" className="h-4 w-4 flex-shrink-0" aria-hidden="true"><rect x="14" y="30" width="16" height="56" fill={colors.mist} /><polygon points="30,62 86,34 86,48 30,76" fill={colors.lime} /></svg>
                     {d}
                   </li>
                 ))}
               </ul>
-              <p className="font-body text-xs text-iron/60 mt-5">Included from the <Link href="/pricing" className="font-semibold text-iron underline underline-offset-2">{tierNames[p.tier]}</Link> plan.</p>
+              <p className="mt-5 font-body text-xs text-mist/70">Included from the <Link href="/pricing" className="font-medium text-lime underline underline-offset-2">{tierNames[p.tier]}</Link> plan.</p>
             </div>
           </div>
 
-          {/* Right column — the plays */}
-          <div className="rounded-3xl bg-white border border-black/[0.06] p-7 md:p-10">
-            <div className="flex items-center gap-3 mb-8">
-              <span className="font-mono text-[10px] uppercase tracking-[0.18em] font-semibold bg-ember/20 text-moss rounded-full px-3 py-1">The plays</span>
-              <span className="accent text-sm text-ash">in order</span>
+          <div className="rounded-[22px] border border-ink/[0.08] bg-white p-7 md:p-10">
+            <div className="mb-8 flex items-center gap-3">
+              <span className="rounded-full bg-lime px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-forest">The plays</span>
+              <span className="accent text-sm text-ink/55">in order</span>
             </div>
             <ol className="relative">
-              <span className="absolute left-[15px] top-2 bottom-2 w-px bg-black/[0.08]" aria-hidden="true" />
+              <span className="absolute bottom-2 left-[15px] top-2 w-px bg-ink/[0.08]" aria-hidden="true" />
               {p.plays.map((play, i) => (
                 <li key={play.title} className="relative flex gap-5 pb-8 last:pb-0">
-                  <span className="relative z-10 w-8 h-8 rounded-full bg-moss text-white font-display font-semibold text-sm flex items-center justify-center flex-shrink-0">{i + 1}</span>
+                  <span className="relative z-10 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-forest font-display text-sm font-medium text-mist">{i + 1}</span>
                   <div className="pt-1">
-                    <h2 className="font-display font-semibold text-lg text-iron">{play.title}</h2>
-                    <p className="font-body text-sm text-slate leading-relaxed mt-1.5">{play.body}</p>
+                    <h2 className="font-display text-lg font-medium">{play.title}</h2>
+                    <p className="mt-1.5 font-body text-sm leading-relaxed text-ink/70">{play.body}</p>
                   </div>
                 </li>
               ))}
             </ol>
 
-            <div className="mt-10 pt-8 border-t border-black/[0.06]">
-              <div className="flex items-center gap-3 mb-5">
-                <span className="font-mono text-[10px] uppercase tracking-[0.18em] font-semibold bg-moss text-white rounded-full px-3 py-1">Keep running</span>
-                <span className="accent text-sm text-ash">every week</span>
+            <div className="mt-10 border-t border-ink/[0.08] pt-8">
+              <div className="mb-5 flex items-center gap-3">
+                <span className="rounded-full bg-forest px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-mist">Keep running</span>
+                <span className="accent text-sm text-ink/55">every week</span>
               </div>
               <ul className="space-y-3">
                 {p.cadence.map(c => (
-                  <li key={c} className="flex gap-3 font-body text-sm text-iron">
-                    <span className="text-ember font-bold leading-5">✱</span>{c}
-                  </li>
+                  <li key={c} className="flex gap-3 font-body text-sm"><Check className="mt-[2px] h-4 w-4 flex-shrink-0" />{c}</li>
                 ))}
               </ul>
             </div>
@@ -128,27 +130,34 @@ export default function PillarPage({ params }: { params: { slug: string } }) {
       </section>
 
       {/* ── PREV / NEXT ── */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-12 pb-12">
-        <div className="grid grid-cols-2 gap-4">
-          {[{ label: 'Previous', p: prev }, { label: 'Next', p: next }].map(({ label, p: q }) => (
-            <Link key={label} href={`/services/${q.slug}`} className={`rounded-3xl bg-white border border-black/[0.06] p-6 hover:border-black/20 transition-colors ${label === 'Next' ? 'text-right' : ''}`}>
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ash">{label === 'Previous' ? '←' : ''} {label} {label === 'Next' ? '→' : ''}</p>
-              <p className="font-display font-semibold text-base md:text-lg text-iron mt-1">{q.name}</p>
+      <section className="mx-auto max-w-7xl px-5 pb-12">
+        <div className="grid grid-cols-2 gap-3">
+          {[{ label: 'Previous', q: prev }, { label: 'Next', q: next }].map(({ label, q }) => (
+            <Link key={label} href={`/services/${q.slug}`} className={`flex items-center gap-4 rounded-[22px] border border-ink/[0.08] bg-white p-5 transition-colors hover:border-ink/25 ${label === 'Next' ? 'flex-row-reverse text-right' : ''}`}>
+              <span className="hidden h-11 w-11 flex-shrink-0 items-center justify-center rounded-[12px] bg-forest sm:flex"><Glyph name={q.glyph} fg={colors.mist} accent={colors.lichen} size={26} /></span>
+              <span>
+                <span className="block font-mono text-[10px] uppercase tracking-[0.18em] text-ink/55">{label === 'Previous' ? '← Previous' : 'Next →'}</span>
+                <span className="mt-1 block font-display text-base font-medium md:text-lg">{q.name}</span>
+              </span>
             </Link>
           ))}
         </div>
       </section>
 
       {/* ── CTA ── */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-12 pb-24">
-        <div className="rounded-[2rem] bg-iron p-10 md:p-14 flex flex-col md:flex-row md:items-center justify-between gap-8">
-          <div>
-            <h2 className="font-display font-bold fluid-h3 text-white">Put this playbook to work.</h2>
-            <p className="font-body text-base text-white/60 mt-3 max-w-lg">We&apos;ll grade this pillar for your business on the discovery call. Free, 30 minutes, no pitch deck.</p>
+      <div className="mx-auto max-w-[1400px] px-5">
+        <section className="relative isolate overflow-hidden rounded-[32px] text-mist">
+          <Terrain scene="ember" seed={70 + idx} className="-z-20" />
+          <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(20,16,10,.65), rgba(20,16,10,.15))' }} />
+          <div className="flex flex-col justify-between gap-8 p-8 md:flex-row md:items-center md:p-14">
+            <div>
+              <h2 className="font-display text-[clamp(30px,3.4vw,46px)] font-medium leading-[1.08] tracking-[-0.03em]">Put this playbook to work.</h2>
+              <p className="mt-3 max-w-lg font-body text-mist/80">We&apos;ll grade this pillar for your business on the discovery call. Free, 30 minutes, no pitch deck.</p>
+            </div>
+            <CalButton className="inline-flex items-center justify-center whitespace-nowrap rounded-full bg-white px-6 py-3.5 font-body text-[15px] font-medium text-ink transition hover:bg-mist">Book a discovery call</CalButton>
           </div>
-          <CalButton className="inline-flex items-center justify-center bg-ember text-iron font-body font-semibold px-7 py-3.5 rounded-full hover:brightness-110 transition whitespace-nowrap">Book a Discovery Call</CalButton>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   )
 }

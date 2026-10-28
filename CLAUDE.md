@@ -35,7 +35,18 @@ git deploy                     # force-pushes to Vercel production branch
 | `slate` | `#44514D` | Dark green-grey |
 | `oat` | `#E0DBD2` | Warm light tone |
 | `stone` | `#EDEAE4` | Section backgrounds |
-| `amethyst` | `#8B5CF6` | Purple accent (rare) |
+| `amethyst` | `#8B5CF6` | Purple accent (legacy pages only; retired in Strata) |
+| `forest` | `#1E3826` | Strata: bands, primary buttons, footer |
+| `forest-2` | `#2A4A32` | Strata: cards on forest |
+| `lime` | `#D6F28B` | Strata: highlight only (chips, one featured card) |
+| `dawn` | `#D9893F` | Strata: warm light, accent italic on dark |
+| `paper` / `sand` / `mist` | `#FFFFFF` / `#E9E5DB` / `#F4F2EC` | Strata: cards / table heads / text on dark |
+
+### Strata graphic language (v3 redesign)
+- No stock photos or stock icons. Imagery is generated terrain (`components/strata/Terrain.tsx`, scenes `amber` `ember` `sage` `valley`) until commissioned or curated photography is graded in.
+- Icons are the custom glyph set cut from the H mark (`lib/strata.ts`, `components/strata/Glyph.tsx`). Pillars reference them by `glyph` key in `lib/services.ts`.
+- Charts are data drawn as land: ridgelines, contours, strata, elevation profiles (`components/strata/Charts.tsx`, `Contour.tsx`).
+- Layout: light Bone pages, rounded 32px containers, forest bands, warm terrain at the open and close.
 
 ### Fonts (Tailwind classes → CSS variable → face)
 | Tailwind class | Variable | Typeface | Notes |

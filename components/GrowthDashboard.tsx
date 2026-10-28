@@ -2,6 +2,7 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import CalButton from '@/components/CalButton'
+import Terrain from '@/components/strata/Terrain'
 import { client, strategies, rows, pillarGrades, topTests, benchmarks, type Platform } from '@/lib/dashboard-sample'
 
 const RANGES = [
@@ -140,16 +141,20 @@ export default function GrowthDashboard() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#111814] text-[#F7F6F3]">
+    <div className="bg-bone pb-24 pt-20">
+    <div className="mx-auto max-w-[1400px] px-5">
+    <div className="overflow-clip rounded-[32px] bg-[#111814] text-mist">
       {/* ── HEADER ── */}
-      <header className="border-b-2 border-ember/70" style={{ background: 'linear-gradient(180deg, #17221B 0%, #111814 100%)' }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-6">
+      <header className="relative isolate border-b-2 border-lime/60">
+        <Terrain scene="amber" seed={9} className="-z-20" />
+        <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(0deg, #111814 0%, rgba(17,24,20,.55) 60%, rgba(17,24,20,.35) 100%)' }} />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-6">
           <div className="flex flex-wrap items-center gap-2 mb-4">
             <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">Growth dashboard · paid, market, plan</span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.16em] rounded-full bg-amethyst/25 text-[#C4B5FD] px-2.5 py-1">Sample data</span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.16em] rounded-full border border-[#C4B07E]/40 text-[#C4B07E] px-2.5 py-1">Sample data</span>
           </div>
           <h1 className="font-display font-semibold text-3xl sm:text-4xl tracking-tight">
-            {client.name.split(' ')[0]} <span className="accent text-ember">Growth Engine</span>
+            {client.name.split(' ')[0]} <span className="accent text-lime">Growth Engine</span>
           </h1>
           <p className="font-body text-xs text-white/45 mt-3">
             {fmtDate(view.days[0])} to {fmtDate(view.days[view.days.length - 1])}, 2026 · {client.account} · Target cost per booked job {usd(client.targetCpa)}
@@ -190,7 +195,7 @@ export default function GrowthDashboard() {
         {/* ── EXEC SUMMARY ── */}
         <section>
           <p className={eyebrow}>Executive summary · {platform === 'All' ? 'Meta and Google' : platform}</p>
-          <h2 className="font-display font-semibold text-2xl mt-2">Every platform, <span className="accent text-copper">every strategy</span></h2>
+          <h2 className="font-display font-semibold text-2xl mt-2">Every platform, <span className="accent text-dawn">every strategy</span></h2>
           <ol className={`${card} mt-4 p-5 space-y-2 font-body text-sm text-white/80 list-decimal list-inside`}>
             <li>{usd(view.spend)} bought <b className="text-white">{view.jobs} booked jobs</b> at {usd(view.cpa)} each, {view.cpa <= client.targetCpa ? 'under' : `${(view.cpa / client.targetCpa).toFixed(1)}× over`} the {usd(client.targetCpa)} target.</li>
             {best && <li><b className="text-white">Scale:</b> {best.name} is the cheapest source of jobs at {usd(best.cpa!)} ({best.jobs} jobs on {usd(best.spend)}).</li>}
@@ -281,7 +286,7 @@ export default function GrowthDashboard() {
           <h3 className="font-display font-semibold text-base">By platform</h3>
           <div className="flex h-2 rounded-full overflow-hidden mt-4 bg-white/[0.06]">
             {view.byPlatform.map(p => (
-              <span key={p.platform} style={{ width: `${(p.spend / view.spend) * 100}%`, background: p.platform === 'Meta' ? '#F7F6F3' : '#6B6560' }} />
+              <span key={p.platform} style={{ width: `${(p.spend / view.spend) * 100}%`, background: p.platform === 'Meta' ? '#D6F28B' : '#5E7A62' }} />
             ))}
           </div>
           <div className="mt-4 overflow-x-auto">
@@ -290,7 +295,7 @@ export default function GrowthDashboard() {
               <tbody>
                 {view.byPlatform.map(p => (
                   <tr key={p.platform} className="border-t border-white/[0.05] text-white/80">
-                    <td className="py-2.5 flex items-center gap-2"><span className="w-2 h-2 rounded-sm" style={{ background: p.platform === 'Meta' ? '#F7F6F3' : '#6B6560' }} />{p.platform}</td>
+                    <td className="py-2.5 flex items-center gap-2"><span className="w-2 h-2 rounded-sm" style={{ background: p.platform === 'Meta' ? '#D6F28B' : '#5E7A62' }} />{p.platform}</td>
                     <td className="py-2.5 text-right">{usd(p.spend)}</td>
                     <td className="py-2.5 text-right">{Math.round((p.spend / view.spend) * 100)}%</td>
                     <td className="py-2.5 text-right">{p.jobs}</td>
@@ -307,7 +312,7 @@ export default function GrowthDashboard() {
         {/* ── GRADE + TESTS ── */}
         <section className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-6">
           <div className={`${card} p-6 relative overflow-hidden`}>
-            <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full" style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.35), transparent 70%)' }} />
+            <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full" style={{ background: 'radial-gradient(circle, rgba(217,137,63,0.35), transparent 70%)' }} />
             <p className={eyebrow}>Nine-pillar grade</p>
             <div className="flex items-end gap-4 mt-4">
               <span className="font-display font-semibold text-7xl leading-none text-ember">B</span>
@@ -323,7 +328,7 @@ export default function GrowthDashboard() {
             <ol className="mt-4 space-y-5">
               {topTests.map((t, i) => (
                 <li key={t.title} className="flex gap-4">
-                  <span className="font-accent italic text-3xl leading-none text-copper w-5">{i + 1}</span>
+                  <span className="font-accent italic text-3xl leading-none text-dawn w-5">{i + 1}</span>
                   <div>
                     <p className="font-body text-sm font-semibold text-white">{t.title}</p>
                     <p className="font-body text-xs text-white/55 mt-1">{t.body} <span className="text-white/35">· {t.priority} priority</span></p>
@@ -337,7 +342,7 @@ export default function GrowthDashboard() {
         {/* ── SCORECARD ── */}
         <section className="pt-6">
           <p className={eyebrow}>The scorecard</p>
-          <h2 className="font-display font-semibold text-2xl mt-2">Run the function by <span className="accent text-copper">these numbers</span></h2>
+          <h2 className="font-display font-semibold text-2xl mt-2">Run the function by <span className="accent text-dawn">these numbers</span></h2>
           <p className="font-body text-xs text-white/45 mt-2 max-w-xl">Live tiles follow the filters above. Grey tiles name the data each one still needs.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
             {[
@@ -367,7 +372,7 @@ export default function GrowthDashboard() {
         {/* ── PILLAR GRADES + REPORT CARD ── */}
         <section className="pt-6">
           <p className={eyebrow}>Nine pillars</p>
-          <h2 className="font-display font-semibold text-2xl mt-2">Where Northline stands, <span className="accent text-copper">pillar by pillar</span></h2>
+          <h2 className="font-display font-semibold text-2xl mt-2">Where Northline stands, <span className="accent text-dawn">pillar by pillar</span></h2>
           <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-2 mt-5">
             {pillarGrades.map(g => {
               const tone = g.score >= 3.3 ? '#6BAD3D' : g.score >= 2.7 ? '#3D7FA4' : g.score >= 2.2 ? '#B5621C' : '#A43D3D'
@@ -395,20 +400,24 @@ export default function GrowthDashboard() {
         </section>
 
         {/* ── CTA ── */}
-        <section className="rounded-3xl p-8 md:p-10 mt-10 flex flex-col md:flex-row md:items-center justify-between gap-6" style={{ background: 'linear-gradient(135deg, #3D4A3F 0%, #17221B 100%)' }}>
+        <section className="relative isolate overflow-hidden rounded-3xl p-8 md:p-10 mt-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <Terrain scene="ember" seed={19} className="-z-20" />
+          <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(20,16,10,.7), rgba(20,16,10,.3))' }} />
           <div>
             <p className={eyebrow}>Your numbers here</p>
             <h2 className="font-display font-semibold text-2xl mt-2">Every Hewn client gets this dashboard, live.</h2>
             <p className="font-body text-sm text-white/60 mt-2 max-w-lg">Meta, Google and your CRM in one view, refreshed daily, graded against best in class, with the next three tests already written.</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
-            <CalButton className="inline-flex items-center justify-center bg-ember text-iron font-body font-semibold px-6 py-3 rounded-full hover:brightness-110 transition whitespace-nowrap">Book a Discovery Call</CalButton>
+            <CalButton className="inline-flex items-center justify-center bg-white text-ink font-body font-medium px-6 py-3 rounded-full hover:bg-mist transition whitespace-nowrap">Book a Discovery Call</CalButton>
             <Link href="/services" className="inline-flex items-center justify-center border border-white/20 text-white font-body font-medium px-6 py-3 rounded-full hover:border-white/50 transition whitespace-nowrap">See the services</Link>
           </div>
         </section>
 
         <p className="font-body text-[10px] text-white/30 pt-4">Sample data for a fictional client, generated for demonstration. Live client dashboards are built from the Meta Marketing API, Google Ads API and the client&apos;s CRM.</p>
       </main>
+    </div>
+    </div>
     </div>
   )
 }
