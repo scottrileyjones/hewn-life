@@ -2,95 +2,75 @@ import CalButton from '@/components/CalButton'
 import Link from 'next/link'
 import Image from 'next/image'
 import CountUp from '@/components/CountUp'
+import Pill, { PillarIcon } from '@/components/Pill'
+import PricingTeaser from '@/components/PricingTeaser'
+import HomeFaq from '@/components/HomeFaq'
+import { pillars, funnel } from '@/lib/services'
 
+const CDN = 'https://res.cloudinary.com/dsx2wcqte/image/upload'
 const PHOTOS = {
-  hero:       'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_1100,c_fill/v1779578220/main-sample.png',
-  strategy:   'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_700,c_fill/v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg',
-  testimonial:'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_700,c_fill/v1780097464/soundtrap-c_S99FlDqSw-unsplash_mtpxgd.jpg',
-  cta:        'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_900,c_fill/v1780097464/collabstr-bM2nm41YaeA-unsplash_gspy6l.jpg',
+  hero:        `${CDN}/f_auto,q_auto,w_2400,h_1500,c_fill,g_auto/v1779578220/main-sample.png`,
+  heroMobile:  `${CDN}/f_auto,q_auto,w_900,h_1300,c_fill,g_auto/v1779578220/main-sample.png`,
+  strategy:    `${CDN}/f_auto,q_auto,w_1600,h_1000,c_fill/v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg`,
+  testimonial: `${CDN}/f_auto,q_auto,w_900,h_900,c_fill/v1780097464/soundtrap-c_S99FlDqSw-unsplash_mtpxgd.jpg`,
+  cta:         `${CDN}/f_auto,q_auto,w_2400,h_1200,c_fill/v1780097464/collabstr-bM2nm41YaeA-unsplash_gspy6l.jpg`,
 }
 
-const pillars = [
-  {
-    num: '01', name: 'Brand Foundation', desc: 'Identity, voice, and positioning — the strategic bedrock everything else is built on.', bg: '#F0F7EB', accent: '#6BAD3D',
-    icon: <><path d="M12 3L3 8l9 5 9-5-9-5z" /><path d="M3 13l9 5 9-5" /><path d="M3 18l9 5 9-5" /></>,
-  },
-  {
-    num: '02', name: 'Digital Presence', desc: 'Website, SEO, and maps — your complete digital footprint, owned and optimized.', bg: '#EBF3F7', accent: '#3D7FA4',
-    icon: <><circle cx="12" cy="12" r="9" /><path d="M3 12h18" /><path d="M12 3c2.5 2.5 3.5 6 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-6-3.5-9s1-6.5 3.5-9z" /></>,
-  },
-  {
-    num: '03', name: 'Lead & Revenue Engine', desc: 'Paid media, funnels, and automation — systems that turn attention into revenue.', bg: '#F7F0EB', accent: '#B5621C',
-    icon: <><path d="M3 17l6-6 4 4 8-8" /><path d="M21 7v5h-5" /></>,
-  },
-  {
-    num: '04', name: 'Customer Experience', desc: 'Scheduling, follow-up, and retention — the systems that turn buyers into loyal customers.', bg: '#F3EBF7', accent: '#7A4A9A',
-    icon: <><path d="M21 11.5a8.38 8.38 0 0 1-9 8.4 9 9 0 0 1-3.9-.9L3 21l1.9-5.1A8.38 8.38 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5z" /><path d="M12 14s-2-1.3-2-2.6A1.4 1.4 0 0 1 12 10a1.4 1.4 0 0 1 2 1.4C14 12.7 12 14 12 14z" /></>,
-  },
-  {
-    num: '05', name: 'Reputation & Social Proof', desc: 'Reviews, UGC, and referrals — turning your best customers into your best marketing.', bg: '#F7EBEB', accent: '#A43D3D',
-    icon: <path d="M12 3l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 18.2 6.2 21.8l1.1-6.4L2.6 9.8l6.5-.9L12 3z" />,
-  },
-  {
-    num: '06', name: 'Business Advisory', desc: 'Strategy, KPIs, and growth planning — the fractional CMO layer that ties it all together.', bg: '#EBEFF7', accent: '#3D4FA4',
-    icon: <><path d="M9 18h6" /><path d="M10 21h4" /><path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.3 1 2.5h6c0-1.2.3-1.8 1-2.5A6 6 0 0 0 12 3z" /></>,
-  },
+const LOGOS = [
+  { src: `${CDN}/v1780109018/Claude_AI_logo.svg_geitmu.png`, alt: 'Claude' },
+  { src: `${CDN}/v1780109018/Perplexity_AI_logo.svg_te7lsp.png`, alt: 'Perplexity' },
+  { src: `${CDN}/v1780109018/Manus_logo.svg_ddlqef.png`, alt: 'Manus' },
+  { src: `${CDN}/v1780109018/ElevenLabs_logo_gan9qq.png`, alt: 'ElevenLabs' },
+  { src: `${CDN}/v1780109018/descript_gvxnku.png`, alt: 'Descript' },
 ]
 
 const stats = [
-  { value: '3×', label: 'Average ROI vs. traditional agency', bg: '#8B5CF6', text: '#ffffff' },
-  { value: '48h', label: 'Onboarding within 48 hours of purchase', bg: '#0D0D0D', text: '#ffffff' },
-  { value: '$0', label: 'Percentage-of-spend fees. Ever.', bg: '#F3EBFF', text: '#0D0D0D' },
-  { value: '6', label: 'Full service pillars in every retainer', bg: '#E9D5FF', text: '#0D0D0D' },
+  { value: '3×', label: 'Average ROI vs. traditional agency' },
+  { value: '48h', label: 'Onboarding after you sign' },
+  { value: '$0', label: 'Percentage-of-spend fees. Ever.' },
+  { value: '9', label: 'Pillars in one engine' },
 ]
 
 const comparisonRows = [
-  { service: 'Brand Strategy & Identity', traditional: '$15,000–$50,000 project', hewn: 'Included' },
-  { service: 'Website Design & Development', traditional: '$15,000–$40,000 project', hewn: 'Included' },
-  { service: 'Paid Media Management', traditional: '$3,000–$10,000/mo + 15%', hewn: 'Included' },
-  { service: 'SEO & Content Marketing', traditional: '$3,000–$8,000/month', hewn: 'Included' },
-  { service: 'Marketing Automation & CRM', traditional: '$5,000–$15,000 setup', hewn: 'Included' },
-  { service: 'Social Media Management', traditional: '$2,000–$5,000/month', hewn: 'Included' },
-  { service: 'Strategic Advisory / CMO', traditional: '$5,000–$15,000/month', hewn: 'Included' },
+  { service: 'Brand Strategy & Identity', traditional: '$15,000–$50,000 project' },
+  { service: 'Website Design & Development', traditional: '$15,000–$40,000 project' },
+  { service: 'Paid Media Management', traditional: '$3,000–$10,000/mo + 15%' },
+  { service: 'SEO, AEO & Content', traditional: '$3,000–$8,000/month' },
+  { service: 'Lifecycle, CRM & Automation', traditional: '$5,000–$15,000 setup' },
+  { service: 'Social & Creator Programs', traditional: '$2,000–$5,000/month' },
+  { service: 'Strategic Advisory / CMO', traditional: '$5,000–$15,000/month' },
 ]
 
-function HeroImageCard() {
+/** Floating glass card that sits over the hero photography. */
+function SnapshotCard({ className = '' }: { className?: string }) {
   return (
-    <div className="rounded-3xl overflow-hidden relative aspect-[4/5] h-[clamp(540px,74vh,820px)] max-w-full mx-auto">
-      <Image src={PHOTOS.hero} alt="Creative professional at work" fill className="object-cover" priority />
-      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent" />
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 w-[80%] rounded-xl px-4 py-3"
-        style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.05) 100%)', border: '1px solid rgba(255,255,255,0.20)', boxShadow: '0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12)' }}>
-        <div className="flex items-center justify-between mb-2.5">
-          <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/50">Monthly Snapshot</p>
-          <span className="animate-live-pulse flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-body font-semibold text-white" style={{ background: 'rgba(139,92,246,0.6)', border: '0.5px solid rgba(139,92,246,0.6)' }}>
-            <span className="w-1.5 h-1.5 rounded-full bg-white" />
-            Live
-          </span>
+    <div className={`rounded-2xl p-4 backdrop-blur-md ${className}`}
+      style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%)', border: '1px solid rgba(255,255,255,0.22)', boxShadow: '0 12px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.15)' }}>
+      <div className="flex items-center justify-between mb-3">
+        <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/60">Growth engine · this month</p>
+        <span className="animate-live-pulse flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-body font-semibold text-white" style={{ background: 'rgba(139,92,246,0.6)' }}>
+          <span className="w-1.5 h-1.5 rounded-full bg-white" />Live
+        </span>
+      </div>
+      <div className="flex items-end justify-between mb-3">
+        <div>
+          <p className="font-body text-[10px] text-white/50">Revenue attributed</p>
+          <p className="font-display font-bold text-2xl leading-none text-white mt-1">$48,200</p>
         </div>
-        <div className="flex items-center justify-between mb-2">
-          <div>
-            <p className="font-body text-[9px] text-white/40 mb-0.5">Revenue attributed</p>
-            <p className="font-display font-bold text-[18px] leading-none text-white">$48,200</p>
+        <span className="font-body text-xs font-semibold text-ember">▲ 34%</span>
+      </div>
+      <div className="flex items-end gap-1 h-8 mb-3">
+        {[30, 52, 44, 70, 58, 85, 100].map((h, i) => (
+          <div key={i} className="flex-1 rounded-sm" style={{ height: `${h}%`, background: i === 6 ? '#6BAD3D' : `rgba(107,173,61,${0.2 + i * 0.1})` }} />
+        ))}
+      </div>
+      <div className="flex gap-5 pt-3 border-t border-white/10">
+        {[{ label: 'Leads', value: '142' }, { label: 'ROAS', value: '4.8×' }, { label: 'CAC', value: '$112' }].map(m => (
+          <div key={m.label}>
+            <p className="font-body text-[9px] text-white/50">{m.label}</p>
+            <p className="font-body font-semibold text-xs text-white">{m.value}</p>
           </div>
-          <span className="flex items-center gap-1 font-body text-[10px] font-semibold text-[#6BAD3D]">
-            <svg className="w-2.5 h-2.5" viewBox="0 0 12 12" fill="none"><path d="M2 9l4-4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            +34%
-          </span>
-        </div>
-        <div className="flex items-end gap-1 h-7 mb-2">
-          {[30, 52, 44, 70, 58, 85, 100].map((h, i) => (
-            <div key={i} className="flex-1 rounded-sm" style={{ height: `${h}%`, background: i === 6 ? '#6BAD3D' : `rgba(107,173,61,${0.15 + i * 0.1})` }} />
-          ))}
-        </div>
-        <div className="flex gap-4 pt-2" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-          {[{ label: 'Leads', value: '142' }, { label: 'ROAS', value: '4.8×' }, { label: 'CAC', value: '$112' }].map(m => (
-            <div key={m.label}>
-              <p className="font-body text-[9px] text-white/40 mb-0.5">{m.label}</p>
-              <p className="font-body font-semibold text-xs text-white">{m.value}</p>
-            </div>
-          ))}
-        </div>
+        ))}
       </div>
     </div>
   )
@@ -98,276 +78,290 @@ function HeroImageCard() {
 
 export default function Home() {
   return (
-    <div className="bg-white">
+    <div className="bg-bone">
 
-      {/* ── HERO ── */}
-      {/* Mobile: full-viewport flex column — content top, image fills remaining height */}
-      {/* Desktop: 2-column grid, constrained width */}
-      <section className="flex flex-col h-[100dvh] lg:h-auto lg:block lg:pt-32 lg:pb-16 lg:px-12 lg:max-w-7xl lg:mx-auto">
+      {/* ── HERO: full-bleed cinematic ── */}
+      <section className="relative min-h-[100dvh] lg:min-h-[92vh] flex flex-col justify-end overflow-hidden bg-iron text-white viewport-fill">
+        <Image src={PHOTOS.hero} alt="Hewn Life creative at work" fill priority sizes="100vw" className="hidden md:block object-cover object-[70%_30%]" />
+        <Image src={PHOTOS.heroMobile} alt="Hewn Life creative at work" fill priority sizes="100vw" className="md:hidden object-cover object-top" />
+        <div className="absolute inset-0 bg-gradient-to-t from-iron via-iron/55 to-iron/10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-iron/85 via-iron/30 to-transparent" />
 
-        {/* Content */}
-        <div className="animate-fade-up px-6 pt-20 pb-6 lg:p-0 lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-4 py-1.5 mb-5 lg:mb-8">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
-              <span className="font-body text-xs font-medium tracking-wide">The End of Agency Bloat</span>
-            </div>
-            <h1 className="hero-heading fluid-hero text-[#0D0D0D] mb-4 lg:mb-8 leading-[0.95]">
-              AI killed the agency.{' '}
-              <span className="accent" style={{ color: '#6BAD3D' }}>Good.</span>
-            </h1>
-            <p className="font-body text-base lg:text-lg text-[#6B6560] max-w-sm mb-6 lg:mb-10 leading-relaxed">
-              Senior strategy. AI speed. Flat fees. No bloat.
-              <br /><span className="text-[#0D0D0D]/70">Full-service marketing for businesses ready to grow.</span>
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <CalButton className="w-full sm:w-auto inline-flex items-center justify-center bg-[#0D0D0D] text-white font-body font-medium px-8 py-4 rounded-full hover:bg-[#222] transition-all duration-200">
-                Book a Discovery Call
-              </CalButton>
-              <Link href="/pricing" className="w-full sm:w-auto inline-flex items-center justify-center border border-black/15 text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 hover:bg-black/[0.02] transition-all duration-200">
-                See Plans & Pricing
-              </Link>
-            </div>
-          </div>
-
-          {/* Right — photo card (desktop only in grid, hidden on mobile here) */}
-          <div className="hidden lg:block animate-fade-up delay-2 relative">
-            <HeroImageCard />
-          </div>
-        </div>
-
-        {/* Mobile image — flex-1 fills remaining viewport height */}
-        <div className="flex-1 lg:hidden relative min-h-0 px-6 pb-6 pt-4">
-          <div className="rounded-2xl overflow-hidden h-full relative">
-            <Image src={PHOTOS.hero} alt="Creative professional at work" fill className="object-cover object-top" priority />
-            <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 p-4">
-              <div className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%)', border: '1px solid rgba(255,255,255,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15)' }}>
-                <div className="flex items-center justify-between mb-3">
-                  <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/50">Monthly Snapshot</p>
-                  <span className="animate-live-pulse flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-body font-semibold text-white" style={{ background: 'rgba(139,92,246,0.6)', border: '0.5px solid rgba(139,92,246,0.6)' }}>
-                    <span className="w-1.5 h-1.5 rounded-full bg-white" />
-                    Live
-                  </span>
-                </div>
-                <div className="flex items-end justify-between">
-                  <div>
-                    <p className="font-body text-[10px] text-white/40 mb-0.5">Revenue attributed</p>
-                    <p className="font-display font-bold text-[20px] leading-none text-white">$48,200</p>
-                  </div>
-                  <span className="flex items-center gap-1 font-body text-[11px] font-semibold text-[#6BAD3D]">
-                    <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none"><path d="M2 9l4-4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    +34% this month
-                  </span>
-                </div>
+        <div className="relative max-w-7xl w-full mx-auto px-6 lg:px-12 pb-12 lg:pb-20 pt-28">
+          <div className="grid lg:grid-cols-[1.3fr_1fr] gap-10 items-end">
+            <div className="animate-fade-up">
+              <Pill dark>The end of agency bloat</Pill>
+              <h1 className="hero-heading text-[clamp(3rem,1.5rem+6vw,7rem)] leading-[0.92] mt-6">
+                AI killed the agency. <span className="accent text-ember">Good.</span>
+              </h1>
+              <p className="font-body text-base lg:text-lg text-white/70 max-w-md mt-6 leading-relaxed">
+                Senior strategy, an AI-native creative line and a live growth dashboard. One flat fee, nine pillars, zero bloat.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 mt-8">
+                <CalButton className="inline-flex items-center justify-center bg-ember text-iron font-body font-semibold px-7 py-3.5 rounded-full hover:brightness-110 transition">
+                  Book a Discovery Call
+                </CalButton>
+                <Link href="/dashboard" className="inline-flex items-center justify-center bg-white/10 backdrop-blur border border-white/20 text-white font-body font-medium px-7 py-3.5 rounded-full hover:bg-white/20 transition">
+                  See a live dashboard
+                </Link>
               </div>
             </div>
-          </div>
-        </div>
-
-      </section>
-
-      {/* ── TECH BAR ── */}
-      <section className="border-y border-black/[0.06] py-10 px-6">
-        <div className="max-w-7xl mx-auto">
-          <p className="font-body text-[11px] uppercase tracking-[0.2em] text-black/30 text-center mb-8">Powered by the world's leading AI</p>
-          <div className="flex items-center justify-center gap-10 md:gap-16 flex-wrap">
-            {[
-              { src: 'https://res.cloudinary.com/dsx2wcqte/image/upload/v1780109018/Claude_AI_logo.svg_geitmu.png', alt: 'Claude' },
-              { src: 'https://res.cloudinary.com/dsx2wcqte/image/upload/v1780109018/Perplexity_AI_logo.svg_te7lsp.png', alt: 'Perplexity' },
-              { src: 'https://res.cloudinary.com/dsx2wcqte/image/upload/v1780109018/Manus_logo.svg_ddlqef.png', alt: 'Manus' },
-              { src: 'https://res.cloudinary.com/dsx2wcqte/image/upload/v1780109018/ElevenLabs_logo_gan9qq.png', alt: 'ElevenLabs' },
-              { src: 'https://res.cloudinary.com/dsx2wcqte/image/upload/v1780109018/descript_gvxnku.png', alt: 'Descript' },
-            ].map(logo => (
-              <div key={logo.alt} className="relative h-7 w-28 grayscale opacity-40 hover:opacity-70 hover:grayscale-0 transition-all duration-300">
-                <Image src={logo.src} alt={logo.alt} fill className="object-contain" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── STATS ROW ── */}
-      <section className="py-16 px-6 lg:px-12 max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {stats.map((s, i) => (
-            <div key={i} className="rounded-2xl p-6 flex flex-col justify-between min-h-[140px]" style={{ background: s.bg }}>
-              <p className="font-display font-bold fluid-stat leading-none" style={{ color: s.text }}><CountUp value={s.value} /></p>
-              <p className="font-body text-sm leading-snug mt-3" style={{ color: s.text === '#ffffff' ? 'rgba(255,255,255,0.7)' : '#6B6560' }}>{s.label}</p>
+            <div className="hidden lg:flex justify-end animate-fade-up delay-3">
+              <SnapshotCard className="w-[340px]" />
             </div>
-          ))}
+          </div>
+          <div className="hidden lg:flex items-center gap-2 mt-14 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
+            <span>↓</span> Scroll
+          </div>
         </div>
       </section>
 
-      {/* ── WHAT MAKES US DIFFERENT ── */}
-      <section className="py-16 px-6 lg:px-12 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Photo card */}
-          <div className="rounded-3xl overflow-hidden aspect-[4/3] relative">
-            <Image src={PHOTOS.strategy} alt="Team collaborating at a whiteboard" fill className="object-cover" />
-          </div>
-          {/* Copy */}
-          <div>
-            <div className="inline-flex items-center gap-2 bg-black/[0.04] rounded-full px-4 py-1.5 mb-6">
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-black/50">What Makes Us Different</span>
+      {/* ── IMPACT + STATS ── */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-28">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20 items-center">
+          <div className="rounded-[2rem] bg-white border border-black/[0.06] p-6 order-2 lg:order-1">
+            <div className="flex items-start justify-between">
+              <span className="font-mono text-[10px] uppercase tracking-[0.14em] bg-ember/25 text-moss rounded-full px-3 py-1">Q3 2026</span>
+              <span className="font-display font-bold text-5xl text-iron leading-none">+90%</span>
             </div>
-            <h2 className="font-display font-bold fluid-h2 leading-tight text-[#0D0D0D] mb-6">
-              Premium marketing. Flat fees. Zero agency tax.
+            <div className="mt-6 rounded-2xl p-5 text-white" style={{ background: 'linear-gradient(160deg, #3D4A3F 0%, #0D0D0D 100%)' }}>
+              <p className="font-body text-[11px] text-white/50">Booked revenue</p>
+              <p className="font-display font-semibold text-lg">Jul – Sep</p>
+              <svg viewBox="0 0 200 70" className="w-full h-20 mt-2" aria-hidden="true">
+                <path d="M0 60 C 30 55, 45 50, 65 42 S 100 38, 120 28 S 160 18, 200 6" fill="none" stroke="#6BAD3D" strokeWidth="2.5" />
+                <path d="M0 64 C 40 62, 70 58, 100 52 S 160 44, 200 38" fill="none" stroke="#8B5CF6" strokeWidth="1.5" strokeDasharray="3 4" />
+              </svg>
+              <div className="flex justify-between font-body text-[10px] text-white/40 mt-1"><span>Hewn engine</span><span>Previous agency</span></div>
+            </div>
+            <p className="font-display font-semibold text-center text-iron mt-5">Illustrative client trajectory</p>
+          </div>
+
+          <div className="order-1 lg:order-2">
+            <Pill>Impact</Pill>
+            <h2 className="font-display font-bold fluid-h2 text-iron mt-5 leading-tight">
+              Smarter growth decisions with a team that <span className="text-ash">out-produces an agency, not out-spends it.</span>
             </h2>
-            <p className="font-body text-base text-[#6B6560] mb-8 leading-relaxed">
-              Traditional agencies carry massive overhead — account managers, project managers, layers of markup. Hewn Life cuts all of it. You get a senior team, embedded in your business, at a fraction of what you&apos;d pay elsewhere.
+            <p className="font-body text-base text-slate mt-5 max-w-xl leading-relaxed">
+              The cost of producing creative has collapsed while the cost of attention keeps rising. The edge now is velocity, trust and retention, run by people who answer to a number.
             </p>
-            <div className="space-y-3 mb-8">
-              {['Flat monthly retainer — no percentage-of-spend', 'Full six-pillar service from day one', 'Onboarding within 48 hours of signing'].map(item => (
-                <div key={item} className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full bg-[#F0F7EB] flex items-center justify-center flex-shrink-0">
-                    <svg className="w-3 h-3 text-[#6BAD3D]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                  </div>
-                  <span className="font-body text-sm text-[#0D0D0D]">{item}</span>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-10 pt-8 border-t border-black/[0.08]">
+              {stats.map(s => (
+                <div key={s.label}>
+                  <p className="font-display font-semibold text-4xl text-iron leading-none"><CountUp value={s.value} /></p>
+                  <p className="font-body text-xs text-slate mt-2 leading-snug">{s.label}</p>
                 </div>
               ))}
             </div>
-            <Link href="/pricing" className="font-body text-sm font-medium text-[#6BAD3D] hover:underline underline-offset-4">
-              See how we price it →
-            </Link>
           </div>
         </div>
       </section>
 
-      {/* ── SIX PILLARS ── */}
-      <section className="py-16 px-6 lg:px-12 max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div>
-            <div className="inline-flex items-center gap-2 bg-black/[0.04] rounded-full px-4 py-1.5 mb-4">
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-black/50">How We Work</span>
-            </div>
-            <h2 className="font-display font-bold fluid-h2 leading-tight text-[#0D0D0D]">
-              Six pillars.<br />One mission.
-            </h2>
-          </div>
-          <p className="font-body text-base text-[#6B6560] max-w-sm">
-            We operate as your fractional CMO and growth partner — embedded in your business, invested in the outcome.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {pillars.map((p) => (
-            <div key={p.num} className="rounded-2xl p-7 hover:-translate-y-0.5 transition-transform duration-200" style={{ background: p.bg }}>
-              <div className="flex items-center justify-between mb-5">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: '#ffffff' }}>
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke={p.accent} strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
-                    {p.icon}
-                  </svg>
-                </div>
-                <span className="font-display font-bold text-[32px] leading-none" style={{ color: p.accent + '33' }}>{p.num}</span>
-              </div>
-              <p className="font-body font-semibold text-[13px] uppercase tracking-wider text-[#0D0D0D] mb-2">{p.name}</p>
-              <p className="font-body text-sm text-[#6B6560] leading-relaxed">{p.desc}</p>
+      {/* ── LOGO MARQUEE ── */}
+      <section className="border-y border-black/[0.06] py-8 overflow-hidden">
+        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-black/35 text-center mb-6">Built on the world&apos;s leading AI</p>
+        <div className="ticker-track flex items-center gap-16">
+          {[...LOGOS, ...LOGOS, ...LOGOS, ...LOGOS].map((logo, i) => (
+            <div key={i} className="relative h-7 w-28 flex-shrink-0 grayscale opacity-40">
+              <Image src={logo.src} alt={i < LOGOS.length ? logo.alt : ''} fill sizes="112px" className="object-contain" />
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── TESTIMONIAL ── */}
-      <section className="py-16 px-6 lg:px-12 max-w-7xl mx-auto">
-        <div className="bg-[#0D0D0D] rounded-3xl p-12 md:p-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      {/* ── NINE PILLARS (bento) ── */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-28">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <Pill>The growth engine</Pill>
+          <h2 className="font-display font-bold fluid-h2 text-iron mt-5">One engine. Nine pillars.</h2>
+          <p className="font-body text-base text-slate mt-4">Every pillar runs as a playbook with an owner, a weekly cadence and the number it answers to.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {pillars.map((p, i) => {
+            const featured = i === 0
+            return (
+              <Link
+                key={p.slug}
+                href={`/services/${p.slug}`}
+                className={`group rounded-3xl p-6 flex flex-col min-h-[190px] transition-all hover:-translate-y-0.5 ${
+                  featured ? 'text-white' : 'bg-white border border-black/[0.06] hover:shadow-[0_12px_32px_rgba(0,0,0,0.06)]'
+                }`}
+                style={featured ? { background: 'linear-gradient(150deg, #3D4A3F 0%, #0D0D0D 100%)' } : undefined}
+              >
+                <span className={`w-10 h-10 rounded-xl flex items-center justify-center ${featured ? 'bg-white/10' : ''}`} style={featured ? undefined : { background: p.tint }}>
+                  <PillarIcon paths={p.icon} color={featured ? '#6BAD3D' : p.accent} />
+                </span>
+                <h3 className={`font-display font-semibold text-base mt-5 ${featured ? 'text-white' : 'text-iron'}`}>{p.name}</h3>
+                <p className={`font-body text-sm leading-relaxed mt-1.5 ${featured ? 'text-white/65' : 'text-slate'}`}>{p.summary}</p>
+                <span className={`font-body text-xs font-medium mt-auto pt-4 ${featured ? 'text-ember' : 'text-iron/40 group-hover:text-ember'} transition-colors`}>Playbook →</span>
+              </Link>
+            )
+          })}
+        </div>
+        <div className="text-center mt-10">
+          <Link href="/services" className="inline-flex items-center justify-center border border-black/15 text-iron font-body font-medium px-7 py-3.5 rounded-full hover:border-black/40 transition">Explore every service</Link>
+        </div>
+      </section>
+
+      {/* ── CINEMATIC BREAK + DASHBOARD ── */}
+      <section className="relative overflow-hidden bg-iron text-white">
+        <Image src={PHOTOS.strategy} alt="Strategy session" fill sizes="100vw" className="object-cover opacity-35" />
+        <div className="absolute inset-0 bg-gradient-to-b from-iron via-iron/70 to-iron" />
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-24 lg:py-32 grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
           <div>
-            <p className="font-display font-bold fluid-stat text-[#6BAD3D] leading-none mb-6">&ldquo;</p>
-            <blockquote className="font-display font-semibold text-[28px] md:text-[32px] leading-snug text-white mb-8">
-              Hewn Life didn&apos;t just run our marketing. They rebuilt how we think about our business.
-            </blockquote>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-white/10" />
-              <div>
-                <p className="font-body font-semibold text-sm text-white">Jane Smith</p>
-                <p className="font-body text-sm text-white/50">Owner, Acme Roofing Co.</p>
-              </div>
-            </div>
+            <Pill dark>Data &amp; attribution</Pill>
+            <h2 className="font-display font-bold fluid-h2 mt-5 leading-tight">Your whole marketing function, <span className="accent text-ember">on one screen.</span></h2>
+            <p className="font-body text-base text-white/65 mt-5 max-w-md leading-relaxed">
+              Meta, Google and your CRM in one live dashboard. Every strategy gets a verdict (scale, watch or cut), graded against best in class, with next week&apos;s tests already written.
+            </p>
+            <Link href="/dashboard" className="inline-flex items-center justify-center bg-ember text-iron font-body font-semibold px-7 py-3.5 rounded-full hover:brightness-110 transition mt-8">
+              Explore the sample dashboard →
+            </Link>
           </div>
-          {/* Photo */}
-          <div className="rounded-2xl overflow-hidden aspect-[4/3] relative">
-            <Image src={PHOTOS.testimonial} alt="Professional recording studio" fill className="object-cover" />
+          <Link href="/dashboard" className="block rounded-3xl border border-white/10 bg-[#111814]/90 p-5 shadow-2xl hover:border-ember/40 transition-colors" aria-label="Open the sample dashboard">
+            <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/40">Executive summary</p>
+            <p className="font-display font-semibold text-lg mt-1">Every platform, <span className="accent text-copper">every strategy</span></p>
+            <div className="grid grid-cols-3 gap-2 mt-4">
+              {[['Spend', '$23.0K'], ['Booked jobs', '172'], ['Cost / job', '$134']].map(([k, v]) => (
+                <div key={k} className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-3">
+                  <p className="font-body text-[10px] text-white/45">{k}</p>
+                  <p className="font-display font-semibold text-lg">{v}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 space-y-2.5">
+              {[
+                { n: 'Founder-led video', w: 92, c: '#6BAD3D', v: 'Scale', vc: '#6BAD3D' },
+                { n: 'Non-brand search', w: 86, c: '#3D7FA4', v: 'Scale', vc: '#6BAD3D' },
+                { n: 'Seasonal offer', w: 56, c: '#B5621C', v: 'Cut or fix', vc: '#E07A5F' },
+                { n: 'UGC + stories', w: 43, c: '#8B5CF6', v: 'Watch', vc: '#E0B84C' },
+              ].map(r => (
+                <div key={r.n} className="grid grid-cols-[110px_1fr_70px] items-center gap-3 font-body text-[11px]">
+                  <span className="text-white/75 truncate">{r.n}</span>
+                  <span className="h-1.5 rounded-full" style={{ width: `${r.w}%`, background: r.c }} />
+                  <span className="text-right" style={{ color: r.vc }}>● {r.v}</span>
+                </div>
+              ))}
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* ── FUNNEL ── */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-28">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+          <div>
+            <Pill dot="#8B5CF6">How it runs</Pill>
+            <h2 className="font-display font-bold fluid-h2 text-iron mt-5 max-w-xl">Every dollar runs a tested funnel.</h2>
+          </div>
+          <p className="font-body text-base text-slate max-w-sm">We ship 20+ fresh variants a week across ads, pages and quizzes. Winners scale, losers die.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {funnel.map((f, i) => (
+            <div key={f.name} className="rounded-3xl p-6 min-h-[200px] flex flex-col" style={{ background: f.bg, color: f.fg }}>
+              <div className="flex items-center justify-between">
+                <p className="font-mono text-[10px] uppercase tracking-[0.16em] opacity-60">{f.stage}</p>
+                <span className="font-mono text-xs opacity-50">0{i + 1}</span>
+              </div>
+              <p className="font-display font-semibold text-2xl mt-3">{f.name}</p>
+              <p className="font-body text-sm opacity-75 mt-2">{f.goal}</p>
+              <p className="font-body text-xs opacity-60 mt-auto pt-6">{f.benchmark}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── PRICING ── */}
+      <section className="bg-white border-y border-black/[0.06]">
+        <div className="max-w-6xl mx-auto px-6 lg:px-12 py-20 lg:py-28">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <Pill>Pricing plans</Pill>
+            <h2 className="font-display font-bold fluid-h2 text-iron mt-5">Simple pricing. No hidden fees.</h2>
+            <p className="font-body text-base text-slate mt-4">One flat monthly fee. Never a percentage of your ad spend.</p>
+          </div>
+          <PricingTeaser />
+          <div className="mt-6 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-5 text-white" style={{ background: 'linear-gradient(120deg, #3D4A3F 0%, #0D0D0D 100%)' }}>
+            <div>
+              <p className="font-display font-semibold text-lg">Need a one-off project?</p>
+              <p className="font-body text-sm text-white/60 mt-1">Websites, brand refreshes and creative packs at flat fees. No retainer required.</p>
+            </div>
+            <Link href="/pricing" className="inline-flex items-center justify-center bg-white text-iron font-body font-medium text-sm px-6 py-3 rounded-full hover:bg-white/90 transition whitespace-nowrap">See à la carte</Link>
           </div>
         </div>
       </section>
 
       {/* ── COMPARISON ── */}
-      <section className="py-16 px-6 lg:px-12 max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-[#E9D5FF] text-[#6D28D9] rounded-full px-4 py-1.5 mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
-            <span className="font-body text-xs font-medium tracking-wide">The Numbers</span>
-          </div>
-          <h2 className="font-display font-bold text-[36px] md:text-[44px] text-[#0D0D0D] leading-tight">
-            What this costs at a <span className="accent" style={{ color: '#6BAD3D' }}>traditional agency.</span>
-          </h2>
+      <section className="max-w-4xl mx-auto px-6 lg:px-12 py-20 lg:py-28">
+        <div className="text-center mb-10">
+          <Pill dot="#8B5CF6">The numbers</Pill>
+          <h2 className="font-display font-bold fluid-h2 text-iron mt-5">What this costs at a <span className="accent text-ember">traditional agency.</span></h2>
         </div>
-
-        <div className="rounded-3xl border border-black/[0.08] overflow-hidden">
-          {/* Column header — desktop only */}
-          <div className="hidden sm:grid grid-cols-[1fr_180px_150px] px-7 py-4 bg-[#F7F6F3] border-b border-black/[0.06]">
-            <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-black/40">Service</span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-black/40 text-right">Traditional</span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#8B5CF6] text-right">Hewnlife</span>
-          </div>
-
-          {comparisonRows.map((row, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-between gap-4 sm:grid sm:grid-cols-[1fr_180px_150px] px-5 sm:px-7 py-4 sm:py-[18px] border-b border-black/[0.05]"
-            >
-              <span className="font-body text-sm md:text-[15px] text-[#0D0D0D] font-medium flex-1 min-w-0">{row.service}</span>
-              {/* Mobile: stack traditional above Included. Desktop: separate columns */}
-              <div className="flex flex-col items-end gap-0.5 sm:contents">
-                <span className="font-body text-[13px] sm:text-sm text-black/35 line-through text-right whitespace-nowrap">{row.traditional}</span>
-                <span className="flex items-center justify-end gap-1.5 text-[#6BAD3D] whitespace-nowrap">
-                  <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                  <span className="font-body text-sm font-medium">Included</span>
-                </span>
+        <div className="rounded-3xl border border-black/[0.08] overflow-hidden bg-white">
+          {comparisonRows.map(row => (
+            <div key={row.service} className="flex items-center justify-between gap-4 px-5 sm:px-7 py-4 border-b border-black/[0.05]">
+              <span className="font-body text-sm md:text-[15px] text-iron font-medium">{row.service}</span>
+              <div className="flex flex-col sm:flex-row items-end sm:items-center gap-0.5 sm:gap-8">
+                <span className="font-body text-[13px] text-black/35 line-through whitespace-nowrap">{row.traditional}</span>
+                <span className="font-body text-sm font-medium text-ember whitespace-nowrap sm:w-20 text-right">✓ Included</span>
               </div>
             </div>
           ))}
-
-          {/* Total row */}
-          <div className="flex items-center justify-between gap-4 sm:grid sm:grid-cols-[1fr_180px_150px] px-5 sm:px-7 py-5 sm:py-6 bg-[#0D0D0D]">
-            <span className="font-body font-semibold text-sm text-white flex-1 min-w-0">Total</span>
-            <div className="flex flex-col items-end gap-0.5 sm:contents">
-              <span className="font-body text-[13px] sm:text-sm text-white/30 line-through text-right whitespace-nowrap">$20k–$50k+/mo</span>
-              <span className="font-display font-bold text-[15px] text-[#6BAD3D] text-right whitespace-nowrap">$2,500/mo</span>
+          <div className="flex items-center justify-between gap-4 px-5 sm:px-7 py-5 bg-iron">
+            <span className="font-body font-semibold text-sm text-white">Total</span>
+            <div className="flex flex-col sm:flex-row items-end sm:items-center gap-0.5 sm:gap-8">
+              <span className="font-body text-[13px] text-white/30 line-through whitespace-nowrap">$20k–$50k+/mo</span>
+              <span className="font-display font-bold text-[15px] text-ember whitespace-nowrap">from $2,500/mo</span>
             </div>
           </div>
         </div>
-
-        <p className="text-center font-body text-sm text-[#6B6560] mt-6">
-          Everything above. One flat monthly fee. <span className="text-[#8B5CF6] font-medium">No percentage of spend, ever.</span>
-        </p>
       </section>
 
-      {/* ── BOTTOM CTA ── */}
-      <section className="py-16 px-6 lg:px-12 max-w-7xl mx-auto pb-24">
-        <div className="rounded-3xl overflow-hidden grid grid-cols-1 lg:grid-cols-2">
-          {/* Left — copy on purple */}
-          <div className="bg-[#8B5CF6] p-12 md:p-16 flex flex-col justify-between">
-            <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/60 mb-6">Get Started</p>
-              <h2 className="font-display font-bold fluid-h2 leading-tight text-white mb-6">
-                Ready to stop paying the agency tax?
-              </h2>
-              <p className="font-body text-base text-white/80 mb-10 leading-relaxed">
-                Book a free 30-minute call. No pitch decks, no pressure — just an honest conversation about your business and where to start.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <CalButton className="inline-flex items-center justify-center bg-white text-[#0D0D0D] font-body font-semibold px-8 py-4 rounded-full hover:bg-white/90 transition-all duration-200">
-                Book a Free Call
-              </CalButton>
-              <Link href="/pricing" className="inline-flex items-center justify-center border border-white/30 text-white font-body font-medium px-8 py-4 rounded-full hover:border-white/60 transition-all duration-200">
-                See Pricing
-              </Link>
+      {/* ── TESTIMONIAL ── */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-12 pb-20 lg:pb-28">
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <Pill dot="#B5621C">Testimonials</Pill>
+          <h2 className="font-display font-bold fluid-h2 text-iron mt-5">Trusted by growing businesses.</h2>
+        </div>
+        <div className="rounded-[2rem] bg-white border border-black/[0.06] p-3 grid grid-cols-1 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-3">
+          <div className="relative rounded-[1.5rem] overflow-hidden aspect-square md:aspect-auto md:min-h-[360px]">
+            <Image src={PHOTOS.testimonial} alt="Client recording studio" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-cover" />
+          </div>
+          <div className="p-6 md:p-10 flex flex-col justify-center">
+            <p className="font-display font-bold text-5xl text-ember leading-none">&ldquo;</p>
+            <blockquote className="font-display font-semibold text-2xl md:text-3xl leading-snug text-iron mt-2">
+              Hewn Life didn&apos;t just run our marketing. They rebuilt how we think about our business.
+            </blockquote>
+            <div className="mt-8">
+              <p className="font-body font-semibold text-sm text-iron">Jane Smith</p>
+              <p className="font-body text-sm text-slate">Owner, Acme Roofing Co.</p>
             </div>
           </div>
-          {/* Right — photo */}
-          <div className="relative min-h-[320px]">
-            <Image src={PHOTOS.cta} alt="Creator working on content" fill className="object-cover" />
+        </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section className="max-w-6xl mx-auto px-6 lg:px-12 pb-20 lg:pb-28">
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <Pill>FAQ</Pill>
+          <h2 className="font-display font-bold fluid-h2 text-iron mt-5">Frequently asked questions</h2>
+          <p className="font-body text-base text-slate mt-4">Everything you need to know, answered in one place.</p>
+        </div>
+        <HomeFaq />
+      </section>
+
+      {/* ── CINEMATIC CTA ── */}
+      <section className="relative overflow-hidden bg-iron text-white">
+        <Image src={PHOTOS.cta} alt="Creator filming content" fill sizes="100vw" className="object-cover opacity-50" />
+        <div className="absolute inset-0 bg-gradient-to-t from-iron via-iron/60 to-iron/30" />
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-40 text-center">
+          <h2 className="hero-heading text-[clamp(2.5rem,1.5rem+4vw,5.5rem)] leading-[0.95] max-w-4xl mx-auto">
+            Ready to stop paying the <span className="accent text-ember">agency tax?</span>
+          </h2>
+          <p className="font-body text-base lg:text-lg text-white/70 mt-6 max-w-xl mx-auto">
+            Book a free 30-minute call. We&apos;ll grade your nine pillars and show you the cheapest gaps to close first.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mt-10">
+            <CalButton className="inline-flex items-center justify-center bg-ember text-iron font-body font-semibold px-8 py-4 rounded-full hover:brightness-110 transition">Book a Free Call</CalButton>
+            <Link href="/pricing" className="inline-flex items-center justify-center bg-white/10 backdrop-blur border border-white/25 text-white font-body font-medium px-8 py-4 rounded-full hover:bg-white/20 transition">See Pricing</Link>
           </div>
         </div>
       </section>

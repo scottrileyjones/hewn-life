@@ -7,10 +7,11 @@ import CalButton from './CalButton'
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
+  { href: '/services', label: 'Services' },
+  { href: '/dashboard', label: 'Dashboard' },
   { href: '/how-it-works', label: 'How It Works' },
-  { href: '/website-in-a-week', label: 'Site in a Week' },
   { href: '/pricing', label: 'Pricing' },
+  { href: '/about', label: 'About' },
   { href: '/blog', label: 'Blog' },
 ]
 
@@ -29,7 +30,7 @@ export default function Nav() {
     setMenuOpen(false)
   }, [pathname])
 
-  const darkHero = !scrolled && ['/about', '/contact', '/pricing'].includes(pathname)
+  const darkHero = !scrolled && (['/', '/about', '/contact', '/pricing', '/services', '/dashboard'].includes(pathname))
 
   return (
     <>

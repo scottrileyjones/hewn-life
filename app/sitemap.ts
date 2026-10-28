@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { pillars } from '@/lib/services'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://www.hewn.life'
@@ -6,6 +7,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: base, lastModified: now, changeFrequency: 'weekly', priority: 1.0 },
+    { url: `${base}/services`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${base}/dashboard`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/how-it-works`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/pricing`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${base}/about`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
@@ -27,5 +30,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
-  return [...staticRoutes, ...blogRoutes]
+  const serviceRoutes: MetadataRoute.Sitemap = pillars.map((p) => ({
+    url: `${base}/services/${p.slug}`,
+    lastModified: now,
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  }))
+
+  return [...staticRoutes, ...serviceRoutes, ...blogRoutes]
 }

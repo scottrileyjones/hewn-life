@@ -29,6 +29,8 @@ export default function Footer() {
             <div className="flex flex-col gap-3">
               {[
                 { href: '/', label: 'Home' },
+                { href: '/services', label: 'Services' },
+                { href: '/dashboard', label: 'Sample Dashboard' },
                 { href: '/about', label: 'About' },
                 { href: '/how-it-works', label: 'How It Works' },
                 { href: '/website-in-a-week', label: 'Website in a Week' },
