@@ -39,21 +39,21 @@ export default function FaqAccordion() {
   return (
     <div className="max-w-3xl mx-auto">
       {faqs.map((faq, i) => (
-        <div key={i} className="border-b border-white/[0.08]">
+        <div key={i} className="border-b border-mist/[0.14]">
           <button
             className="w-full text-left py-6 flex items-center justify-between gap-4 group"
             onClick={() => setOpenIndex(openIndex === i ? null : i)}
           >
-            <span className="font-body text-base text-cream group-hover:text-ember transition-colors">
+            <span className="font-body text-base text-mist group-hover:text-lime transition-colors">
               {faq.question}
             </span>
-            <span className={`text-ember transition-transform duration-300 flex-shrink-0 ${openIndex === i ? 'rotate-45' : ''}`}>
+            <span className={`text-lime transition-transform duration-300 flex-shrink-0 ${openIndex === i ? 'rotate-45' : ''}`}>
               +
             </span>
           </button>
           {openIndex === i && (
             <div className="pb-6">
-              <p className="font-body text-sm text-ash leading-relaxed">{faq.answer}</p>
+              <p className="font-body text-sm text-mist/70 leading-relaxed">{faq.answer}</p>
             </div>
           )}
         </div>

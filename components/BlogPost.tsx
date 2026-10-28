@@ -1,6 +1,8 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import CalButton from '@/components/CalButton'
+import Terrain from '@/components/strata/Terrain'
+import PostCover from '@/components/strata/PostCover'
+import { Pill } from '@/components/strata/Glyph'
 
 export interface BlogPostMeta {
   category: string
@@ -79,95 +81,65 @@ export const ALL_POSTS: RelatedPost[] = [
   },
 ]
 
-const CTA_IMAGE =
-  'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_900,h_900,c_fill/v1780097464/collabstr-bM2nm41YaeA-unsplash_gspy6l.jpg'
-
 export function BlogCta({ text = "Ready to stop reading and start growing?" }: { text?: string }) {
   return (
-    <div className="my-14 overflow-hidden rounded-[28px] bg-[#1A1815] grid md:grid-cols-[1.4fr_1fr]">
-      {/* Copy — uses div/span to stay out of prose styling */}
-      <div className="p-9 md:p-11 flex flex-col justify-center">
-        <span className="block font-mono text-[10px] uppercase tracking-[0.22em] text-[#8FC765] mb-4">Work with us</span>
-        <span className="block font-display font-semibold text-[26px] md:text-[30px] text-white leading-[1.15] mb-6">{text}</span>
+    <div className="not-prose relative isolate my-14 overflow-hidden rounded-[28px] text-mist">
+      <Terrain scene="ember" seed={91} className="-z-20" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(20,16,10,.72),rgba(20,16,10,.25))]" />
+      <div className="flex flex-col justify-center p-9 md:p-11">
+        <span className="mb-4 block font-mono text-[10px] uppercase tracking-[0.22em] text-lime">Work with us</span>
+        <span className="mb-6 block max-w-[22ch] font-display text-[26px] font-medium leading-[1.15] tracking-[-0.02em] md:text-[30px]">{text}</span>
         <div>
-          <CalButton className="inline-flex items-center bg-[#8B5CF6] text-white font-body font-semibold px-7 py-3.5 rounded-full hover:bg-[#7C3AED] transition-all duration-200 hover:-translate-y-0.5">
-            Book a Free Discovery Call →
+          <CalButton className="inline-flex items-center rounded-full bg-white px-7 py-3.5 font-body font-medium text-ink transition-all duration-200 hover:bg-mist">
+            Book a free discovery call →
           </CalButton>
         </div>
-        <span className="block font-body text-[12px] text-white/40 mt-4">No pitch decks. No pressure. Just a direct conversation.</span>
-      </div>
-      {/* Image */}
-      <div className="relative min-h-[220px] md:min-h-full">
-        <Image src={CTA_IMAGE} alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 360px" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1A1815] via-[#1A1815]/20 to-transparent" />
+        <span className="mt-4 block font-body text-[12px] text-mist/70">No pitch decks. No pressure. Just a direct conversation.</span>
       </div>
     </div>
   )
 }
 
 export default function BlogPost({ meta, children, relatedPosts }: Props) {
-  const heroImage = meta.image
+  const href = meta.slug ? `/blog/${meta.slug}` : ALL_POSTS.find(p => p.title === meta.title)?.href ?? ''
   return (
-    <div className="bg-white">
-      {/* Hero */}
-      <section className="pt-32 pb-10 px-6 lg:px-12">
-        <div className="max-w-3xl mx-auto">
-          <div className="flex items-center gap-3 mb-6">
-            <Link href="/blog" className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92] hover:text-[#6B6560] transition-colors">
-              ← Blog
-            </Link>
-            <span className="text-black/20">/</span>
-            <span className="inline-block bg-[#E9D5FF] text-[#6D28D9] font-body text-[11px] font-medium px-3 py-1 rounded-full uppercase tracking-wider">
-              {meta.category}
-            </span>
+    <div className="bg-bone text-ink">
+      <section className="px-5 pb-10 pt-32">
+        <div className="mx-auto max-w-3xl">
+          <div className="mb-6 flex items-center gap-3">
+            <Link href="/blog" className="font-body text-sm text-ink/60 transition-colors hover:text-ink">← Journal</Link>
+            <span className="text-ink/25">/</span>
+            <Pill>{meta.category}</Pill>
           </div>
-          <h1 className="hero-heading text-[36px] md:text-[52px] text-[#0D0D0D] leading-[1.04] mb-5">
-            {meta.title}
-          </h1>
-          <p className="font-body text-lg text-[#6B6560] leading-relaxed mb-6 max-w-2xl">{meta.excerpt}</p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
-            {meta.date} · {meta.readTime} · By Hewn Life
-          </p>
+          <h1 className="mb-5 font-display text-[36px] font-medium leading-[1.04] tracking-[-0.04em] md:text-[52px]">{meta.title}</h1>
+          <p className="mb-6 max-w-2xl font-body text-lg leading-relaxed text-ink/70">{meta.excerpt}</p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/55">{meta.date} · {meta.readTime} · By Hewn Life</p>
         </div>
       </section>
 
-      {/* Hero image */}
-      {heroImage && (
-        <section className="px-6 lg:px-12 mb-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="relative aspect-[16/9] rounded-3xl overflow-hidden">
-              <Image src={heroImage} alt="" fill priority className="object-cover" sizes="(max-width: 1024px) 100vw, 896px" />
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Body */}
-      <section className="py-12 px-6 lg:px-12">
-        <div className="max-w-3xl mx-auto">
-          <div className="prose-hewn">
-            {children}
-          </div>
+      <section className="mb-4 px-5">
+        <div className="mx-auto max-w-4xl">
+          <PostCover href={href} className="aspect-[16/9] rounded-[32px]" />
         </div>
       </section>
 
-      {/* Related Posts */}
+      <section className="px-5 py-12">
+        <div className="mx-auto max-w-3xl">
+          <div className="prose-hewn">{children}</div>
+        </div>
+      </section>
+
       {relatedPosts && relatedPosts.length > 0 && (
-        <section className="py-16 px-6 lg:px-12 border-t border-black/[0.06]">
-          <div className="max-w-5xl mx-auto">
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#A89F92] mb-8">Keep Reading</p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedPosts.map((post, i) => (
-                <Link key={i} href={post.href} className="group">
+        <section className="border-t border-ink/[0.08] px-5 py-16">
+          <div className="mx-auto max-w-5xl">
+            <p className="mb-8 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/55">Keep reading</p>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              {relatedPosts.map(post => (
+                <Link key={post.href} href={post.href} className="group">
                   <article>
-                    <div className="relative aspect-[16/9] rounded-2xl mb-4 overflow-hidden">
-                      <Image src={post.image} alt="" fill className="object-cover group-hover:scale-[1.03] transition-transform duration-500" sizes="(max-width: 768px) 100vw, 340px" />
-                    </div>
-                    <p className="font-body text-[11px] uppercase tracking-[0.15em] text-[#8B5CF6] mb-2">{post.category}</p>
-                    <h3 className="font-display font-semibold text-[17px] leading-tight text-[#0D0D0D] mb-2 group-hover:text-[#6BAD3D] transition-colors line-clamp-2">
-                      {post.title}
-                    </h3>
-                    <p className="font-body text-[12px] text-black/40">{post.date} · {post.readTime}</p>
+                    <PostCover href={post.href} category={post.category} className="mb-4 aspect-[16/10] rounded-[22px]" />
+                    <h3 className="mb-2 line-clamp-2 font-display text-[17px] font-medium leading-tight transition-colors group-hover:text-forest">{post.title}</h3>
+                    <p className="font-body text-[12px] text-ink/55">{post.date} · {post.readTime}</p>
                   </article>
                 </Link>
               ))}
@@ -176,15 +148,10 @@ export default function BlogPost({ meta, children, relatedPosts }: Props) {
         </section>
       )}
 
-      {/* Bottom nav */}
-      <section className="py-12 px-6 lg:px-12 border-t border-black/[0.06]">
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <Link href="/blog" className="font-body text-sm text-[#6B6560] hover:text-[#0D0D0D] transition-colors">
-            ← All Articles
-          </Link>
-          <Link href="/quiz" className="font-body text-sm font-medium text-[#8B5CF6] hover:underline underline-offset-4">
-            Take the ROI Quiz →
-          </Link>
+      <section className="border-t border-ink/[0.08] px-5 py-12">
+        <div className="mx-auto flex max-w-3xl items-center justify-between">
+          <Link href="/blog" className="font-body text-sm text-ink/60 transition-colors hover:text-ink">← All articles</Link>
+          <Link href="/quiz" className="font-body text-sm font-medium text-forest underline-offset-4 hover:underline">Take the ROI quiz →</Link>
         </div>
       </section>
     </div>

@@ -88,8 +88,8 @@ export default function ProcessTimeline() {
       <div className="absolute top-0 bottom-0 left-6 md:left-1/2 md:-translate-x-1/2 w-[2px]">
         <div className="absolute inset-0 bg-black/[0.08]" />
         <div
-          className="absolute top-0 left-0 w-full bg-gradient-to-b from-[#8B5CF6] to-[#A78BFA] transition-[height] duration-300 ease-out"
-          style={{ height: `${progress * 100}%`, boxShadow: '0 0 12px rgba(139,92,246,0.5)' }}
+          className="absolute top-0 left-0 w-full bg-lichen transition-[height] duration-300 ease-out"
+          style={{ height: `${progress * 100}%` }}
         />
       </div>
 
@@ -108,16 +108,16 @@ export default function ProcessTimeline() {
               <div className="absolute left-6 md:left-1/2 -translate-x-1/2 top-1 md:top-1/2 md:-translate-y-1/2 z-10">
                 <div className={`relative w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 ${
                   isActive
-                    ? 'bg-gradient-to-br from-[#8B5CF6] to-[#A78BFA] border-0'
+                    ? 'bg-forest border-0'
                     : 'bg-white border-2 border-black/10'
                 }`}
-                  style={isActive ? { boxShadow: '0 0 0 6px rgba(139,92,246,0.14), 0 0 24px rgba(139,92,246,0.45)' } : undefined}
+                  style={isActive ? { boxShadow: '0 0 0 6px rgba(107,173,61,0.22)' } : undefined}
                 >
                   <span className={`font-mono text-[12px] font-bold transition-colors duration-300 ${isActive ? 'text-white' : 'text-black/30'}`}>
                     {step.num}
                   </span>
                   {step.ongoing && isActive && (
-                    <span className="absolute inset-0 rounded-full border-2 border-[#8B5CF6] animate-ping opacity-40" />
+                    <span className="absolute inset-0 rounded-full border-2 border-lichen animate-ping opacity-40" />
                   )}
                 </div>
               </div>
@@ -149,7 +149,7 @@ function StepPill({ step, isActive, align }: { step: typeof steps[number]; isAct
       isActive ? 'opacity-100 translate-y-0' : `opacity-0 ${align === 'right' ? 'md:translate-x-4' : 'md:-translate-x-4'} translate-y-2`
     }`}>
       <span className={`inline-block rounded-full px-5 py-2 font-body text-sm font-semibold tracking-wide transition-all duration-500 ${
-        isActive ? 'bg-gradient-to-r from-[#8B5CF6] to-[#A78BFA] text-white shadow-[0_4px_18px_rgba(139,92,246,0.4)]' : 'bg-black/[0.06] text-black/40'
+        isActive ? 'bg-forest text-mist' : 'bg-black/[0.06] text-black/40'
       }`}>
         {step.period}
       </span>
@@ -164,22 +164,22 @@ function StepContent({ step, isActive, align }: { step: typeof steps[number]; is
     }`}>
       {/* Title block */}
       <div className={align === 'right' ? 'md:text-right' : ''}>
-        <p className="font-display font-bold text-[28px] md:text-[34px] text-[#0D0D0D] leading-none">{step.title}</p>
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#8B5CF6] mt-2 mb-5">{step.place}</p>
+        <p className="font-display font-medium tracking-[-0.03em] text-[28px] md:text-[34px] text-ink leading-none">{step.title}</p>
+        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-forest mt-2 mb-5">{step.place}</p>
       </div>
 
       {/* Card */}
-      <div className={`bg-white rounded-2xl border border-black/[0.06] p-7 transition-shadow duration-500 ${
-        isActive ? 'shadow-[0_12px_40px_rgba(139,92,246,0.12)]' : 'shadow-sm'
+      <div className={`bg-white rounded-[22px] border border-ink/[0.08] p-7 transition-shadow duration-500 ${
+        isActive ? 'shadow-[0_12px_40px_rgba(30,56,38,0.10)]' : 'shadow-sm'
       } ${align === 'right' ? 'md:text-right' : ''}`}>
         <p className="font-body text-[15px] text-[#3D3A36] leading-relaxed mb-3">{step.desc}</p>
         <p className="font-body text-sm text-[#6B6560] leading-relaxed mb-5">{step.detail}</p>
         <div className={`flex items-center gap-3 pt-4 border-t border-black/[0.06] ${align === 'right' ? 'md:justify-end' : ''}`}>
           <span className="font-mono text-[11px] text-black/30 line-through">{step.traditionalTime}</span>
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M3 7h8M8 4l3 3-3 3" stroke="#8B5CF6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M3 7h8M8 4l3 3-3 3" stroke="#6BAD3D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-          <span className="font-mono text-[11px] font-semibold text-[#7C3AED] uppercase tracking-[0.12em]">{step.aiTime}</span>
+          <span className="font-mono text-[11px] font-semibold text-forest uppercase tracking-[0.12em]">{step.aiTime}</span>
         </div>
       </div>
     </div>

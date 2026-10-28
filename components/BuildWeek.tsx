@@ -75,8 +75,8 @@ export default function BuildWeek() {
         <div className="absolute top-6 bottom-2 left-5 w-[2px]">
           <div className="absolute inset-0 bg-black/[0.08]" />
           <div
-            className="absolute top-0 left-0 w-full bg-gradient-to-b from-[#8B5CF6] to-[#A78BFA] transition-[height] duration-300 ease-out"
-            style={{ height: `${progress * 100}%`, boxShadow: '0 0 12px rgba(139,92,246,0.5)' }}
+            className="absolute top-0 left-0 w-full bg-lichen transition-[height] duration-300 ease-out"
+            style={{ height: `${progress * 100}%` }}
           />
         </div>
 
@@ -92,9 +92,9 @@ export default function BuildWeek() {
                 {/* node */}
                 <div className="absolute left-5 -translate-x-1/2 top-0 z-10">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${
-                    isActive ? 'bg-gradient-to-br from-[#8B5CF6] to-[#A78BFA]' : 'bg-white border-2 border-black/10'
+                    isActive ? 'bg-forest' : 'bg-white border-2 border-black/10'
                   }`}
-                    style={isActive ? { boxShadow: '0 0 0 5px rgba(139,92,246,0.14), 0 0 20px rgba(139,92,246,0.4)' } : undefined}
+                    style={isActive ? { boxShadow: '0 0 0 5px rgba(107,173,61,0.22)' } : undefined}
                   >
                     <span className={`font-mono text-[10px] font-bold uppercase ${isActive ? 'text-white' : 'text-black/30'}`}>{d.label}</span>
                   </div>
@@ -102,11 +102,11 @@ export default function BuildWeek() {
 
                 <div className={`transition-all duration-600 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-40 translate-y-2'}`}>
                   <span className={`inline-block rounded-full px-3.5 py-1 font-body text-[11px] font-semibold tracking-wide mb-3 transition-all duration-500 ${
-                    isActive ? 'bg-gradient-to-r from-[#8B5CF6] to-[#A78BFA] text-white shadow-[0_4px_14px_rgba(139,92,246,0.35)]' : 'bg-black/[0.06] text-black/40'
+                    isActive ? 'bg-forest text-mist' : 'bg-black/[0.06] text-black/40'
                   }`}>
                     {d.day}
                   </span>
-                  <p className="font-display font-bold text-[24px] md:text-[28px] text-[#0D0D0D] leading-none mb-3">{d.title}</p>
+                  <p className="font-display font-medium tracking-[-0.03em] text-[24px] md:text-[28px] text-ink leading-none mb-3">{d.title}</p>
                   <p className="font-body text-[15px] text-[#3D3A36] leading-relaxed max-w-md">{d.desc}</p>
                 </div>
               </div>
@@ -128,7 +128,7 @@ export default function BuildWeek() {
           </div>
           <div className="mt-3 lg:mt-5 flex items-center justify-center gap-2">
             {days.map((_, i) => (
-              <div key={i} className={`h-1 rounded-full transition-all duration-400 ${activeDay >= i ? 'w-6 lg:w-8 bg-[#8B5CF6]' : 'w-3 lg:w-4 bg-black/10'}`} />
+              <div key={i} className={`h-1 rounded-full transition-all duration-400 ${activeDay >= i ? 'w-6 lg:w-8 bg-forest' : 'w-3 lg:w-4 bg-black/10'}`} />
             ))}
           </div>
           <p className="text-center font-mono text-[9px] lg:text-[10px] uppercase tracking-[0.2em] text-black/30 mt-2 lg:mt-3">
@@ -153,7 +153,7 @@ function BrowserMockup({ activeDay, compact = false }: { activeDay: number; comp
   // structure: day0, design: day1, content/copy: day2, features: day3, polish/live: day4
   const built = activeDay >= 4
   return (
-    <div className={`rounded-2xl border border-black/[0.08] overflow-hidden bg-white ${compact ? 'shadow-[0_8px_24px_rgba(0,0,0,0.10)]' : 'shadow-[0_20px_60px_rgba(0,0,0,0.10)]'}`}>
+    <div className={`rounded-[22px] border border-ink/[0.08] overflow-hidden bg-white ${compact ? 'shadow-[0_8px_24px_rgba(0,0,0,0.10)]' : 'shadow-[0_20px_60px_rgba(0,0,0,0.10)]'}`}>
       {/* browser chrome */}
       <div className="flex items-center gap-2 px-4 py-3 border-b border-black/[0.06] bg-[#FAF9F7]">
         <div className="flex gap-1.5">
@@ -176,7 +176,7 @@ function BrowserMockup({ activeDay, compact = false }: { activeDay: number; comp
       <div className={`${compact ? 'aspect-[16/7]' : 'aspect-[4/3]'} p-4 overflow-hidden relative`}>
         {/* nav bar */}
         <Block show={activeDay >= 0} className="flex items-center justify-between mb-4">
-          <div className={`h-3 w-16 rounded transition-colors duration-500 ${activeDay >= 1 ? 'bg-[#8B5CF6]' : 'bg-black/15'}`} />
+          <div className={`h-3 w-16 rounded transition-colors duration-500 ${activeDay >= 1 ? 'bg-forest' : 'bg-black/15'}`} />
           <div className="flex gap-2">
             {[0,1,2].map(k => <div key={k} className={`h-2 w-8 rounded transition-colors duration-500 ${activeDay >= 1 ? 'bg-black/20' : 'bg-black/10'}`} />)}
           </div>
@@ -186,11 +186,11 @@ function BrowserMockup({ activeDay, compact = false }: { activeDay: number; comp
         <Block show={activeDay >= 0} className="mb-4">
           <div className={`rounded-lg p-4 transition-colors duration-500 ${activeDay >= 1 ? 'bg-gradient-to-br from-[#F3EEFF] to-[#FAF7FF]' : 'bg-black/[0.04]'}`}>
             <div className={`h-3.5 w-3/4 rounded mb-2 transition-all duration-500 ${activeDay >= 2 ? 'bg-[#0D0D0D]' : 'bg-black/15'}`} />
-            <div className={`h-3.5 w-1/2 rounded mb-3 transition-all duration-500 ${activeDay >= 2 ? 'bg-[#8B5CF6]' : 'bg-black/10'}`} />
+            <div className={`h-3.5 w-1/2 rounded mb-3 transition-all duration-500 ${activeDay >= 2 ? 'bg-forest' : 'bg-black/10'}`} />
             <div className={`h-2 w-2/3 rounded mb-1 transition-all duration-500 ${activeDay >= 2 ? 'bg-black/30' : 'bg-black/8'}`} />
             <div className={`h-2 w-1/2 rounded mb-4 transition-all duration-500 ${activeDay >= 2 ? 'bg-black/30' : 'bg-black/8'}`} />
             {/* CTA button = day 3 feature */}
-            <div className={`h-7 w-28 rounded-full transition-all duration-500 ${activeDay >= 3 ? 'bg-[#8B5CF6] shadow-[0_4px_14px_rgba(139,92,246,0.4)]' : 'bg-black/10'}`} />
+            <div className={`h-7 w-28 rounded-full transition-all duration-500 ${activeDay >= 3 ? 'bg-forest' : 'bg-black/10'}`} />
           </div>
         </Block>
 
@@ -215,7 +215,7 @@ function BrowserMockup({ activeDay, compact = false }: { activeDay: number; comp
         <Block show={activeDay >= 1} className="flex items-center justify-between pt-3 border-t border-black/[0.06]">
           <div className={`h-2 w-12 rounded transition-colors duration-500 ${activeDay >= 2 ? 'bg-black/25' : 'bg-black/10'}`} />
           <div className="flex gap-1.5">
-            {[0,1].map(k => <div key={k} className={`w-3 h-3 rounded-full transition-colors duration-500 ${activeDay >= 2 ? 'bg-[#8B5CF6]/40' : 'bg-black/10'}`} />)}
+            {[0,1].map(k => <div key={k} className={`w-3 h-3 rounded-full transition-colors duration-500 ${activeDay >= 2 ? 'bg-lichen/50' : 'bg-black/10'}`} />)}
           </div>
         </Block>
 
@@ -227,7 +227,7 @@ function BrowserMockup({ activeDay, compact = false }: { activeDay: number; comp
         )}
         {/* launched stamp */}
         {built && (
-          <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#6BAD3D] text-white font-mono text-[8px] uppercase tracking-[0.18em] rounded-full px-3 py-1.5 shadow-lg animate-fade-up">
+          <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-lime text-forest font-mono text-[8px] uppercase tracking-[0.18em] rounded-full px-3 py-1.5 shadow-lg animate-fade-up">
             <span className="w-1.5 h-1.5 rounded-full bg-white" /> Launched
           </div>
         )}
