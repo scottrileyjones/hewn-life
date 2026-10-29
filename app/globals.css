@@ -253,6 +253,15 @@ body {
 
 /* Opt-in analog film look for a few photos (never text, UI or terrain): faded warm tone
    with lifted blacks, a soft heavy vignette, visible grain and dust specks. */
+/* Safari lets mix-blend-mode layers escape a rounded parent's overflow clip,
+   which showed as dark corners. Round the film layer itself and mask it so
+   every blended layer is clipped to the same shape. */
+.photo-film {
+  border-radius: inherit;
+  isolation: isolate;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  mask-image: radial-gradient(white, black);
+}
 .photo-film img {
   filter: sepia(0.12) saturate(0.92) contrast(0.95);
 }
