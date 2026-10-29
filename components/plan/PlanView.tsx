@@ -220,6 +220,7 @@ export default function PlanView({ record }: { record: PlanRecord }) {
               )
             })}
           </div>
+          <p className="mt-5 font-body text-[13px] leading-relaxed text-forest/75">Our team’s work before founding Hewn Life. These outcomes aren’t typical, and yours will depend on your business. <a href="/legal/results-disclaimer" className="underline underline-offset-2">Results Disclaimer</a></p>
         </div>
       </section>
 
@@ -242,7 +243,7 @@ export default function PlanView({ record }: { record: PlanRecord }) {
           </div>
         </div>
         <p className="mt-6 font-body text-[12px] leading-relaxed text-ink/50">
-          Sources: {Array.from(new Set(sources)).join('; ')}. Figures are from published research, not Hewn Life client results. Plans are estimates of what we’d do, not a guarantee of results.
+          Sources: {Array.from(new Set(sources)).join('; ')}. Figures are from published research, not Hewn Life client results. This plan was written with AI from your answers, so tell us if anything looks off. Plans are estimates of what we’d do, not a guarantee of results. See our <a href="/legal/results-disclaimer" className="underline underline-offset-2">Results Disclaimer</a>.
         </p>
       </section>
     </div>

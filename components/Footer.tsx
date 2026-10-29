@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import HewnLogo from './HewnLogo'
 import CalButton from './CalButton'
+import { CookieSettingsButton } from './CookieConsent'
 
 const columns = [
   {
@@ -67,11 +68,20 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-mist/[0.14] pt-6 md:flex-row md:items-center">
-          <p className="font-body text-xs text-mist/65">© {new Date().getFullYear()} Hewn Life. All rights reserved.</p>
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
-            {[['/legal/terms', 'Terms'], ['/legal/privacy', 'Privacy'], ['/legal/refund', 'Refunds'], ['/legal/cookies', 'Cookies']].map(([href, label]) => (
+          <p className="font-body text-xs leading-relaxed text-mist/65">© {new Date().getFullYear()} Hewn Life LLC. All rights reserved.<br />389 N 1500 E, Layton, UT 84040</p>
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
+            {[
+              ['/legal/terms', 'Terms'],
+              ['/legal/privacy', 'Privacy'],
+              ['/legal/refund', 'Refunds & cancellations'],
+              ['/legal/cookies', 'Cookies'],
+              ['/legal/results-disclaimer', 'Results disclaimer'],
+              ['/legal/accessibility', 'Accessibility'],
+              ['/cancel', 'Cancel subscription'],
+            ].map(([href, label]) => (
               <Link key={href} href={href} className="font-body text-xs text-mist/65 transition-colors hover:text-mist">{label}</Link>
             ))}
+            <CookieSettingsButton className="font-body text-xs text-mist/65 transition-colors hover:text-mist" />
           </div>
         </div>
       </div>

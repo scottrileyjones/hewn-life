@@ -2,117 +2,178 @@ import LegalLayout from '@/components/LegalLayout'
 
 export const metadata = {
   title: 'Terms of Service — Hewn Life',
-  description: 'The terms and conditions governing the use of Hewn Life services.',
+  description: 'The terms that govern use of the Hewn Life website and the purchase of Hewn Life services, plans and subscriptions.',
 }
 
 export default function Terms() {
   return (
     <LegalLayout
       title="Terms of Service"
-      updated="May 30, 2026"
-      intro="These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and use of the websites, products, and services (collectively, the &ldquo;Services&rdquo;) provided by Hewn Life LLC, a Utah limited liability company (&ldquo;Hewn Life,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;). By engaging our Services, signing a statement of work, or using this website, you (&ldquo;Client,&rdquo; &ldquo;you,&rdquo; or &ldquo;your&rdquo;) agree to be bound by these Terms. If you do not agree, do not use the Services."
+      updated="October 29, 2026"
+      intro="These Terms of Service (“Terms”) are an agreement between you and Hewn Life LLC, a Utah limited liability company (“Hewn Life,” “we,” “us” or “our”). They govern your use of hewn.life and any related pages, tools and emails (the “Site”) and your purchase and use of our marketing services, plans and subscriptions (the “Services”). If you are buying on behalf of a business, “you” means that business, and you confirm you have authority to bind it."
+      summary={[
+        'Using the Site or buying from us means you agree to these Terms, our Privacy Policy and our Refunds & Cancellations policy.',
+        'Monthly plans renew automatically each month until you cancel. You can cancel online at any time; it takes effect at the end of the period you’ve paid for.',
+        'Website in a Day is a one-time $999 purchase with a defined scope, delivered within 24 hours of a complete brief and cleared payment.',
+        'We don’t guarantee marketing results. Projections, scores and plans are estimates, not promises.',
+        'You own your final deliverables once they’re paid for. We keep our own tools and templates.',
+        'Some features, such as your personal growth plan, are written with AI from the answers you give us.',
+        'Utah law applies. Disputes go to the courts in Davis County, Utah, or small-claims court.',
+      ]}
       sections={[
         {
-          heading: 'Acceptance of Terms',
+          heading: 'Agreeing to these Terms',
           body: [
-            'By accessing our website, engaging us for a project, or executing a proposal, statement of work, or order form (each, an &ldquo;SOW&rdquo;), you accept these Terms in full. Where a signed SOW conflicts with these Terms, the SOW controls for that engagement.',
-            'We may update these Terms from time to time. Material changes will be posted on this page with a revised &ldquo;Last updated&rdquo; date. Continued use of the Services after changes take effect constitutes acceptance.',
+            'By using the Site, submitting a form, booking a call, or buying a plan or project, you agree to these Terms. If you don’t agree, please don’t use the Site or Services.',
+            'Some engagements are also covered by a proposal, statement of work or order form (an “SOW”). Where an SOW signed by both parties conflicts with these Terms, the SOW controls for that engagement.',
+            'You must be at least 18 years old and able to form a binding contract to buy Services.',
           ],
         },
         {
-          heading: 'Scope of Services',
+          heading: 'Changes to these Terms',
           body: [
-            'Hewn Life provides marketing, advertising, branding, web design and development, content production, and related strategic and creative services. The specific deliverables, timelines, fees, and responsibilities for each engagement are set out in the applicable SOW.',
-            'Any services, deliverables, channels, or platforms not expressly described in an SOW are outside the scope of that engagement. Additional work may be quoted separately as a change order.',
+            'We may update these Terms from time to time. We’ll post the new version here with a new “Last updated” date, and for material changes that affect an active subscription we’ll email you at least 14 days before they take effect. Changes don’t apply retroactively. If you don’t agree to a change, you can cancel before it takes effect.',
           ],
         },
         {
-          heading: 'Client Responsibilities',
-          body: ['You agree to cooperate in good faith and to provide what we reasonably need to perform the Services, including:'],
+          heading: 'Our Services',
+          body: [
+            'We provide marketing services, including strategy, brand, website design and development, search and AI-search optimization, paid media management, creative and content production, email and CRM, analytics and reporting. What each plan includes is described on our Pricing page at the time you buy, or in your SOW.',
+            'Anything not included in your plan or SOW is out of scope. We’re happy to quote additional work separately.',
+          ],
+        },
+        {
+          heading: 'Monthly plans and automatic renewal',
+          body: [
+            'Our Hewn, Wrought and Forged plans are subscriptions. When you subscribe, you authorize us (through our payment processor, Stripe) to charge the plan price shown at checkout, plus any applicable tax, on the day you subscribe and again on the same day of each following billing period until you cancel.',
+            'Plans billed annually are charged for the full year in advance and renew for another year unless you cancel before the renewal date. We’ll email you a reminder before an annual renewal.',
+            'You can cancel at any time online at hewn.life/cancel, or by emailing hello@hewn.life. Cancellation takes effect at the end of the current billing period, and you keep access to the Services until then. See our Refunds & Cancellations policy for details.',
+            'We may change plan prices for future billing periods. We’ll email you at least 30 days before a price change applies to your subscription, and you can cancel before it takes effect.',
+          ],
+        },
+        {
+          heading: 'Website in a Day',
+          body: [
+            'Website in a Day is a one-time purchase for a custom website of defined scope: design, copy, build, hosting setup and launch, plus one round of edits. The 24-hour delivery window starts once we have both your complete brief and cleared payment. If your brief is missing information we need, we’ll tell you, and the window starts when it’s complete.',
+            'Domains, third-party software and ongoing hosting beyond any period stated at purchase are not included unless the offer says so. Additional edits and features are quoted separately.',
+          ],
+        },
+        {
+          heading: 'Payment and taxes',
+          body: [
+            'Prices are in US dollars. Payments are processed by Stripe; we don’t see or store your full card number. You agree to keep your payment details current. If a payment fails, we may retry it and pause Services until the balance is paid.',
+            'Invoiced amounts are due on receipt unless your SOW says otherwise. Overdue amounts may accrue interest at 1.5% per month or the highest rate allowed by law, whichever is lower. You are responsible for applicable sales and similar taxes.',
+            'Third-party costs, including advertising spend, software, stock assets, domains and paid tools, are separate from our fees. You either pay them directly or we bill them at cost, as agreed in writing.',
+          ],
+        },
+        {
+          heading: 'Advertising and third-party platforms',
+          body: [
+            'When we manage advertising for you, you authorize us to operate the relevant accounts within the budget you approve. Platforms such as Google, Meta and others set their own rules and can reject ads, limit delivery or suspend accounts for reasons outside our control. We aren’t responsible for platform decisions, outages or policy changes.',
+            'You are responsible for the claims made about your products and services, and for making sure they are truthful, substantiated and lawful in your industry. Where your business is regulated (for example healthcare, finance, legal or alcohol), you are responsible for final approval of all marketing for regulatory compliance.',
+          ],
+        },
+        {
+          heading: 'No guaranteed results',
+          body: [
+            'Marketing outcomes depend on many things we don’t control, including your offer, pricing, market, competition, platform algorithms and how quickly you act on recommendations. We don’t guarantee any particular ranking, traffic, lead volume, conversion rate, cost per acquisition, return on ad spend or revenue.',
+            'The ROI calculator, health scores, readouts, personal growth plans, projections, benchmarks and case studies on the Site are estimates and illustrations. They are not promises or guarantees of future performance. See our Results Disclaimer.',
+          ],
+        },
+        {
+          heading: 'AI-assisted features',
+          body: [
+            'We use AI tools, including models provided by Anthropic, to help produce some content and Services. Your personal growth plan, for example, is written by AI from the answers you give us, using statistics and pricing we supply. AI output can contain mistakes. Treat plans and readouts as a starting point for a conversation, not as professional, legal or financial advice.',
+            'Deliverables we produce for clients with AI assistance are reviewed by our team before delivery. We don’t use your confidential information to train AI models, and we use providers whose terms don’t permit them to train on the data we send.',
+          ],
+        },
+        {
+          heading: 'Your responsibilities',
+          body: ['To let us do our work, you agree to:'],
           list: [
-            'Timely access to accounts, assets, brand materials, logins, and personnel.',
-            'Accurate and complete information, approvals, and feedback within agreed timeframes.',
-            'All necessary rights, licenses, and permissions for any materials you provide to us.',
-            'Compliance with all applicable laws and the policies of third-party platforms (e.g., Google, Meta, payment processors).',
+            'Give us timely access to accounts, assets, approvals and people we reasonably need.',
+            'Provide accurate information, and only materials you have the right to use and to let us use.',
+            'Review and approve work within agreed timeframes. Delays on your side may move delivery dates.',
+            'Comply with applicable laws, including advertising, privacy and anti-spam laws, and the policies of the platforms we use for you.',
+            'Have a lawful basis, including any required consent, for customer data you ask us to use (for example email lists or advertising audiences).',
           ],
         },
         {
-          heading: 'Fees, Invoicing & Payment',
+          heading: 'Protected health information',
           body: [
-            'Fees are set out in the applicable SOW. Unless otherwise stated, project fees and the first month of any recurring engagement are due before work begins. Recurring fees are billed in advance and are non-refundable except as stated in our Refund Policy.',
-            'Invoices are due upon receipt unless otherwise specified. Late payments may accrue interest at the lesser of 1.5% per month or the maximum permitted by law, and we may suspend Services until outstanding amounts are paid. You are responsible for all taxes other than taxes on our net income.',
-            'Third-party costs — including advertising spend (&ldquo;ad spend&rdquo;), media buys, software, subscriptions, stock assets, and hosting — are your responsibility and are billed at cost or paid directly by you, separate from our service fees.',
+            'Our standard Services are not designed to receive protected health information (“PHI”) as defined under HIPAA. Please don’t send us PHI, such as patient lists or appointment data, unless we have first signed a Business Associate Agreement with you. If we sign one, it controls how we handle PHI.',
           ],
         },
         {
-          heading: 'Advertising Spend & Third-Party Platforms',
-          body: [
-            'Where we manage advertising on your behalf, you authorize us to operate the relevant ad accounts and to allocate the budget you approve. You acknowledge that ad performance depends on numerous factors outside our control, including platform algorithms, auction dynamics, competition, market conditions, and platform policy enforcement.',
-            'We do not guarantee any specific advertising result, ranking, impression, click, lead, conversion, sale, or return on ad spend. Platforms may suspend, disable, or reject accounts, campaigns, or creative for reasons outside our control, and we are not liable for such actions.',
+          heading: 'Using the Site',
+          body: ['You agree not to:'],
+          list: [
+            'Use the Site for anything unlawful, deceptive or harmful, or submit false information in our forms.',
+            'Scrape, copy or resell the Site or its content, or use automated means to submit forms.',
+            'Interfere with the Site’s security or operation, or try to access data you aren’t authorized to access.',
+            'Use the Site or Services to send spam or to market products that are illegal where they are sold.',
           ],
         },
         {
-          heading: 'No Guarantee of Results',
+          heading: 'Intellectual property',
           body: [
-            'Marketing and advertising outcomes are inherently uncertain. Any forecasts, projections, benchmarks, case studies, or examples we provide are illustrative only and are not promises or guarantees of future performance. You are responsible for your own business decisions and results.',
-          ],
-        },
-        {
-          heading: 'Intellectual Property',
-          body: [
-            'Upon full payment of all applicable fees, you will own the final deliverables created specifically for you under an SOW, excluding any third-party materials and our pre-existing or proprietary tools, frameworks, templates, code libraries, and know-how (&ldquo;Hewn Life Materials&rdquo;), which remain our property.',
-            'We grant you a non-exclusive, perpetual license to use Hewn Life Materials solely as incorporated into your deliverables. Until full payment is received, all deliverables remain our property. You retain ownership of materials you provide to us and grant us a license to use them for the engagement.',
-            'Unless you opt out in writing, we may display non-confidential deliverables and describe the work in our portfolio, case studies, and marketing.',
+            'Once you have paid all fees for them, you own the final deliverables we create specifically for you, except for third-party materials (such as licensed fonts, stock images and software, which stay subject to their own licenses) and our own pre-existing tools, frameworks, templates, code and know-how (“Hewn Life Materials”).',
+            'We give you a perpetual, non-exclusive license to use any Hewn Life Materials built into your deliverables, for use with those deliverables. Until fees are paid, deliverables remain ours. You keep ownership of everything you give us and license it to us to perform the Services.',
+            'Unless you tell us in writing not to, we may show non-confidential work in our portfolio and describe the engagement in general terms. We won’t publish your results or name you in a case study without your permission.',
+            'The Site, our brand and our content are owned by Hewn Life and protected by law. You may not use them without our permission.',
           ],
         },
         {
           heading: 'Confidentiality',
           body: [
-            'Each party may receive confidential information from the other. Both parties agree to protect such information, to use it only to perform under the engagement, and not to disclose it to third parties except to personnel or contractors who need it and are bound by similar obligations. This section does not apply to information that is public, independently developed, or lawfully obtained from another source.',
+            'Each of us will keep the other’s non-public business information confidential, use it only for the engagement, and share it only with people and contractors who need it and are bound by similar duties. This doesn’t apply to information that is public, already known, independently developed, or that must be disclosed by law.',
           ],
         },
         {
-          heading: 'Term & Termination',
+          heading: 'Client data',
           body: [
-            'Engagements continue for the term stated in the SOW. Either party may terminate for material breach if the breach is not cured within fifteen (15) days of written notice. Recurring engagements may be terminated by either party with thirty (30) days&apos; written notice unless the SOW states otherwise.',
-            'Upon termination, you must pay for all Services performed and costs incurred through the effective date of termination. Sections relating to payment, intellectual property, confidentiality, disclaimers, limitation of liability, and indemnification survive termination.',
+            'When we process personal data about your customers or audiences on your behalf, we act as your service provider (or “processor”) under our Data Processing Addendum, which forms part of these Terms.',
+          ],
+        },
+        {
+          heading: 'Ending an engagement',
+          body: [
+            'You can cancel a subscription as described above. Project engagements under an SOW end as the SOW states. Either of us may end an engagement if the other materially breaches these Terms and doesn’t fix it within 15 days of written notice.',
+            'When an engagement ends, you pay for Services provided through the end date, and we’ll hand over completed, paid-for deliverables and return or delete your data as described in our Data Processing Addendum. Sections that by their nature should survive (payment, IP, confidentiality, disclaimers, liability and disputes) survive.',
           ],
         },
         {
           heading: 'Disclaimers',
           body: [
-            'THE SERVICES AND ALL DELIVERABLES ARE PROVIDED &ldquo;AS IS&rdquo; AND &ldquo;AS AVAILABLE,&rdquo; WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. We do not warrant that the Services will be uninterrupted, error-free, or that any particular result will be achieved.',
+            'EXCEPT AS EXPRESSLY STATED IN THESE TERMS OR AN SOW, THE SITE AND SERVICES ARE PROVIDED “AS IS” AND “AS AVAILABLE,” WITHOUT WARRANTIES OF ANY KIND, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, TO THE EXTENT THE LAW ALLOWS. We will perform the Services with reasonable skill and care, consistent with industry standards.',
           ],
         },
         {
-          heading: 'Limitation of Liability',
+          heading: 'Limitation of liability',
           body: [
-            'TO THE MAXIMUM EXTENT PERMITTED BY LAW, HEWN LIFE WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, OR FOR ANY LOSS OF PROFITS, REVENUE, DATA, GOODWILL, OR BUSINESS OPPORTUNITY, ARISING OUT OF OR RELATING TO THE SERVICES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.',
-            'OUR TOTAL AGGREGATE LIABILITY ARISING OUT OF OR RELATING TO THE SERVICES WILL NOT EXCEED THE AMOUNT OF FEES YOU PAID TO US (EXCLUDING AD SPEND AND THIRD-PARTY COSTS) IN THE THREE (3) MONTHS PRECEDING THE EVENT GIVING RISE TO THE CLAIM.',
+            'TO THE EXTENT THE LAW ALLOWS, NEITHER PARTY IS LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR PUNITIVE DAMAGES, OR FOR LOST PROFITS, REVENUE OR DATA, EVEN IF ADVISED THEY WERE POSSIBLE.',
+            'OUR TOTAL LIABILITY FOR ANY CLAIM RELATING TO THE SITE OR SERVICES IS LIMITED TO THE FEES YOU PAID US (EXCLUDING AD SPEND AND THIRD-PARTY COSTS) IN THE THREE MONTHS BEFORE THE EVENT THAT GAVE RISE TO THE CLAIM.',
+            'These limits don’t apply to your payment obligations, either party’s indemnity obligations, or liability that can’t be limited by law.',
           ],
         },
         {
-          heading: 'Indemnification',
+          heading: 'Indemnity',
           body: [
-            'You agree to defend, indemnify, and hold harmless Hewn Life and its owners, employees, and contractors from any claims, damages, liabilities, costs, and expenses (including reasonable legal fees) arising from materials you provide, your products or services, your use of deliverables, your violation of law or third-party rights, or your breach of these Terms.',
+            'You will defend and indemnify Hewn Life against third-party claims arising from materials or data you provide, your products and services, claims you approve for your marketing, or your breach of law or these Terms. We will defend and indemnify you against third-party claims that deliverables we created (excluding your materials and third-party materials) infringe that party’s intellectual property rights.',
           ],
         },
         {
-          heading: 'Independent Contractor',
+          heading: 'Disputes and governing law',
           body: [
-            'Hewn Life is an independent contractor. Nothing in these Terms creates an employment, partnership, joint venture, or agency relationship between the parties beyond the limited authority expressly granted in an SOW.',
-          ],
-        },
-        {
-          heading: 'Governing Law & Dispute Resolution',
-          body: [
-            'These Terms are governed by the laws of the State of Utah, without regard to conflict-of-laws principles. The parties will attempt to resolve disputes informally and in good faith. Any unresolved dispute will be subject to binding arbitration or the exclusive jurisdiction of the state and federal courts located in Davis County, Utah, and the parties consent to the personal jurisdiction of those courts.',
+            'If you have a concern, email hello@hewn.life first. Most things can be sorted out quickly, and we’ll try in good faith for 30 days before either of us goes further.',
+            'These Terms are governed by the laws of the State of Utah, without regard to its conflict-of-laws rules. Any dispute will be decided exclusively by the state or federal courts located in Davis County, Utah, and both of us consent to their jurisdiction. Either of us may instead bring an eligible claim in small-claims court.',
           ],
         },
         {
           heading: 'General',
           body: [
-            'If any provision is held unenforceable, the remaining provisions remain in effect. Our failure to enforce a provision is not a waiver. You may not assign these Terms without our consent; we may assign them in connection with a merger, acquisition, or sale of assets. These Terms, together with any applicable SOW, constitute the entire agreement between the parties.',
+            'We are an independent contractor. If any part of these Terms is unenforceable, the rest still applies. Not enforcing a provision isn’t a waiver. You may not assign these Terms without our consent; we may assign them as part of a merger, acquisition or sale of our business. We aren’t liable for delays caused by events beyond our reasonable control. These Terms, the policies they reference and any SOW are the entire agreement between us about their subject.',
+            'We may send you notices by email to the address you gave us. You can send notices to hello@hewn.life or to Hewn Life LLC, 389 N 1500 E, Layton, UT 84040.',
           ],
         },
       ]}

@@ -11,17 +11,22 @@ interface LegalPageProps {
   title: string
   updated: string
   intro: string
+  /** Plain-English bullets shown above the full text. Not a substitute for it. */
+  summary?: string[]
   sections: LegalSection[]
 }
 
-const legalPages = [
-  { href: '/legal/terms', label: 'Terms of Service' },
-  { href: '/legal/privacy', label: 'Privacy Policy' },
-  { href: '/legal/refund', label: 'Refund Policy' },
-  { href: '/legal/cookies', label: 'Cookie Policy' },
+export const legalPages = [
+  { href: '/legal/terms', label: 'Terms of Service', blurb: 'The agreement for using our site and buying our services.' },
+  { href: '/legal/privacy', label: 'Privacy Policy', blurb: 'What we collect, why, who we share it with and your choices.' },
+  { href: '/legal/refund', label: 'Refunds & Cancellations', blurb: 'How billing, renewals, cancelling and refunds work.' },
+  { href: '/legal/cookies', label: 'Cookie Policy', blurb: 'The cookies and tags on this site, and how to change your choice.' },
+  { href: '/legal/results-disclaimer', label: 'Results Disclaimer', blurb: 'How to read our track record, figures and projections.' },
+  { href: '/legal/dpa', label: 'Data Processing Addendum', blurb: 'How we handle your customers’ data when we work for you.' },
+  { href: '/legal/accessibility', label: 'Accessibility', blurb: 'Our commitment to an accessible site, and how to reach us.' },
 ]
 
-export default function LegalLayout({ title, updated, intro, sections }: LegalPageProps) {
+export default function LegalLayout({ title, updated, intro, summary, sections }: LegalPageProps) {
   return (
     <>
       {/* Hero */}
@@ -54,6 +59,17 @@ export default function LegalLayout({ title, updated, intro, sections }: LegalPa
 
           {/* Content */}
           <div className="min-w-0 rounded-[28px] border border-ink/[0.08] bg-white p-7 sm:p-10">
+            {summary && (
+              <div className="mb-10 rounded-[20px] bg-stone p-6">
+                <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-forest">The short version</p>
+                <ul className="space-y-2">
+                  {summary.map((item, k) => (
+                    <li key={k} className="font-body text-[15px] leading-relaxed text-ink/80">{item}</li>
+                  ))}
+                </ul>
+                <p className="mt-3 font-body text-[12px] text-ink/55">This summary is for convenience. The full text below is what applies.</p>
+              </div>
+            )}
             {sections.map((s, i) => (
               <div key={i} className="mb-10 last:mb-0">
                 <h2 className="font-display font-medium tracking-[-0.02em] text-[20px] md:text-[22px] text-ink mb-3 leading-snug">
