@@ -11,6 +11,7 @@ import { generateDeck } from './generate'
 import { createPlan, dueFollowUps, findByToken, findLatestByEmail, plansConfigured, updatePlan, type PlanRecord, type Variant } from './store'
 import { emailConfigured, sendCopy, sendFollowUp, sendPlanEmail, sendReview } from './email'
 import { newToken } from './sign'
+import { savePipeline } from '@/lib/crm/data'
 
 const FOLLOW_UP_DAYS = 3
 
@@ -77,11 +78,17 @@ export async function markBooked(email: string, leadIfNew?: LeadInput) {
   }
 }
 
-/** Stripe payment: stop follow-ups. */
-export async function markPaid(email: string) {
-  if (!plansEnabled() || !email) return
-  const p = await findLatestByEmail(email)
-  if (p) await updatePlan(p.id, { 'Paid at': new Date().toISOString() })
+/**
+ * Stripe payment: credit the sale to the lead (Paid → Won in the CRM, with the
+ * amount as deal value) and stop follow-ups. The plan token from the buy link
+ * wins over email, so it works even when they pay with a different address.
+ */
+export async function markPaid(email: string, credit: { token?: string; amount?: number } = {}) {
+  if (!plansConfigured() || (!email && !credit.token)) return
+  const p = (credit.token ? await findByToken(credit.token) : null) ?? (email ? await findLatestByEmail(email) : null)
+  if (!p || p.paidAt) return
+  await updatePlan(p.id, { 'Paid at': new Date().toISOString() })
+  if (credit.amount) await savePipeline(p.lead.email.trim().toLowerCase(), { 'Deal value': credit.amount }).catch(err => console.error('Deal value not saved:', err))
 }
 
 export async function markOpened(p: PlanRecord) {

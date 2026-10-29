@@ -21,6 +21,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
+  // The plan token a growth-plan buy link put on the customer, so the sale is credited to that lead.
+  const planToken = async (customer: string | Stripe.Customer | Stripe.DeletedCustomer | null, own?: Stripe.Metadata | null) => {
+    if (own?.planToken) return own.planToken
+    if (typeof customer !== 'string') return undefined
+    const c = await stripe.customers.retrieve(customer)
+    return c.deleted ? undefined : c.metadata?.planToken
+  }
+
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session
     console.log('Checkout completed:', {
@@ -30,12 +38,19 @@ export async function POST(request: Request) {
       amount: session.amount_total,
       mode: session.mode,
     })
-    await markPaid(session.customer_email ?? session.customer_details?.email ?? '')
+    await markPaid(session.customer_email ?? session.customer_details?.email ?? '', {
+      token: await planToken(session.customer, session.metadata),
+      amount: session.amount_total ? session.amount_total / 100 : undefined,
+    })
   }
 
   // Embedded checkout: subscriptions settle as paid invoices, one-time orders as payment intents.
   if (event.type === 'invoice.paid') {
-    await markPaid((event.data.object as Stripe.Invoice).customer_email ?? '')
+    const invoice = event.data.object as Stripe.Invoice
+    await markPaid(invoice.customer_email ?? '', {
+      token: await planToken(invoice.customer),
+      amount: invoice.amount_paid ? invoice.amount_paid / 100 : undefined,
+    })
   }
   if (event.type === 'payment_intent.succeeded') {
     const pi = event.data.object as Stripe.PaymentIntent
@@ -44,7 +59,8 @@ export async function POST(request: Request) {
       const c = await stripe.customers.retrieve(pi.customer)
       if (!c.deleted) email = c.email ?? ''
     }
-    await markPaid(email)
+    // Subscription invoices also raise payment intents; invoice.paid credits those.
+    await markPaid(email, { token: await planToken(pi.customer, pi.metadata), amount: pi.amount_received ? pi.amount_received / 100 : undefined })
   }
 
   return NextResponse.json({ received: true })

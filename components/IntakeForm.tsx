@@ -86,6 +86,9 @@ export default function IntakeForm({ order = false, checkoutUrl = '', source = '
           if (values[from]) next.searchParams.set(to, values[from])
         }
         if (data.logo === 'failed') next.searchParams.set('logo', 'failed')
+        // Came from a growth plan: carry its token so the sale is credited to that lead.
+        const ref = new URLSearchParams(window.location.search).get('ref')
+        if (ref) next.searchParams.set('ref', ref)
         window.location.assign(next.toString())
         return
       }

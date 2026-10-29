@@ -307,6 +307,8 @@ export default function CheckoutClient() {
   const price = Number(params.get('price') ?? '0')
   const billing = params.get('billing') ?? 'monthly'
   const tier = params.get('tier') ?? ''
+  // Set by a growth-plan page, so the purchase is credited to that lead in the CRM.
+  const planRef = (params.get('ref') ?? '').replace(/[^a-f0-9]/g, '').slice(0, 32)
 
   const meta = PRODUCT_META[tier] ?? PRODUCT_META['website-in-a-day']
 
@@ -356,7 +358,7 @@ export default function CheckoutClient() {
         body: JSON.stringify({
           priceId, mode,
           email: contact.email,
-          metadata: { businessName: contact.businessName, fullName: contact.fullName, phone: contact.phone, notes: contact.notes },
+          metadata: { businessName: contact.businessName, fullName: contact.fullName, phone: contact.phone, notes: contact.notes, ...(planRef ? { planToken: planRef } : {}) },
         }),
       })
       const { clientSecret: secret, charge: c, error: apiError } = await res.json() as { clientSecret?: string; charge?: Charge; error?: string }

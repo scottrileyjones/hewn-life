@@ -8,6 +8,7 @@ export const samplePlan: PlanRecord = {
   by: 'Sample',
   lead: { source: 'Quiz', name: 'Maya Torres', company: 'Torres Home Comfort', email: 'maya@example.com', consent: true, answers: {} },
   deck: {
+    hook: 'Turn steady referrals into a steady pipeline.',
     summary: 'Torres Home Comfort has a strong reputation and steady referrals, but new customers cost more each season and it’s hard to tell which marketing is paying off. The plan: fix the pages that leak, test new creative every week, and put every dollar on one live dashboard.',
     challenges: [
       { id: 'acquisition', whyYou: 'You told us new leads are the biggest thing holding growth back, and paid search has been getting pricier.', firstMove: 'Rebuild your service pages around one clear offer and test fresh ad creative every week.' },

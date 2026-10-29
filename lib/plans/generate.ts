@@ -86,6 +86,7 @@ export function ruleDeck(lead: LeadInput): PlanDeck {
   const plan: PlanDeck['plan'] = low ? 'website-in-a-day' : high ? 'forged' : has('$3,000', 'ads', 'active') ? 'wrought' : 'hewn'
 
   return {
+    hook: plan === 'website-in-a-day' ? 'A website that wins you customers.' : 'More of the right customers, for less.',
     summary: `${lead.company || 'Your business'} has real room to grow. Here are the challenges that matter most from what you told us, how we’d address each one, and what your first 90 days would look like.`,
     challenges: picks,
     plan,
