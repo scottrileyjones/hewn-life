@@ -110,7 +110,7 @@ export default function HowItWorks() {
           <p className="max-w-[32em] font-body text-mist/75 lg:justify-self-end">AI doesn&apos;t replace the strategy. It removes the delay. Every hour saved on execution goes back into the craft and judgment that move the numbers.</p>
         </div>
         <div className="overflow-hidden rounded-[22px] border border-mist/[0.1]">
-          <div className="grid grid-cols-[1fr_110px_120px] bg-forest-2 px-5 py-3.5 font-mono text-[10px] uppercase tracking-[0.16em] text-mist/60 sm:grid-cols-[1fr_160px_160px] sm:px-8">
+          <div className="hidden bg-forest-2 px-8 py-3.5 font-mono text-[11px] uppercase tracking-[0.16em] text-mist/65 sm:grid sm:grid-cols-[1fr_170px_210px]">
             <span>Task</span><span>Traditional</span><span className="text-lime">With AI</span>
           </div>
           {[
@@ -121,10 +121,10 @@ export default function HowItWorks() {
             ['Trend and competitor monitoring', 'quarterly', 'continuous'],
             ['Ad optimization', 'manual, periodic', 'always on'],
           ].map(([task, before, after]) => (
-            <div key={task} className="grid grid-cols-[1fr_110px_120px] items-center border-t border-mist/[0.08] px-5 py-4 sm:grid-cols-[1fr_160px_160px] sm:px-8">
-              <span className="pr-4 font-body text-sm text-mist/85">{task}</span>
-              <span className="font-mono text-[11px] text-mist/45 line-through">{before}</span>
-              <span className="font-mono text-[11px] text-lime">{after}</span>
+            <div key={task} className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-mist/[0.08] px-5 py-4 first-of-type:border-t-0 sm:grid sm:grid-cols-[1fr_170px_210px] sm:items-center sm:px-8 sm:py-5 sm:first-of-type:border-t">
+              <span className="w-full font-body text-[15px] text-mist/90 sm:w-auto sm:pr-4 sm:text-[17px]">{task}</span>
+              <span className="font-body text-[15px] text-mist/50 line-through sm:pr-3 sm:text-[16px]">{before}</span>
+              <span className="font-display text-[24px] font-medium leading-tight tracking-[-0.02em] text-lime sm:text-[28px]"><span className="mr-1.5 font-body text-[15px] text-mist/40 sm:hidden">→</span>{after}</span>
             </div>
           ))}
         </div>
