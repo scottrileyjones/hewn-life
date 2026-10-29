@@ -60,7 +60,7 @@ export default function HybridInfographic() {
   }, [])
 
   return (
-    <div ref={ref} className="max-w-6xl mx-auto px-6 lg:px-12">
+    <div ref={ref} className="max-w-6xl mx-auto overflow-x-clip px-5 lg:px-12">
 
       {/* Source label */}
       <div className="flex items-center gap-3 mb-10">

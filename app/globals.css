@@ -148,9 +148,9 @@ body {
 /* Brand guide hero headline — tight tracking, compressed leading */
 .hero-heading {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 500;
   font-style: normal;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.045em;
   line-height: 1.08;
   overflow: visible;
 }
