@@ -1167,6 +1167,7 @@ function NotesScreen({
   totalSteps: number
 }) {
   const pct = (stepNumber / totalSteps) * 100
+  const [nothingElse, setNothingElse] = useState(false)
   return (
     <main className="min-h-screen bg-white">
       <div className="pt-20 md:pt-28 pb-16 md:pb-24 px-6 lg:px-12">
@@ -1202,10 +1203,23 @@ function NotesScreen({
               name="notes"
               rows={6}
               value={notes}
+              disabled={nothingElse}
               onChange={e => setNotes(e.target.value)}
               placeholder="Tell us about your business, your goals, what you've tried, or anything that would help us tailor your plan."
-              className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#1E3826] focus:outline-none focus:ring-1 focus:ring-[#1E3826] transition-all resize-none"
+              className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#1E3826] focus:outline-none focus:ring-1 focus:ring-[#1E3826] transition-all resize-none disabled:opacity-50"
             />
+            <label className="mt-4 flex cursor-pointer items-center gap-3 font-body text-[15px] text-[#0D0D0D]">
+              <input
+                type="checkbox"
+                checked={nothingElse}
+                onChange={e => {
+                  setNothingElse(e.target.checked)
+                  if (e.target.checked) setNotes('')
+                }}
+                className="h-5 w-5 flex-shrink-0 cursor-pointer rounded accent-[#1E3826]"
+              />
+              No, nothing else to add
+            </label>
           </div>
 
           {/* Navigation */}
@@ -1218,9 +1232,10 @@ function NotesScreen({
             </button>
             <button
               onClick={onNext}
-              className="inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 bg-[#1E3826] text-white hover:bg-forest-2 hover:-translate-y-0.5"
+              disabled={!notes.trim() && !nothingElse}
+              className="inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 bg-[#1E3826] text-white hover:bg-forest-2 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:bg-[#1E3826]"
             >
-              {notes.trim() ? 'Continue →' : 'Skip →'}
+              Continue →
             </button>
           </div>
         </div>
