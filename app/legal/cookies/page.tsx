@@ -55,7 +55,7 @@ export default function Cookies() {
         {
           heading: 'Contact Us',
           body: [
-            'If you have questions about our use of cookies, contact us at hello@hewnlife.com.',
+            'If you have questions about our use of cookies, contact us at hello@hewn.life.',
           ],
         },
       ]}

@@ -20,7 +20,7 @@ export default function ContactForm() {
       if (!res.ok) throw new Error(out.error || 'Something went wrong.')
       setState('done')
     } catch (err) {
-      setError(`${err instanceof Error ? err.message : 'Something went wrong.'} Please try again, or email hello@hewnlife.com.`)
+      setError(`${err instanceof Error ? err.message : 'Something went wrong.'} Please try again, or email hello@hewn.life.`)
       setState('idle')
     }
   }

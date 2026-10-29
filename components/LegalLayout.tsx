@@ -79,7 +79,7 @@ export default function LegalLayout({ title, updated, intro, sections }: LegalPa
             <div className="mt-14 pt-8 border-t border-ink/[0.08]">
               <p className="font-body text-sm text-ink/70 leading-relaxed mb-4">
                 Questions about this document? Contact us at{' '}
-                <a href="mailto:hello@hewnlife.com" className="text-forest underline underline-offset-2">hello@hewnlife.com</a>.
+                <a href="mailto:hello@hewn.life" className="text-forest underline underline-offset-2">hello@hewn.life</a>.
               </p>
               <address className="font-body text-sm text-ink/70 not-italic leading-relaxed">
                 <span className="font-semibold text-ink">Hewn Life LLC</span><br />

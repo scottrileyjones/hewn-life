@@ -57,7 +57,7 @@ export default function Refund() {
         {
           heading: 'Requesting a Refund',
           body: [
-            'To request a refund where this Policy permits one, email hello@hewnlife.com with your name, engagement details, and the reason for your request within fourteen (14) days of the relevant charge. We review requests in good faith and aim to respond within ten (10) business days. Approved refunds are issued to the original payment method.',
+            'To request a refund where this Policy permits one, email hello@hewn.life with your name, engagement details, and the reason for your request within fourteen (14) days of the relevant charge. We review requests in good faith and aim to respond within ten (10) business days. Approved refunds are issued to the original payment method.',
           ],
         },
         {

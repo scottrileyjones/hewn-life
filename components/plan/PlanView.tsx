@@ -184,7 +184,7 @@ export default function PlanView({ record }: { record: PlanRecord }) {
             {lead.source === 'Website in a Day' && !record.paidAt && (
               <a href="/website-in-a-day#order" className="rounded-full border border-mist/30 bg-mist/10 px-7 py-4 font-body text-[15px] font-medium text-mist backdrop-blur transition hover:bg-mist/20">Finish your Website in a Day order</a>
             )}
-            <a href="mailto:hello@hewnlife.com" className="rounded-full border border-mist/30 px-7 py-4 font-body text-[15px] font-medium text-mist transition hover:bg-mist/10">hello@hewnlife.com</a>
+            <a href="mailto:hello@hewn.life" className="rounded-full border border-mist/30 px-7 py-4 font-body text-[15px] font-medium text-mist transition hover:bg-mist/10">hello@hewn.life</a>
           </div>
         </div>
         <p className="mt-6 font-body text-[12px] leading-relaxed text-ink/50">
