@@ -134,7 +134,7 @@ export const audiences: Audience[] = [
       { title: 'Compliance up front', body: 'Every ad, form and tag is checked against privacy and platform rules before it ships.' },
       { title: 'Measured on patients', body: 'The dashboard tracks booked appointments, not clicks.' },
     ],
-    stat: { value: '30 yrs', label: 'marketing healthcare' },
+    stat: { value: '30 yrs', label: 'combined healthcare marketing' },
     visual: { scene: 'highland', seed: 23 },
     cta: { label: 'Talk healthcare growth' },
   },  {
