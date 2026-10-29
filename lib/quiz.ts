@@ -28,6 +28,16 @@ export const REVENUE_STOPS = [
 /** Index of the stop with this value, for forms that ask in ranges. */
 export const revenueIndex = (value: number) => Math.max(0, REVENUE_STOPS.findIndex(s => s.value === value))
 
+/** Revenue as a few tappable ranges (contact form, website brief), each mapped to a calculator stop for scoring. */
+export const REVENUE_BANDS = [
+  { label: 'Pre-revenue', value: 0 },
+  { label: 'Under $250K', value: 100000 },
+  { label: '$250K–$1M', value: 500000 },
+  { label: '$1M–$5M', value: 3000000 },
+  { label: '$5M–$20M', value: 15000000 },
+  { label: '$20M+', value: 30000000 },
+].map(b => ({ ...b, idx: revenueIndex(b.value) }))
+
 export function revenueLabel(idx: number): string {
   return REVENUE_STOPS[idx]?.label ?? '$0'
 }

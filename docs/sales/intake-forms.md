@@ -45,7 +45,7 @@ The **Identifier** must match exactly, or the answer won't reach Airtable.
 | 15 | `competitors` | Top competitors | Short text | No |
 | 16 | `primary_action` | What should website visitors do? | Select: Call us · Book an appointment · Buy online · Request a quote · Visit in person · Join a list or waitlist | Yes |
 | 17 | `goal_90_days` | Your 90-day goal | Short text | No |
-| 18 | `revenue_range` | Annual revenue | Select: Under $500K · $500K–$1M · $1M–$5M · $5M+ · Prefer not to say | No |
+| 18 | `revenue_range` | Annual revenue | Select: Pre-revenue · Under $250K · $250K–$1M · $1M–$5M · $5M–$20M · $20M+ · Prefer not to say | No |
 | 19 | `plan_interest` | Interested in | Select: Website in a Day ($999) · Hewn ($2,500/mo) · Wrought ($5,000/mo) · Forged ($9,500/mo) · Not sure yet | No |
 
 Cal.com booking questions can't take file uploads, so the logo comes in through hewn.life/start.
