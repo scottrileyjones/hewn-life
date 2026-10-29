@@ -7,6 +7,7 @@ import Photo from '@/components/strata/Photo'
 import { h2Class } from '@/components/strata/Page'
 import { Glyph, Pill } from '@/components/strata/Glyph'
 import { pillars, funnel, archetypes, scorecard, tierNames } from '@/lib/services'
+import { audiences } from '@/lib/audiences'
 import { colors } from '@/lib/strata'
 
 export const metadata: Metadata = {
@@ -45,6 +46,32 @@ export default function ServicesPage() {
           </div>
         </section>
       </div>
+
+      {/* ── WAYS IN: the fast start and who we serve ── */}
+      <section className="mx-auto max-w-[1400px] px-5 pt-3.5">
+        <div className="grid gap-3.5 lg:grid-cols-[1fr_1.4fr]">
+          <Link href="/website-in-a-day" className="group relative isolate flex min-h-[260px] flex-col justify-end overflow-hidden rounded-[28px] p-7 text-mist sm:p-9">
+            <Terrain scene="amber" seed={31} className="-z-20" />
+            <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(0deg, rgba(20,16,10,.75), rgba(20,16,10,.15) 80%)' }} />
+            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-lime">The fast start</span>
+            <p className="mt-2 font-display text-[clamp(28px,2.6vw,36px)] font-medium leading-[1.1] tracking-[-0.03em]">Website in a Day, <em className="accent text-lime">$999.</em></p>
+            <p className="mt-2 max-w-[32em] font-body text-[15px] text-mist/85">A custom site, live within 24 hours of your brief. The easiest way to start with Hewn.</p>
+            <span className="mt-4 font-body text-[15px] font-medium text-lime">Start your brief <span className="inline-block transition group-hover:translate-x-0.5">→</span></span>
+          </Link>
+          <div className="rounded-[28px] border border-ink/[0.08] bg-white p-7 sm:p-9">
+            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink/55">Who we serve</span>
+            <p className="mt-2 font-display text-[clamp(26px,2.4vw,34px)] font-medium leading-[1.12] tracking-[-0.03em]">Built for your kind of business.</p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {audiences.map(a => (
+                <Link key={a.id} href={`/who-we-serve#${a.id}`} className="inline-flex items-center gap-2 rounded-full border border-ink/[0.12] px-4 py-2 font-body text-[14px] text-ink transition hover:border-forest hover:bg-bone">
+                  <Glyph name={a.glyph} fg={colors.forest} accent={colors.lichen} size={16} />{a.tab}
+                </Link>
+              ))}
+            </div>
+            <Link href="/case-studies/telehealth" className="mt-6 inline-flex font-body text-[15px] font-medium text-forest underline-offset-4 hover:underline">See the case study: zero to $10M a year →</Link>
+          </div>
+        </div>
+      </section>
 
       {/* ── PILLARS ── */}
       <section className="mx-auto max-w-7xl px-5 py-24">

@@ -68,6 +68,7 @@ export default function Home() {
                 <CalButton className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 font-body text-[15px] font-medium text-ink transition hover:bg-mist">Book a discovery call</CalButton>
                 <Link href="/dashboard" className="inline-flex items-center justify-center rounded-full border border-mist/30 bg-mist/10 px-6 py-3.5 font-body text-[15px] font-medium text-mist backdrop-blur transition hover:bg-mist/20">See the dashboard →</Link>
               </div>
+              <Link href="/website-in-a-day" className="mt-5 inline-flex font-body text-[15px] text-mist/85 underline-offset-4 hover:text-mist hover:underline">Just need a website? <span className="ml-1 font-medium text-lime">Website in a Day, $999 →</span></Link>
             </div>
             <div className="w-full max-w-[340px] rounded-[22px] border border-mist/30 p-[18px] pb-3.5 backdrop-blur-xl lg:justify-self-end" style={{ background: 'linear-gradient(140deg, rgba(244,242,236,.2), rgba(244,242,236,.07))', boxShadow: '0 24px 60px rgba(20,16,10,.35), inset 0 1px 0 rgba(255,255,255,.18)' }}>
               <div className="flex items-baseline justify-between gap-3">

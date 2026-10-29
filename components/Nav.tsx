@@ -6,14 +6,11 @@ import HewnLogo from './HewnLogo'
 import CalButton from './CalButton'
 
 const navLinks = [
-  { href: '/website-in-a-day', label: 'Website in a day' },
-  { href: '/how-it-works', label: 'How it works' },
   { href: '/services', label: 'Services' },
-  { href: '/who-we-serve', label: 'Who we serve' },
-  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/case-studies', label: 'Case studies' },
+  { href: '/how-it-works', label: 'How it works' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/quiz', label: 'ROI calculator' },
-  { href: '/contact', label: 'Contact' },
 ]
 
 // Older pages that still open on a dark hero.
@@ -45,14 +42,14 @@ export default function Nav() {
         <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-5 px-5">
           <HewnLogo dark={!darkHero} />
 
-          <div className="hidden items-center gap-5 xl:flex 2xl:gap-7">
+          <div className="hidden items-center gap-6 lg:flex xl:gap-8">
             {navLinks.map(link => {
               const active = pathname === link.href || pathname.startsWith(link.href + '/')
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`relative whitespace-nowrap font-body text-[14px] font-medium transition-colors 2xl:text-[15px] duration-200 after:absolute after:-bottom-1.5 after:left-0 after:h-[2px] after:rounded-full after:bg-ember after:transition-all ${
+                  className={`relative whitespace-nowrap font-body text-[15px] font-medium transition-colors duration-200 after:absolute after:-bottom-1.5 after:left-0 after:h-[2px] after:rounded-full after:bg-ember after:transition-all ${
                     darkHero
                       ? active ? 'text-white after:w-full' : 'text-white/80 after:w-0 hover:text-white'
                       : active ? 'text-ink after:w-full' : 'text-ink/80 after:w-0 hover:text-ink'
@@ -64,12 +61,12 @@ export default function Nav() {
             })}
           </div>
 
-          <div className="hidden items-center gap-4 xl:flex">
+          <div className="hidden items-center gap-4 lg:flex">
             <a
               href="https://hewnlife.myassembly.com"
               target="_blank"
               rel="noopener noreferrer"
-              className={`whitespace-nowrap font-body text-[14px] font-medium transition-colors 2xl:text-[15px] ${darkHero ? 'text-white/80 hover:text-white' : 'text-ink/80 hover:text-ink'}`}
+              className={`whitespace-nowrap font-body text-[15px] font-medium transition-colors ${darkHero ? 'text-white/80 hover:text-white' : 'text-ink/80 hover:text-ink'}`}
             >
               Client login
             </a>
@@ -81,7 +78,7 @@ export default function Nav() {
           </div>
 
           <button
-            className="p-2 xl:hidden"
+            className="p-2 lg:hidden"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
             aria-expanded={menuOpen}
@@ -96,7 +93,7 @@ export default function Nav() {
       </nav>
 
       {menuOpen && (
-        <div className="fixed inset-0 z-40 flex flex-col items-center gap-8 overflow-y-auto bg-bone px-5 pb-10 pt-24 xl:hidden">
+        <div className="fixed inset-0 z-40 flex flex-col items-center gap-8 overflow-y-auto bg-bone px-5 pb-10 pt-24 lg:hidden">
           <div className="my-auto flex flex-col items-center gap-6">
             {[{ href: '/', label: 'Home' }, ...navLinks].map(link => (
               <Link

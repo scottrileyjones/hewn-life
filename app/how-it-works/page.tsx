@@ -175,6 +175,18 @@ export default function HowItWorks() {
         </div>
       </section>
 
+      {/* ── DASHBOARD ── */}
+      <section className="mx-auto max-w-7xl px-5 pb-12">
+        <Link href="/dashboard" className="group flex flex-col items-start justify-between gap-5 rounded-[28px] bg-forest p-7 text-mist sm:flex-row sm:items-center sm:p-10">
+          <div>
+            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-lime">The live dashboard</span>
+            <p className="mt-2 font-display text-[clamp(26px,2.6vw,36px)] font-medium leading-[1.1] tracking-[-0.03em]">See every dollar graded, every week.</p>
+            <p className="mt-2 max-w-[36em] font-body text-[15px] text-mist/80">Explore a sample of the dashboard every client gets: spend, results and a verdict on each test.</p>
+          </div>
+          <span className="inline-flex flex-shrink-0 items-center justify-center rounded-full bg-lime px-6 py-3.5 font-body text-[15px] font-medium text-forest transition group-hover:bg-[#c7e67a]">Open the sample dashboard →</span>
+        </Link>
+      </section>
+
       <CtaBanner />
     </div>
   )
