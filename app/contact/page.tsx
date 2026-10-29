@@ -96,7 +96,7 @@ export default function Contact() {
               <Terrain scene="amber" seed={53} className="-z-20" />
               <div className="absolute inset-0 -z-10 bg-[linear-gradient(0deg,rgba(20,16,10,.7),transparent_80%)]" />
               <blockquote className="accent text-xl leading-snug">&ldquo;Every inquiry is reviewed personally by the founder. You will always talk to the person who will actually do your work.&rdquo;</blockquote>
-              <p className="mt-3 font-body text-sm text-mist/80">Scott Jones, Founder</p>
+              <p className="mt-3 font-body text-sm text-mist/80">The founder, Hewn Life</p>
             </div>
           </div>
         </div>

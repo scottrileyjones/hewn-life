@@ -289,7 +289,7 @@ export default function Home() {
           </div>
           <blockquote className="accent text-[22px] leading-snug text-ink/70">“Senior judgment on every account. You are never handed to a junior.”</blockquote>
           <div>
-            <p className="font-body text-sm"><b className="block font-medium">Scott Jones</b>Founder, Hewn Life</p>
+            <p className="font-body text-sm"><b className="block font-medium">The founder</b>Hewn Life</p>
             <div className="mt-5 grid grid-cols-3 border-t border-ink/[0.08] tabular-nums">
               {[['30 yrs', 'in business'], ['48h', 'to onboard'], ['1', 'point of contact']].map(([k, v], i) => (
                 <div key={k} className={`pr-3 pt-4 ${i ? 'border-l border-ink/[0.08] pl-3.5' : ''}`}>

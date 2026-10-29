@@ -63,7 +63,7 @@ const jsonLd = {
   image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780097466/yolk-coworking-krakow-uuX7TG5Iyg0-unsplash_zfxcwz.jpg',
   datePublished: '2026-05-01',
   dateModified: '2026-05-01',
-  author: { '@type': 'Person', name: 'Scott Jones', jobTitle: 'Founder', url: 'https://www.hewn.life/about' },
+  author: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   publisher: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   url: 'https://www.hewn.life/blog/launch-marketing-fast',
   mainEntityOfPage: 'https://www.hewn.life/blog/launch-marketing-fast',
