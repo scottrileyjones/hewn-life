@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { intakeFields, LOGO_MAX_BYTES, LOGO_TYPES } from '@/lib/intake'
 import { briefsConfigured, toFields, createBrief, attachLogo } from '@/lib/airtable'
+import { waitUntil } from '@vercel/functions'
+import { startPlan } from '@/lib/plans/flow'
+import { briefLead } from '@/lib/plans/lead'
+
+// Room for the growth-plan deck to be written after the response is sent.
+export const maxDuration = 300
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -34,6 +40,7 @@ export async function POST(req: NextRequest) {
 
     const source = typeof form.get('source') === 'string' ? String(form.get('source')) : 'Website'
     const id = await createBrief(toFields(answers, { Source: source.slice(0, 60) }))
+    waitUntil(startPlan(briefLead(answers, /day/i.test(source) ? 'Website in a Day' : 'Website brief')))
 
     if (hasLogo) {
       try {
