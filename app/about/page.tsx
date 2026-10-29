@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { ogImage } from '@/lib/og'
 import CtaBanner from '@/components/CtaBanner'
 import HybridInfographic from '@/components/HybridInfographic'
 import Terrain from '@/components/strata/Terrain'
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
     title: 'About Hewn Life — Our Story & Philosophy',
     description: 'Hewn Life was built on 30 years of real business experience. We combine deep human strategy with AI-era speed to deliver marketing most agencies can\'t match at any price.',
     url: 'https://www.hewn.life/about',
+    images: [ogImage],
   },
 }
 

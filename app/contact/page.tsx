@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { ogImage } from '@/lib/og'
 import Terrain from '@/components/strata/Terrain'
 import { PageHero, ForestBand, h2Class } from '@/components/strata/Page'
 import ContactForm from '@/components/ContactForm'
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
     title: 'Contact Hewn Life — Talk to a Real Strategist',
     description: 'Have a question or ready to get started? Reach out to Hewn Life. We respond fast — usually same day.',
     url: 'https://www.hewn.life/contact',
+    images: [ogImage],
   },
 }
 

@@ -48,26 +48,17 @@ export const metadata: Metadata = {
     canonical: 'https://www.hewn.life',
   },
   openGraph: {
-    title: 'Hewn Life — AI-Era Marketing Agency',
-    description: 'Thirty years of human business acumen. The speed and scale of AI. Premium full-service marketing at a fraction of the traditional cost.',
+    title: 'Hewn Life — Your new growth team. One flat fee.',
+    description: 'Senior strategy, 20–40 creative assets a week and a live dashboard that grades every dollar. Monthly plans from $2,500, or a website in a day for $999.',
     url: 'https://www.hewn.life',
     siteName: 'Hewn Life',
     type: 'website',
     locale: 'en_US',
-    images: [
-      {
-        url: 'https://res.cloudinary.com/dsx2wcqte/image/upload/v1780344752/opengraph-image_vvlapa.png',
-        width: 2400,
-        height: 1260,
-        alt: 'Hewn Life — AI-Era Marketing Agency',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Hewn Life — AI-Era Marketing Agency',
-    description: 'Thirty years of human business acumen. The speed and scale of AI. Premium full-service marketing at a fraction of the traditional cost.',
-    images: ['https://res.cloudinary.com/dsx2wcqte/image/upload/v1780344752/opengraph-image_vvlapa.png'],
+    title: 'Hewn Life — Your new growth team. One flat fee.',
+    description: 'Senior strategy, 20–40 creative assets a week and a live dashboard that grades every dollar. Monthly plans from $2,500, or a website in a day for $999.',
   },
   robots: {
     index: true,

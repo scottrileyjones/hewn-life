@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { ogImage } from '@/lib/og'
 import CtaBanner from '@/components/CtaBanner'
 import ProcessTimeline from '@/components/ProcessTimeline'
 import Photo from '@/components/strata/Photo'
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
     title: 'How Hewn Life Works — From Onboarding to Full Execution',
     description: 'We onboard in 48 hours and run your full marketing program from day one. See exactly how Hewn Life delivers — strategy, creative, paid media, SEO, and more.',
     url: 'https://www.hewn.life/how-it-works',
+    images: [ogImage],
   },
 }
 import CalButton from '@/components/CalButton'
