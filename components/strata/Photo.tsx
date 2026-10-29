@@ -3,6 +3,7 @@ import { photos, photoUrl, photoSrcSet, type PhotoKey } from '@/lib/photos'
 /**
  * A Cloudinary photo that fills its (relative, sized) parent. `w`/`h` set the
  * crop ratio and the 1× delivery size; `sizes` tells the browser how wide it renders.
+ * Every photo gets the film treatment (grain, warm leak) from `.photo-film`.
  */
 export default function Photo({
   name,
@@ -20,17 +21,19 @@ export default function Photo({
   priority?: boolean
 }) {
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={photoUrl(name, w, h)}
-      srcSet={photoSrcSet(name, w, h)}
-      sizes={sizes}
-      alt={photos[name].alt}
-      width={w}
-      height={h}
-      loading={priority ? 'eager' : 'lazy'}
-      decoding="async"
-      className={`absolute inset-0 h-full w-full object-cover ${className}`}
-    />
+    <span className={`photo-film absolute inset-0 overflow-hidden ${className}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={photoUrl(name, w, h)}
+        srcSet={photoSrcSet(name, w, h)}
+        sizes={sizes}
+        alt={photos[name].alt}
+        width={w}
+        height={h}
+        loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+    </span>
   )
 }
