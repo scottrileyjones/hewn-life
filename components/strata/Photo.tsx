@@ -3,7 +3,7 @@ import { photos, photoUrl, photoSrcSet, type PhotoKey } from '@/lib/photos'
 /**
  * A Cloudinary photo that fills its (relative, sized) parent. `w`/`h` set the
  * crop ratio and the 1× delivery size; `sizes` tells the browser how wide it renders.
- * Every photo gets the film treatment (grain, warm leak) from `.photo-film`.
+ * Every photo gets the analog film treatment (faded tone, vignette, grain, dust) from `.photo-film`.
  */
 export default function Photo({
   name,
@@ -34,6 +34,7 @@ export default function Photo({
         decoding="async"
         className="absolute inset-0 h-full w-full object-cover"
       />
+      <span className="photo-film-dust" aria-hidden="true" />
     </span>
   )
 }
