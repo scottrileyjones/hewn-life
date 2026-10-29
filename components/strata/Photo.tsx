@@ -3,8 +3,8 @@ import { photos, photoUrl, photoSrcSet, type PhotoKey } from '@/lib/photos'
 /**
  * A Cloudinary photo that fills its (relative, sized) parent. `w`/`h` set the
  * crop ratio and the 1× delivery size; `sizes` tells the browser how wide it renders.
- * `film` adds a subtle analog look (faded tone, vignette, grain, dust). Use it on a
- * few photos only, never everywhere.
+ * Every photo gets the analog film look (faded tone, vignette, grain, dust) by
+ * default; pass film={false} to show one clean.
  */
 export default function Photo({
   name,
@@ -13,7 +13,7 @@ export default function Photo({
   sizes = '(min-width: 1024px) 50vw, 100vw',
   className = '',
   priority = false,
-  film = false,
+  film = true,
 }: {
   name: PhotoKey
   w?: number

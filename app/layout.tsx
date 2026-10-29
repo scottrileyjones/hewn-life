@@ -40,7 +40,7 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.hewn.life'),
   title: {
-    default: 'Hewn Life — AI-Era Marketing Agency',
+    default: 'Hewn Life — AI runs the engine. Artists drive.',
     template: '%s | Hewn Life',
   },
   description: 'Premium AI-era marketing agency combining thirty years of human business acumen with the speed and scale of AI. Flat fees. Full transparency.',
