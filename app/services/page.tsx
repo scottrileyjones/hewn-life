@@ -78,7 +78,7 @@ export default function ServicesPage() {
       {/* ── LAYERS ── */}
       <section className="mx-auto max-w-7xl px-5 pb-3.5">
         <div className="relative isolate flex min-h-[440px] items-end overflow-hidden rounded-[32px] bg-sand text-mist lg:min-h-[520px]">
-          <Photo name="rockStrata" w={1280} h={600} sizes="(min-width: 1280px) 1240px, 100vw" className="-z-20" />
+          <Photo name="rockStrata" film w={1280} h={600} sizes="(min-width: 1280px) 1240px, 100vw" className="-z-20" />
           <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(20,16,10,.62), rgba(20,16,10,.1) 70%), linear-gradient(0deg, rgba(20,16,10,.45), transparent 50%)' }} />
           <div className="max-w-xl p-7 sm:p-12">
             <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-mist/80">Built in layers</span>
