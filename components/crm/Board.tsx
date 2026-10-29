@@ -150,8 +150,8 @@ export default function Board({ initial, user }: { initial: BoardContact[]; user
                       onDragStart={() => setDragging(c.email)} onDragEnd={() => { setDragging(null); setOver(null) }}
                       onClick={() => setOpenEmail(c.email)}
                       className={`rounded-[14px] border bg-white p-3 text-left shadow-sm transition hover:border-forest/30 ${dragging === c.email ? 'opacity-50' : ''} ${c.stage === 'Lost' ? 'border-ink/[0.06] opacity-70' : 'border-ink/[0.08]'}`}>
-                      <p className="truncate font-body text-[14px] font-medium">{c.name}</p>
-                      {c.company && <p className="truncate font-body text-[12px] text-ink/60">{c.company}</p>}
+                      <p className="truncate font-body text-[14px] font-medium">{c.company || c.name}</p>
+                      {c.company && <p className="truncate font-body text-[12px] text-ink/60">{c.name}</p>}
                       <div className="mt-2 flex flex-wrap items-center gap-1.5">
                         {c.sources.slice(0, 2).map(s => <span key={s} className="rounded-full bg-bone px-2 py-0.5 font-body text-[11px] text-ink/70">{s}</span>)}
                         {c.tier && !c.sources.includes(c.tier) && <span className="rounded-full bg-lime px-2 py-0.5 font-body text-[11px] text-forest">{c.tier}</span>}
@@ -186,8 +186,9 @@ function Drawer({ c, onClose, onSave }: { c: BoardContact; onClose: () => void; 
       <aside className="h-full w-full max-w-[460px] overflow-y-auto bg-bone p-5 shadow-2xl sm:p-6" onClick={e => e.stopPropagation()}>
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <h2 className="truncate font-display text-[24px] font-semibold tracking-[-0.02em]">{c.name}</h2>
-            {c.company && <p className="font-body text-[15px] text-ink/65">{c.company}</p>}
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/50">{c.company ? 'Company' : 'Contact'}</p>
+            <h2 className="mt-1 truncate font-display text-[24px] font-semibold tracking-[-0.02em]">{c.company || c.name}</h2>
+            {c.company && <p className="font-body text-[15px] text-ink/65">{c.name}</p>}
           </div>
           <button onClick={onClose} className="rounded-full border border-ink/15 px-3 py-1 font-body text-sm" aria-label="Close">Close</button>
         </div>
@@ -195,10 +196,13 @@ function Drawer({ c, onClose, onSave }: { c: BoardContact; onClose: () => void; 
         <div className="mt-4 flex flex-wrap gap-2">
           <a href={`mailto:${c.email}`} className="rounded-full bg-forest px-4 py-2 font-body text-[13px] text-mist">Email</a>
           {c.phone && <a href={`tel:${c.phone}`} className="rounded-full border border-forest/25 px-4 py-2 font-body text-[13px] text-forest">Call</a>}
-          {c.planLink && <a href={c.planLink} target="_blank" rel="noopener noreferrer" className="rounded-full border border-forest/25 px-4 py-2 font-body text-[13px] text-forest">Their growth plan</a>}
+          {c.planLink && <a href={c.planLink} target="_blank" rel="noopener noreferrer" className="rounded-full border border-forest/25 px-4 py-2 font-body text-[13px] text-forest">View growth plan</a>}
+          {c.planLink && <a href={`${c.planLink}&print=1`} target="_blank" rel="noopener noreferrer" className="rounded-full border border-forest/25 px-4 py-2 font-body text-[13px] text-forest">Download PDF</a>}
         </div>
 
         <dl className="mt-5 grid grid-cols-[110px_1fr] gap-x-3 gap-y-1.5 font-body text-[13px]">
+          <dt className="text-ink/50">Company</dt><dd>{c.company || '—'}</dd>
+          <dt className="text-ink/50">Contact</dt><dd>{c.name}</dd>
           <dt className="text-ink/50">Email</dt><dd className="truncate">{c.email}</dd>
           {c.phone && <><dt className="text-ink/50">Phone</dt><dd>{c.phone}</dd></>}
           {c.state && <><dt className="text-ink/50">State</dt><dd>{c.state}</dd></>}

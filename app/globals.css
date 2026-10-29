@@ -316,3 +316,16 @@ body {
 .trail-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: trail-draw 1.8s cubic-bezier(.4,0,.2,1) .3s forwards; }
 @keyframes trail-draw { to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) { .trail-draw { animation: none; stroke-dashoffset: 0; } }
+
+/* Printing a page (e.g. a growth plan saved as PDF from the CRM): keep the brand colors, drop site chrome. */
+@media print {
+  @page { size: letter; margin: 10mm; }
+  /* Scaled down so a printed page gets the desktop layout, not the phone one. */
+  html { zoom: 0.72; }
+  html, body { background: #FFFFFF !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  h2, h3, p[class*="uppercase"] { break-after: avoid; break-inside: avoid; }
+  nav, footer, [data-print-hide], [aria-label="Cookie consent"] { display: none !important; }
+  main { padding-top: 0 !important; }
+  article, section > div, .break-inside-avoid { break-inside: avoid; }
+  a[href]::after { content: none !important; }
+}
