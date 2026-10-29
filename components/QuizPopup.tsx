@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import Terrain from '@/components/strata/Terrain'
 
 const STORAGE_KEY = 'hewn_quiz_popup_dismissed'
 const DELAY_MS = 4000
@@ -38,7 +39,7 @@ export default function QuizPopup() {
       {/* Backdrop */}
       <div
         onClick={dismiss}
-        className="fixed inset-0 z-[90] bg-black/50 backdrop-blur-sm transition-opacity duration-400"
+        className="fixed inset-0 z-[90] bg-ink/40 backdrop-blur-[2px] transition-opacity duration-400"
         style={{ opacity: visible ? 1 : 0 }}
       />
 
@@ -53,68 +54,55 @@ export default function QuizPopup() {
             transform: visible ? 'translateY(0) scale(1)' : 'translateY(24px) scale(0.97)',
           }}
         >
-        <div className="relative bg-forest/95 backdrop-blur-xl rounded-[28px] overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.5)]">
-          {/* Green accent bar */}
-          <div className="h-1 bg-lime" />
-
-          <div className="p-8">
-            {/* Close */}
+        <div className="relative overflow-hidden rounded-[28px] bg-paper text-ink shadow-[0_32px_80px_-16px_rgba(20,16,10,0.45)]">
+          {/* Terrain header */}
+          <div className="relative isolate h-36 overflow-hidden">
+            <Terrain scene="survey" seed={57} className="-z-20" />
+            <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(180deg, rgba(20,16,10,.1), rgba(20,16,10,.55))' }} />
+            <span className="absolute bottom-4 left-6 inline-flex items-center gap-2 rounded-full bg-mist/15 px-3 py-1.5 font-body text-[13px] font-medium text-mist backdrop-blur">
+              <span className="h-3 w-[3px] bg-lime" />Free · 2 minutes
+            </span>
             <button
               onClick={dismiss}
-              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+              className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-mist/15 text-mist backdrop-blur transition-colors hover:bg-mist/30"
               aria-label="Close"
             >
-              <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
+          </div>
 
-            {/* Eyebrow */}
-            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-lime mb-4">
-              Free · 2 Minutes
-            </p>
-
-            {/* Heading */}
-            <h2 className="font-display font-medium tracking-[-0.03em] text-[30px] text-mist leading-tight mb-3">
-              Not sure where<br />
-              to <span className="font-accent italic" style={{ color: '#D6F28B' }}>start?</span>
+          <div className="p-7 sm:p-8">
+            <h2 className="font-display text-[30px] font-medium leading-[1.05] tracking-[-0.03em]">
+              Not sure where to <em className="accent text-forest">start?</em>
             </h2>
-
-            <p className="font-body text-sm text-mist/75 leading-relaxed mb-7">
-              Take our 2-minute growth assessment. We&apos;ll show you exactly where your biggest opportunity is — and what it could be worth.
+            <p className="mt-3 font-body text-[15px] leading-relaxed text-ink/70">
+              Take the 2-minute growth assessment. We&apos;ll show you where your biggest opportunity is, and what it could be worth.
             </p>
 
-            {/* Stats row */}
-            <div className="grid grid-cols-3 gap-3 mb-7 pb-7 border-b border-mist/[0.12]">
+            <div className="mt-6 grid grid-cols-3 border-y border-ink/[0.08]">
               {[
                 { num: '2 min', label: 'to complete' },
-                { num: '100%', label: 'free' },
-                { num: 'instant', label: 'results' },
-              ].map((s) => (
-                <div key={s.label} className="text-center">
-                  <p className="font-display font-medium text-[15px] text-mist leading-none mb-1">{s.num}</p>
-                  <p className="font-mono text-[8px] uppercase tracking-[0.15em] text-mist/55">{s.label}</p>
+                { num: 'Free', label: 'no sales call' },
+                { num: 'Instant', label: 'results' },
+              ].map((st, i) => (
+                <div key={st.label} className={`py-4 ${i ? 'border-l border-ink/[0.08] pl-4' : ''}`}>
+                  <p className="font-display text-[17px] font-medium leading-none">{st.num}</p>
+                  <p className="mt-1.5 font-body text-[12px] text-ink/60">{st.label}</p>
                 </div>
               ))}
             </div>
 
-            {/* CTAs */}
             <Link
               href="/quiz"
               onClick={dismiss}
-              className="flex items-center justify-center gap-2 w-full bg-white text-ink font-body font-medium text-sm px-6 py-4 rounded-full hover:bg-mist transition-colors mb-3"
+              className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-forest px-6 py-4 font-body text-[15px] font-medium text-mist transition-colors hover:bg-forest-2"
             >
-              Take the free assessment
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
+              Take the free assessment →
             </Link>
-
-            <button
-              onClick={dismiss}
-              className="w-full font-body text-xs text-mist/55 hover:text-mist/80 transition-colors py-1"
-            >
-              No thanks, I&apos;ll figure it out myself
+            <button onClick={dismiss} className="mt-3 w-full py-1 font-body text-[14px] text-ink/60 transition-colors hover:text-ink">
+              No thanks
             </button>
           </div>
         </div>

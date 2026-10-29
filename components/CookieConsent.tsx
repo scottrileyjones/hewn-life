@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { CONSENT_STORAGE_KEY as STORAGE_KEY, updateConsent } from '@/lib/gtm'
+import { Mark } from '@/components/strata/Glyph'
+import { colors } from '@/lib/strata'
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false)
@@ -34,23 +36,30 @@ export default function CookieConsent() {
   if (!visible) return null
 
   return (
-    <div className="fixed bottom-0 inset-x-0 z-[60] px-4 pb-4 sm:px-6 sm:pb-6 pointer-events-none">
-      <div className="pointer-events-auto max-w-3xl mx-auto bg-forest text-mist rounded-[22px] shadow-[0_20px_60px_rgba(0,0,0,0.35)] border border-mist/[0.12] p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 animate-fade-up">
-        <p className="font-body text-sm text-mist/80 leading-relaxed flex-1">
-          We use cookies to run this site, analyze traffic, and improve your experience. See our{' '}
-          <Link href="/legal/cookies" className="text-lime hover:text-white transition-colors underline underline-offset-2">Cookie Policy</Link>{' '}
-          for details.
+    <div
+      role="region"
+      aria-label="Cookie consent"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-[60] p-4 sm:inset-x-auto sm:left-0 sm:p-6"
+    >
+      <div className="pointer-events-auto animate-fade-up rounded-[22px] border border-ink/[0.1] bg-paper p-5 text-ink shadow-[0_18px_50px_-12px_rgba(20,16,10,0.28)] sm:max-w-[400px]">
+        <div className="flex items-center gap-2.5">
+          <Mark fg={colors.forest} accent={colors.lichen} size={18} />
+          <p className="font-display text-[17px] font-medium tracking-[-0.02em]">A few cookies, if that&apos;s okay</p>
+        </div>
+        <p className="mt-2 font-body text-[14px] leading-relaxed text-ink/70">
+          We use them to run the site and see what&apos;s working. Details in our{' '}
+          <Link href="/legal/cookies" className="text-forest underline underline-offset-2 hover:text-ink">cookie policy</Link>.
         </p>
-        <div className="flex items-center gap-3 flex-shrink-0">
+        <div className="mt-4 flex gap-2">
           <button
             onClick={() => respond('declined')}
-            className="font-body text-sm font-medium text-mist/70 hover:text-white px-4 py-2.5 transition-colors"
+            className="flex-1 rounded-full border border-ink/15 px-5 py-2.5 font-body text-sm font-medium text-ink transition-colors hover:border-ink/40"
           >
             Decline
           </button>
           <button
             onClick={() => respond('accepted')}
-            className="font-body text-sm font-medium bg-lime hover:bg-white text-forest px-6 py-2.5 rounded-full transition-colors"
+            className="flex-1 rounded-full bg-forest px-5 py-2.5 font-body text-sm font-medium text-mist transition-colors hover:bg-forest-2"
           >
             Accept
           </button>

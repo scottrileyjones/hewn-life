@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Terrain from '@/components/strata/Terrain'
 import CalButton from '@/components/CalButton'
+import StepFrame, { Climb, nextBtn } from '@/components/quiz/StepFrame'
 
 
 // ── Revenue slider stops ──────────────────────────────────────────────────────
@@ -29,17 +30,17 @@ function OutcomeTicker() {
   return (
     <div className="relative py-4 select-none">
       {/* fade edges */}
-      <div className="absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, white, transparent)' }} />
-      <div className="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, white, transparent)' }} />
+      <div className="absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, #F7F6F3, transparent)' }} />
+      <div className="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, #F7F6F3, transparent)' }} />
       <div className="flex gap-3 ticker-track">
         {items.map((item, i) => (
           <div
             key={i}
-            className="flex-shrink-0 flex items-center gap-2.5 border border-black/[0.08] rounded-full px-4 py-2 bg-white"
+            className="flex-shrink-0 flex items-center gap-2.5 border border-ink/[0.08] rounded-full px-4 py-2 bg-paper"
           >
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-[#A89F92]">{item.label}</span>
-            <span className="w-px h-3 bg-black/[0.10]" />
-            <span className="font-display font-semibold text-[14px]" style={{ color: item.color }}>{item.value}</span>
+            <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink/60">{item.label}</span>
+            <span className="w-px h-3 bg-ink/10" />
+            <span className="font-display font-medium text-[14px] text-ink">{item.value}</span>
           </div>
         ))}
       </div>
@@ -87,6 +88,9 @@ function revenueStage(idx: number): 'pre' | 'early' | 'growth' | 'scale' {
   if (v < 1000000) return 'growth'
   return 'scale'
 }
+
+// Waypoints on the climb, in the order the steps are asked.
+const STEP_LABELS = ['Revenue', 'Goal', 'Presence', 'Budget', 'Biggest blocker', 'Urgency', 'Team', 'Anything else']
 
 // ── Questions ────────────────────────────────────────────────────────────────
 
@@ -420,21 +424,22 @@ function ResultsDashboard({
   const roiCount = useCountUp(roi.aggressiveNewRaw, phase >= 1, 2000)
   const netCount = useCountUp(roi.annualMaxRaw, phase >= 1, 2200)
   const scoreCount = useCountUp(health.overall, phase >= 2, 1400)
-  const scoreColor = health.overall >= 65 ? '#6BAD3D' : health.overall >= 40 ? '#F59E0B' : '#EF4444'
+  // Brand-safe grades: ember strong, dawn middling, copper weak (marks only; numbers stay ink).
+  const scoreColor = health.overall >= 65 ? '#6BAD3D' : health.overall >= 40 ? '#D9893F' : '#B5621C'
   const scoreLabel = health.overall >= 65 ? 'Strong Foundation' : health.overall >= 40 ? 'Room to Grow' : 'Significant Gap'
   const firstName = contact.name ? contact.name.split(' ')[0] : null
 
   return (
-    <div className="min-h-screen bg-[#F9F7F3]">
+    <div className="min-h-screen bg-bone">
       <div className="px-6 lg:px-12 max-w-4xl mx-auto pb-24 pt-28">
 
         {/* ── Report label + retake ── */}
         <div className="flex items-center justify-between mb-10">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#6BAD3D] animate-pulse" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#A89F92]">Growth Opportunity Report</span>
+            <span className="w-2 h-2 rounded-full bg-ember animate-pulse" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/55">Growth Opportunity Report</span>
           </div>
-          <button onClick={onRestart} className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] hover:text-[#6B6560] transition-colors">
+          <button onClick={onRestart} className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink/55 hover:text-ink transition-colors">
             ← Retake
           </button>
         </div>
@@ -444,38 +449,36 @@ function ResultsDashboard({
           <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-forest mb-5">
             {firstName ? `${firstName}'s Assessment` : 'Your Assessment'} · {tier.name} Tier Match
           </p>
-          <h1 className="hero-heading fluid-hero text-[#0D0D0D] leading-[1.04] mb-4">
+          <h1 className="hero-heading fluid-hero text-ink leading-[1.04] mb-4">
             You have a real<br />
             <span className="accent" style={{ color: '#1E3826' }}>revenue opportunity.</span>
           </h1>
-          <p className="font-body text-base text-[#6B6560] max-w-xl">
+          <p className="font-body text-base text-ink/65 max-w-xl">
             Based on your answers, here's what the numbers say — and what's within reach if you execute.
           </p>
         </div>
 
         {/* ── ROI hero ── */}
         <div className={`mb-6 transition-all duration-700 ${phase >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="relative rounded-3xl overflow-hidden bg-white border border-black/[0.07] shadow-[0_4px_40px_-8px_rgba(0,0,0,0.08)] p-8 md:p-12">
-            <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full blur-3xl bg-[#1E3826]/8 pointer-events-none" />
-            <div className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full blur-3xl bg-[#6BAD3D]/8 pointer-events-none" />
+          <div className="relative rounded-[32px] overflow-hidden bg-paper border border-ink/[0.08] p-8 md:p-12">
 
             <div className="relative">
-              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#A89F92] mb-6">Revenue Opportunity · {roi.revenueLabel} current revenue</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink/55 mb-6">Revenue Opportunity · {roi.revenueLabel} current revenue</p>
 
               <div className="grid md:grid-cols-2 gap-8 md:gap-12 mb-10">
                 <div>
                   <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-forest mb-3">Potential New Revenue</p>
-                  <div className="font-display fluid-stat leading-none text-[#0D0D0D] mb-2 tabular-nums">
+                  <div className="font-display fluid-stat leading-none text-ink mb-2 tabular-nums">
                     {fmtCompact(roiCount)}
                   </div>
-                  <p className="font-body text-[14px] text-[#A89F92]">additional annual revenue — aggressive case</p>
+                  <p className="font-body text-[14px] text-ink/55">additional annual revenue — aggressive case</p>
                 </div>
                 <div className="flex flex-col justify-center">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#1E3826] mb-3">Net ROI After Retainer</p>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-forest mb-3">Net ROI After Retainer</p>
                   <div className="font-display fluid-stat leading-none mb-2 tabular-nums" style={{ color: '#1E3826' }}>
                     {fmtCompact(netCount)}
                   </div>
-                  <p className="font-body text-[14px] text-[#A89F92]">profit above {tier.price} investment</p>
+                  <p className="font-body text-[14px] text-ink/55">profit above {tier.price} investment</p>
                 </div>
               </div>
 
@@ -485,14 +488,14 @@ function ResultsDashboard({
                   { label: 'Conservative Case', val: roi.conservativeNew },
                   { label: 'Annual Retainer', val: tier.price.split(' ')[0] },
                 ].map(s => (
-                  <div key={s.label} className="bg-[#F9F7F3] rounded-2xl p-4 border border-black/[0.06]">
-                    <p className="font-mono text-[9px] uppercase tracking-[0.14em] text-[#A89F92] mb-2">{s.label}</p>
-                    <p className="font-display text-[22px] leading-none text-[#0D0D0D]">{s.val}</p>
+                  <div key={s.label} className="bg-bone rounded-2xl p-4 border border-black/[0.06]">
+                    <p className="font-mono text-[9px] uppercase tracking-[0.14em] text-ink/55 mb-2">{s.label}</p>
+                    <p className="font-display text-[22px] leading-none text-ink">{s.val}</p>
                   </div>
                 ))}
               </div>
 
-              <p className="font-body text-[11px] text-[#C4BDB5] mt-6 leading-relaxed">
+              <p className="font-body text-[11px] text-ink/40 mt-6 leading-relaxed">
                 Projections based on industry ROAS benchmarks for businesses at your stage and tier. Actual results vary. Not a guarantee.
               </p>
             </div>
@@ -501,11 +504,11 @@ function ResultsDashboard({
 
         {/* ── Marketing health ── */}
         <div className={`mb-6 transition-all duration-700 delay-100 ${phase >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="bg-white rounded-3xl border border-black/[0.07] shadow-[0_4px_40px_-8px_rgba(0,0,0,0.06)] p-8 md:p-10">
+          <div className="bg-paper rounded-[32px] border border-ink/[0.08] p-8 md:p-10">
             <div className="grid md:grid-cols-[auto_1fr] gap-8 items-center">
               {/* Dial */}
               <div className="flex flex-col items-center">
-                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92] mb-5">Marketing Health</p>
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/55 mb-5">Marketing Health</p>
                 <div className="relative w-40 h-40">
                   <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
                     <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="8" />
@@ -517,14 +520,14 @@ function ResultsDashboard({
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="font-display fluid-stat leading-none text-[#0D0D0D] tabular-nums">{scoreCount}</span>
-                    <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[#A89F92]">/ 100</span>
+                    <span className="font-display fluid-stat leading-none text-ink tabular-nums">{scoreCount}</span>
+                    <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-ink/55">/ 100</span>
                   </div>
                 </div>
-                <span className="mt-4 font-mono text-[11px] px-4 py-1.5 rounded-full border" style={{ color: scoreColor, borderColor: `${scoreColor}40`, background: `${scoreColor}12` }}>
+                <span className="mt-4 font-mono text-[11px] px-4 py-1.5 rounded-full border text-ink" style={{ borderColor: `${scoreColor}66`, background: `${scoreColor}1F` }}>
                   {scoreLabel}
                 </span>
-                <p className="font-body text-[12px] text-[#A89F92] text-center mt-3 max-w-[160px]">
+                <p className="font-body text-[12px] text-ink/55 text-center mt-3 max-w-[160px]">
                   {health.overall < 40 ? 'Big gap = big opportunity.' : health.overall < 65 ? 'Solid base, accelerate now.' : 'Strong — time to scale.'}
                 </p>
               </div>
@@ -532,14 +535,14 @@ function ResultsDashboard({
               {/* Category bars */}
               <div className="space-y-5">
                 {health.categories.map((cat, i) => {
-                  const c = cat.score >= 65 ? '#6BAD3D' : cat.score >= 40 ? '#F59E0B' : '#EF4444'
+                  const c = cat.score >= 65 ? '#6BAD3D' : cat.score >= 40 ? '#D9893F' : '#B5621C'
                   const active = phase >= 3
                   return (
                     <div key={cat.label} style={{ transitionDelay: active ? `${i * 100}ms` : '0ms' }}
                       className={`transition-all duration-500 ${active ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}>
                       <div className="flex items-center justify-between mb-1.5">
-                        <span className="font-body text-[13px] text-[#3D3A36]">{cat.label}</span>
-                        <span className="font-mono text-[12px] tabular-nums" style={{ color: c }}>{cat.score}/100</span>
+                        <span className="font-body text-[13px] text-ink/80">{cat.label}</span>
+                        <span className="font-mono text-[12px] tabular-nums text-ink">{cat.score}/100</span>
                       </div>
                       <div className="h-1.5 bg-black/[0.06] rounded-full overflow-hidden">
                         <div className="h-full rounded-full" style={{
@@ -548,7 +551,7 @@ function ResultsDashboard({
                           transition: `width 1s cubic-bezier(0.34,1.56,0.64,1) ${i * 120}ms`,
                         }} />
                       </div>
-                      <p className="font-body text-[11px] text-[#A89F92] mt-1">{cat.description}</p>
+                      <p className="font-body text-[11px] text-ink/55 mt-1">{cat.description}</p>
                     </div>
                   )
                 })}
@@ -559,26 +562,26 @@ function ResultsDashboard({
 
         {/* ── Recommended services ── */}
         <div className={`mb-6 transition-all duration-700 ${phase >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="bg-white rounded-3xl border border-black/[0.07] shadow-[0_4px_40px_-8px_rgba(0,0,0,0.06)] p-8 md:p-10">
-            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92] mb-2">Recommended Service Mix</p>
-            <h2 className="hero-heading text-[24px] md:text-[32px] text-[#0D0D0D] leading-tight mb-8">
+          <div className="bg-paper rounded-[32px] border border-ink/[0.08] p-8 md:p-10">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/55 mb-2">Recommended Service Mix</p>
+            <h2 className="hero-heading text-[24px] md:text-[32px] text-ink leading-tight mb-8">
               The channels that'll <span className="accent" style={{ color: '#1E3826' }}>move the needle.</span>
             </h2>
             <div className="grid md:grid-cols-2 gap-3">
               {services.map((svc, i) => (
                 <div
                   key={i}
-                  className={`flex items-start gap-3 p-5 bg-[#F9F7F3] border border-black/[0.06] rounded-2xl transition-all duration-500 ${phase >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+                  className={`flex items-start gap-3 p-5 bg-bone border border-black/[0.06] rounded-2xl transition-all duration-500 ${phase >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
                   style={{ transitionDelay: `${i * 80}ms` }}
                 >
-                  <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#6BAD3D] flex items-center justify-center">
+                  <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-forest flex items-center justify-center">
                     <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
                       <path d="M2.5 6.5l2.2 2.2L9.5 3.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </span>
                   <div>
-                    <p className="font-display font-semibold text-[15px] text-[#0D0D0D] mb-0.5">{svc.label}</p>
-                    <p className="font-body text-[12px] text-[#A89F92] leading-relaxed">{svc.reason}</p>
+                    <p className="font-display font-medium text-[16px] text-ink mb-0.5">{svc.label}</p>
+                    <p className="font-body text-[13px] text-ink/65 leading-relaxed">{svc.reason}</p>
                   </div>
                 </div>
               ))}
@@ -588,25 +591,24 @@ function ResultsDashboard({
 
         {/* ── Tier + CTA ── */}
         <div className={`mb-6 transition-all duration-700 ${phase >= 5 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="relative rounded-[28px] overflow-hidden p-8 md:p-12 bg-forest">
-            <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full blur-3xl opacity-30 pointer-events-none" style={{ background: tier.color }} />
-            <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full blur-3xl opacity-15 pointer-events-none" style={{ background: tier.color }} />
+          <div className="relative isolate rounded-[32px] overflow-hidden p-8 md:p-12 bg-forest">
+            <Terrain scene="canyon" seed={tierKey === 'hewn' ? 3 : tierKey === 'wrought' ? 8 : 14} className="-z-20" />
+            <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(20,16,10,.8), rgba(20,16,10,.35) 70%)' }} />
             <div className="relative">
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: tier.color }}>
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] mb-3 text-lime">
                 Your Starting Point · {tierKey === 'hewn' ? 'Foundation' : tierKey === 'wrought' ? 'Growth' : 'Scale'}
               </p>
               <h3 className="font-display fluid-h2 leading-none text-white mb-1">{tier.name}</h3>
-              <p className="font-body text-[28px] font-light text-white/50 mb-5">{tier.price}</p>
-              <p className="font-display italic text-[20px] text-white/90 mb-3">{tier.tagline}</p>
-              <p className="font-body text-[15px] text-white/50 leading-relaxed max-w-lg mb-10">{tier.description}</p>
+              <p className="font-body text-[24px] text-mist/70 mb-5">{tier.price}</p>
+              <p className="accent text-[22px] text-mist mb-3">{tier.tagline}</p>
+              <p className="font-body text-[15px] text-mist/75 leading-relaxed max-w-lg mb-10">{tier.description}</p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <CalButton
-                  className="inline-flex items-center justify-center font-body font-semibold px-8 py-4 rounded-full transition-all duration-200 hover:-translate-y-0.5"
-                  style={{ background: tier.color, color: 'white' }}
+                  className="inline-flex items-center justify-center rounded-full bg-white px-8 py-4 font-body font-medium text-ink transition hover:bg-mist"
                 >
                   Book a Discovery Call →
                 </CalButton>
-                <Link href={tier.href} className="inline-flex items-center justify-center border border-white/15 text-white font-body font-medium px-8 py-4 rounded-full hover:border-white/30 transition-all duration-200">
+                <Link href={tier.href} className="inline-flex items-center justify-center rounded-full border border-mist/30 bg-mist/10 px-8 py-4 font-body font-medium text-mist backdrop-blur transition hover:bg-mist/20">
                   See Full Pricing
                 </Link>
               </div>
@@ -616,12 +618,12 @@ function ResultsDashboard({
 
         {/* ── Not ready yet ── */}
         <div className={`transition-all duration-700 ${phase >= 5 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-white border border-black/[0.07] rounded-3xl p-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-paper border border-ink/[0.08] rounded-[32px] p-8">
             <div>
-              <p className="font-display font-semibold text-[17px] text-[#0D0D0D] mb-1">Not ready for a retainer?</p>
-              <p className="font-body text-[14px] text-[#A89F92]">Start with Website in a Day — fully built for a flat $999.</p>
+              <p className="font-display font-medium text-[18px] text-ink mb-1">Not ready for a retainer?</p>
+              <p className="font-body text-[14px] text-ink/55">Start with Website in a Day — fully built for a flat $999.</p>
             </div>
-            <Link href="/website-in-a-day" className="flex-shrink-0 inline-flex items-center justify-center border border-black/[0.12] text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200 whitespace-nowrap">
+            <Link href="/website-in-a-day" className="flex-shrink-0 inline-flex items-center justify-center border border-black/[0.12] text-ink font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200 whitespace-nowrap">
               Site in a Day →
             </Link>
           </div>
@@ -676,21 +678,19 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
   const current = calcScenes[scene]
 
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center px-6 py-28">
+    <main className="min-h-screen bg-bone flex items-center justify-center px-6 py-28">
       <div className="max-w-md w-full">
-        <p className="text-center font-mono text-[10px] uppercase tracking-[0.22em] text-forest mb-6">
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#6BAD3D] animate-pulse mr-2 align-middle" />
+        <p className="mb-6 flex items-center justify-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-forest">
+          <span className="h-3 w-[3px] animate-pulse bg-ember" />
           Building your growth plan
         </p>
 
         {/* Device frame */}
-        <div className="relative rounded-[28px] border border-black/[0.08] bg-[#F9F7F3] shadow-[0_24px_60px_-20px_rgba(0,0,0,0.18)] overflow-hidden">
-          {/* Browser chrome */}
-          <div className="flex items-center gap-1.5 px-5 py-3.5 border-b border-black/[0.06] bg-white">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
-            <span className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]" />
-            <span className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
-            <span className="ml-3 flex-1 h-5 rounded-full bg-[#F2ECE0]" />
+        <div className="relative rounded-[32px] bg-forest shadow-[0_24px_60px_-20px_rgba(30,56,38,0.45)] overflow-hidden">
+          {/* Plan header */}
+          <div className="flex items-center justify-between gap-3 border-b border-mist/10 px-6 py-4">
+            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-mist/70">Your growth plan</span>
+            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-lime">{scene + 1} / 3</span>
           </div>
 
           {/* Scene stage */}
@@ -698,20 +698,20 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
             {/* ── Scene 0: website building ── */}
             {scene === 0 && (
               <div key="s0" className="w-full animate-fade-up">
-                <div className="rounded-2xl border border-black/[0.07] bg-white p-4 shadow-sm">
-                  <div className="build-block h-20 rounded-xl bg-gradient-to-br from-[#1E3826] to-[#6BAD3D]" style={{ animationDelay: '0ms' }} />
+                <div className="rounded-[18px] bg-paper p-4">
+                  <div className="build-block h-20 rounded-xl bg-lime" style={{ animationDelay: '0ms' }} />
                   <div className="build-block h-3 w-3/4 rounded-full bg-black/10 mt-4" style={{ animationDelay: '300ms' }} />
                   <div className="build-block h-3 w-1/2 rounded-full bg-black/10 mt-2.5" style={{ animationDelay: '500ms' }} />
                   <div className="flex gap-3 mt-4">
                     <div className="build-block h-14 flex-1 rounded-xl bg-black/[0.05]" style={{ animationDelay: '750ms' }} />
                     <div className="build-block h-14 flex-1 rounded-xl bg-black/[0.05]" style={{ animationDelay: '900ms' }} />
                   </div>
-                  <div className="build-block mt-4 h-9 w-32 rounded-full bg-[#1E3826]" style={{ animationDelay: '1150ms' }} />
+                  <div className="build-block mt-4 h-9 w-32 rounded-full bg-forest" style={{ animationDelay: '1150ms' }} />
                 </div>
                 <div className="build-badge mt-4 flex items-center justify-center gap-2" style={{ animationDelay: '1500ms' }}>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#6BAD3D]/10 border border-[#6BAD3D]/30 px-3 py-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D] animate-pulse" />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-forest">Published · Live</span>
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-lime px-3 py-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-forest animate-pulse" />
+                    <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-forest">Published · Live</span>
                   </span>
                 </div>
               </div>
@@ -720,26 +720,26 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
             {/* ── Scene 1: social engagement ── */}
             {scene === 1 && (
               <div key="s1" className="w-full animate-fade-up">
-                <div className="rounded-2xl border border-black/[0.07] bg-white p-4 shadow-sm">
+                <div className="rounded-[18px] bg-paper p-4">
                   <div className="flex items-center gap-2.5 mb-3">
-                    <span className="w-9 h-9 rounded-full bg-gradient-to-br from-[#1E3826] to-[#6BAD3D]" />
+                    <span className="w-9 h-9 rounded-full bg-lime" />
                     <div>
                       <div className="h-2.5 w-24 rounded-full bg-black/15" />
                       <div className="h-2 w-16 rounded-full bg-black/10 mt-1.5" />
                     </div>
                   </div>
-                  <div className="h-28 rounded-xl bg-gradient-to-br from-[#F2ECE0] to-[#E5E1DA] mb-3 flex items-center justify-center overflow-hidden relative">
+                  <div className="h-28 rounded-xl bg-sand mb-3 flex items-center justify-center overflow-hidden relative">
                     {/* floating hearts */}
                     {[0,1,2,3,4].map(i => (
-                      <span key={i} className="heart-float absolute text-[#EF4444]" style={{ left: `${15 + i*18}%`, animationDelay: `${i*260}ms` }}>♥</span>
+                      <span key={i} className="heart-float absolute text-[#D9893F]" style={{ left: `${15 + i*18}%`, animationDelay: `${i*260}ms` }}>♥</span>
                     ))}
                   </div>
                   <div className="flex items-center gap-4">
-                    <span className="flex items-center gap-1.5 text-[#EF4444]">
+                    <span className="flex items-center gap-1.5 text-[#D9893F]">
                       <span className="heart-pop text-[20px]">♥</span>
-                      <span className="font-display text-[18px] text-[#0D0D0D] tabular-nums">{likeCount.toLocaleString()}</span>
+                      <span className="font-display text-[18px] text-ink tabular-nums">{likeCount.toLocaleString()}</span>
                     </span>
-                    <span className="font-body text-[13px] text-[#A89F92]">likes this week</span>
+                    <span className="font-body text-[13px] text-ink/55">likes this week</span>
                     <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.14em] text-forest">↑ 312%</span>
                   </div>
                 </div>
@@ -749,23 +749,23 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
             {/* ── Scene 2: purchase / revenue ── */}
             {scene === 2 && (
               <div key="s2" className="w-full animate-fade-up">
-                <div className="rounded-2xl border border-black/[0.07] bg-white p-4 shadow-sm">
+                <div className="rounded-[18px] bg-paper p-4">
                   <div className="flex items-center gap-3 mb-4">
-                    <span className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#1E3826] to-[#6BAD3D] flex-shrink-0" />
+                    <span className="w-12 h-12 rounded-xl bg-lime flex-shrink-0" />
                     <div className="flex-1">
                       <div className="h-2.5 w-28 rounded-full bg-black/15" />
                       <div className="h-2 w-20 rounded-full bg-black/10 mt-2" />
                     </div>
                   </div>
-                  <div className="checkout-confirm flex items-center justify-center gap-2 rounded-full bg-[#6BAD3D] py-3 mb-4">
+                  <div className="checkout-confirm flex items-center justify-center gap-2 rounded-full bg-forest py-3 mb-4">
                     <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
                       <path d="M2.5 6.5l2.2 2.2L9.5 3.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                    <span className="font-body font-semibold text-[14px] text-white">Order confirmed</span>
+                    <span className="font-body font-medium text-[14px] text-mist">Order confirmed</span>
                   </div>
                   <div className="text-center">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-1">Revenue today</p>
-                    <p className="font-display fluid-stat leading-none text-[#0D0D0D] tabular-nums">${revenueCount.toLocaleString()}</p>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink/55 mb-1">Revenue today</p>
+                    <p className="font-display fluid-stat leading-none text-ink tabular-nums">${revenueCount.toLocaleString()}</p>
                   </div>
                 </div>
               </div>
@@ -775,14 +775,14 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
 
         {/* Copy */}
         <div className="text-center mt-7 min-h-[120px]">
-          <p key={`e${scene}`} className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#1E3826] mb-3 animate-fade-up">{current.eyebrow}</p>
-          <h2 key={`h${scene}`} className="hero-heading text-[24px] md:text-[28px] text-[#0D0D0D] leading-tight mb-3 animate-fade-up">{current.headline}</h2>
-          <p key={`s${scene}`} className="font-body text-[14px] text-[#6B6560] leading-relaxed max-w-sm mx-auto animate-fade-up">{current.sub}</p>
+          <p key={`e${scene}`} className="font-mono text-[10px] uppercase tracking-[0.18em] text-forest mb-3 animate-fade-up">{current.eyebrow}</p>
+          <h2 key={`h${scene}`} className="hero-heading text-[24px] md:text-[28px] text-ink leading-tight mb-3 animate-fade-up">{current.headline}</h2>
+          <p key={`s${scene}`} className="font-body text-[14px] text-ink/65 leading-relaxed max-w-sm mx-auto animate-fade-up">{current.sub}</p>
         </div>
 
         {/* Progress bar */}
         <div className="mt-7 h-1 bg-black/[0.06] rounded-full overflow-hidden">
-          <div className="h-full rounded-full bg-[#1E3826]" style={{ width: `${progress}%`, transition: `width ${SCENE_MS * 3}ms linear` }} />
+          <div className="h-full rounded-full bg-forest" style={{ width: `${progress}%`, transition: `width ${SCENE_MS * 3}ms linear` }} />
         </div>
       </div>
 
@@ -860,143 +860,75 @@ function CaptureScreen({
     onSubmit()
   }
 
+  const field = 'w-full rounded-[14px] border border-ink/[0.12] bg-bone/60 px-4 py-3.5 font-body text-[16px] text-ink transition placeholder:text-ink/40 focus:border-forest focus:bg-paper focus:outline-none focus:ring-1 focus:ring-forest'
+  const label = 'mb-2 block font-body text-sm font-medium text-ink'
   return (
-    <main className="min-h-screen bg-white">
-      <div className="pt-20 md:pt-28 pb-16 md:pb-24 px-6 lg:px-12">
-        <div className="max-w-md mx-auto">
-          <div className="text-center mb-10">
-            <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-forest mb-5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D]" />
-              Your results are ready
-            </span>
-            <h2 className="hero-heading text-[30px] md:text-[40px] text-[#0D0D0D] leading-tight mb-3">
-              Where should we send<br />
-              <span className="accent" style={{ color: '#1E3826' }}>your plan?</span>
-            </h2>
-            <p className="font-body text-[15px] text-[#6B6560] leading-relaxed">
-              We&apos;ve built your personalized recommendation. Tell us where to send it — and we&apos;ll show it to you right now.
-            </p>
-          </div>
+    <main className="min-h-screen bg-bone px-5 pb-16 pt-24 text-ink md:pb-24">
+      <div className="mx-auto grid max-w-6xl items-start gap-3.5 lg:grid-cols-[340px_1fr]">
+        <aside className="rounded-[32px] bg-forest p-8 text-mist lg:sticky lg:top-24">
+          <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-lime">Summit reached</span>
+          <p className="mt-4 font-display text-[30px] font-medium leading-[1.08] tracking-[-0.03em]">Your plan is built.</p>
+          <p className="mt-3 font-body text-sm text-mist/70">Eight answers in. Your report is ready to open:</p>
+          <ul className="mt-5 space-y-2.5 font-body text-sm">
+            {['Marketing health score', 'The services you need first', 'The revenue on the table', 'Your best-fit plan'].map(t => (
+              <li key={t} className="flex items-center gap-3"><span className="h-3.5 w-[3px] bg-lime" />{t}</li>
+            ))}
+          </ul>
+          <div className="mt-8 hidden lg:block"><Climb step={STEP_LABELS.length} labels={STEP_LABELS} /></div>
+        </aside>
 
-          <div className="space-y-4">
+        <section className="rounded-[32px] border border-ink/[0.08] bg-paper p-6 sm:p-10 lg:p-14">
+          <h2 className="text-balance font-display text-[clamp(28px,3.2vw,42px)] font-medium leading-[1.08] tracking-[-0.03em]">
+            Where should we send <em className="accent text-forest">your plan?</em>
+          </h2>
+          <p className="mt-3 font-body text-[16px] text-ink/65">Tell us where to send it, and we&apos;ll show it to you right now.</p>
+
+          <div className="mt-9 grid gap-5 sm:grid-cols-2">
             <div>
-              <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-2 block">Name</label>
-              <input
-                type="text"
-                name="name"
-                autoComplete="name"
-                value={contact.name}
-                onChange={e => setContact(c => ({ ...c, name: e.target.value }))}
-                placeholder="Jane Founder"
-                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#1E3826] focus:outline-none focus:ring-1 focus:ring-[#1E3826] transition-all"
-              />
+              <label htmlFor="cap-name" className={label}>Name *</label>
+              <input id="cap-name" type="text" name="name" autoComplete="name" value={contact.name} onChange={e => setContact(c => ({ ...c, name: e.target.value }))} placeholder="Your full name" className={field} />
             </div>
             <div>
-              <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-2 block">Company</label>
-              <input
-                type="text"
-                name="organization"
-                autoComplete="organization"
-                value={contact.company}
-                onChange={e => setContact(c => ({ ...c, company: e.target.value }))}
-                placeholder="Acme Co."
-                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#1E3826] focus:outline-none focus:ring-1 focus:ring-[#1E3826] transition-all"
-              />
+              <label htmlFor="cap-company" className={label}>Company</label>
+              <input id="cap-company" type="text" name="organization" autoComplete="organization" value={contact.company} onChange={e => setContact(c => ({ ...c, company: e.target.value }))} placeholder="Your business" className={field} />
             </div>
             <div>
-              <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-2 block">Email</label>
-              <input
-                type="email"
-                name="email"
-                autoComplete="email"
-                inputMode="email"
-                autoCapitalize="off"
-                autoCorrect="off"
-                spellCheck={false}
-                value={contact.email}
-                onChange={e => setContact(c => ({ ...c, email: e.target.value }))}
-                placeholder="jane@company.com"
-                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#1E3826] focus:outline-none focus:ring-1 focus:ring-[#1E3826] transition-all"
-              />
+              <label htmlFor="cap-email" className={label}>Email *</label>
+              <input id="cap-email" type="email" name="email" autoComplete="email" inputMode="email" autoCapitalize="off" autoCorrect="off" spellCheck={false} value={contact.email} onChange={e => setContact(c => ({ ...c, email: e.target.value }))} placeholder="you@business.com" className={field} />
             </div>
             <div>
-              <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-2 block">
-                Phone <span className="text-black/25 normal-case tracking-normal">(optional)</span>
-              </label>
-              <input
-                type="tel"
-                name="tel"
-                autoComplete="tel"
-                inputMode="tel"
-                value={contact.phone}
-                onChange={e => setContact(c => ({ ...c, phone: e.target.value }))}
-                placeholder="(555) 123-4567"
-                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#1E3826] focus:outline-none focus:ring-1 focus:ring-[#1E3826] transition-all"
-              />
+              <label htmlFor="cap-phone" className={label}>Phone <span className="font-normal text-ink/50">(optional)</span></label>
+              <input id="cap-phone" type="tel" name="tel" autoComplete="tel" inputMode="tel" value={contact.phone} onChange={e => setContact(c => ({ ...c, phone: e.target.value }))} placeholder="(555) 123-4567" className={field} />
             </div>
-            <div>
-              <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#A89F92] mb-2 block">State</label>
-              <select
-                name="address-level1"
-                autoComplete="address-level1"
-                value={contact.state}
-                onChange={e => setContact(c => ({ ...c, state: e.target.value }))}
-                className={`w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] focus:border-[#1E3826] focus:outline-none focus:ring-1 focus:ring-[#1E3826] transition-all appearance-none ${contact.state ? 'text-[#0D0D0D]' : 'text-black/25'}`}
-              >
+            <div className="sm:col-span-2">
+              <label htmlFor="cap-state" className={label}>State</label>
+              <select id="cap-state" name="address-level1" autoComplete="address-level1" value={contact.state} onChange={e => setContact(c => ({ ...c, state: e.target.value }))} className={`${field} appearance-none ${contact.state ? '' : 'text-ink/40'}`}>
                 <option value="">Select a state…</option>
-                {US_STATES.map(s => (
-                  <option key={s} value={s} className="text-[#0D0D0D]">{s}</option>
-                ))}
+                {US_STATES.map(s => <option key={s} value={s} className="text-ink">{s}</option>)}
               </select>
             </div>
           </div>
 
-          {/* Marketing consent */}
-          <label className="flex items-start gap-3 mt-6 cursor-pointer select-none">
-            <span className="relative flex-shrink-0 mt-0.5">
-              <input
-                type="checkbox"
-                checked={contact.consent}
-                onChange={e => setContact(c => ({ ...c, consent: e.target.checked }))}
-                className="peer sr-only"
-              />
-              <span className="w-5 h-5 rounded-md border border-black/20 bg-white flex items-center justify-center transition-all peer-checked:bg-[#1E3826] peer-checked:border-[#1E3826]">
-                {contact.consent && (
-                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
-                    <path d="M2.5 6.5l2.2 2.2L9.5 3.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )}
-              </span>
-            </span>
-            <span className="font-body text-[13px] text-[#6B6560] leading-relaxed">
-              I agree to receive my results and occasional marketing communications from Hewn Life, and consent to my information being used as described in the <Link href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="text-[#1E3826] underline hover:text-forest-2">privacy policy</Link>. I can unsubscribe anytime.
+          <label className="mt-6 flex cursor-pointer select-none items-start gap-3">
+            <input
+              type="checkbox"
+              checked={contact.consent}
+              onChange={e => setContact(c => ({ ...c, consent: e.target.checked }))}
+              className="mt-0.5 h-5 w-5 flex-shrink-0 cursor-pointer rounded accent-[#1E3826]"
+            />
+            <span className="font-body text-[14px] leading-relaxed text-ink/70">
+              I agree to receive my results and occasional marketing communications from Hewn Life, and consent to my information being used as described in the <Link href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="text-forest underline underline-offset-2">privacy policy</Link>. I can unsubscribe anytime.
             </span>
           </label>
 
-          {error && <p className="font-body text-[13px] text-red-500 mt-4">{error}</p>}
+          {error && <p role="alert" className="mt-4 rounded-[14px] bg-[#F6E3DD] px-4 py-3 font-body text-sm text-[#7A2E1E]">{error}</p>}
 
-          <button
-            onClick={handleSubmit}
-            disabled={!canSubmit}
-            className={`w-full mt-6 inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 ${
-              canSubmit
-                ? 'bg-[#1E3826] text-white hover:bg-forest-2 hover:-translate-y-0.5'
-                : 'bg-black/[0.06] text-black/30 cursor-not-allowed'
-            }`}
-          >
-            Show My Results →
-          </button>
-
-          <p className="font-body text-[12px] text-[#A89F92] text-center mt-4 leading-relaxed">
-            No spam. We&apos;ll only reach out about your recommendation. Unsubscribe anytime.
-          </p>
-
-          <div className="text-center mt-6">
-            <button onClick={onBack} className="font-body text-sm text-[#A89F92] hover:text-[#6B6560] transition-colors">
-              ← Back
-            </button>
+          <div className="mt-8 flex flex-col-reverse items-stretch justify-between gap-4 border-t border-ink/[0.08] pt-6 sm:flex-row sm:items-center">
+            <button onClick={onBack} className="font-body text-[15px] font-medium text-ink/60 transition-colors hover:text-ink">← Back</button>
+            <button onClick={handleSubmit} disabled={!canSubmit} className={nextBtn}>Show my results →</button>
           </div>
-        </div>
+          <p className="mt-4 font-body text-[13px] text-ink/55">No spam. We&apos;ll only reach out about your recommendation.</p>
+        </section>
       </div>
     </main>
   )
@@ -1017,135 +949,81 @@ function RevenueSliderScreen({
   onNext: () => void
   totalSteps: number
 }) {
-  const sliderRef = useRef<HTMLInputElement>(null)
   const val = REVENUE_STOPS[revenueIdx]
+  const pct = (revenueIdx / (REVENUE_STOPS.length - 1)) * 100
 
   return (
-    <main className="min-h-screen bg-white">
-      <div className="pt-20 md:pt-28 pb-16 md:pb-24 px-6 lg:px-12">
-        <div className="max-w-2xl mx-auto">
-          {/* Progress bar */}
-          <div className="mb-10">
-            <div className="flex items-center justify-between mb-3">
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
-                Question 1 of {totalSteps}
-              </p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
-                {Math.round((1 / totalSteps) * 100)}%
-              </p>
-            </div>
-            <div className="h-1 bg-black/[0.06] rounded-full overflow-hidden">
-              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${(1 / totalSteps) * 100}%`, background: '#1E3826' }} />
-            </div>
-          </div>
+    <StepFrame
+      step={1}
+      labels={STEP_LABELS}
+      title="What is your current annual revenue?"
+      subtitle="The most important number for calculating your real return."
+      onBack={onBack}
+      next={<button onClick={onNext} className={nextBtn}>Next →</button>}
+    >
+      <div className="rounded-[22px] bg-bone px-6 py-8 text-center">
+        <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink/55">Annual revenue</span>
+        <p className="mt-2 font-display text-[clamp(48px,6vw,72px)] font-medium leading-none tracking-[-0.04em] tabular-nums">{val.label}</p>
+        <p className="mt-3 min-h-[20px] font-body text-sm text-ink/60">
+          {revenueIdx === 0 && 'Pre-revenue: we’ll base projections on market-entry benchmarks.'}
+          {revenueIdx === REVENUE_STOPS.length - 1 && 'Impressive. Let’s talk scale.'}
+        </p>
+      </div>
 
-          {/* Question */}
-          <div className="mb-10">
-            <h2 className="hero-heading text-[28px] md:text-[36px] text-[#0D0D0D] leading-tight mb-3">
-              What is your current annual revenue?
-            </h2>
-            <p className="font-body text-[15px] text-[#A89F92] leading-relaxed italic">
-              This is the most important number for calculating your real ROI.
-            </p>
-          </div>
-
-          {/* Slider */}
-          <div className="mb-12">
-            {/* Big value display */}
-            <div className="text-center mb-8">
-              <div className="inline-flex flex-col items-center gap-2 bg-[#F9F7F3] border border-black/[0.07] rounded-3xl px-10 py-6">
-                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">Annual Revenue</span>
-                <span className="font-display fluid-stat leading-none text-[#0D0D0D] tabular-nums">
-                  {val.label}
-                </span>
-                {revenueIdx === 0 && (
-                  <span className="font-body text-[13px] text-[#A89F92]">Pre-revenue — we&apos;ll base projections on market entry benchmarks</span>
-                )}
-                {revenueIdx === REVENUE_STOPS.length - 1 && (
-                  <span className="font-body text-[13px] text-forest">Impressive — let&apos;s talk scale</span>
-                )}
-              </div>
-            </div>
-
-            {/* Range input */}
-            <div className="px-2">
-              <input
-                ref={sliderRef}
-                type="range"
-                min={0}
-                max={REVENUE_STOPS.length - 1}
-                step={1}
-                value={revenueIdx}
-                onChange={e => setRevenueIdx(Number(e.target.value))}
-                className="w-full h-2 appearance-none rounded-full cursor-pointer"
-                style={{
-                  background: `linear-gradient(to right, #1E3826 ${(revenueIdx / (REVENUE_STOPS.length - 1)) * 100}%, #E5E1DA ${(revenueIdx / (REVENUE_STOPS.length - 1)) * 100}%)`,
-                }}
-              />
-              <div className="flex justify-between mt-3">
-                <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-[#C4BDB5]">$0</span>
-                <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-[#C4BDB5]">$100M+</span>
-              </div>
-            </div>
-
-            {/* Tick marks / milestone labels */}
-            <div className="mt-6 flex flex-wrap justify-center gap-2">
-              {[0, 3, 6, 10, 12, 16, 19].map((i) => (
-                <button
-                  key={i}
-                  onClick={() => setRevenueIdx(i)}
-                  className={`font-mono text-[10px] px-3 py-1.5 rounded-full border transition-all duration-200 ${
-                    revenueIdx === i
-                      ? 'border-[#1E3826] bg-[#1E3826]/[0.06] text-[#1E3826]'
-                      : 'border-black/[0.08] text-[#A89F92] hover:border-black/20'
-                  }`}
-                >
-                  {REVENUE_STOPS[i].label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Navigation */}
-          <div className="flex items-center justify-between">
-            <button
-              onClick={onBack}
-              className="font-body text-sm text-[#A89F92] hover:text-[#6B6560] transition-colors"
-            >
-              ← Back
-            </button>
-            <button
-              onClick={onNext}
-              className="inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 bg-[#1E3826] text-white hover:bg-forest-2 hover:-translate-y-0.5"
-            >
-              Next →
-            </button>
-          </div>
+      <div className="mt-8 px-1">
+        <label htmlFor="quiz-revenue" className="sr-only">Annual revenue</label>
+        <input
+          id="quiz-revenue"
+          type="range"
+          min={0}
+          max={REVENUE_STOPS.length - 1}
+          step={1}
+          value={revenueIdx}
+          onChange={e => setRevenueIdx(Number(e.target.value))}
+          className="quiz-range h-2 w-full cursor-pointer appearance-none rounded-full"
+          style={{ background: `linear-gradient(to right, #1E3826 ${pct}%, #E9E5DB ${pct}%)` }}
+        />
+        <div className="mt-3 flex justify-between font-mono text-[11px] uppercase tracking-[0.12em] text-ink/50">
+          <span>$0</span><span>$100M+</span>
         </div>
       </div>
 
+      <div className="mt-6 flex flex-wrap gap-2">
+        {[0, 3, 6, 10, 12, 16, 19].map(i => (
+          <button
+            key={i}
+            onClick={() => setRevenueIdx(i)}
+            className={`rounded-full border px-3.5 py-1.5 font-body text-[13px] font-medium transition-colors ${
+              revenueIdx === i ? 'border-forest bg-forest text-mist' : 'border-ink/[0.12] text-ink/70 hover:border-ink/35'
+            }`}
+          >
+            {REVENUE_STOPS[i].label}
+          </button>
+        ))}
+      </div>
+
       <style jsx>{`
-        input[type='range']::-webkit-slider-thumb {
+        .quiz-range::-webkit-slider-thumb {
           -webkit-appearance: none;
-          width: 24px;
-          height: 24px;
+          width: 26px;
+          height: 26px;
           border-radius: 50%;
-          background: white;
-          border: 2px solid #1E3826;
-          box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+          background: #1E3826;
+          border: 4px solid #D6F28B;
+          box-shadow: 0 2px 10px rgba(30, 56, 38, 0.35);
           cursor: pointer;
         }
-        input[type='range']::-moz-range-thumb {
-          width: 24px;
-          height: 24px;
+        .quiz-range::-moz-range-thumb {
+          width: 18px;
+          height: 18px;
           border-radius: 50%;
-          background: white;
-          border: 2px solid #1E3826;
-          box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+          background: #1E3826;
+          border: 4px solid #D6F28B;
+          box-shadow: 0 2px 10px rgba(30, 56, 38, 0.35);
           cursor: pointer;
         }
       `}</style>
-    </main>
+    </StepFrame>
   )
 }
 
@@ -1166,81 +1044,40 @@ function NotesScreen({
   stepNumber: number
   totalSteps: number
 }) {
-  const pct = (stepNumber / totalSteps) * 100
   const [nothingElse, setNothingElse] = useState(false)
   return (
-    <main className="min-h-screen bg-white">
-      <div className="pt-20 md:pt-28 pb-16 md:pb-24 px-6 lg:px-12">
-        <div className="max-w-2xl mx-auto">
-          {/* Progress bar */}
-          <div className="mb-10">
-            <div className="flex items-center justify-between mb-3">
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
-                Question {stepNumber} of {totalSteps}
-              </p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
-                {Math.round(pct)}%
-              </p>
-            </div>
-            <div className="h-1 bg-black/[0.06] rounded-full overflow-hidden">
-              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: '#1E3826' }} />
-            </div>
-          </div>
-
-          {/* Question */}
-          <div className="mb-8">
-            <h2 className="hero-heading text-[28px] md:text-[36px] text-[#0D0D0D] leading-tight mb-3">
-              Anything else we should know?
-            </h2>
-            <p className="font-body text-[15px] text-[#A89F92] leading-relaxed italic">
-              Optional — but the more context you give, the sharper your recommendation.
-            </p>
-          </div>
-
-          {/* Textarea */}
-          <div className="mb-10">
-            <textarea
-              name="notes"
-              rows={6}
-              value={notes}
-              disabled={nothingElse}
-              onChange={e => setNotes(e.target.value)}
-              placeholder="Tell us about your business, your goals, what you've tried, or anything that would help us tailor your plan."
-              className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#1E3826] focus:outline-none focus:ring-1 focus:ring-[#1E3826] transition-all resize-none disabled:opacity-50"
-            />
-            <label className="mt-4 flex cursor-pointer items-center gap-3 font-body text-[15px] text-[#0D0D0D]">
-              <input
-                type="checkbox"
-                checked={nothingElse}
-                onChange={e => {
-                  setNothingElse(e.target.checked)
-                  if (e.target.checked) setNotes('')
-                }}
-                className="h-5 w-5 flex-shrink-0 cursor-pointer rounded accent-[#1E3826]"
-              />
-              No, nothing else to add
-            </label>
-          </div>
-
-          {/* Navigation */}
-          <div className="flex items-center justify-between">
-            <button
-              onClick={onBack}
-              className="font-body text-sm text-[#A89F92] hover:text-[#6B6560] transition-colors"
-            >
-              ← Back
-            </button>
-            <button
-              onClick={onNext}
-              disabled={!notes.trim() && !nothingElse}
-              className="inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 bg-[#1E3826] text-white hover:bg-forest-2 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:bg-[#1E3826]"
-            >
-              Continue →
-            </button>
-          </div>
-        </div>
-      </div>
-    </main>
+    <StepFrame
+      step={stepNumber}
+      labels={STEP_LABELS.slice(0, totalSteps)}
+      title="Anything else we should know?"
+      subtitle="Optional, but the more context you give, the sharper your recommendation."
+      onBack={onBack}
+      next={<button onClick={onNext} disabled={!notes.trim() && !nothingElse} className={nextBtn}>Continue →</button>}
+    >
+      <label htmlFor="quiz-notes" className="sr-only">Anything else we should know</label>
+      <textarea
+        id="quiz-notes"
+        name="notes"
+        rows={6}
+        value={notes}
+        disabled={nothingElse}
+        onChange={e => setNotes(e.target.value)}
+        placeholder="Tell us about your business, your goals, what you’ve tried, or anything that would help us tailor your plan."
+        className="w-full resize-none rounded-[18px] border border-ink/[0.12] bg-bone/60 px-5 py-4 font-body text-[16px] text-ink transition placeholder:text-ink/40 focus:border-forest focus:bg-paper focus:outline-none focus:ring-1 focus:ring-forest disabled:opacity-50"
+      />
+      <label className="mt-4 flex cursor-pointer items-center gap-3 font-body text-[16px] text-ink">
+        <input
+          type="checkbox"
+          checked={nothingElse}
+          onChange={e => {
+            setNothingElse(e.target.checked)
+            if (e.target.checked) setNotes('')
+          }}
+          className="h-5 w-5 flex-shrink-0 cursor-pointer rounded accent-[#1E3826]"
+        />
+        No, nothing else to add
+      </label>
+    </StepFrame>
   )
 }
 
@@ -1349,12 +1186,12 @@ export default function Quiz() {
   // ── Intro ─────────────────────────────────────────────────────────────────
   if (step === 'intro') {
     return (
-      <main className="flex flex-col" style={{ height: '100dvh' }}>
+      <main className="flex flex-col bg-bone" style={{ height: '100dvh' }}>
         {/* Hero — flex-1 so it fills remaining space; overflow-hidden clips the image only */}
         <section className="relative flex-1 overflow-hidden flex flex-col lg:block">
           {/* Image — right half on desktop, bottom fill on mobile */}
           <div className="absolute bottom-6 right-6 top-20 hidden w-[calc(50%-24px)] overflow-hidden rounded-[32px] isolate lg:block">
-            <Terrain scene="amber" seed={57} className="-z-10" />
+            <Terrain scene="survey" seed={57} className="-z-10" />
           </div>
 
           {/* Content */}
@@ -1362,31 +1199,31 @@ export default function Quiz() {
             <div className="max-w-7xl mx-auto w-full">
               <div className="max-w-xl">
                 <div className="animate-fade-up">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-[#6BAD3D]/30 bg-[#6BAD3D]/[0.06] px-4 py-1.5 mb-5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D] animate-pulse" />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-forest">Free ROI Assessment</span>
+                  <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-ink/[0.1] bg-paper px-3.5 py-1.5">
+                    <span className="h-3 w-[3px] bg-ember" />
+                    <span className="font-body text-[13px] font-medium text-ink">Free growth assessment</span>
                   </span>
 
-                  <h1 className="hero-heading fluid-hero text-[#0D0D0D] leading-[1.02] mb-4">
+                  <h1 className="hero-heading fluid-hero text-ink leading-[1.02] mb-4">
                     See what growth<br />
                     <span className="accent" style={{ color: '#1E3826' }}>is worth to you.</span>
                   </h1>
 
-                  <p className="font-body text-base lg:text-lg text-[#6B6560] leading-relaxed mb-6 max-w-md">
-                    Answer 7 quick questions and get a personalized report — your marketing health score, the exact services you need, and the revenue you could unlock.
+                  <p className="font-body text-base lg:text-lg text-ink/70 leading-relaxed mb-6 max-w-md">
+                    Answer 8 quick questions and get a personalized report — your marketing health score, the exact services you need, and the revenue you could unlock.
                   </p>
 
                   <button
                     onClick={() => setStep('revenue')}
-                    className="w-full sm:w-auto inline-flex items-center justify-center bg-[#1E3826] text-white font-body font-semibold text-[17px] px-10 py-4 rounded-full hover:bg-forest-2 transition-all duration-200 hover:-translate-y-0.5"
+                    className="w-full sm:w-auto inline-flex items-center justify-center bg-forest text-mist font-body font-medium text-[16px] px-9 py-4 rounded-full hover:bg-forest-2 transition-colors"
                   >
                     Calculate My ROI →
                   </button>
 
-                  <div className="flex items-center gap-5 mt-5">
-                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#A89F92]">⚡ 2 minutes</span>
-                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#A89F92]">✓ No sales call</span>
-                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#A89F92]">✓ Instant results</span>
+                  <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
+                    {['2 minutes', 'No sales call', 'Instant results'].map(t => (
+                      <span key={t} className="flex items-center gap-2 font-body text-[14px] text-ink/70"><span className="h-3 w-[3px] bg-ember" />{t}</span>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -1395,12 +1232,12 @@ export default function Quiz() {
 
           {/* Mobile image — fills remaining space below content */}
           <div className="relative isolate mx-5 mb-5 min-h-[120px] flex-1 overflow-hidden rounded-[28px] lg:hidden">
-            <Terrain scene="amber" seed={57} className="-z-10" />
+            <Terrain scene="survey" seed={57} className="-z-10" />
           </div>
         </section>
 
         {/* Ticker — sibling to the section, never clipped by overflow-hidden above */}
-        <div className="flex-shrink-0 border-t border-black/[0.06] bg-white overflow-hidden">
+        <div className="flex-shrink-0 border-t border-ink/[0.06] bg-bone overflow-hidden">
           <OutcomeTicker />
         </div>
       </main>
@@ -1479,88 +1316,42 @@ export default function Quiz() {
   if (!currentQ) return null
 
   return (
-    <main className="min-h-screen bg-white">
-      <div className="pt-20 md:pt-28 pb-16 md:pb-24 px-6 lg:px-12">
-        <div className="max-w-2xl mx-auto">
-          {/* Progress bar */}
-          <div className="mb-10">
-            <div className="flex items-center justify-between mb-3">
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
-                Question {(step as number) + 2} of {totalSteps}
-              </p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92]">
-                {Math.round(progress)}%
-              </p>
-            </div>
-            <div className="h-1 bg-black/[0.06] rounded-full overflow-hidden">
-              <div
-                className="h-full rounded-full transition-all duration-500"
-                style={{ width: `${progress}%`, background: '#1E3826' }}
-              />
-            </div>
-          </div>
-
-          {/* Question */}
-          <div className="mb-8">
-            <h2 className="hero-heading text-[28px] md:text-[36px] text-[#0D0D0D] leading-tight mb-3">
-              {currentQ.question}
-            </h2>
-            <p className="font-body text-[15px] text-[#A89F92] leading-relaxed italic">
-              {currentQ.subtitle}
-            </p>
-          </div>
-
-          {/* Options */}
-          <div className="space-y-3 mb-10">
-            {currentQ.options.map(opt => {
-              const isSelected = selected === opt.value
-              return (
-                <button
-                  key={opt.value}
-                  onClick={() => handleSelect(opt.value)}
-                  className={`w-full text-left p-5 rounded-2xl border transition-all duration-200 font-body text-[15px] leading-snug ${
-                    isSelected
-                      ? 'border-[#1E3826] bg-[#1E3826]/[0.06] text-[#0D0D0D] shadow-[0_0_0_1px_#1E3826]'
-                      : 'border-black/[0.08] bg-white text-[#3D3A36] hover:border-black/20 hover:bg-[#F9F7F3]'
-                  }`}
-                >
-                  <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-3 flex-shrink-0 align-middle transition-all duration-200 ${
-                    isSelected ? 'border-[#1E3826] bg-[#1E3826]' : 'border-black/20 bg-transparent'
-                  }`}>
-                    {isSelected && (
-                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                        <path d="M2 5.2l2 2L8 3" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    )}
-                  </span>
-                  {opt.label}
-                </button>
-              )
-            })}
-          </div>
-
-          {/* Navigation */}
-          <div className="flex items-center justify-between">
+    <StepFrame
+      step={(step as number) + 2}
+      labels={STEP_LABELS}
+      title={currentQ.question}
+      subtitle={currentQ.subtitle}
+      onBack={handleBack}
+      next={
+        <button onClick={handleNext} disabled={!selected} className={nextBtn}>
+          {typeof step === 'number' && step === questions.length - 1 ? 'Almost done →' : 'Next →'}
+        </button>
+      }
+    >
+      <div className="grid gap-2.5">
+        {currentQ.options.map((opt, i) => {
+          const isSelected = selected === opt.value
+          return (
             <button
-              onClick={handleBack}
-              className="font-body text-sm text-[#A89F92] hover:text-[#6B6560] transition-colors"
-            >
-              ← Back
-            </button>
-            <button
-              onClick={handleNext}
-              disabled={!selected}
-              className={`inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 ${
-                selected
-                  ? 'bg-[#1E3826] text-white hover:bg-forest-2 hover:-translate-y-0.5'
-                  : 'bg-black/[0.06] text-black/30 cursor-not-allowed'
+              key={opt.value}
+              onClick={() => handleSelect(opt.value)}
+              aria-pressed={isSelected}
+              className={`group flex w-full items-center gap-4 rounded-[18px] border p-4 text-left font-body text-[16px] leading-snug transition-all duration-200 sm:p-5 ${
+                isSelected
+                  ? 'border-forest bg-forest text-mist'
+                  : 'border-ink/[0.1] bg-bone/60 text-ink hover:border-ink/30 hover:bg-bone'
               }`}
             >
-              {typeof step === 'number' && step === questions.length - 1 ? 'Almost done →' : 'Next →'}
+              <span className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full font-mono text-[12px] font-medium transition-colors ${
+                isSelected ? 'bg-lime text-forest' : 'border border-ink/15 bg-paper text-ink/60 group-hover:border-ink/40'
+              }`}>
+                {String.fromCharCode(65 + i)}
+              </span>
+              {opt.label}
             </button>
-          </div>
-        </div>
+          )
+        })}
       </div>
-    </main>
+    </StepFrame>
   )
 }

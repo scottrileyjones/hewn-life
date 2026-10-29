@@ -88,7 +88,7 @@ export const glyphs: Record<GlyphKey, GlyphPart[]> = {
 
 export type SceneName =
   | 'amber' | 'ember' | 'sage' | 'valley'
-  | 'forge' | 'canyon' | 'topo' | 'woodgrain' | 'forest' | 'meadow' | 'night' | 'highland' | 'harvest'
+  | 'forge' | 'canyon' | 'topo' | 'survey' | 'woodgrain' | 'forest' | 'meadow' | 'night' | 'highland' | 'harvest'
 
 /**
  * How the land is drawn. Every form shares the light, contours and grain, and each
@@ -119,6 +119,7 @@ export const scenes: Record<SceneName, Scene> = {
   valley: { sky: ['#4E6A52', '#7D9479', '#B8C4AE', '#E6DCC4'], far: '#93A58A', near: '#1E3826', sun: [0.62, 0.48, '#FFF2D6', 0.9], layers: 8, fog: '244,242,236', contour: 'rgba(244,242,236,0.12)', horizon: 0.5 },
   // Page headers: one form and palette per page, same graphic language.
   forge: { form: 'forge', sky: ['#0A0706', '#1A100B', '#2E1A10', '#4A2814'], far: '#3A2A22', near: '#0B0807', sun: [0.62, 0.66, '#FF9A3C', 0.85], layers: 5, fog: '255,150,70', contour: 'rgba(255,190,140,0.08)', horizon: 0.5 },
+  survey: { form: 'topo', sky: ['#2A1A10', '#3E2414', '#5A3218', '#7A4622'], far: '#C98A52', near: '#20120A', sun: [0.7, 0.3, '#FFD8A8', 0.45], layers: 13, fog: '255,216,168', contour: 'rgba(255,226,190,0.34)', horizon: 0 },
   woodgrain: { form: 'rings', sky: ['#2A1A10', '#4A2E1A', '#7A4E2C', '#B07A48'], far: '#C08A56', near: '#3A2214', sun: [0.3, 0.3, '#FFDDB0', 0.45], layers: 26, fog: '255,220,180', contour: 'rgba(40,20,10,0.38)', horizon: 0 },
   forest: { form: 'forest', sky: ['#1A2620', '#33463A', '#6E8270', '#C4CDB8'], far: '#6E8270', near: '#0E1612', sun: [0.66, 0.4, '#F4F2EC', 0.7], layers: 6, fog: '228,234,222', contour: 'rgba(240,244,236,0.08)', horizon: 0.42 },
   canyon: { form: 'mesa', sky: ['#1E120C', '#4A2616', '#A4552C', '#E59A62'], far: '#B0673E', near: '#1C0F09', sun: [0.28, 0.5, '#FFD0A0', 0.9], layers: 6, fog: '255,196,150', contour: 'rgba(255,214,180,0.12)', horizon: 0.42 },
