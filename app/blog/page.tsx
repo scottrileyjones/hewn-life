@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { ogImage } from '@/lib/og'
 import Link from 'next/link'
 import PostCover from '@/components/strata/PostCover'
 import { PageHero, ClosePanel } from '@/components/strata/Page'
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
     title: 'Marketing Insights & Strategy — The Hewn Life Blog',
     description: 'Practical marketing strategy for small and mid-size businesses. AI marketing, SEO, agency costs, and growth tactics from the team at Hewn Life.',
     url: 'https://www.hewn.life/blog',
+    images: [ogImage],
   },
 }
 
