@@ -1,6 +1,7 @@
 import CalButton from '@/components/CalButton'
 import Terrain from '@/components/strata/Terrain'
 import { Glyph } from '@/components/strata/Glyph'
+import StickyCta from '@/components/plan/StickyCta'
 import { getChallenge, getPlan, plans, proof, type ChallengeId } from '@/lib/playbook'
 import type { GlyphKey, SceneName } from '@/lib/strata'
 import type { PlanRecord } from '@/lib/plans/store'
@@ -49,7 +50,7 @@ function SectionHead({ n, label, title }: { n: string; label: string; title: Rea
   )
 }
 
-export default function PlanView({ record }: { record: PlanRecord; review?: boolean }) {
+export default function PlanView({ record, review = false }: { record: PlanRecord; review?: boolean }) {
   const { deck, lead } = record
   if (!deck) return null
   const firstName = lead.name.trim().split(/\s+/)[0] || 'there'
@@ -73,9 +74,9 @@ export default function PlanView({ record }: { record: PlanRecord; review?: bool
     : <CalButton className={className}>{label}</CalButton>
 
   return (
-    <div className="bg-bone pb-24 text-ink">
+    <div className="bg-bone pb-28 text-ink">
       {/* Cover */}
-      <section className="px-4 pt-24 sm:px-6">
+      <section id="plan-hero" className="px-4 pt-24 sm:px-6">
         <div className="relative isolate mx-auto grid max-w-6xl gap-8 overflow-hidden rounded-[32px] bg-forest px-6 py-12 text-mist sm:px-12 sm:py-16 lg:grid-cols-[1fr_360px]">
           <Terrain scene="topo" seed={11} className="-z-20" />
           <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(20,38,26,.94), rgba(20,38,26,.65) 80%)' }} />
@@ -86,9 +87,13 @@ export default function PlanView({ record }: { record: PlanRecord; review?: bool
             </h1>
             {deck.hook && <p className="mt-5 font-display text-[22px] font-medium leading-snug text-mist sm:text-[26px]">{deck.hook}</p>}
             <p className="mt-4 max-w-xl font-body text-[17px] leading-relaxed text-mist/85">{deck.summary}</p>
-            <p className="mt-6 font-body text-[13px] text-mist/60">Built from the answers you gave us, with sourced industry research.</p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <a href={buy.href} className={limeBtn}>{buy.label} →</a>
+              <BookButton className={ghostLight} />
+            </div>
+            <p className="mt-4 font-body text-[13px] text-mist/60">{terms}. Built from the answers you gave us, with sourced industry research.</p>
           </div>
-          <aside className="rounded-[24px] border border-white/15 bg-black/20 p-6 shadow-glass backdrop-blur-md">
+          <aside className="self-center rounded-[24px] border border-white/15 bg-black/20 p-6 shadow-glass backdrop-blur-md">
             <p className={`${eyebrow} text-lime`}>At a glance</p>
             <dl className="mt-4 space-y-4 font-body text-[14px]">
               <div>
@@ -237,8 +242,8 @@ export default function PlanView({ record }: { record: PlanRecord; review?: bool
       </section>
 
       {/* Next step */}
-      <section id="book" className="mx-auto max-w-6xl scroll-mt-24 px-4 pt-20 sm:px-6">
-        <div className="relative isolate overflow-hidden rounded-[32px] p-6 text-mist sm:p-12">
+      <section id="plan-close" className="mx-auto max-w-6xl scroll-mt-24 px-4 pt-20 sm:px-6">
+        <div id="book" className="relative isolate overflow-hidden rounded-[32px] p-6 text-mist sm:p-12">
           <Terrain scene="amber" seed={7} className="-z-20" />
           <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(14,10,6,.75), rgba(14,10,6,.2) 75%)' }} />
           <p className={`${eyebrow} text-lime`}>Next step</p>
@@ -258,6 +263,8 @@ export default function PlanView({ record }: { record: PlanRecord; review?: bool
           Sources: {Array.from(new Set(sources)).join('; ')}. Figures are from published research, not Hewn Life client results. This plan was written with AI from your answers, so tell us if anything looks off. Plans are estimates of what we’d do, not a guarantee of results. See our <a href="/legal/results-disclaimer" className="underline underline-offset-2">Results Disclaimer</a>.
         </p>
       </section>
+
+      {!review && <StickyCta label={rec.name} price={`${rec.price} ${rec.per}`} href={buy.href} cta={unfinishedOrder ? 'Finish order' : `Start ${rec.name}`} showBook={!booked} />}
     </div>
   )
 }
