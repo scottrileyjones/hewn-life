@@ -89,7 +89,7 @@ export default function HowItWorks() {
       <section className="mx-auto max-w-7xl px-5 pb-24">
         <div className="relative isolate flex min-h-[440px] items-end overflow-hidden rounded-[32px] bg-sand text-mist lg:min-h-[520px]">
           <Photo name="teamMeeting" w={1280} h={600} sizes="(min-width: 1280px) 1240px, 100vw" className="-z-20" />
-          <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(20,16,10,.62), rgba(20,16,10,.1) 70%), linear-gradient(0deg, rgba(20,16,10,.45), transparent 50%)' }} />
+          <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(20,16,10,.78), rgba(20,16,10,.38) 45%, rgba(20,16,10,.12) 75%), linear-gradient(0deg, rgba(20,16,10,.55), transparent 55%)' }} />
           <div className="max-w-xl p-7 sm:p-12">
             <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-mist/80">Every month</span>
             <h2 className={`${h2Class} mt-3.5 text-[clamp(30px,3.6vw,50px)]`}>One table. <em className="accent">Every number</em> on it.</h2>
