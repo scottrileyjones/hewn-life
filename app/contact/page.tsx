@@ -76,9 +76,9 @@ export default function Contact() {
               <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-mist/70">What happens next</span>
               <ol className="mt-6 space-y-5">
                 {[
-                  'We review your submission within one business day.',
-                  "You'll receive a link to book a 30-minute discovery call.",
-                  'We come prepared with thoughts on your business, not a sales script.',
+                  'You get your readout as soon as you send the form.',
+                  'A personal growth plan lands in your inbox within minutes: your top challenges and a 90-day roadmap.',
+                  'Book a 30-minute call and we walk through it together. No sales script.',
                   "If there's a fit, we outline a custom proposal within 48 hours.",
                 ].map((step, i) => (
                   <li key={i} className="flex gap-4">

@@ -1,13 +1,63 @@
 import CalButton from '@/components/CalButton'
 import Terrain from '@/components/strata/Terrain'
+import { Glyph } from '@/components/strata/Glyph'
 import { getChallenge, getPlan, kpiGlossary, methodology, plans, proof, type ChallengeId } from '@/lib/playbook'
-import type { SceneName } from '@/lib/strata'
+import type { GlyphKey, SceneName } from '@/lib/strata'
 import type { PlanRecord } from '@/lib/plans/store'
 
 /** A generated pattern per challenge, in place of photography. */
 const challengeScene: Record<ChallengeId, SceneName> = {
   acquisition: 'survey', measurement: 'topo', capacity: 'woodgrain', agency: 'canyon',
   creator: 'amber', founder: 'valley', credibility: 'forest',
+}
+
+const challengeGlyph: Record<ChallengeId, GlyphKey> = {
+  acquisition: 'media', measurement: 'data', capacity: 'creative', agency: 'strategy',
+  creator: 'creators', founder: 'strategy', credibility: 'brand',
+}
+
+/** KPIs where lower is the win. */
+const lowerIsBetter = new Set(['CAC', 'Cost as % of revenue', 'Time to traction'])
+
+/** The route across a challenge's terrain: where we start, test and grade. Positions in % of the panel. */
+const route = [
+  { x: 22, y: 64, label: 'Day 1 · Baseline' },
+  { x: 54, y: 44, label: 'Day 45 · Test' },
+  { x: 32, y: 20, label: 'Day 90 · Grade' },
+]
+
+/** What sits on a challenge's pattern: the route to Day 90 and the KPI we move. */
+function ChallengeMap({ id, kpis }: { id: ChallengeId; kpis: string[] }) {
+  const [main, ...rest] = kpis
+  const pts = route.map(p => `${p.x},${p.y}`).join(' ')
+  return (
+    <>
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden="true">
+        <polyline points={`${route[0].x},${route[0].y + 30} ${pts}`} fill="none" stroke="#D6F28B" strokeWidth="2" strokeDasharray="1 5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+      </svg>
+      {route.map((p, i) => (
+        <div key={p.label} className="absolute flex items-center gap-2" style={{ left: `${p.x}%`, top: `${p.y}%`, transform: 'translate(-7px, -7px)' }}>
+          <span className={`block h-3.5 w-3.5 rounded-full border-2 border-lime ${i === route.length - 1 ? 'bg-lime' : 'bg-forest'}`} />
+          <span className="whitespace-nowrap rounded-full border border-white/20 bg-black/25 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-mist backdrop-blur-md">{p.label}</span>
+        </div>
+      ))}
+      <div className="absolute inset-x-4 bottom-4 rounded-[20px] border border-white/20 bg-black/25 p-5 text-mist shadow-glass backdrop-blur-md">
+        <div className="flex items-center justify-between">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-lime">The KPI we move</p>
+          <Glyph name={challengeGlyph[id]} fg="#F4F2EC" accent="#D6F28B" size={28} />
+        </div>
+        <p className="mt-2 font-display text-[28px] font-semibold leading-tight">
+          {main} <span className="text-lime">{lowerIsBetter.has(main) ? '↓' : '↑'}</span>
+        </p>
+        <p className="mt-1 font-body text-[13px] leading-snug text-mist/80">{kpiGlossary[main]}</p>
+        {rest.length > 0 && (
+          <p className="mt-3 border-t border-white/15 pt-3 font-body text-[12px] text-mist/70">
+            Also tracked: {rest.map(k => `${k} ${lowerIsBetter.has(k) ? '↓' : '↑'}`).join(' · ')}
+          </p>
+        )}
+      </div>
+    </>
+  )
 }
 
 const eyebrow = 'font-mono text-[11px] uppercase tracking-[0.2em]'
@@ -90,6 +140,7 @@ export default function PlanView({ record }: { record: PlanRecord }) {
                 </div>
                 <div className="relative hidden min-h-[320px] lg:block">
                   <Terrain scene={challengeScene[c.id]} seed={i * 7 + 3} />
+                  <ChallengeMap id={c.id} kpis={ch.kpis} />
                 </div>
               </article>
             )
@@ -138,12 +189,15 @@ export default function PlanView({ record }: { record: PlanRecord }) {
           {plans.map(p => {
             const on = p.id === rec.id
             return (
-              <div key={p.id} className={`flex flex-col gap-3 rounded-[24px] p-6 ${on ? 'bg-lime text-forest' : 'border border-ink/[0.08] bg-paper'}`}>
+              <a key={p.id} href={p.href} className={`group flex flex-col gap-3 rounded-[24px] p-6 transition hover:-translate-y-0.5 ${on ? 'bg-lime text-forest hover:bg-[#c7e67a]' : 'border border-ink/[0.08] bg-paper hover:border-forest/30'}`}>
                 {on && <span className="self-start rounded-full bg-forest px-3 py-1 font-mono text-[12px] text-lime">Recommended for you</span>}
                 <h3 className="font-display text-[22px] font-semibold">{p.name}</h3>
                 <p><span className="font-display text-[34px] font-semibold">{p.price}</span> <span className="font-body text-[14px] opacity-70">{p.per}</span></p>
                 <ul className="flex flex-col gap-1 font-body text-[14px] opacity-90">{p.includes.map(x => <li key={x}>{x}</li>)}</ul>
-              </div>
+                <span className={`mt-auto inline-flex self-start rounded-full px-5 py-2.5 font-body text-[14px] font-medium transition ${on ? 'bg-forest text-mist' : 'border border-forest/20 text-forest group-hover:bg-forest group-hover:text-mist'}`}>
+                  {p.id === 'website-in-a-day' ? 'Start your brief →' : `Choose ${p.name} →`}
+                </span>
+              </a>
             )
           })}
         </div>

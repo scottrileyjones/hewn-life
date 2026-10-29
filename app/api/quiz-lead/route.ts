@@ -13,6 +13,8 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const { name, company, email, phone, state, notes, consent, tier, services, answers, score, annualRevenue, annualRevenueLabel } = body || {}
+    // The contact form asks the same questions as the quiz and posts here too.
+    const source = body?.source === 'Contact form' ? 'Contact form' : 'Quiz'
 
     // Basic validation
     if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -46,7 +48,7 @@ export async function POST(req: NextRequest) {
       'Recommended Tier': tier || '',
       'Recommended Services': Array.isArray(services) ? services.join(', ') : (services || ''),
       'Submission Timestamp': new Date().toISOString(),
-      'Lead Source': 'Quiz',
+      'Lead Source': source,
       'Quiz Score': typeof score === 'number' ? score : undefined,
       'Annual Revenue': typeof annualRevenue === 'number' ? annualRevenue : undefined,
     }
@@ -73,7 +75,7 @@ export async function POST(req: NextRequest) {
     }
 
     waitUntil(startPlan({
-      source: 'Quiz', name: name || '', company: company || '', email, consent: consent === true,
+      source, name: name || '', company: company || '', email, consent: consent === true,
       answers: { ...a, 'Annual revenue': annualRevenueLabel || '', 'Recommended tier': tier || '', Notes: notes || '' },
     }))
     return NextResponse.json({ ok: true })
