@@ -47,25 +47,35 @@ async function send(to: string, subject: string, html: string, extraHeaders: Rec
 
 export type Rendered = { to: string; subject: string; html: string; headers?: Record<string, string> }
 
-/** To us: a new deck is ready to review. */
+/** To us: a new deck is ready to review (only when PLAN_REVIEW_FIRST=true). */
 export async function sendReview(p: PlanRecord) {
   if (!p.deck) return
   const m = renderReview(p)
   await send(m.to, m.subject, m.html)
 }
 
-export function renderReview(p: PlanRecord): Rendered {
+/** To us: a copy of a plan that just went to the lead. */
+export async function sendCopy(p: PlanRecord, variant: Variant) {
+  if (!p.deck) return
+  const m = renderReview(p, variant)
+  await send(m.to, m.subject, m.html)
+}
+
+/** The internal email: a summary of the deck, then either an approve button or a note that it's been sent. */
+export function renderReview(p: PlanRecord, sent?: Variant): Rendered {
   if (!p.deck) throw new Error('No deck')
   const items = p.deck.challenges.map(c => `<li>${esc(getChallenge(c.id).name)}: ${esc(c.whyYou)}</li>`).join('')
+  const who = `${p.lead.name}${p.lead.company ? `, ${p.lead.company}` : ''}`
   const html = layout(`
-<p style="margin:0 0 4px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#6E736D">New growth plan · ${esc(p.lead.source)}</p>
-<h1 style="margin:0 0 16px;font-size:24px;line-height:1.25;color:#0D0D0D">${esc(p.lead.name)}${p.lead.company ? `, ${esc(p.lead.company)}` : ''}</h1>
+<p style="margin:0 0 4px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#6E736D">${sent ? 'Growth plan sent' : 'New growth plan'} · ${esc(p.lead.source)}</p>
+<h1 style="margin:0 0 16px;font-size:24px;line-height:1.25;color:#0D0D0D">${esc(who)}</h1>
+${sent ? `<p style="margin:0 0 16px">Sent to <a href="mailto:${esc(p.lead.email)}" style="color:#1E3826">${esc(p.lead.email)}</a> as “${esc(copy[sent].subject(p))}”. Reply to them directly to follow up.</p>` : ''}
 <p style="margin:0 0 16px">${esc(p.deck.summary)}</p>
 <ul style="margin:0 0 16px;padding-left:20px">${items}</ul>
 <p style="margin:0 0 24px">Recommended: <b>${esc(getPlan(p.deck.plan).name)}</b>. ${p.bookedAt ? 'They’ve already booked a call.' : ''} Written by: ${esc(p.by)}.</p>
-${button(reviewUrl(p.token), 'Review and approve')}
-<p style="margin:16px 0 0;font-size:13px;color:#6E736D">Nothing is sent until you approve.</p>`)
-  return { to: REVIEWER, subject: `Review: growth plan for ${p.lead.name}${p.lead.company ? `, ${p.lead.company}` : ''}`, html }
+${button(reviewUrl(p.token), sent ? 'See their plan' : 'Review and approve')}
+<p style="margin:16px 0 0;font-size:13px;color:#6E736D">${sent ? 'Opening it from this email doesn’t count as the lead opening it.' : 'Nothing is sent until you approve.'}</p>`)
+  return { to: REVIEWER, subject: sent ? `Sent: growth plan for ${who}` : `Review: growth plan for ${who}`, html }
 }
 
 const copy: Record<Variant, { subject: (p: PlanRecord) => string; body: (p: PlanRecord) => string; cta: string }> = {

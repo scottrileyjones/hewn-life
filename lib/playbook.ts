@@ -156,11 +156,17 @@ export const proof: { id: ProofId; value: string; label: string }[] = [
 
 export type PlanId = 'website-in-a-day' | 'hewn' | 'wrought' | 'forged'
 
+/** Monthly checkout for a tier, the same URL the pricing page builds. No price ID yet: the pricing page. */
+function checkout(name: string, tier: string, price: number, priceId?: string) {
+  if (!priceId) return '/pricing#plans'
+  return `/checkout?${new URLSearchParams({ priceId, mode: 'subscription', name, price: String(price), billing: 'monthly', tier })}`
+}
+
 export const plans: { id: PlanId; name: string; price: string; per: string; includes: string[]; href: string }[] = [
-  { id: 'website-in-a-day', name: 'Website in a Day', price: '$999', per: 'one time', includes: ['Custom website, live in a day', 'Copy, hosting and SEO-ready build'], href: '/website-in-a-day' },
-  { id: 'hewn', name: 'Hewn', price: '$2,500', per: 'per month', includes: ['Website included', 'Brand, SEO + AI search, social', 'Monthly strategy call'], href: '/pricing' },
-  { id: 'wrought', name: 'Wrought', price: '$5,000', per: 'per month', includes: ['Everything in Hewn', 'Paid media + AI creative', 'Email, CRM + live dashboard'], href: '/pricing' },
-  { id: 'forged', name: 'Forged', price: '$9,500', per: 'per month', includes: ['Everything in Wrought', 'Creators, reviews, referrals', 'Weekly strategy + Slack'], href: '/pricing' },
+  { id: 'website-in-a-day', name: 'Website in a Day', price: '$999', per: 'one time', includes: ['Custom website, live in a day', 'Copy, hosting and SEO-ready build'], href: '/website-in-a-day#order' },
+  { id: 'hewn', name: 'Hewn', price: '$2,500', per: 'per month', includes: ['Website included', 'Brand, SEO + AI search, social', 'Monthly strategy call'], href: checkout('Hewn', 'hewn', 2500, process.env.NEXT_PUBLIC_STRIPE_PRICE_HEWN_MONTHLY) },
+  { id: 'wrought', name: 'Wrought', price: '$5,000', per: 'per month', includes: ['Everything in Hewn', 'Paid media + AI creative', 'Email, CRM + live dashboard'], href: checkout('Wrought', 'wrought', 5000, process.env.NEXT_PUBLIC_STRIPE_PRICE_WROUGHT_MONTHLY) },
+  { id: 'forged', name: 'Forged', price: '$9,500', per: 'per month', includes: ['Everything in Wrought', 'Creators, reviews, referrals', 'Weekly strategy + Slack'], href: checkout('Forged', 'forged', 9500, process.env.NEXT_PUBLIC_STRIPE_PRICE_FORGED_MONTHLY) },
 ]
 
 export const challengeIds = challenges.map(c => c.id) as [ChallengeId, ...ChallengeId[]]
