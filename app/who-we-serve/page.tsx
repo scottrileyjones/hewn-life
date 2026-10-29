@@ -5,12 +5,12 @@ import WhoWeServe from '@/components/WhoWeServe'
 import { PageHero } from '@/components/strata/Page'
 
 export const metadata: Metadata = {
-  title: 'Who We Serve — Healthcare, Creators, Startups, Investors and More',
-  description: 'Websites, creative and growth marketing for healthcare practices (30 years of experience), creators and influencers, startups raising capital, VC, PE and consulting firms, and businesses in any industry.',
+  title: 'Who We Serve — E-commerce, Local Businesses, Startups, Creators and Healthcare',
+  description: 'Websites, creative and growth marketing for e-commerce and DTC brands, local businesses, startups, creators and healthcare practices, and any business with customers to win.',
   alternates: { canonical: 'https://www.hewn.life/who-we-serve' },
   openGraph: {
     title: 'Who We Serve — Hewn Life',
-    description: 'Healthcare, creators, startups raising capital, investors and consultants, and any business with customers to win.',
+    description: 'E-commerce and DTC brands, local businesses, startups, creators, healthcare and any business with customers to win.',
     url: 'https://www.hewn.life/who-we-serve',
     images: [ogImage],
   },
