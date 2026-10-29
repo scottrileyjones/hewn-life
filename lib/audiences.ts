@@ -120,7 +120,7 @@ export const audiences: Audience[] = [
     eyebrow: 'Clinics, practices, med spas and telehealth',
     title: 'Healthcare marketing,',
     accent: 'done with care.',
-    intro: 'We have marketed healthcare for 30 years. We know what you can say, where you can say it, and how to grow patient volume without putting your practice at risk.',
+    intro: 'Our team brings 30 years of combined healthcare marketing experience. We know what you can say, where you can say it, and how to grow patient volume without putting your practice at risk.',
     build: [
       'Patient-acquisition websites with compliant intake and booking',
       'HIPAA-aware tracking: no health data in ad pixels, server-side conversions',
@@ -130,7 +130,7 @@ export const audiences: Audience[] = [
       'Lifecycle email and SMS that respect patient privacy',
     ],
     why: [
-      { title: '30 years in healthcare', body: 'Three decades of marketing healthcare, from single practices to multi-location groups.' },
+      { title: '30 years in healthcare', body: 'Three decades of combined experience marketing healthcare, from single practices to multi-location groups.' },
       { title: 'Compliance up front', body: 'Every ad, form and tag is checked against privacy and platform rules before it ships.' },
       { title: 'Measured on patients', body: 'The dashboard tracks booked appointments, not clicks.' },
     ],
