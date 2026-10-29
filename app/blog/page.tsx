@@ -91,7 +91,7 @@ export default function Blog() {
             <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink/55">Featured · {featured.date} · {featured.readTime}</span>
             <h2 className="mt-4 font-display text-[32px] font-medium leading-tight tracking-[-0.03em] transition-colors group-hover:text-forest">{featured.title}</h2>
             <p className="mt-4 font-body leading-relaxed text-ink/70">{featured.excerpt}</p>
-            <span className="mt-6 inline-flex font-body text-sm font-medium text-forest underline underline-offset-4">Read the article →</span>
+            <span className="mt-6 inline-flex font-body text-sm font-medium text-forest decoration-forest/30 underline-offset-[6px] transition hover:text-ink hover:underline">Read the article →</span>
           </div>
         </Link>
       </section>

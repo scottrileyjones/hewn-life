@@ -109,7 +109,7 @@ export default function Home() {
           </div>
           <div className="max-w-[32em] lg:justify-self-end">
             <p className="font-body text-[17px] text-ink/70">Owner-run shops, studios, service teams and makers. You have the craft and the customers who come back. We build the engine that brings the next thousand.</p>
-            <Link href="/who-we-serve" className="mt-3 inline-flex font-body text-[15px] font-medium text-forest underline underline-offset-4">See who we serve: e-commerce, local businesses, startups and more →</Link>
+            <Link href="/who-we-serve" className="mt-3 inline-flex font-body text-[15px] font-medium text-forest decoration-forest/30 underline-offset-[6px] transition hover:text-ink hover:underline">See who we serve: e-commerce, local businesses, startups and more →</Link>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:grid-rows-2">
@@ -167,7 +167,7 @@ export default function Home() {
               </details>
             ))}
           </div>
-          <Link href="/dashboard" className="mt-6 inline-flex font-body text-sm font-medium text-forest underline underline-offset-4">Open the full sample dashboard →</Link>
+          <Link href="/dashboard" className="mt-6 inline-flex font-body text-sm font-medium text-forest decoration-forest/30 underline-offset-[6px] transition hover:text-ink hover:underline">Open the full sample dashboard →</Link>
         </div>
         <Link href="/dashboard" className="relative isolate flex items-center justify-center overflow-hidden rounded-[32px] px-3.5 py-7 sm:px-10 sm:py-14 lg:min-h-[560px]" aria-label="Open the sample dashboard">
           <Terrain scene="sage" seed={21} className="-z-10" />
