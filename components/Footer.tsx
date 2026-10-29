@@ -53,7 +53,7 @@ export default function Footer() {
 
           <div>
             <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.16em] text-mist/65">Contact</p>
-            <a href="mailto:hello@hewnlife.com" className="block font-body text-sm text-mist/85 transition-colors hover:text-lime">hello@hewnlife.com</a>
+            <a href="mailto:hello@hewn.life" className="block font-body text-sm text-mist/85 transition-colors hover:text-lime">hello@hewn.life</a>
             <CalButton className="mt-2 text-left font-body text-sm text-lime transition-colors hover:text-mist">Book a discovery call →</CalButton>
             <div className="mt-5 flex gap-4">
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-mist/65 transition-colors hover:text-lime" aria-label="LinkedIn">

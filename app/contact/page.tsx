@@ -88,7 +88,7 @@ export default function Contact() {
                 ))}
               </ol>
               <div className="mt-8 border-t border-mist/15 pt-6">
-                <a href="mailto:hello@hewnlife.com" className="block font-body text-sm text-mist transition-colors hover:text-lime">hello@hewnlife.com</a>
+                <a href="mailto:hello@hewn.life" className="block font-body text-sm text-mist transition-colors hover:text-lime">hello@hewn.life</a>
                 <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="mt-2 block font-body text-sm text-mist/70 transition-colors hover:text-lime">LinkedIn</a>
               </div>
             </div>

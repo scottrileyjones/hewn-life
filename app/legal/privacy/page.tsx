@@ -100,7 +100,7 @@ export default function Privacy() {
         {
           heading: 'Contact Us',
           body: [
-            'If you have questions or requests regarding this Privacy Policy or your personal information, contact us at hello@hewnlife.com or by mail at Hewn Life LLC, 389 N 1500 E, Layton, UT 84040.',
+            'If you have questions or requests regarding this Privacy Policy or your personal information, contact us at hello@hewn.life or by mail at Hewn Life LLC, 389 N 1500 E, Layton, UT 84040.',
           ],
         },
       ]}
