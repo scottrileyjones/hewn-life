@@ -9,11 +9,11 @@ import { PageHero, SectionHead, ForestBand, h2Class, btnLight, btnGlass, btnFore
 
 export const metadata: Metadata = {
   title: 'Website in a Day — A Custom Small Business Website for $999',
-  description: 'Fill in one form and get a custom, professional small business website live within 24 hours for a flat $999. No calls, no Figma, no surprise invoices.',
+  description: 'Answer a few quick questions and get a custom, professional small business website live within 24 hours for a flat $999. No calls, no Figma, no surprise invoices.',
   alternates: { canonical: 'https://www.hewn.life/website-in-a-day' },
   openGraph: {
     title: 'Website in a Day — A Custom Small Business Website for $999',
-    description: 'Fill in one form and get a custom website live within 24 hours for a flat $999.',
+    description: 'Answer a few quick questions and get a custom website live within 24 hours for a flat $999.',
     url: 'https://www.hewn.life/website-in-a-day',
     images: [{ url: 'https://res.cloudinary.com/dsx2wcqte/image/upload/c_fill,g_auto:faces,w_1200,h_630/f_auto,q_auto/v1793234720/AdobeStock_2168699755_av5jgr.jpg', width: 1200, height: 630 }],
   },
@@ -26,7 +26,7 @@ const checkoutUrl = WIAD_PRICE_ID
   : ''
 
 const orderSteps = [
-  ['Fill in the brief', 'Your logo, three sites you love and a few lines about your business. About five minutes.'],
+  ['Answer the brief', 'A few quick questions about your business and a website you love, one at a time. About five minutes.'],
   ['Pay $999', 'One flat fee by card, straight after the brief. No deposit, no retainer.'],
   ['Live within 24 hours', 'The clock starts when payment clears. You get the live link and one round of edits.'],
 ]
@@ -81,7 +81,7 @@ export default function WebsiteInADay() {
   const stats = [
     { num: '$999', label: 'flat, no surprises' },
     { num: '24h', label: 'from brief to live' },
-    { num: '1', label: 'form, no calls needed' },
+    { num: '5', label: 'minutes, no calls needed' },
     { num: '100%', label: 'yours to keep' },
   ]
   return (
@@ -90,7 +90,7 @@ export default function WebsiteInADay() {
       <PageHero
         pill="Website in a day"
         title={<>A real website. <em className="accent text-lime">In one day. $999.</em></>}
-        lede="Fill in one form. We design, write, build and launch your website within 24 hours. The easiest way to start with Hewn."
+        lede="Answer a few quick questions. We design, write, build and launch your website within 24 hours. The easiest way to start with Hewn."
         scene="forge" seed={71}
         aside={
           <div className="grid w-full max-w-[380px] grid-cols-2 gap-px overflow-hidden rounded-[22px] border border-mist/30 backdrop-blur-xl lg:justify-self-end" style={{ background: 'rgba(244,242,236,.18)' }}>
@@ -167,7 +167,7 @@ export default function WebsiteInADay() {
         <aside className="lg:sticky lg:top-24">
           <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink/55">Start here</span>
           <h2 className={`${h2Class} mt-3.5 text-[clamp(30px,3.4vw,46px)]`}>Your brief is the kickoff.</h2>
-          <p className="mt-4 font-body text-ink/70">Everything we need to build your site, in one form. Then you pay $999 and the clock starts.</p>
+          <p className="mt-4 font-body text-ink/70">A few quick questions, one at a time. Then you pay $999 and the clock starts.</p>
           <ol className="mt-8 space-y-6">
             {orderSteps.map(([t, d], i) => (
               <li key={t} className="flex gap-4">

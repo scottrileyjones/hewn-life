@@ -46,8 +46,8 @@ export const intakeSections: IntakeSection[] = [
     intro: 'Three websites or brands you would love to borrow from. They don’t have to be in your industry.',
     fields: [
       { id: 'reference_1', label: 'Reference site 1', type: 'url', required: true, placeholder: 'https://' },
-      { id: 'reference_2', label: 'Reference site 2', type: 'url', required: true, placeholder: 'https://' },
-      { id: 'reference_3', label: 'Reference site 3', type: 'url', required: true, placeholder: 'https://' },
+      { id: 'reference_2', label: 'Reference site 2', type: 'url', placeholder: 'https://' },
+      { id: 'reference_3', label: 'Reference site 3', type: 'url', placeholder: 'https://' },
       { id: 'reference_notes', label: 'What you like about them', type: 'textarea', placeholder: 'The photography, the colors, how simple it feels…' },
       { id: 'logo', label: 'Logo', type: 'file', help: 'PNG, JPG, SVG or PDF, up to 5 MB.' },
       { id: 'brand_colors', label: 'Brand colors', type: 'text', placeholder: 'Hex codes or names, if you have them' },

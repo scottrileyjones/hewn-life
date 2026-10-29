@@ -1,47 +1,47 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import CalButton from './CalButton'
-import { intakeSections, planInterest, LOGO_MAX_BYTES, type IntakeField } from '@/lib/intake'
+import CardFlow, { type FlowField, type FlowStep } from './CardFlow'
+import { intakeFields, planInterest, LOGO_MAX_BYTES } from '@/lib/intake'
 
-const input = 'w-full rounded-[14px] border border-ink/[0.12] bg-white px-4 py-3 font-body text-[15px] text-ink transition placeholder:text-ink/40 focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest'
+/** One brief question from lib/intake as a card-flow field, so labels and required flags stay in one place. */
+function field(id: string, overrides: Partial<FlowField> = {}): FlowField {
+  const f = intakeFields.find(x => x.id === id)!
+  const type = f.type === 'select' ? 'text' : f.type
+  return {
+    name: f.id, label: f.label, type, required: f.required, placeholder: f.placeholder, help: f.help,
+    ...(f.type === 'file' ? { accept: '.png,.jpg,.jpeg,.svg,.webp,.pdf', maxBytes: LOGO_MAX_BYTES } : {}),
+    ...overrides,
+  }
+}
 
-function Field({ f }: { f: IntakeField }) {
-  const [fileName, setFileName] = useState('')
-  const [fileError, setFileError] = useState('')
-  const id = `intake-${f.id}`
-  const label = (
-    <label htmlFor={id} className="mb-2 block font-body text-sm font-medium text-ink">
-      {f.label}{f.required && <span className="text-forest"> *</span>}
-    </label>
-  )
+const choice = (id: string) => {
+  const f = intakeFields.find(x => x.id === id)!
+  return { name: f.id, required: f.required, options: f.options!.map(label => ({ label })) }
+}
 
-  if (f.type === 'textarea') return <div className="sm:col-span-2">{label}<textarea id={id} name={f.id} required={f.required} rows={3} placeholder={f.placeholder} className={`${input} resize-y`} /></div>
-  if (f.type === 'select') return (
-    <div>{label}
-      <select id={id} name={f.id} required={f.required} defaultValue="" className={input}>
-        <option value="" disabled>Choose one</option>
-        {f.options!.map(o => <option key={o}>{o}</option>)}
-      </select>
-    </div>
-  )
-  if (f.type === 'file') return (
-    <div className="sm:col-span-2">{label}
-      <label htmlFor={id} className="flex cursor-pointer items-center justify-between gap-4 rounded-[14px] border border-dashed border-ink/25 bg-white px-4 py-4 font-body text-sm transition hover:border-forest">
-        <span className={fileName ? 'text-ink' : 'text-ink/55'}>{fileName || 'Choose a file to upload'}</span>
-        <span className="rounded-full bg-forest px-3.5 py-1.5 font-medium text-mist">Browse</span>
-      </label>
-      <input
-        id={id} name={f.id} type="file" accept=".png,.jpg,.jpeg,.svg,.webp,.pdf" className="sr-only"
-        onChange={e => {
-          const file = e.target.files?.[0]
-          setFileName(file?.name ?? '')
-          setFileError(file && file.size > LOGO_MAX_BYTES ? 'That file is over 5 MB. Please choose a smaller one.' : '')
-        }}
-      />
-      <p className={`mt-1.5 font-body text-xs ${fileError ? 'text-[#A4402B]' : 'text-ink/55'}`}>{fileError || f.help}</p>
-    </div>
-  )
-  return <div>{label}<input id={id} name={f.id} type={f.type} required={f.required} placeholder={f.placeholder} className={input} /></div>
+function briefSteps(order: boolean): FlowStep[] {
+  return [
+    { id: 'you', title: 'First, who are we building for?', subtitle: 'We’ll send your site and your growth plan here.',
+      fields: [field('name', { label: 'Your name', autoComplete: 'name' }), field('email', { autoComplete: 'email' }), field('phone', { autoComplete: 'tel', placeholder: '' })] },
+    { id: 'business', title: 'Tell us about the business.',
+      fields: [field('business_name', { autoComplete: 'organization' }), field('current_website', { placeholder: 'Leave blank if you don’t have one' })] },
+    { id: 'action', title: 'What’s the one thing visitors should do on your site?', subtitle: 'We’ll build every page around it.', choice: choice('primary_action') },
+    { id: 'offers', title: 'What do you sell?', subtitle: 'The products or services you most want to sell.',
+      fields: [field('offers', { label: 'Main products or services' })] },
+    { id: 'customer', title: 'Who’s your ideal customer?',
+      fields: [field('ideal_customer', { label: 'Who they are and what they need' }), field('service_area')] },
+    { id: 'different', title: 'Why do customers pick you?', subtitle: 'Rough is fine. We’ll sharpen it.',
+      fields: [field('usp', { label: 'What makes you different' }), field('competitors')] },
+    { id: 'look', title: 'Show us a website you love the look of.', subtitle: 'Any industry. One is enough; three is even better.',
+      fields: [field('reference_1', { label: 'Website 1' }), field('reference_2', { label: 'Website 2' }), field('reference_3', { label: 'Website 3' }), field('reference_notes')] },
+    { id: 'brand', title: 'Got any brand pieces already?', subtitle: 'All optional. Skip if you’re starting fresh.',
+      fields: [field('logo'), field('brand_colors'), field('tagline'), field('brand_words')] },
+    { id: 'goal', title: 'What would make the next 90 days a win?',
+      fields: [field('goal_90_days', { label: '90-day goal' })] },
+    { id: 'revenue', title: 'Roughly how much does the business make in a year?', subtitle: 'Helps us size your growth plan.', choice: { ...choice('revenue_range'), required: false } },
+    ...(order ? [] : [{ id: 'plan', title: 'What are you interested in?', choice: { ...choice('plan_interest'), required: false } }]),
+  ]
 }
 
 /**
@@ -52,46 +52,44 @@ function Field({ f }: { f: IntakeField }) {
  * details carried over (or shows an invoice note when no Stripe price is set).
  */
 export default function IntakeForm({ order = false, checkoutUrl = '', source = 'Website' }: { order?: boolean; checkoutUrl?: string; source?: string }) {
-  const formRef = useRef<HTMLFormElement>(null)
+  const [values, setValues] = useState<Record<string, string>>({})
+  const files = useRef<Record<string, File | null>>({})
   const [state, setState] = useState<'idle' | 'sending' | 'done'>('idle')
   const [error, setError] = useState('')
   const [logoFailed, setLogoFailed] = useState(false)
+  const [src, setSrc] = useState(source)
 
   useEffect(() => {
     const q = new URLSearchParams(window.location.search)
-    const form = formRef.current
-    if (!form) return
-    for (const key of ['name', 'email', 'business_name', 'phone']) {
-      const v = q.get(key)
-      const el = form.elements.namedItem(key) as HTMLInputElement | null
-      if (v && el && !el.value) el.value = v
-    }
-    const src = form.elements.namedItem('source') as HTMLInputElement | null
-    if (src && q.get('source')) src.value = q.get('source')!.slice(0, 60)
+    const pre: Record<string, string> = {}
+    for (const key of ['name', 'email', 'business_name', 'phone']) { const v = q.get(key); if (v) pre[key] = v }
+    if (Object.keys(pre).length) setValues(v => ({ ...pre, ...v }))
+    if (q.get('source')) setSrc(q.get('source')!.slice(0, 60))
   }, [])
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+  async function submit() {
     setError('')
     setState('sending')
+    const body = new FormData()
+    for (const [k, v] of Object.entries(values)) if (k !== 'logo' && v) body.set(k, v)
+    if (files.current.logo) body.set('logo', files.current.logo)
+    body.set('source', src)
+    if (order) body.set('plan_interest', planInterest[0])
     try {
-      const res = await fetch('/api/intake', { method: 'POST', body: new FormData(e.currentTarget) })
+      const res = await fetch('/api/intake', { method: 'POST', body })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.')
       setLogoFailed(data.logo === 'failed')
       if (order && checkoutUrl) {
-        const f = new FormData(e.currentTarget)
         const next = new URL(checkoutUrl, window.location.origin)
         for (const [from, to] of [['name', 'fullName'], ['email', 'email'], ['business_name', 'businessName'], ['phone', 'phone']]) {
-          const v = f.get(from)
-          if (typeof v === 'string' && v) next.searchParams.set(to, v)
+          if (values[from]) next.searchParams.set(to, values[from])
         }
         if (data.logo === 'failed') next.searchParams.set('logo', 'failed')
         window.location.assign(next.toString())
         return
       }
       setState('done')
-      window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
       setState('idle')
@@ -126,34 +124,24 @@ export default function IntakeForm({ order = false, checkoutUrl = '', source = '
   }
 
   return (
-    <form ref={formRef} onSubmit={onSubmit} className="space-y-3.5" noValidate={false}>
-      <input type="hidden" name="source" defaultValue={source} />
-      {order && <input type="hidden" name="plan_interest" value={planInterest[0]} />}
-      {intakeSections.map((s, i) => (
-        <fieldset key={s.title} className="rounded-[28px] border border-ink/[0.08] bg-white/60 p-6 sm:p-9">
-          <legend className="sr-only">{s.title}</legend>
-          <div className="mb-6 flex items-start gap-4">
-            <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-forest font-display text-sm font-medium text-mist">{i + 1}</span>
-            <div>
-              <h2 className="font-display text-[22px] font-medium tracking-[-0.02em]">{s.title}</h2>
-              <p className="mt-1 font-body text-sm text-ink/65">{s.intro}</p>
-            </div>
-          </div>
-          <div className="grid gap-5 sm:grid-cols-2">
-            {s.fields.filter(f => !(order && f.id === 'plan_interest')).map(f => <Field key={f.id} f={f} />)}
-          </div>
-        </fieldset>
-      ))}
-      {error && <p role="alert" className="rounded-[14px] bg-[#F6E3DD] px-4 py-3 font-body text-sm text-[#7A2E1E]">{error}</p>}
-      <button type="submit" disabled={state === 'sending'} className="w-full rounded-full bg-forest py-4 font-body text-[15px] font-medium text-mist transition hover:bg-forest-2 disabled:opacity-60">
-        {state === 'sending' ? 'Sending your brief…' : order ? 'Continue to payment · $999' : 'Send my brief'}
-      </button>
-      <p className="text-center font-body text-xs leading-relaxed text-ink/55">
+    <CardFlow
+      eyebrow="Your brief"
+      steps={briefSteps(order)}
+      values={values}
+      onChange={(name, value, file) => {
+        if (file !== undefined) files.current[name] = file
+        setValues(v => ({ ...v, [name]: value }))
+      }}
+      onSubmit={submit}
+      submitLabel={order ? 'Continue to payment · $999' : 'Send my brief'}
+      sending={state === 'sending'}
+      error={error}
+      finePrint={<>
         {order ? 'Next you pay $999 by card. Your 24 hours start once payment clears. ' : ''}
         We use your brief to build your site and to email you a short growth plan. Never sold. By sending it you agree to our{' '}
         <a href="/legal/terms" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Terms</a> and{' '}
         <a href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Privacy Policy</a>.
-      </p>
-    </form>
+      </>}
+    />
   )
 }
