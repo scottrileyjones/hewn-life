@@ -3,9 +3,11 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import CalButton from '@/components/CalButton'
 import Terrain from '@/components/strata/Terrain'
+import Photo from '@/components/strata/Photo'
 import { Glyph, Pill, Check } from '@/components/strata/Glyph'
 import { pillars, getPillar, tierNames } from '@/lib/services'
 import { colors } from '@/lib/strata'
+import { pillarPhotos } from '@/lib/photos'
 
 export function generateStaticParams() {
   return pillars.map(p => ({ slug: p.slug }))
@@ -47,6 +49,14 @@ export default function PillarPage({ params }: { params: { slug: string } }) {
           </div>
         </div>
       </section>
+
+      {pillarPhotos[p.slug] && (
+        <div className="mx-auto max-w-7xl px-5 pb-3.5">
+          <div className="relative isolate aspect-[16/10] overflow-hidden rounded-[32px] bg-sand sm:aspect-[21/8]">
+            <Photo name={pillarPhotos[p.slug]} w={1280} h={488} sizes="(min-width: 1280px) 1240px, 100vw" priority />
+          </div>
+        </div>
+      )}
 
       {/* ── PLAYBOOK ── */}
       <section className="mx-auto max-w-7xl px-5 pb-20">

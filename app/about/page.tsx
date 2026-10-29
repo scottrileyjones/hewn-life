@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import CtaBanner from '@/components/CtaBanner'
 import HybridInfographic from '@/components/HybridInfographic'
 import Terrain from '@/components/strata/Terrain'
+import Photo from '@/components/strata/Photo'
 import { Glyph } from '@/components/strata/Glyph'
 import { PageHero, SectionHead, ForestBand, h2Class } from '@/components/strata/Page'
 import { colors, type GlyphKey } from '@/lib/strata'
@@ -116,6 +117,24 @@ export default function About() {
             &ldquo;Hewn&rdquo; is the work of taking raw material and carving out something truly beautiful and valuable.
           </blockquote>
           <p className="mt-6 font-body text-ink/70">That is the job: take what your business already has, cut away what isn&apos;t working, and build the rest in layers that hold.</p>
+        </div>
+      </section>
+
+      {/* ── CRAFT ── */}
+      <section className="mx-auto max-w-7xl px-5 pb-24">
+        <div className="grid gap-3 sm:grid-cols-3">
+          {([
+            ['clayHands', 'Shaped', 'Raw material, worked by hand until it holds its form.'],
+            ['woodCarving', 'Carved', 'Everything that isn’t the business, cut away.'],
+            ['leatherArtisan', 'Finished', 'Built to last, and to be used every day.'],
+          ] as const).map(([name, word, line]) => (
+            <figure key={name}>
+              <div className="relative isolate aspect-[4/5] overflow-hidden rounded-[22px] bg-sand">
+                <Photo name={name} w={480} h={600} sizes="(min-width: 640px) 33vw, 100vw" />
+              </div>
+              <figcaption className="mt-3.5 font-body text-sm text-ink/70"><em className="accent mr-1.5 text-lg text-forest">{word}.</em>{line}</figcaption>
+            </figure>
+          ))}
         </div>
       </section>
 
