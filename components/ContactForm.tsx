@@ -2,10 +2,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import CalButton from './CalButton'
-import { REVENUE_STOPS, revenueLabel, revenueValue, revenueStage, questions, tiers, computeResult, computeScore, getServices, computeHealthScore } from '@/lib/quiz'
-
-const input = 'w-full rounded-[14px] border border-ink/[0.12] bg-white px-4 py-3 font-body text-sm text-ink transition-all placeholder:text-ink/40 focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest'
-const label = 'mb-2 block font-body text-sm text-ink'
+import CardFlow, { type FlowStep } from './CardFlow'
+import { revenueValue, revenueStage, questions, tiers, computeResult, computeScore, getServices, computeHealthScore } from '@/lib/quiz'
 
 type Readout = {
   email: string
@@ -14,28 +12,64 @@ type Readout = {
   services: ReturnType<typeof getServices>
 }
 
+/** Revenue as a few tappable ranges, each mapped to a calculator stop for scoring. */
+const REVENUE_BANDS = [
+  { label: 'Pre-revenue', idx: 0 },
+  { label: 'Under $250K', idx: 2 },
+  { label: '$250K–$1M', idx: 4 },
+  { label: '$1M–$5M', idx: 9 },
+  { label: '$5M–$20M', idx: 13 },
+  { label: '$20M+', idx: 15 },
+]
+
+const CONSENT = 'I agree to receive my results and occasional marketing emails from Hewn Life, and to the privacy policy. I can unsubscribe anytime.'
+
+const steps: FlowStep[] = [
+  {
+    id: 'revenue', title: 'Roughly how much does the business make in a year?', subtitle: 'A ballpark is fine. It shapes what we’d recommend.',
+    choice: { name: 'revenue', required: true, options: REVENUE_BANDS.map(b => ({ label: b.label })) },
+  },
+  ...questions.map(q => ({
+    id: q.id, title: q.question, subtitle: q.subtitle,
+    choice: { name: q.id, required: true, options: q.options.map(o => ({ label: o.label, value: o.value })) },
+  })),
+  {
+    id: 'notes', title: 'Anything else we should know?', subtitle: 'What you sell, who you sell to, what you’ve tried. Optional.',
+    fields: [{ name: 'notes', type: 'textarea', placeholder: 'e.g. HVAC in Salt Lake. Referrals are steady but ads keep getting pricier.' }],
+  },
+  {
+    id: 'who', title: 'Who are we putting this together for?',
+    fields: [
+      { name: 'name', label: 'Your name', type: 'text', required: true, autoComplete: 'name' },
+      { name: 'company', label: 'Business name', type: 'text', required: true, autoComplete: 'organization' },
+    ],
+  },
+  {
+    id: 'you', title: 'Where should we send your growth plan?', subtitle: 'You’ll see your readout as soon as you tap the button.',
+    fields: [
+      { name: 'email', label: 'Email', type: 'email', required: true, autoComplete: 'email', placeholder: 'you@business.com' },
+      { name: 'phone', label: 'Phone', type: 'tel', autoComplete: 'tel' },
+      { name: 'consent', type: 'checkbox', required: true, help: CONSENT },
+    ],
+  },
+]
+
 /**
- * The contact form asks the ROI calculator's questions, saves the lead the
- * same way (which also starts their personal growth plan), then reads out
- * the result on the spot.
+ * The contact form asks the ROI calculator's questions one card at a time,
+ * saves the lead the same way (which also starts their personal growth plan),
+ * then reads out the result on the spot.
  */
 export default function ContactForm() {
-  const [answers, setAnswers] = useState<Record<string, string>>({})
-  const [revenueIdx, setRevenueIdx] = useState(-1)
-  const [state, setState] = useState<'idle' | 'sending'>('idle')
+  const [values, setValues] = useState<Record<string, string>>({})
+  const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
   const [readout, setReadout] = useState<Readout | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  async function submit() {
     setError('')
-    const missing = questions.find(q => !answers[q.id])
-    if (missing) {
-      setError(`Please answer: ${missing.question}`)
-      return
-    }
-    const form = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>
-    const scored = revenueIdx >= 0 ? { ...answers, stage: revenueStage(revenueIdx) } : answers
+    const answers = Object.fromEntries(questions.map(q => [q.id, values[q.id]]))
+    const band = REVENUE_BANDS.find(b => b.label === values.revenue)
+    const scored = band ? { ...answers, stage: revenueStage(band.idx) } : answers
     const tier = computeResult(scored)
     const services = getServices(scored)
     const readable: Record<string, string> = {}
@@ -44,106 +78,47 @@ export default function ContactForm() {
       if (opt) readable[q.question] = opt.label
     })
 
-    setState('sending')
+    setSending(true)
     try {
       const res = await fetch('/api/quiz-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           source: 'Contact form',
-          name: form.name,
-          company: form.company,
-          email: form.email,
-          phone: form.phone,
-          notes: form.notes,
-          consent: form.consent === 'on',
+          name: values.name, company: values.company, email: values.email, phone: values.phone, notes: values.notes,
+          consent: values.consent === 'on',
           tier: tiers[tier].name,
           services: services.map(s => s.label),
           answers: readable,
           score: computeScore(scored),
-          annualRevenue: revenueIdx >= 0 ? revenueValue(revenueIdx) : undefined,
-          annualRevenueLabel: revenueIdx >= 0 ? revenueLabel(revenueIdx) : '',
+          annualRevenue: band ? revenueValue(band.idx) : undefined,
+          annualRevenueLabel: band?.label ?? '',
         }),
       })
       const out = await res.json().catch(() => ({}))
       if (!res.ok) throw new Error(out.error || 'Something went wrong.')
-      setReadout({ email: form.email, tier, health: computeHealthScore(scored), services })
+      setReadout({ email: values.email, tier, health: computeHealthScore(scored), services })
       requestAnimationFrame(() => document.getElementById('contact-readout')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
     } catch (err) {
       setError(`${err instanceof Error ? err.message : 'Something went wrong.'} Please try again, or email hello@hewn.life.`)
     } finally {
-      setState('idle')
+      setSending(false)
     }
   }
 
   if (readout) return <ReadoutView {...readout} />
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div>
-          <label htmlFor="c-name" className={label}>Full name *</label>
-          <input id="c-name" name="name" type="text" required autoComplete="name" className={input} placeholder="Your name" />
-        </div>
-        <div>
-          <label htmlFor="c-company" className={label}>Business name *</label>
-          <input id="c-company" name="company" type="text" required autoComplete="organization" className={input} placeholder="Your business" />
-        </div>
-      </div>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div>
-          <label htmlFor="c-email" className={label}>Email address *</label>
-          <input id="c-email" name="email" type="email" required autoComplete="email" className={input} placeholder="you@business.com" />
-        </div>
-        <div>
-          <label htmlFor="c-phone" className={label}>Phone number</label>
-          <input id="c-phone" name="phone" type="tel" autoComplete="tel" className={input} placeholder="Optional" />
-        </div>
-      </div>
-      <div>
-        <label htmlFor="c-revenue" className={label}>Annual revenue (approx.)</label>
-        <select id="c-revenue" value={revenueIdx} onChange={e => setRevenueIdx(Number(e.target.value))} className={input}>
-          <option value={-1}>Select range</option>
-          {REVENUE_STOPS.map((r, i) => <option key={r.label} value={i}>{r.label}</option>)}
-        </select>
-      </div>
-
-      {questions.map((q, qi) => (
-        <fieldset key={q.id}>
-          <legend className={label}>{qi + 1}. {q.question} *</legend>
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {q.options.map(o => {
-              const on = answers[q.id] === o.value
-              return (
-                <button
-                  key={o.value}
-                  type="button"
-                  aria-pressed={on}
-                  onClick={() => setAnswers(a => ({ ...a, [q.id]: o.value }))}
-                  className={`rounded-[14px] border px-4 py-3 text-left font-body text-sm transition ${on ? 'border-forest bg-forest text-mist' : 'border-ink/[0.12] bg-white text-ink hover:border-forest/40'}`}
-                >
-                  {o.label}
-                </button>
-              )
-            })}
-          </div>
-        </fieldset>
-      ))}
-
-      <div>
-        <label htmlFor="c-notes" className={label}>Anything else we should know?</label>
-        <textarea id="c-notes" name="notes" rows={4} className={`${input} resize-none`} placeholder="What you sell, who you sell to, what you've tried…" />
-      </div>
-      <label className="flex items-start gap-3 font-body text-[13px] leading-relaxed text-ink/70">
-        <input type="checkbox" name="consent" required className="mt-1 h-4 w-4 flex-shrink-0 accent-forest" />
-        <span>I agree to receive my results and occasional marketing communications from Hewn Life, and consent to my information being used as described in the <Link href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="text-forest underline underline-offset-2">privacy policy</Link>. I can unsubscribe anytime.</span>
-      </label>
-      {error && <p role="alert" className="rounded-[14px] bg-[#F6E3DD] px-4 py-3 font-body text-sm text-[#7A2E1E]">{error}</p>}
-      <button type="submit" disabled={state === 'sending'} className="w-full rounded-full bg-forest py-4 font-body font-medium text-mist transition-all duration-300 hover:bg-forest-2 disabled:opacity-60">
-        {state === 'sending' ? 'Reading your answers…' : 'Get my readout'}
-      </button>
-      <p className="text-center font-body text-[12px] text-ink/60">We respect your privacy. Your information is never shared or sold.</p>
-    </form>
+    <CardFlow
+      steps={steps}
+      values={values}
+      onChange={(name, value) => setValues(v => ({ ...v, [name]: value }))}
+      onSubmit={submit}
+      submitLabel="Get my readout"
+      sending={sending}
+      error={error}
+      finePrint={<>Read our <Link href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">privacy policy</Link>. Your information is never sold.</>}
+    />
   )
 }
 

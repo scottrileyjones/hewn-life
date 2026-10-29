@@ -32,8 +32,8 @@ The **Identifier** must match exactly, or the answer won't reach Airtable.
 | 2 | `phone` | Phone | Phone | No |
 | 3 | `current_website` | Current website (leave blank if none) | URL (or Short text) | No |
 | 4 | `reference_1` | A website or brand you love (1 of 3) | URL (or Short text) | Yes |
-| 5 | `reference_2` | Another one you love (2 of 3) | URL (or Short text) | Yes |
-| 6 | `reference_3` | One more (3 of 3) | URL (or Short text) | Yes |
+| 5 | `reference_2` | Another one you love (2 of 3) | URL (or Short text) | No |
+| 6 | `reference_3` | One more (3 of 3) | URL (or Short text) | No |
 | 7 | `reference_notes` | What do you like about them? | Long text | No |
 | 8 | `brand_colors` | Brand colors, if you have them | Short text | No |
 | 9 | `tagline` | Your tagline, if you have one | Short text | No |
