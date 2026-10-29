@@ -37,6 +37,7 @@ export async function POST(request: Request) {
       const subscription = await stripe.subscriptions.create({
         customer: customer.id,
         items: [{ price: priceId }],
+        metadata: metadata ?? {},
         payment_behavior: 'default_incomplete',
         payment_settings: {
           save_default_payment_method: 'on_subscription',

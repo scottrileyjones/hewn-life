@@ -1,9 +1,16 @@
 import CalButton from '@/components/CalButton'
 import Terrain from '@/components/strata/Terrain'
 import { Glyph } from '@/components/strata/Glyph'
-import { getChallenge, getPlan, kpiGlossary, methodology, plans, proof, type ChallengeId } from '@/lib/playbook'
+import StickyCta from '@/components/plan/StickyCta'
+import { getChallenge, getPlan, plans, proof, type ChallengeId } from '@/lib/playbook'
 import type { GlyphKey, SceneName } from '@/lib/strata'
 import type { PlanRecord } from '@/lib/plans/store'
+
+/**
+ * A lead's personal growth plan, laid out as a landing page: a hook, what we
+ * heard, the plan we'd start them on, and two actions throughout — buy that
+ * plan or book a call.
+ */
 
 /** A generated pattern per challenge, in place of photography. */
 const challengeScene: Record<ChallengeId, SceneName> = {
@@ -19,67 +26,21 @@ const challengeGlyph: Record<ChallengeId, GlyphKey> = {
 /** KPIs where lower is the win. */
 const lowerIsBetter = new Set(['CAC', 'Cost as % of revenue', 'Time to traction'])
 
-/** The route across a challenge's terrain: where we start, test and grade. Positions in % of the panel. */
-const route = [
-  { x: 22, y: 64, label: 'Day 1 · Baseline' },
-  { x: 54, y: 44, label: 'Day 45 · Test' },
-  { x: 32, y: 20, label: 'Day 90 · Grade' },
-]
-
-/** What sits on a challenge's pattern: the route to Day 90 and the KPI we move. */
-function ChallengeMap({ id, kpis }: { id: ChallengeId; kpis: string[] }) {
-  const [main, ...rest] = kpis
-  const pts = route.map(p => `${p.x},${p.y}`).join(' ')
-  return (
-    <>
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden="true">
-        <polyline points={`${route[0].x},${route[0].y + 30} ${pts}`} fill="none" stroke="#D6F28B" strokeWidth="2" strokeDasharray="1 5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-      </svg>
-      {route.map((p, i) => (
-        <div key={p.label} className="absolute flex items-center gap-2" style={{ left: `${p.x}%`, top: `${p.y}%`, transform: 'translate(-7px, -7px)' }}>
-          <span className={`block h-3.5 w-3.5 rounded-full border-2 border-lime ${i === route.length - 1 ? 'bg-lime' : 'bg-forest'}`} />
-          <span className="whitespace-nowrap rounded-full border border-white/20 bg-black/25 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-mist backdrop-blur-md">{p.label}</span>
-        </div>
-      ))}
-      <div className="absolute inset-x-4 bottom-4 rounded-[20px] border border-white/20 bg-black/25 p-5 text-mist shadow-glass backdrop-blur-md">
-        <div className="flex items-center justify-between">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-lime">The KPI we move</p>
-          <Glyph name={challengeGlyph[id]} fg="#F4F2EC" accent="#D6F28B" size={28} />
-        </div>
-        <p className="mt-2 font-display text-[28px] font-semibold leading-tight">
-          {main} <span className="text-lime">{lowerIsBetter.has(main) ? '↓' : '↑'}</span>
-        </p>
-        <p className="mt-1 font-body text-[13px] leading-snug text-mist/80">{kpiGlossary[main]}</p>
-        {rest.length > 0 && (
-          <p className="mt-3 border-t border-white/15 pt-3 font-body text-[12px] text-mist/70">
-            Also tracked: {rest.map(k => `${k} ${lowerIsBetter.has(k) ? '↓' : '↑'}`).join(' · ')}
-          </p>
-        )}
-      </div>
-    </>
-  )
+/** Tag a buy link with the plan's token so Stripe can credit the sale to this lead. */
+function withRef(href: string, token: string) {
+  if (!/^[a-f0-9]{32}$/.test(token)) return href
+  if (href.startsWith('/checkout?')) return `${href}&ref=${token}`
+  if (href.startsWith('/website-in-a-day')) return `/website-in-a-day?ref=${token}#order`
+  return href
 }
 
 const eyebrow = 'font-mono text-[11px] uppercase tracking-[0.2em]'
+const primaryBtn = 'inline-flex items-center justify-center rounded-full bg-lime px-7 py-4 font-body text-[15px] font-medium text-forest transition hover:bg-[#c7e67a]'
+const darkBtn = 'inline-flex items-center justify-center rounded-full bg-forest px-7 py-4 font-body text-[15px] font-medium text-mist transition hover:bg-forest-2'
+const ghostLight = 'inline-flex items-center justify-center rounded-full border border-mist/30 px-7 py-4 font-body text-[15px] font-medium text-mist transition hover:bg-mist/10'
+const ghostDark = 'inline-flex items-center justify-center rounded-full border border-forest/25 px-7 py-4 font-body text-[15px] font-medium text-forest transition hover:bg-forest/5'
 
-/** One stat as a bar on a 0–100 track (the largest share highlighted), or as a figure when it isn't a share. */
-function StatRow({ value, pct, label, highlight }: { value: string; pct?: number; label: string; highlight: boolean }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <p className="font-body text-[15px] leading-snug text-ink/75">{label}</p>
-      <div className="flex items-center gap-3">
-        {pct !== undefined ? (
-          <div className="h-3 flex-1 rounded bg-sand" aria-hidden="true">
-            <div className={`h-3 rounded ${highlight ? 'bg-dawn' : 'bg-ash/60'}`} style={{ width: `${pct}%` }} />
-          </div>
-        ) : <div className="flex-1" />}
-        <span className="min-w-[5rem] whitespace-nowrap text-right font-display text-[22px] font-semibold tabular-nums text-ink">{value}</span>
-      </div>
-    </div>
-  )
-}
-
-export default function PlanView({ record }: { record: PlanRecord }) {
+export default function PlanView({ record, review = false }: { record: PlanRecord; review?: boolean }) {
   const { deck, lead } = record
   if (!deck) return null
   const firstName = lead.name.trim().split(/\s+/)[0] || 'there'
@@ -87,60 +48,75 @@ export default function PlanView({ record }: { record: PlanRecord }) {
   const rec = getPlan(deck.plan)
   const booked = Boolean(record.bookedAt)
   const sources = deck.challenges.map(c => getChallenge(c.id).source)
+  const monthly = rec.per === 'per month'
+
+  // The one purchase we steer to: finish an open Website in a Day order, else the recommended plan.
+  const unfinishedOrder = lead.source === 'Website in a Day' && !record.paidAt
+  const buy = unfinishedOrder
+    ? { href: withRef('/website-in-a-day#order', record.token), label: 'Finish my Website in a Day order' }
+    : { href: withRef(rec.href, record.token), label: rec.id === 'website-in-a-day' ? 'Start my website · $999' : `Start ${rec.name} · ${rec.price}/mo` }
+  const terms = rec.id === 'website-in-a-day' ? 'One-time $999 · live within 24 hours of your brief' : 'Flat monthly fee · no contract · cancel anytime online'
+  const hook = deck.hook || `A growth plan for ${company}.`
+
+  const BookButton = ({ className }: { className: string }) => booked
+    ? <span className={`${className} pointer-events-none opacity-80`}>You’re booked ✓</span>
+    : <CalButton className={className}>Book a free 30-min call</CalButton>
 
   return (
     <div className="bg-bone pb-28 text-ink">
-      {/* Cover */}
-      <section className="px-4 pt-24 sm:px-6">
-        <div className="relative isolate mx-auto max-w-6xl overflow-hidden rounded-[32px] bg-forest px-6 py-14 text-mist sm:px-12 sm:py-20">
+      {/* Hero: the hook and both actions */}
+      <section id="plan-hero" className="px-4 pt-24 sm:px-6">
+        <div className="relative isolate mx-auto grid max-w-6xl items-center gap-8 overflow-hidden rounded-[32px] bg-forest px-6 py-12 text-mist sm:px-12 sm:py-16 lg:grid-cols-[1fr_340px]">
           <Terrain scene="topo" seed={11} className="-z-20" />
-          <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(20,38,26,.92), rgba(20,38,26,.55) 75%)' }} />
-          <p className={`${eyebrow} text-lime`}>Growth plan · Prepared for {firstName}</p>
-          <h1 className="hero-heading fluid-hero mt-4 max-w-3xl leading-[1.04]">
-            A growth plan for <span className="accent text-lime">{company}.</span>
-          </h1>
-          <p className="mt-6 max-w-2xl font-body text-[17px] leading-relaxed text-mist/85">{deck.summary}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a href="#book" className="rounded-full bg-lime px-6 py-3 font-body text-[15px] font-medium text-forest transition hover:bg-[#c7e67a]">
-              {booked ? 'About our call' : 'Book a call about this plan'}
-            </a>
-            <a href="#plan" className="rounded-full border border-mist/30 px-6 py-3 font-body text-[15px] font-medium text-mist transition hover:bg-mist/10">See the plan</a>
+          <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(20,38,26,.94), rgba(20,38,26,.6) 80%)' }} />
+          <div>
+            <p className={`${eyebrow} text-lime`}>Prepared for {firstName}{lead.company ? ` · ${lead.company}` : ''}</p>
+            <h1 className="hero-heading fluid-hero mt-4 max-w-3xl leading-[1.04]">{hook}</h1>
+            <p className="mt-5 max-w-xl font-body text-[17px] leading-relaxed text-mist/85">{deck.summary}</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a href={buy.href} className={primaryBtn}>{buy.label} →</a>
+              <BookButton className={ghostLight} />
+            </div>
+            <p className="mt-4 font-body text-[13px] text-mist/65">{terms}</p>
           </div>
+          <a href={buy.href} className="group hidden rounded-[24px] border border-white/15 bg-black/20 p-6 shadow-glass backdrop-blur-md transition hover:bg-black/30 lg:block">
+            <p className={`${eyebrow} text-lime`}>Recommended for you</p>
+            <p className="mt-3 font-display text-[28px] font-semibold">{rec.name}</p>
+            <p className="mt-1"><span className="font-display text-[34px] font-semibold">{rec.price}</span> <span className="font-body text-[14px] text-mist/65">{rec.per}</span></p>
+            <ul className="mt-4 space-y-1.5 font-body text-[14px] text-mist/85">
+              {rec.includes.map(x => <li key={x} className="flex gap-2"><span className="text-lime">✓</span>{x}</li>)}
+            </ul>
+            <p className="mt-5 font-body text-[14px] font-medium text-lime">{unfinishedOrder ? 'Finish your order' : `Start ${rec.name}`} <span className="inline-block transition group-hover:translate-x-0.5">→</span></p>
+          </a>
         </div>
       </section>
 
-      {/* Challenges */}
-      <section className="mx-auto max-w-6xl px-4 pt-16 sm:px-6 print:break-before-page print:pt-0">
-        <p className={`${eyebrow} text-forest`}>01 · What we heard</p>
-        <h2 className="hero-heading fluid-h2 mt-3 max-w-3xl">Your top {deck.challenges.length === 1 ? 'challenge' : `${deck.challenges.length} challenges`}, and how we’d address them.</h2>
-        <div className="mt-8 flex flex-col gap-6">
+      {/* What we heard: three compact cards */}
+      <section className="mx-auto max-w-6xl px-4 pt-20 sm:px-6 print:break-before-page print:pt-0">
+        <p className={`${eyebrow} text-forest`}>What we heard</p>
+        <h2 className="hero-heading fluid-h2 mt-3 max-w-3xl">What’s holding {company} back, and our first move on each.</h2>
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
           {deck.challenges.map((c, i) => {
             const ch = getChallenge(c.id)
-            const top = Math.max(...ch.stats.map(s => s.pct ?? -1))
+            const stat = [...ch.stats].sort((a, b) => (b.pct ?? -1) - (a.pct ?? -1))[0]
+            const kpi = ch.kpis[0]
             return (
-              <article key={c.id} className="grid overflow-hidden rounded-[28px] border border-ink/[0.08] bg-paper lg:grid-cols-[1fr_340px]">
-                <div className="flex flex-col gap-6 p-6 sm:p-10">
-                  <div>
-                    <p className={`${eyebrow} text-ink/55`}>Challenge {i + 1} · {ch.name}</p>
-                    <h3 className="mt-2 font-display text-[26px] font-medium leading-tight sm:text-[30px]">{ch.headline}</h3>
-                    <p className="mt-3 border-l-2 border-dawn pl-4 font-body text-[17px] leading-relaxed text-ink/80">{c.whyYou}</p>
-                  </div>
-                  <div className="grid gap-4">
-                    {ch.stats.map(s => <StatRow key={s.label} {...s} highlight={s.pct !== undefined && s.pct === top} />)}
-                  </div>
-                  <div className="rounded-[20px] bg-forest p-6 text-mist">
-                    <p className={`${eyebrow} text-lime`}>Our approach</p>
-                    <p className="mt-2 font-body text-[16px] leading-relaxed text-mist/90">{ch.solution} {c.firstMove}</p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {ch.kpis.map(k => (
-                        <span key={k} title={kpiGlossary[k]} className="rounded-full bg-lime px-3 py-1 font-mono text-[12px] text-forest">KPI · {k}</span>
-                      ))}
-                    </div>
+              <article key={c.id} className="flex flex-col overflow-hidden rounded-[28px] border border-ink/[0.08] bg-paper">
+                <div className="relative h-28">
+                  <Terrain scene={challengeScene[c.id]} seed={i * 7 + 3} />
+                  <div className="absolute inset-x-4 bottom-3 flex items-center justify-between">
+                    <span className="rounded-full border border-white/20 bg-black/30 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-mist backdrop-blur-md">
+                      We move {kpi} {lowerIsBetter.has(kpi) ? '↓' : '↑'}
+                    </span>
+                    <Glyph name={challengeGlyph[c.id]} fg="#F4F2EC" accent="#D6F28B" size={26} />
                   </div>
                 </div>
-                <div className="relative hidden min-h-[320px] lg:block">
-                  <Terrain scene={challengeScene[c.id]} seed={i * 7 + 3} />
-                  <ChallengeMap id={c.id} kpis={ch.kpis} />
+                <div className="flex flex-1 flex-col p-6">
+                  <p className={`${eyebrow} text-ink/55`}>{ch.name}</p>
+                  <p className="mt-3 font-display text-[40px] font-semibold leading-none tracking-[-0.03em] text-dawn">{stat.value}</p>
+                  <p className="mt-1.5 font-body text-[13px] leading-snug text-ink/60">{stat.label}</p>
+                  <p className="mt-4 font-body text-[16px] leading-relaxed text-ink/85">{c.whyYou}</p>
+                  <p className="mt-4 border-t border-ink/[0.08] pt-4 font-body text-[15px] leading-relaxed text-ink/75"><b className="text-forest">Our first move:</b> {c.firstMove}</p>
                 </div>
               </article>
             )
@@ -148,49 +124,72 @@ export default function PlanView({ record }: { record: PlanRecord }) {
         </div>
       </section>
 
-      {/* Methodology */}
+      {/* The offer */}
       <section className="mx-auto max-w-6xl px-4 pt-16 sm:px-6">
-        <p className={`${eyebrow} text-forest`}>02 · How we work</p>
-        <h2 className="hero-heading fluid-h2 mt-3 max-w-3xl">Four phases, one scorecard.</h2>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {methodology.map((m, i) => (
-            <div key={m.phase} className={`flex flex-col gap-3 rounded-[24px] p-6 ${i === 3 ? 'bg-forest text-mist' : 'border border-ink/[0.08] bg-paper'}`}>
-              <p className={`${eyebrow} ${i === 3 ? 'text-lime' : 'text-ink/55'}`}>{String(i + 1).padStart(2, '0')} · {m.when}</p>
-              <h3 className="font-display text-[26px] font-medium">{m.phase}</h3>
-              <p className={`font-body text-[15px] leading-relaxed ${i === 3 ? 'text-mist/85' : 'text-ink/70'}`}>{m.body}</p>
-              <p className={`mt-auto font-body text-[14px] ${i === 3 ? 'text-lime' : 'text-forest'}`}><b>Deliverable:</b> {m.deliverable}</p>
-            </div>
-          ))}
+        <div className="grid items-center gap-6 rounded-[32px] bg-lime p-6 text-forest sm:p-10 lg:grid-cols-[1fr_auto]">
+          <div>
+            <p className={eyebrow}>Where we’d start</p>
+            <h2 className="hero-heading fluid-h2 mt-3 max-w-2xl">{rec.name}, <span className="accent">{rec.price}{monthly ? '/mo' : ''}.</span></h2>
+            <p className="mt-3 max-w-2xl font-body text-[17px] text-forest/80">{deck.planReason}</p>
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
+            <a href={buy.href} className={darkBtn}>{buy.label} →</a>
+            <BookButton className={ghostDark} />
+          </div>
         </div>
       </section>
 
-      {/* Roadmap */}
-      <section id="plan" className="mx-auto max-w-6xl scroll-mt-24 px-4 pt-16 sm:px-6">
-        <p className={`${eyebrow} text-forest`}>03 · Your first 90 days</p>
-        <h2 className="hero-heading fluid-h2 mt-3 max-w-3xl">Baseline, launch, then optimize to target.</h2>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {([['Days 0–30', deck.roadmap.first30], ['Days 31–60', deck.roadmap.next30], ['Days 61–90', deck.roadmap.last30]] as const).map(([when, items], i) => (
-            <div key={when} className={`rounded-[24px] p-6 ${i === 2 ? 'bg-lime text-forest' : 'bg-forest text-mist'}`}>
-              <p className={`${eyebrow} ${i === 2 ? 'text-forest' : 'text-lime'}`}>{when}</p>
-              <ul className={`mt-4 flex flex-col gap-2 font-body text-[16px] ${i === 2 ? '' : 'text-mist/90'}`}>
-                {items.map(t => <li key={t} className="flex gap-2"><span aria-hidden="true">·</span>{t}</li>)}
+      {/* 90 days */}
+      <section className="mx-auto max-w-6xl px-4 pt-20 sm:px-6">
+        <p className={`${eyebrow} text-forest`}>Your first 90 days</p>
+        <h2 className="hero-heading fluid-h2 mt-3 max-w-3xl">Baseline, launch, then grade every dollar.</h2>
+        <ol className="mt-8 grid gap-4 md:grid-cols-3">
+          {([['Days 0–30', 'Set up', deck.roadmap.first30], ['Days 31–60', 'Launch', deck.roadmap.next30], ['Days 61–90', 'Optimize', deck.roadmap.last30]] as const).map(([when, name, items], i) => (
+            <li key={when} className="rounded-[24px] border border-ink/[0.08] bg-paper p-6">
+              <div className="flex items-center gap-3">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-forest font-display text-sm font-medium text-lime">{i + 1}</span>
+                <div>
+                  <p className="font-display text-[19px] font-medium leading-tight">{name}</p>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/50">{when}</p>
+                </div>
+              </div>
+              <ul className="mt-4 space-y-2 font-body text-[15px] text-ink/80">
+                {items.map(t => <li key={t} className="flex gap-2"><span className="text-dawn">—</span>{t}</li>)}
               </ul>
-            </div>
+            </li>
           ))}
+        </ol>
+      </section>
+
+      {/* Track record */}
+      <section className="mx-auto max-w-6xl px-4 pt-16 sm:px-6">
+        <div className="rounded-[32px] bg-forest p-6 text-mist sm:p-10">
+          <p className={`${eyebrow} text-lime`}>Track record</p>
+          <div className="mt-5 grid gap-6 md:grid-cols-3">
+            {deck.proof.map(id => {
+              const p = proof.find(x => x.id === id)!
+              return (
+                <div key={id}>
+                  <p className="font-display text-[36px] font-semibold leading-none text-lime">{p.value}</p>
+                  <p className="mt-2 font-body text-[15px] leading-relaxed text-mist/80">{p.label}</p>
+                </div>
+              )
+            })}
+          </div>
+          <p className="mt-6 font-body text-[12px] leading-relaxed text-mist/55">Our team’s work before founding Hewn Life. These outcomes aren’t typical, and yours will depend on your business. <a href="/legal/results-disclaimer" className="underline underline-offset-2">Results Disclaimer</a></p>
         </div>
       </section>
 
-      {/* Recommendation */}
-      <section className="mx-auto max-w-6xl px-4 pt-16 sm:px-6">
-        <p className={`${eyebrow} text-forest`}>04 · Where to start</p>
-        <h2 className="hero-heading fluid-h2 mt-3 max-w-3xl">We’d start you on <span className="accent" style={{ color: '#1E3826' }}>{rec.name}.</span></h2>
-        <p className="mt-3 max-w-2xl font-body text-[17px] text-ink/75">{deck.planReason}</p>
+      {/* Every plan */}
+      <section className="mx-auto max-w-6xl px-4 pt-20 sm:px-6">
+        <p className={`${eyebrow} text-forest`}>Pick your starting point</p>
+        <h2 className="hero-heading fluid-h2 mt-3 max-w-3xl">Flat fees. No contracts.</h2>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {plans.map(p => {
             const on = p.id === rec.id
             return (
-              <a key={p.id} href={p.href} className={`group flex flex-col gap-3 rounded-[24px] p-6 transition hover:-translate-y-0.5 ${on ? 'bg-lime text-forest hover:bg-[#c7e67a]' : 'border border-ink/[0.08] bg-paper hover:border-forest/30'}`}>
-                {on && <span className="self-start rounded-full bg-forest px-3 py-1 font-mono text-[12px] text-lime">Recommended for you</span>}
+              <a key={p.id} href={withRef(p.href, record.token)} className={`group flex flex-col gap-3 rounded-[24px] p-6 transition hover:-translate-y-0.5 ${on ? 'bg-lime text-forest hover:bg-[#c7e67a]' : 'border border-ink/[0.08] bg-paper hover:border-forest/30'}`}>
+                <span className={`self-start rounded-full px-3 py-1 font-mono text-[12px] ${on ? 'bg-forest text-lime' : 'invisible'}`}>Recommended for you</span>
                 <h3 className="font-display text-[22px] font-semibold">{p.name}</h3>
                 <p><span className="font-display text-[34px] font-semibold">{p.price}</span> <span className="font-body text-[14px] opacity-70">{p.per}</span></p>
                 <ul className="flex flex-col gap-1 font-body text-[14px] opacity-90">{p.includes.map(x => <li key={x}>{x}</li>)}</ul>
@@ -201,51 +200,31 @@ export default function PlanView({ record }: { record: PlanRecord }) {
             )
           })}
         </div>
-        <p className="mt-4 font-body text-[14px] text-ink/60">Flat fees, month to month. Never a percentage of your ad spend.</p>
+        <p className="mt-4 font-body text-[14px] text-ink/60">Month to month. Never a percentage of your ad spend.</p>
       </section>
 
-      {/* Proof */}
-      <section className="mx-auto max-w-6xl px-4 pt-16 sm:px-6">
-        <div className="rounded-[32px] bg-lime p-6 text-forest sm:p-10">
-          <p className={`${eyebrow}`}>05 · Track record</p>
-          <h2 className="hero-heading fluid-h2 mt-3 max-w-3xl">Proven in one of the most regulated categories to market.</h2>
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {deck.proof.map(id => {
-              const p = proof.find(x => x.id === id)!
-              return (
-                <div key={id} className="rounded-[24px] bg-forest p-6 text-mist">
-                  <p className="font-display text-[34px] font-semibold text-lime">{p.value}</p>
-                  <p className="mt-2 font-body text-[15px] leading-relaxed text-mist/85">{p.label}</p>
-                </div>
-              )
-            })}
-          </div>
-          <p className="mt-5 font-body text-[13px] leading-relaxed text-forest/75">Our team’s work before founding Hewn Life. These outcomes aren’t typical, and yours will depend on your business. <a href="/legal/results-disclaimer" className="underline underline-offset-2">Results Disclaimer</a></p>
-        </div>
-      </section>
-
-      {/* Book */}
-      <section id="book" className="mx-auto max-w-6xl scroll-mt-24 px-4 pt-16 sm:px-6">
-        <div className="relative isolate overflow-hidden rounded-[32px] p-6 text-mist sm:p-12">
+      {/* Close: the same two actions */}
+      <section id="plan-close" className="mx-auto max-w-6xl scroll-mt-24 px-4 pt-16 sm:px-6">
+        <div id="book" className="relative isolate overflow-hidden rounded-[32px] p-6 text-mist sm:p-12">
           <Terrain scene="amber" seed={7} className="-z-20" />
-          <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(14,10,6,.72), rgba(14,10,6,.15) 75%)' }} />
-          <p className={`${eyebrow} text-lime`}>Next step</p>
+          <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(14,10,6,.75), rgba(14,10,6,.2) 75%)' }} />
+          <p className={`${eyebrow} text-lime`}>Ready when you are</p>
           <h2 className="hero-heading fluid-h2 mt-3 max-w-2xl">
             {booked ? <>You’re booked. <span className="accent text-lime">We’ll walk through this together.</span></> : <>AI runs the engine. <span className="accent text-lime">You drive.</span></>}
           </h2>
-          <p className="mt-3 max-w-xl font-body text-[17px] text-mist/85">{booked ? 'Bring your questions. We’ll use this plan as the agenda for our call.' : deck.nextStep}</p>
+          <p className="mt-3 max-w-xl font-body text-[17px] text-mist/85">{booked ? 'Bring your questions. We’ll use this plan as the agenda for our call.' : `Start ${rec.name} today, or talk it through with us first. Either way, ${firstName}, this plan is yours to keep.`}</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            {!booked && <CalButton className="rounded-full bg-lime px-7 py-4 font-body text-[15px] font-medium text-forest transition hover:bg-[#c7e67a]">Book a 30-minute call →</CalButton>}
-            {lead.source === 'Website in a Day' && !record.paidAt && (
-              <a href="/website-in-a-day#order" className="rounded-full border border-mist/30 bg-mist/10 px-7 py-4 font-body text-[15px] font-medium text-mist backdrop-blur transition hover:bg-mist/20">Finish your Website in a Day order</a>
-            )}
-            <a href="mailto:hello@hewn.life" className="rounded-full border border-mist/30 px-7 py-4 font-body text-[15px] font-medium text-mist transition hover:bg-mist/10">hello@hewn.life</a>
+            <a href={buy.href} className={primaryBtn}>{buy.label} →</a>
+            <BookButton className={ghostLight} />
           </div>
+          <p className="mt-5 font-body text-[13px] text-mist/65">Questions? <a href="mailto:hello@hewn.life" className="underline underline-offset-2">hello@hewn.life</a></p>
         </div>
         <p className="mt-6 font-body text-[12px] leading-relaxed text-ink/50">
           Sources: {Array.from(new Set(sources)).join('; ')}. Figures are from published research, not Hewn Life client results. This plan was written with AI from your answers, so tell us if anything looks off. Plans are estimates of what we’d do, not a guarantee of results. See our <a href="/legal/results-disclaimer" className="underline underline-offset-2">Results Disclaimer</a>.
         </p>
       </section>
+
+      {!review && <StickyCta label={rec.name} price={`${rec.price} ${rec.per}`} href={buy.href} cta={unfinishedOrder ? 'Finish order' : `Start ${rec.name}`} showBook={!booked} />}
     </div>
   )
 }

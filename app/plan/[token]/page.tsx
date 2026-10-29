@@ -25,7 +25,7 @@ export default async function PlanPage({ params, searchParams }: { params: { tok
 
   return (
     <>
-      <PlanView record={record} />
+      <PlanView record={record} review={Boolean(review || (sample && searchParams.review) || searchParams.print)} />
       {/* ?print=1 from the CRM: straight to Save as PDF. */}
       {(review || sample) && searchParams.print && <AutoPrint />}
       {!searchParams.print && (review || (sample && searchParams.review)) && (

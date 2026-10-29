@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { challengeIds, planIds, proofIds } from '@/lib/playbook'
 
 export const PlanDeckSchema = z.object({
+  hook: z.string().describe('The page headline: 5 to 9 words naming the outcome this business wants, written to them. No numbers, no hype. E.g. "Turn steady referrals into a steady pipeline."'),
   summary: z.string().describe('Two or three sentences: where this business is, what is holding growth back, and the plan. Written to the reader as "you".'),
   challenges: z.array(z.object({
     id: z.enum(challengeIds),
@@ -44,7 +45,7 @@ export type LeadInput = {
 const NUMBER_CLAIM = /\d\s*%|\$\s*\d/
 
 export function deckIsClean(d: PlanDeck): boolean {
-  const text = [d.summary, d.planReason, d.nextStep, ...d.challenges.flatMap(c => [c.whyYou, c.firstMove]),
+  const text = [d.hook ?? '', d.summary, d.planReason, d.nextStep, ...d.challenges.flatMap(c => [c.whyYou, c.firstMove]),
     ...d.roadmap.first30, ...d.roadmap.next30, ...d.roadmap.last30].join(' ')
   return !NUMBER_CLAIM.test(text) && d.challenges.length >= 1 && d.challenges.length <= 3
     && new Set(d.challenges.map(c => c.id)).size === d.challenges.length
