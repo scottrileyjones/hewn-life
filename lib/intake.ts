@@ -27,7 +27,7 @@ export interface IntakeSection {
 
 export const primaryActions = ['Call us', 'Book an appointment', 'Buy online', 'Request a quote', 'Visit in person', 'Join a list or waitlist']
 export const revenueRanges = ['Under $500K', '$500K–$1M', '$1M–$5M', '$5M+', 'Prefer not to say']
-export const planInterest = ['Website in a Week ($1,000)', 'Hewn ($2,500/mo)', 'Wrought ($5,000/mo)', 'Forged ($9,500/mo)', 'Not sure yet']
+export const planInterest = ['Website in a Day ($999)', 'Hewn ($2,500/mo)', 'Wrought ($5,000/mo)', 'Forged ($9,500/mo)', 'Not sure yet']
 
 export const intakeSections: IntakeSection[] = [
   {

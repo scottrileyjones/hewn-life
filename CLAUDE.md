@@ -29,7 +29,7 @@ can't be rendered in the screenshot (e.g. blocked images), say so explicitly.
 ## Project
 
 - **Framework**: Next.js 14, TypeScript, Tailwind CSS
-- **Pages**: `/`, `/how-it-works`, `/pricing`, `/about`, `/contact`, `/checkout`, `/blog`, `/website-in-a-week`
+- **Pages**: `/`, `/how-it-works`, `/pricing`, `/about`, `/contact`, `/checkout`, `/blog`, `/website-in-a-day`
 
 ## Design System
 

@@ -88,7 +88,7 @@ export default function ProcessTimeline() {
       <div className="absolute top-0 bottom-0 left-6 md:left-1/2 md:-translate-x-1/2 w-[2px]">
         <div className="absolute inset-0 bg-black/[0.08]" />
         <div
-          className="absolute top-0 left-0 w-full bg-lichen transition-[height] duration-300 ease-out"
+          className="absolute top-0 left-0 w-full bg-ember transition-[height] duration-300 ease-out"
           style={{ height: `${progress * 100}%` }}
         />
       </div>
@@ -117,7 +117,7 @@ export default function ProcessTimeline() {
                     {step.num}
                   </span>
                   {step.ongoing && isActive && (
-                    <span className="absolute inset-0 rounded-full border-2 border-lichen animate-ping opacity-40" />
+                    <span className="absolute inset-0 rounded-full border-2 border-ember animate-ping opacity-40" />
                   )}
                 </div>
               </div>

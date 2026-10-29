@@ -66,7 +66,7 @@ export default function LegalLayout({ title, updated, intro, sections }: LegalPa
                   <ul className="mt-3 space-y-2">
                     {s.list.map((item, k) => (
                       <li key={k} className="grid grid-cols-[14px_1fr] gap-2 items-start">
-                        <span className="mt-[7px] h-3 w-[3px] bg-lichen" />
+                        <span className="mt-[7px] h-3 w-[3px] bg-ember" />
                         <span className="font-body text-[15px] text-ink/80 leading-relaxed">{item}</span>
                       </li>
                     ))}

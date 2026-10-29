@@ -25,9 +25,9 @@ export default function Refund() {
           ],
         },
         {
-          heading: 'Website in a Week & Fixed-Fee Projects',
+          heading: 'Website in a Day & Fixed-Fee Projects',
           body: [
-            'For fixed-fee productized offerings (such as Website in a Week), the fee covers a defined scope delivered on an accelerated timeline. Because production begins immediately, fees are non-refundable once the build has started. If you cancel before the kickoff/onboarding step, you may request a refund less any administrative and third-party costs already incurred.',
+            'For fixed-fee productized offerings (such as Website in a Day), the fee covers a defined scope delivered on an accelerated timeline. Because production begins immediately, fees are non-refundable once the build has started. If you cancel before the kickoff/onboarding step, you may request a refund less any administrative and third-party costs already incurred.',
           ],
         },
         {

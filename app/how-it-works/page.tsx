@@ -163,7 +163,7 @@ export default function HowItWorks() {
             <div key={c.title} className="flex flex-col rounded-[22px] border border-ink/[0.08] bg-white p-7">
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/55">{c.freq}</span>
-                <span className="flex gap-1">{Array.from({ length: 4 }).map((_, j) => <span key={j} className={`h-3.5 w-[3px] ${j < c.dots ? 'bg-lichen' : 'bg-ink/10'}`} />)}</span>
+                <span className="flex gap-1">{Array.from({ length: 4 }).map((_, j) => <span key={j} className={`h-3.5 w-[3px] ${j < c.dots ? 'bg-ember' : 'bg-ink/10'}`} />)}</span>
               </div>
               <p className="mt-6 font-display text-[26px] font-medium tracking-[-0.03em]">{c.title}</p>
               <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-forest">{c.detail}</p>

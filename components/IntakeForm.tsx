@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import CalButton from './CalButton'
-import { intakeSections, LOGO_MAX_BYTES, type IntakeField } from '@/lib/intake'
+import { intakeSections, planInterest, LOGO_MAX_BYTES, type IntakeField } from '@/lib/intake'
 
 const input = 'w-full rounded-[14px] border border-ink/[0.12] bg-white px-4 py-3 font-body text-[15px] text-ink transition placeholder:text-ink/40 focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest'
 
@@ -44,8 +44,14 @@ function Field({ f }: { f: IntakeField }) {
   return <div>{label}<input id={id} name={f.id} type={f.type} required={f.required} placeholder={f.placeholder} className={input} /></div>
 }
 
-/** The website brief. Prefills name, email and source from the URL (?name=&email=&source=). */
-export default function IntakeForm() {
+/**
+ * The website brief. Prefills name, email and source from the URL (?name=&email=&source=).
+ *
+ * `order` turns it into the Website in a Day order form: the plan question is
+ * fixed, and a successful brief continues to `checkoutUrl` with the contact
+ * details carried over (or shows an invoice note when no Stripe price is set).
+ */
+export default function IntakeForm({ order = false, checkoutUrl = '', source = 'Website' }: { order?: boolean; checkoutUrl?: string; source?: string }) {
   const formRef = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<'idle' | 'sending' | 'done'>('idle')
   const [error, setError] = useState('')
@@ -73,12 +79,36 @@ export default function IntakeForm() {
       const data = await res.json().catch(() => ({}))
       if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.')
       setLogoFailed(data.logo === 'failed')
+      if (order && checkoutUrl) {
+        const f = new FormData(e.currentTarget)
+        const next = new URL(checkoutUrl, window.location.origin)
+        for (const [from, to] of [['name', 'fullName'], ['email', 'email'], ['business_name', 'businessName'], ['phone', 'phone']]) {
+          const v = f.get(from)
+          if (typeof v === 'string' && v) next.searchParams.set(to, v)
+        }
+        if (data.logo === 'failed') next.searchParams.set('logo', 'failed')
+        window.location.assign(next.toString())
+        return
+      }
       setState('done')
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
       setState('idle')
     }
+  }
+
+  if (state === 'done' && order) {
+    return (
+      <div className="rounded-[32px] bg-forest p-8 text-mist sm:p-12">
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-lime">Brief received</p>
+        <h2 className="mt-4 font-display text-[clamp(30px,3.4vw,46px)] font-medium leading-[1.08] tracking-[-0.03em]">You&apos;re in the queue.</h2>
+        <p className="mt-4 max-w-[34em] font-body text-mist/80">
+          We&apos;ll email your $999 invoice shortly. Your 24 hours start as soon as it&apos;s paid.
+        </p>
+        {logoFailed && <p className="mt-4 font-body text-sm text-lime">Your logo didn&apos;t upload. Reply to our email with it attached and we&apos;ll take it from there.</p>}
+      </div>
+    )
   }
 
   if (state === 'done') {
@@ -97,7 +127,8 @@ export default function IntakeForm() {
 
   return (
     <form ref={formRef} onSubmit={onSubmit} className="space-y-3.5" noValidate={false}>
-      <input type="hidden" name="source" defaultValue="Website" />
+      <input type="hidden" name="source" defaultValue={source} />
+      {order && <input type="hidden" name="plan_interest" value={planInterest[0]} />}
       {intakeSections.map((s, i) => (
         <fieldset key={s.title} className="rounded-[28px] border border-ink/[0.08] bg-white/60 p-6 sm:p-9">
           <legend className="sr-only">{s.title}</legend>
@@ -109,15 +140,15 @@ export default function IntakeForm() {
             </div>
           </div>
           <div className="grid gap-5 sm:grid-cols-2">
-            {s.fields.map(f => <Field key={f.id} f={f} />)}
+            {s.fields.filter(f => !(order && f.id === 'plan_interest')).map(f => <Field key={f.id} f={f} />)}
           </div>
         </fieldset>
       ))}
       {error && <p role="alert" className="rounded-[14px] bg-[#F6E3DD] px-4 py-3 font-body text-sm text-[#7A2E1E]">{error}</p>}
       <button type="submit" disabled={state === 'sending'} className="w-full rounded-full bg-forest py-4 font-body text-[15px] font-medium text-mist transition hover:bg-forest-2 disabled:opacity-60">
-        {state === 'sending' ? 'Sending your brief…' : 'Send my brief'}
+        {state === 'sending' ? 'Sending your brief…' : order ? 'Continue to payment · $999' : 'Send my brief'}
       </button>
-      <p className="text-center font-body text-xs text-ink/55">We use this only to build your concept site. Never shared or sold.</p>
+      <p className="text-center font-body text-xs text-ink/55">{order ? 'Next you pay $999 by card. Your 24 hours start once payment clears.' : 'We use this only to build your concept site.'} Never shared or sold.</p>
     </form>
   )
 }

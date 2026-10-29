@@ -619,10 +619,10 @@ function ResultsDashboard({
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-white border border-black/[0.07] rounded-3xl p-8">
             <div>
               <p className="font-display font-semibold text-[17px] text-[#0D0D0D] mb-1">Not ready for a retainer?</p>
-              <p className="font-body text-[14px] text-[#A89F92]">Start with our Website in a Week — fully built for a flat $1,000.</p>
+              <p className="font-body text-[14px] text-[#A89F92]">Start with Website in a Day — fully built for a flat $999.</p>
             </div>
-            <Link href="/website-in-a-week" className="flex-shrink-0 inline-flex items-center justify-center border border-black/[0.12] text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200 whitespace-nowrap">
-              Site in a Week →
+            <Link href="/website-in-a-day" className="flex-shrink-0 inline-flex items-center justify-center border border-black/[0.12] text-[#0D0D0D] font-body font-medium px-8 py-4 rounded-full hover:border-black/30 transition-all duration-200 whitespace-nowrap">
+              Site in a Day →
             </Link>
           </div>
         </div>

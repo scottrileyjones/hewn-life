@@ -182,7 +182,7 @@ export default function ServicesPage() {
               <p className="mb-4 font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-forest">{g.group}</p>
               <ul className="space-y-2">
                 {g.items.map(i => (
-                  <li key={i} className="flex items-center gap-2.5 font-body text-sm"><span className="h-3 w-[3px] bg-lichen" />{i}</li>
+                  <li key={i} className="flex items-center gap-2.5 font-body text-sm"><span className="h-3 w-[3px] bg-ember" />{i}</li>
                 ))}
               </ul>
             </div>

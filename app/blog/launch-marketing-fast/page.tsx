@@ -40,7 +40,7 @@ const faqJsonLd = {
     {
       '@type': 'Question',
       name: 'How much does it cost to launch a small business website quickly?',
-      acceptedAnswer: { '@type': 'Answer', text: 'A professional small business website can be launched in one week for $1,000 with services like Website in a Week — a flat-fee service that delivers a complete, live website in 7 days. Traditional agency website projects cost $15,000–$40,000 and take 6–12 weeks. AI-powered build processes have compressed both the timeline and the cost significantly.' },
+      acceptedAnswer: { '@type': 'Answer', text: 'A professional small business website can be launched in a day for $999 with services like Website in a Day — a flat-fee service that delivers a complete, live website within 24 hours. Traditional agency website projects cost $15,000–$40,000 and take 6–12 weeks. AI-powered build processes have compressed both the timeline and the cost significantly.' },
     },
   ],
 }
@@ -102,7 +102,7 @@ export default function Post() {
           { q: 'How fast can a small business launch its marketing?', a: 'With the right agency and AI tools, a small business can go from zero to a live website, active social profiles, and running paid campaigns within one week. Brand strategy takes 2–3 weeks to get right. Execution can begin in parallel.' },
           { q: 'What can you realistically launch in one week?', a: 'A professional website, Google Business Profile, core social media profiles, a basic email capture sequence, and initial paid campaigns. Brand guidelines and a content strategy can also be drafted in week one.' },
           { q: 'Why does marketing launch speed matter?', a: 'Marketing compounds. A business that launches in week one and a competitor that launches in month three aren\'t just three months apart — the early mover has data, optimized campaigns, and growing organic reach. Every week of delay is compounding momentum lost.' },
-          { q: 'How much does it cost to launch a small business website fast?', a: 'A professional website can be launched in one week for $1,000 with a flat-fee service. Traditional agency projects cost $15,000–$40,000 and take 6–12 weeks. AI-powered build processes have compressed both the timeline and the cost significantly.' },
+          { q: 'How much does it cost to launch a small business website fast?', a: 'A professional website can be launched in a day for $999 with a flat-fee service. Traditional agency projects cost $15,000–$40,000 and take 6–12 weeks. AI-powered build processes have compressed both the timeline and the cost significantly.' },
         ].map(({ q, a }, i) => (
           <div key={i} className="px-7 py-6 border-b border-black/[0.07] last:border-0">
             <p className="font-display font-semibold text-[16px] text-[#0D0D0D] mb-2">{q}</p>
@@ -183,11 +183,11 @@ export default function Post() {
         The right model: move fast on execution, be deliberate about strategy. Build the machine now, and refine it as data comes in. Don't wait for perfect conditions that don't exist.
       </p>
 
-      <BlogCta text="Our Website in a Week product gets you live in 7 days for a flat $1,000. No fluff, no delays." />
+      <BlogCta text="Our Website in a Day product gets you live within 24 hours for a flat $999. No fluff, no delays." />
 
       <h2>The first step</h2>
       <p>
-        If your business doesn't have a professional website, that's your constraint — everything else depends on it. Our <a href="/website-in-a-week">Website in a Week</a> program was built specifically to solve this fast, without the bloated timeline or the bloated invoice. Flat $1,000. Live in a week.
+        If your business doesn't have a professional website, that's your constraint — everything else depends on it. Our <a href="/website-in-a-day">Website in a Day</a> program was built specifically to solve this fast, without the bloated timeline or the bloated invoice. Flat $999. Live within 24 hours.
       </p>
       <p>
         If you have a website but your broader marketing isn't performing, start with our <a href="/quiz">free ROI assessment</a>. Seven questions, seven minutes, a real revenue projection and a specific recommendation for what to fix first.
