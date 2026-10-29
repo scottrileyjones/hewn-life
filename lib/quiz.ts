@@ -4,9 +4,8 @@
  */
 
 export const REVENUE_STOPS = [
-  { value: 0, label: '$0' },
-  { value: 50000, label: '$50K' },
-  { value: 100000, label: '$100K' },
+  { value: 0, label: 'Pre-revenue' },
+  { value: 100000, label: 'Under $250K' },
   { value: 250000, label: '$250K' },
   { value: 500000, label: '$500K' },
   { value: 750000, label: '$750K' },
@@ -25,6 +24,9 @@ export const REVENUE_STOPS = [
   { value: 100000000, label: '$100M' },
   { value: 100000001, label: '$100M+' },
 ]
+
+/** Index of the stop with this value, for forms that ask in ranges. */
+export const revenueIndex = (value: number) => Math.max(0, REVENUE_STOPS.findIndex(s => s.value === value))
 
 export function revenueLabel(idx: number): string {
   return REVENUE_STOPS[idx]?.label ?? '$0'
