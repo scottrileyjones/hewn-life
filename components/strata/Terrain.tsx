@@ -287,8 +287,9 @@ function topo(c: Ctx, sc: Scene, W: number, H: number, seed: number) {
   const L = sc.layers
   isoMap(c, W, H, field,
     Array.from({ length: L - 1 }, (_, i) => (i + 1) / L),
-    v => mix(sc.near, sc.far, Math.min(1, Math.max(0, (Math.floor(v * L) / L - 0.2) * 1.7))),
-    (_, k) => [sc.contour, (k + 1) % 4 === 0 ? 1.6 : 0.9])
+    // Smooth elevation shading; the isolines carry the banding.
+    v => mix(sc.near, sc.far, Math.min(1, Math.max(0, (v - 0.2) * 1.7))),
+    (_, k) => [sc.contour, (k + 1) % 4 === 0 ? 1.6 : 0.9], 3)
   lightFrom(c, sc, W, H, 0.5)
 }
 
