@@ -1,13 +1,13 @@
 import CalButton from '@/components/CalButton'
-import Photo from '@/components/strata/Photo'
 import Terrain from '@/components/strata/Terrain'
 import { getChallenge, getPlan, kpiGlossary, methodology, plans, proof, type ChallengeId } from '@/lib/playbook'
-import type { PhotoKey } from '@/lib/photos'
+import type { SceneName } from '@/lib/strata'
 import type { PlanRecord } from '@/lib/plans/store'
 
-const challengePhoto: Record<ChallengeId, PhotoKey> = {
-  capacity: 'baristas', acquisition: 'leatherArtisan', measurement: 'rockStrata', agency: 'teamMeeting',
-  creator: 'creator', founder: 'teamMeeting', credibility: 'coastPhone',
+/** A generated pattern per challenge, in place of photography. */
+const challengeScene: Record<ChallengeId, SceneName> = {
+  acquisition: 'survey', measurement: 'topo', capacity: 'woodgrain', agency: 'canyon',
+  creator: 'amber', founder: 'valley', credibility: 'forest',
 }
 
 const eyebrow = 'font-mono text-[11px] uppercase tracking-[0.2em]'
@@ -89,7 +89,7 @@ export default function PlanView({ record }: { record: PlanRecord }) {
                   </div>
                 </div>
                 <div className="relative hidden min-h-[320px] lg:block">
-                  <Photo name={challengePhoto[c.id]} w={680} h={900} sizes="340px" />
+                  <Terrain scene={challengeScene[c.id]} seed={i * 7 + 3} />
                 </div>
               </article>
             )
@@ -172,8 +172,8 @@ export default function PlanView({ record }: { record: PlanRecord }) {
       {/* Book */}
       <section id="book" className="mx-auto max-w-6xl scroll-mt-24 px-4 pt-16 sm:px-6">
         <div className="relative isolate overflow-hidden rounded-[32px] p-6 text-mist sm:p-12">
-          <Photo name="clayHands" w={1600} h={900} sizes="(min-width: 1024px) 1152px, 100vw" className="-z-20" />
-          <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(14,26,18,.92), rgba(14,26,18,.6) 70%)' }} />
+          <Terrain scene="amber" seed={7} className="-z-20" />
+          <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(14,10,6,.72), rgba(14,10,6,.15) 75%)' }} />
           <p className={`${eyebrow} text-lime`}>Next step</p>
           <h2 className="hero-heading fluid-h2 mt-3 max-w-2xl">
             {booked ? <>You’re booked. <span className="accent text-lime">We’ll walk through this together.</span></> : <>AI runs the engine. <span className="accent text-lime">You drive.</span></>}
