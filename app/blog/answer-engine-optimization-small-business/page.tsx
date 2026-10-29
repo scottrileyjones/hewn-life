@@ -58,7 +58,7 @@ const jsonLd = {
   image: 'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/v1780207193/girl_online_shopping_lqod5j.jpg',
   datePublished: '2026-05-15',
   dateModified: '2026-05-15',
-  author: { '@type': 'Person', name: 'Scott Jones', jobTitle: 'Founder', url: 'https://www.hewn.life/about' },
+  author: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   publisher: { '@type': 'Organization', name: 'Hewn Life', url: 'https://www.hewn.life' },
   url: 'https://www.hewn.life/blog/answer-engine-optimization-small-business',
   mainEntityOfPage: 'https://www.hewn.life/blog/answer-engine-optimization-small-business',
