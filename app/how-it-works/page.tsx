@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import CtaBanner from '@/components/CtaBanner'
 import ProcessTimeline from '@/components/ProcessTimeline'
+import Photo from '@/components/strata/Photo'
 
 export const metadata: Metadata = {
   title: 'How Hewn Life Works — From Onboarding to Full Execution',
@@ -82,6 +83,19 @@ export default function HowItWorks() {
           <Link href="/pricing" className="inline-flex items-center justify-center rounded-full border border-ink/15 px-6 py-3.5 font-body text-[15px] font-medium transition hover:border-ink/40">See plans &amp; pricing</Link>
         </div>
         <p className="mt-10 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-ink/50">AI-compressed timelines compared with the traditional agency average · internal benchmarks, 2024–2025</p>
+      </section>
+
+      {/* ── SESSIONS ── */}
+      <section className="mx-auto max-w-7xl px-5 pb-24">
+        <div className="relative isolate flex min-h-[440px] items-end overflow-hidden rounded-[32px] bg-sand text-mist lg:min-h-[520px]">
+          <Photo name="teamMeeting" w={1280} h={600} sizes="(min-width: 1280px) 1240px, 100vw" className="-z-20" />
+          <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(20,16,10,.62), rgba(20,16,10,.1) 70%), linear-gradient(0deg, rgba(20,16,10,.45), transparent 50%)' }} />
+          <div className="max-w-xl p-7 sm:p-12">
+            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-mist/80">Every month</span>
+            <h2 className={`${h2Class} mt-3.5 text-[clamp(30px,3.6vw,50px)]`}>One table. <em className="accent">Every number</em> on it.</h2>
+            <p className="mt-3.5 font-body text-[17px] text-mist/85">The founder walks your team through the dashboard, the verdicts and the next three tests. Decisions leave the room with an owner.</p>
+          </div>
+        </div>
       </section>
 
       {/* ── SPEED ── */}

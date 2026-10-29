@@ -4,6 +4,7 @@ import BuildWeek from '@/components/BuildWeek'
 import CalButton from '@/components/CalButton'
 import CountUp from '@/components/CountUp'
 import Link from 'next/link'
+import Photo from '@/components/strata/Photo'
 import { PageHero, SectionHead, ForestBand, h2Class, btnLight, btnGlass, btnForest } from '@/components/strata/Page'
 
 export const metadata: Metadata = {
@@ -118,6 +119,19 @@ export default function WebsiteInAWeek() {
         <div className="mt-20 flex flex-col justify-center gap-2.5 sm:flex-row">
           <StartButton className={btnForest} />
           <Link href="/pricing" className="inline-flex items-center justify-center rounded-full border border-ink/15 px-6 py-3.5 font-body text-[15px] font-medium transition hover:border-ink/40">See plans &amp; pricing</Link>
+        </div>
+      </section>
+
+      {/* ── OPEN ── */}
+      <section className="mx-auto max-w-7xl px-5 pb-24">
+        <div className="relative isolate flex min-h-[440px] items-end overflow-hidden rounded-[32px] bg-sand text-mist lg:min-h-[520px]">
+          <Photo name="cafeOwner" w={1280} h={600} sizes="(min-width: 1280px) 1240px, 100vw" className="-z-20" />
+          <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(20,16,10,.62), rgba(20,16,10,.1) 70%), linear-gradient(0deg, rgba(20,16,10,.45), transparent 50%)' }} />
+          <div className="max-w-xl p-7 sm:p-12">
+            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-mist/80">Day five</span>
+            <h2 className={`${h2Class} mt-3.5 text-[clamp(30px,3.6vw,50px)]`}>Open for business <em className="accent">by Friday.</em></h2>
+            <p className="mt-3.5 font-body text-[17px] text-mist/85">Monday is kickoff. Friday your doors are open online: a real site, on your domain, ready to take bookings and orders.</p>
+          </div>
         </div>
       </section>
 

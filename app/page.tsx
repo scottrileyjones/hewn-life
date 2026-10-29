@@ -2,6 +2,7 @@ import Link from 'next/link'
 import CalButton from '@/components/CalButton'
 import Terrain from '@/components/strata/Terrain'
 import Contour from '@/components/strata/Contour'
+import Photo from '@/components/strata/Photo'
 import PlanPicker from '@/components/strata/PlanPicker'
 import { Glyph, Pill } from '@/components/strata/Glyph'
 import { HeroRidge, PaybackChart, StrataBars, ElevationClimb, CreativeGrid, RidgeChart, dashboardSummary, verdictOf } from '@/components/strata/Charts'
@@ -97,6 +98,31 @@ export default function Home() {
         <span className="hidden h-1 w-1 rounded-full bg-ink/40 sm:block" />
         <span>Never a percentage of ad spend</span>
       </div>
+
+      {/* ── WHO IT'S FOR ── */}
+      <section className="mx-auto max-w-7xl px-5 pt-24 lg:pt-28">
+        <div className="mb-10 grid items-end gap-6 lg:grid-cols-2">
+          <div>
+            <Pill>Who we build for</Pill>
+            <h2 className={`${h2} text-[clamp(32px,3.6vw,50px)]`}>For the businesses people already love.</h2>
+          </div>
+          <p className="max-w-[32em] font-body text-[17px] text-ink/70 lg:justify-self-end">Owner-run shops, studios, service teams and makers. You have the craft and the customers who come back. We build the engine that brings the next thousand.</p>
+        </div>
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:grid-rows-2">
+          {([
+            ['cafeOwner', 'Hospitality', 'col-span-2 row-span-2 aspect-[4/3] lg:aspect-auto', 900, 900],
+            ['leatherArtisan', 'Makers and retail', 'aspect-[4/5] lg:aspect-[4/3]', 600, 450],
+            ['creator', 'Experts and creators', 'aspect-[4/5] lg:aspect-[4/3]', 600, 450],
+            ['baristas', 'Service teams', 'col-span-2 aspect-[16/9] lg:aspect-[8/3]', 1200, 450],
+          ] as const).map(([name, label, cls, w, h]) => (
+            <figure key={name} className={`relative isolate overflow-hidden rounded-[22px] bg-sand ${cls}`}>
+              <Photo name={name} w={w} h={h} sizes={name === 'cafeOwner' || name === 'baristas' ? '(min-width: 1024px) 640px, 100vw' : '(min-width: 1024px) 320px, 50vw'} />
+              <span className="absolute inset-x-0 bottom-0 h-1/3" style={{ background: 'linear-gradient(0deg, rgba(20,16,10,.5), transparent)' }} />
+              <figcaption className="absolute bottom-3 left-3 rounded-full bg-mist/90 px-3 py-1.5 font-body text-xs font-medium text-forest backdrop-blur">{label}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
 
       {/* ── HOW IT WORKS ── */}
       <section className="mx-auto max-w-7xl px-5 py-24 lg:py-28">
