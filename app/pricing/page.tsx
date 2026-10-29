@@ -384,7 +384,7 @@ export default function Pricing() {
                               <ul className="space-y-1.5">
                                 {group.items.map(item => (
                                   <li key={item} className="flex items-start gap-2.5">
-                                    <span className={`mt-1 h-3 w-[3px] flex-shrink-0 ${feat ? 'bg-lime' : 'bg-lichen'}`} />
+                                    <span className={`mt-1 h-3 w-[3px] flex-shrink-0 ${feat ? 'bg-lime' : 'bg-ember'}`} />
                                     <span className={`font-body text-xs ${feat ? 'text-mist/75' : 'text-ink/75'}`}>{item}</span>
                                   </li>
                                 ))}
@@ -481,7 +481,7 @@ export default function Pricing() {
           <h2 className={`${h2Class} mt-4 text-[clamp(26px,2.6vw,34px)]`}>What you&apos;re really paying for.</h2>
           <div className="mt-6 divide-y divide-mist/[0.1] border-t border-mist/[0.1]">
             {[
-              { scope: 'Brand + website only', agency: '$8,000–$15,000 project', hewn: 'Website · $1,000' },
+              { scope: 'Brand + website only', agency: '$8,000–$15,000 project', hewn: 'Website · $999' },
               { scope: 'Brand, website and digital presence', agency: '$5,000–$10,000/mo', hewn: 'Hewn · $2,500' },
               { scope: 'Plus paid media, funnels and automation', agency: '$10,000–$18,000/mo', hewn: 'Wrought · $5,000' },
               { scope: 'Full service, UGC and fractional CMO', agency: '$15,000–$25,000/mo', hewn: 'Forged · $9,500' },

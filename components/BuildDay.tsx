@@ -1,40 +1,41 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 
+// The 24-hour build, from the moment payment clears on a submitted brief.
 const days = [
   {
-    day: 'Day 1',
-    label: 'Mon',
-    title: 'Kickoff & Structure',
-    desc: 'One call to capture your goals, voice, and must-haves. AI scaffolds the sitemap and page structure the same afternoon — no Figma, no waiting.',
+    day: 'Hour 0',
+    label: '0h',
+    title: 'Brief in, structure out',
+    desc: 'Your brief is the kickoff: no call to schedule. We map your offers and goal into a sitemap and page structure straight away.',
   },
   {
-    day: 'Day 2',
-    label: 'Tue',
+    day: 'Hour 2',
+    label: '2h',
     title: 'Design & Brand',
-    desc: 'Colors, type, and layout shaped to your brand. We generate and refine the look live — responsive for mobile and desktop from the first pixel.',
+    desc: 'Colors, type and layout drawn from your logo and the three sites you love. Responsive for mobile and desktop from the first pixel.',
   },
   {
-    day: 'Day 3',
-    label: 'Wed',
+    day: 'Hour 6',
+    label: '6h',
     title: 'Copy & Content',
-    desc: 'Conversion-focused copy written and placed across every section. Images, icons, and assets sourced and dropped in.',
+    desc: 'Conversion-focused copy written from your brief and placed across every section, with images and assets dropped in.',
   },
   {
-    day: 'Day 4',
-    label: 'Thu',
+    day: 'Hour 12',
+    label: '12h',
     title: 'Build & Features',
-    desc: 'Fully coded and responsive, plus a few custom features — contact forms, booking, galleries — wired up and working.',
+    desc: 'Fully coded and responsive, with your contact or booking form wired up and working.',
   },
   {
-    day: 'Day 5',
-    label: 'Fri',
-    title: 'Launch & Handoff',
-    desc: 'Hosted, live, and yours. We hand over the keys — you take it from here with a site that already works.',
+    day: 'Hour 24',
+    label: '24h',
+    title: 'Live & Yours',
+    desc: 'Hosted, on your domain and live. You get the link, plus one round of edits on us.',
   },
 ]
 
-export default function BuildWeek() {
+export default function BuildDay() {
   const containerRef = useRef<HTMLDivElement>(null)
   const stepRefs = useRef<(HTMLDivElement | null)[]>([])
   const [activeDay, setActiveDay] = useState(-1)
@@ -69,13 +70,13 @@ export default function BuildWeek() {
   return (
     <div className="grid lg:grid-cols-2 gap-8 lg:gap-20 items-start">
 
-      {/* ── Left: scroll-driven day list ── */}
+      {/* ── Left: scroll-driven hour list ── */}
       <div ref={containerRef} className="relative order-2 lg:order-1 pt-4">
         {/* spine */}
         <div className="absolute top-6 bottom-2 left-5 w-[2px]">
           <div className="absolute inset-0 bg-black/[0.08]" />
           <div
-            className="absolute top-0 left-0 w-full bg-lichen transition-[height] duration-300 ease-out"
+            className="absolute top-0 left-0 w-full bg-ember transition-[height] duration-300 ease-out"
             style={{ height: `${progress * 100}%` }}
           />
         </div>
@@ -184,7 +185,7 @@ function BrowserMockup({ activeDay, compact = false }: { activeDay: number; comp
 
         {/* hero */}
         <Block show={activeDay >= 0} className="mb-4">
-          <div className={`rounded-lg p-4 transition-colors duration-500 ${activeDay >= 1 ? 'bg-gradient-to-br from-[#F3EEFF] to-[#FAF7FF]' : 'bg-black/[0.04]'}`}>
+          <div className={`rounded-lg p-4 transition-colors duration-500 ${activeDay >= 1 ? 'bg-gradient-to-br from-sand to-mist' : 'bg-black/[0.04]'}`}>
             <div className={`h-3.5 w-3/4 rounded mb-2 transition-all duration-500 ${activeDay >= 2 ? 'bg-[#0D0D0D]' : 'bg-black/15'}`} />
             <div className={`h-3.5 w-1/2 rounded mb-3 transition-all duration-500 ${activeDay >= 2 ? 'bg-forest' : 'bg-black/10'}`} />
             <div className={`h-2 w-2/3 rounded mb-1 transition-all duration-500 ${activeDay >= 2 ? 'bg-black/30' : 'bg-black/8'}`} />
@@ -198,7 +199,7 @@ function BrowserMockup({ activeDay, compact = false }: { activeDay: number; comp
         <Block show={activeDay >= 0} className="grid grid-cols-3 gap-3 mb-4">
           {[0,1,2].map(k => (
             <div key={k} className={`rounded-lg p-2.5 transition-colors duration-500 ${activeDay >= 1 ? 'bg-white border border-black/[0.07] shadow-sm' : 'bg-black/[0.04]'}`}>
-              <div className={`h-8 rounded mb-2 transition-colors duration-500 ${activeDay >= 2 ? (k === 1 ? 'bg-[#E9D5FF]' : 'bg-[#F3EEFF]') : 'bg-black/8'}`} />
+              <div className={`h-8 rounded mb-2 transition-colors duration-500 ${activeDay >= 2 ? (k === 1 ? 'bg-lime' : 'bg-sand') : 'bg-black/8'}`} />
               <div className={`h-1.5 w-full rounded mb-1 transition-colors duration-500 ${activeDay >= 2 ? 'bg-black/25' : 'bg-black/8'}`} />
               <div className={`h-1.5 w-2/3 rounded transition-colors duration-500 ${activeDay >= 2 ? 'bg-black/15' : 'bg-black/8'}`} />
             </div>
@@ -208,14 +209,14 @@ function BrowserMockup({ activeDay, compact = false }: { activeDay: number; comp
         {/* feature row (form) — day 3 */}
         <Block show={activeDay >= 3} className="flex gap-2 mb-4">
           <div className="flex-1 h-7 rounded-md bg-black/[0.04] border border-black/[0.07]" />
-          <div className="h-7 w-20 rounded-md bg-[#0D0D0D]" />
+          <div className="h-7 w-20 rounded-md bg-forest" />
         </Block>
 
         {/* footer */}
         <Block show={activeDay >= 1} className="flex items-center justify-between pt-3 border-t border-black/[0.06]">
           <div className={`h-2 w-12 rounded transition-colors duration-500 ${activeDay >= 2 ? 'bg-black/25' : 'bg-black/10'}`} />
           <div className="flex gap-1.5">
-            {[0,1].map(k => <div key={k} className={`w-3 h-3 rounded-full transition-colors duration-500 ${activeDay >= 2 ? 'bg-lichen/50' : 'bg-black/10'}`} />)}
+            {[0,1].map(k => <div key={k} className={`w-3 h-3 rounded-full transition-colors duration-500 ${activeDay >= 2 ? 'bg-ember/50' : 'bg-black/10'}`} />)}
           </div>
         </Block>
 

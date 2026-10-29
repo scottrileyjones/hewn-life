@@ -4,6 +4,7 @@ const nextConfig = {
     return [
       { source: '/palette', destination: '/brand', permanent: true },
       { source: '/font-options', destination: '/brand', permanent: true },
+      { source: '/website-in-a-week', destination: '/website-in-a-day', permanent: true },
     ]
   },
   images: {

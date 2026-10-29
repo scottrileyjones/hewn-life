@@ -63,21 +63,21 @@ const PRODUCT_META: Record<string, {
       'All nine pillars activated in month one',
     ],
   },
-  'website-in-a-week': {
+  'website-in-a-day': {
     color: '#1E3826',
-    tagline: 'Your website, live in 5 days.',
-    chips: ['$1,000 flat', '5 days', '100% yours'],
+    tagline: 'Your website, live in a day.',
+    chips: ['$999 flat', '24 hours', '100% yours'],
     highlights: [
-      'Custom design — mobile & desktop',
-      'Conversion-focused copywriting',
-      'Full development & hosting setup',
+      'Custom design from your brief — mobile & desktop',
+      'Copy written from your brief',
+      'Built, hosted and connected to your domain',
+      'Contact or booking form',
       'SEO-ready technical foundation',
-      'Live in 5 business days',
     ],
     nextSteps: [
-      'Day 1 — Kickoff call & structure built',
-      'Day 2–4 — Design, copy & development',
-      'Day 5 — Your site goes live',
+      'Brief received — we start as soon as payment clears',
+      'Within 24 hours — your site is live',
+      'Then — one round of edits, on us',
     ],
   },
 }
@@ -95,7 +95,7 @@ interface ContactInfo {
 function OrderSummary({ name, price, billing, mode, tier }: {
   name: string; price: number; billing: string; mode: string; tier: string
 }) {
-  const meta = PRODUCT_META[tier] ?? PRODUCT_META['website-in-a-week']
+  const meta = PRODUCT_META[tier] ?? PRODUCT_META['website-in-a-day']
 
   return (
     <div className="rounded-[28px] overflow-hidden bg-white border border-ink/[0.08]">
@@ -275,11 +275,18 @@ export default function CheckoutClient() {
   const billing = params.get('billing') ?? 'monthly'
   const tier = params.get('tier') ?? ''
 
-  const meta = PRODUCT_META[tier] ?? PRODUCT_META['website-in-a-week']
+  const meta = PRODUCT_META[tier] ?? PRODUCT_META['website-in-a-day']
 
   const [step, setStep] = useState<'info' | 'payment'>('info')
   const [clientSecret, setClientSecret] = useState('')
-  const [contact, setContact] = useState<ContactInfo>({ businessName: '', fullName: '', email: '', phone: '', notes: '' })
+  // Orders that start from a brief arrive with the contact details already filled in.
+  const [contact, setContact] = useState<ContactInfo>({
+    businessName: params.get('businessName') ?? '',
+    fullName: params.get('fullName') ?? '',
+    email: params.get('email') ?? '',
+    phone: params.get('phone') ?? '',
+    notes: '',
+  })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -290,7 +297,7 @@ export default function CheckoutClient() {
 
   // GA4 ecommerce funnel: begin_checkout when a valid plan loads,
   // add_payment_info when the payment step is reached.
-  const items = [{ item_id: tier || 'website-in-a-week', item_name: name, price, quantity: 1 }]
+  const items = [{ item_id: tier || 'website-in-a-day', item_name: name, price, quantity: 1 }]
   const beganCheckout = useRef(false)
   useEffect(() => {
     if (beganCheckout.current || !priceId || !name) return

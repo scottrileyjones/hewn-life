@@ -6,6 +6,7 @@ import HewnLogo from './HewnLogo'
 import CalButton from './CalButton'
 
 const navLinks = [
+  { href: '/website-in-a-day', label: 'Website in a day' },
   { href: '/how-it-works', label: 'How it works' },
   { href: '/services', label: 'Services' },
   { href: '/dashboard', label: 'Dashboard' },

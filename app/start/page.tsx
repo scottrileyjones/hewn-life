@@ -30,7 +30,7 @@ export default function StartPage() {
           <ol className="mt-6 space-y-6">
             {steps.map(([t, d], i) => (
               <li key={t} className="flex gap-4">
-                <span className="mt-1 h-5 w-[3px] flex-shrink-0 bg-lichen" />
+                <span className="mt-1 h-5 w-[3px] flex-shrink-0 bg-ember" />
                 <div>
                   <p className="font-display text-lg font-medium">{i + 1}. {t}</p>
                   <p className="mt-1 font-body text-sm text-ink/70">{d}</p>

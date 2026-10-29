@@ -10,7 +10,7 @@ const columns = [
       { href: '/services/performance-media', label: 'Performance media' },
       { href: '/services/creative-production', label: 'AI creative' },
       { href: '/services/seo-aeo', label: 'SEO + AEO' },
-      { href: '/website-in-a-week', label: 'Website in a week' },
+      { href: '/website-in-a-day', label: 'Website in a day' },
     ],
   },
   {

@@ -73,7 +73,7 @@ export default function ContactForm() {
           <label htmlFor="c-plan" className={label}>Which plan interests you?</label>
           <select id="c-plan" name="plan" defaultValue="" className={input}>
             <option value="">Select plan</option>
-            <option>Website in a Week — $1,000</option>
+            <option>Website in a Day — $999</option>
             <option>Hewn — $2,500/mo</option>
             <option>Wrought — $5,000/mo</option>
             <option>Forged — $9,500/mo</option>
