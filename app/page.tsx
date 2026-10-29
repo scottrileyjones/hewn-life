@@ -13,7 +13,7 @@ const steps = [
   { title: 'Audit', when: 'Week 1', body: 'We grade your nine pillars against the best in class and find the cheapest gaps to close.', Visual: StrataBars },
   { title: 'Plan', when: 'Weeks 1–2', body: 'A growth model, a scaling gate and a 90-day roadmap with one owner per number.', Visual: ElevationClimb },
   { title: 'Build', when: 'Days 0–30', body: 'Tracking, the creative matrix and the first funnel tests go live.', Visual: CreativeGrid },
-  { title: 'Grade', when: 'Every week', body: 'Every strategy gets a verdict on the dashboard. Winners scale.', Visual: () => <Contour /> },
+  { title: 'Grade', when: 'Every week', body: 'Every strategy gets a verdict on the dashboard. Winners scale.', Visual: () => <Contour grade="B−" /> },
 ]
 
 const comparisonRows = [

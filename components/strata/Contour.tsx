@@ -2,8 +2,11 @@
 import { useEffect, useRef } from 'react'
 import { noise1, fbm, mix, colors } from '@/lib/strata'
 
-/** Topographic funnel: rings from cold attention at the edge to the summit. */
-export default function Contour({ seed = 5, className = '' }: { seed?: number; className?: string }) {
+/**
+ * Topographic funnel: rings from cold attention at the edge to the summit.
+ * Pass `grade` to show a letter grade at the summit instead of the H mark.
+ */
+export default function Contour({ seed = 5, grade, className = '' }: { seed?: number; grade?: string; className?: string }) {
   const ref = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -31,7 +34,9 @@ export default function Contour({ seed = 5, className = '' }: { seed?: number; c
         c.beginPath()
         for (let a = 0; a <= 360; a += 3) {
           const th = (a * Math.PI) / 180
-          const w = 1 + 0.22 * (fbm(n, th * 1.3 + k * 0.17, 4) - 0.45)
+          // Blend the start of the loop into its end so the ring closes without a seam.
+          const f = (x: number) => fbm(n, x * 1.3 + k * 0.17, 4)
+          const w = 1 + 0.22 * (mix2(f(th), f(th - 2 * Math.PI), th / (2 * Math.PI)) - 0.45)
           const x = cx + Math.cos(th) * r * w * 1.25
           const y = cy + Math.sin(th) * r * w * 0.75
           a ? c.lineTo(x, y) : c.moveTo(x, y)
@@ -45,6 +50,7 @@ export default function Contour({ seed = 5, className = '' }: { seed?: number; c
         c.lineWidth = k % 5 === 0 ? 1.3 : 0.6
         c.stroke()
       }
+      if (grade) return
       // The mark at the summit.
       c.save()
       c.translate(cx, cy)
@@ -64,7 +70,19 @@ export default function Contour({ seed = 5, className = '' }: { seed?: number; c
     const ro = new ResizeObserver(render)
     ro.observe(cv)
     return () => ro.disconnect()
-  }, [seed])
+  }, [seed, grade])
 
-  return <canvas ref={ref} aria-hidden="true" className={`absolute inset-0 h-full w-full ${className}`} />
+  return (
+    <>
+      <canvas ref={ref} aria-hidden="true" className={`absolute inset-0 h-full w-full ${className}`} />
+      {grade && (
+        <span aria-hidden="true" className="absolute left-[55%] top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center leading-none text-forest">
+          <span className="font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-forest/70">Grade</span>
+          <span className="mt-1 font-display text-[44px] font-semibold tracking-[-0.03em]">{grade}</span>
+        </span>
+      )}
+    </>
+  )
 }
+
+const mix2 = (a: number, b: number, t: number) => a + (b - a) * t
