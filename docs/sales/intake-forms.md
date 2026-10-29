@@ -62,7 +62,7 @@ attendee:
 - Event triggers: **Booking created**
 - Secret: a long random string. Put the same value in Vercel as `CAL_WEBHOOK_SECRET`.
 
-The site's `CalButton` already opens `scott-hewn/discovery`. Point it at the new event slug when
+The site's `CalButton` already opens `hewn-life/discovery` (set in `lib/cal.ts`). Point it at the new event slug when
 it exists (`components/CalButton.tsx`, `CAL_LINK`).
 
 ---
