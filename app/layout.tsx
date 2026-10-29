@@ -48,8 +48,8 @@ export const metadata: Metadata = {
     canonical: 'https://www.hewn.life',
   },
   openGraph: {
-    title: 'Hewn Life — Your new growth team. One flat fee.',
-    description: 'Senior strategy, 20–40 creative assets a week and a live dashboard that grades every dollar. Monthly plans from $2,500, or a website in a day for $999.',
+    title: 'Hewn Life — AI runs the engine. Artists drive.',
+    description: 'A full marketing agency, flipped: senior marketers and artists make every call while AI does the heavy lifting. $20K+ of agency output for $2,500 a month, or a website in a day for $999.',
     url: 'https://www.hewn.life',
     siteName: 'Hewn Life',
     type: 'website',
@@ -57,8 +57,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Hewn Life — Your new growth team. One flat fee.',
-    description: 'Senior strategy, 20–40 creative assets a week and a live dashboard that grades every dollar. Monthly plans from $2,500, or a website in a day for $999.',
+    title: 'Hewn Life — AI runs the engine. Artists drive.',
+    description: 'A full marketing agency, flipped: senior marketers and artists make every call while AI does the heavy lifting. $20K+ of agency output for $2,500 a month, or a website in a day for $999.',
   },
   robots: {
     index: true,

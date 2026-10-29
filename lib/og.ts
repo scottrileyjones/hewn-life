@@ -7,5 +7,5 @@ export const ogImage = {
   url: '/opengraph-image.jpg',
   width: 1200,
   height: 630,
-  alt: 'Hewn Life — your new growth team, one flat fee.',
+  alt: 'Hewn Life — AI runs the engine. Artists drive.',
 }
