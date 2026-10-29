@@ -108,7 +108,7 @@ export default function Home() {
           </div>
           <div className="max-w-[32em] lg:justify-self-end">
             <p className="font-body text-[17px] text-ink/70">Owner-run shops, studios, service teams and makers. You have the craft and the customers who come back. We build the engine that brings the next thousand.</p>
-            <Link href="/who-we-serve" className="mt-3 inline-flex font-body text-[15px] font-medium text-forest underline underline-offset-4">See who we serve: healthcare, creators, startups and more →</Link>
+            <Link href="/who-we-serve" className="mt-3 inline-flex font-body text-[15px] font-medium text-forest underline underline-offset-4">See who we serve: e-commerce, local businesses, startups and more →</Link>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:grid-rows-2">
