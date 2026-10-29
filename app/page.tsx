@@ -106,7 +106,10 @@ export default function Home() {
             <Pill>Who we build for</Pill>
             <h2 className={`${h2} text-[clamp(32px,3.6vw,50px)]`}>For the businesses people already love.</h2>
           </div>
-          <p className="max-w-[32em] font-body text-[17px] text-ink/70 lg:justify-self-end">Owner-run shops, studios, service teams and makers. You have the craft and the customers who come back. We build the engine that brings the next thousand.</p>
+          <div className="max-w-[32em] lg:justify-self-end">
+            <p className="font-body text-[17px] text-ink/70">Owner-run shops, studios, service teams and makers. You have the craft and the customers who come back. We build the engine that brings the next thousand.</p>
+            <Link href="/who-we-serve" className="mt-3 inline-flex font-body text-[15px] font-medium text-forest underline underline-offset-4">See who we serve: healthcare, creators, startups and more →</Link>
+          </div>
         </div>
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:grid-rows-2">
           {([

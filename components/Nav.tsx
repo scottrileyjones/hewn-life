@@ -9,10 +9,9 @@ const navLinks = [
   { href: '/website-in-a-day', label: 'Website in a day' },
   { href: '/how-it-works', label: 'How it works' },
   { href: '/services', label: 'Services' },
+  { href: '/who-we-serve', label: 'Who we serve' },
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/pricing', label: 'Pricing' },
-  { href: '/about', label: 'About' },
-  { href: '/blog', label: 'Journal' },
 ]
 
 // Older pages that still open on a dark hero.
