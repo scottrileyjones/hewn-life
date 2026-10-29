@@ -428,6 +428,9 @@ function ResultsDashboard({
   const scoreColor = health.overall >= 65 ? '#6BAD3D' : health.overall >= 40 ? '#D9893F' : '#B5621C'
   const scoreLabel = health.overall >= 65 ? 'Strong Foundation' : health.overall >= 40 ? 'Room to Grow' : 'Significant Gap'
   const firstName = contact.name ? contact.name.split(' ')[0] : null
+  // launch: pre-revenue, so no projection. small: the projected lift is smaller
+  // than the plan, so we point them at Website in a Day. growth: the full ROI view.
+  const mode: 'launch' | 'small' | 'growth' = roi.revenueLabel === '$0' ? 'launch' : roi.annualMaxRaw <= 0 ? 'small' : 'growth'
 
   return (
     <div className="min-h-screen bg-bone">
@@ -450,12 +453,20 @@ function ResultsDashboard({
             {firstName ? `${firstName}'s Assessment` : 'Your Assessment'} · {tier.name} Tier Match
           </p>
           <h1 className="hero-heading fluid-hero text-ink leading-[1.04] mb-4">
-            You have a real<br />
-            <span className="accent" style={{ color: '#1E3826' }}>revenue opportunity.</span>
+            {mode === 'launch'
+              ? <>You&apos;re at the starting line.<br /><span className="accent" style={{ color: '#1E3826' }}>Here&apos;s the fastest way off it.</span></>
+              : <>You have a real<br /><span className="accent" style={{ color: '#1E3826' }}>revenue opportunity.</span></>}
           </h1>
-          <p className="font-body text-base text-ink/65 max-w-xl">
-            Based on your answers, here's what the numbers say — and what's within reach if you execute.
+          <p className="font-body text-base text-ink/70 max-w-xl">
+            {mode === 'launch'
+              ? 'Before revenue, the job is simple: look credible, then win your first customers. Here’s the plan your answers point to.'
+              : 'Based on your answers, here’s what the numbers suggest, and what’s within reach if you execute.'}
           </p>
+          {mode !== 'launch' && (
+            <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-ink/[0.1] bg-paper px-3.5 py-1.5 font-body text-[13px] text-ink/70">
+              <span className="h-3 w-[3px] bg-dawn" />Estimates based on industry averages, not a guarantee
+            </p>
+          )}
         </div>
 
         {/* ── ROI hero ── */}
@@ -463,41 +474,76 @@ function ResultsDashboard({
           <div className="relative rounded-[32px] overflow-hidden bg-paper border border-ink/[0.08] p-8 md:p-12">
 
             <div className="relative">
-              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink/55 mb-6">Revenue Opportunity · {roi.revenueLabel} current revenue</p>
+              {mode === 'launch' ? (
+                <>
+                  <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink/55 mb-6">Your launch plan</p>
+                  <ol className="grid gap-3 md:grid-cols-3">
+                    {[
+                      ['Look credible', 'Get a real website live, on your domain, in a day. Website in a Day, $999.'],
+                      ['Win your first customers', services[0] ? `Start with ${services[0].label.toLowerCase()}, the channel your answers point to first.` : 'Start with the one channel your answers point to first.'],
+                      ['Grow from there', `Step up to ${tier.name} once there’s revenue to grow. Monthly, no long contract.`],
+                    ].map(([t, d], i) => (
+                      <li key={t} className="rounded-[22px] bg-bone p-5">
+                        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-forest font-display text-sm font-medium text-mist">{i + 1}</span>
+                        <p className="mt-4 font-display text-[18px] font-medium">{t}</p>
+                        <p className="mt-1.5 font-body text-[14px] text-ink/70">{d}</p>
+                      </li>
+                    ))}
+                  </ol>
+                  <Link href="/website-in-a-day#order" className="mt-8 inline-flex items-center justify-center rounded-full bg-forest px-7 py-4 font-body text-[15px] font-medium text-mist transition hover:bg-forest-2">
+                    Start with Website in a Day · $999 →
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink/55 mb-6">Revenue opportunity · {roi.revenueLabel} current revenue</p>
 
-              <div className="grid md:grid-cols-2 gap-8 md:gap-12 mb-10">
-                <div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-forest mb-3">Potential New Revenue</p>
-                  <div className="font-display fluid-stat leading-none text-ink mb-2 tabular-nums">
-                    {fmtCompact(roiCount)}
+                  <div className="grid md:grid-cols-2 gap-8 md:gap-12 mb-10">
+                    <div>
+                      <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-forest mb-3">Potential new revenue</p>
+                      <div className="font-display fluid-stat leading-none text-ink mb-2 tabular-nums">
+                        {fmtCompact(roiCount)}
+                      </div>
+                      <p className="font-body text-[14px] text-ink/60">a year, at the high end of the range</p>
+                    </div>
+                    {mode === 'growth' ? (
+                      <div className="flex flex-col justify-center">
+                        <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-forest mb-3">Return after your plan</p>
+                        <div className="font-display fluid-stat leading-none mb-2 tabular-nums" style={{ color: '#1E3826' }}>
+                          {fmtCompact(netCount)}
+                        </div>
+                        <p className="font-body text-[14px] text-ink/60">a year, after your {tier.name} plan</p>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col justify-center rounded-[22px] bg-lime p-6 text-forest">
+                        <p className="font-display text-[19px] font-medium leading-snug">At your current size, a monthly plan may not pay for itself yet.</p>
+                        <p className="mt-2 font-body text-[14px] text-forest/80">Start with Website in a Day, and step up when the numbers support it.</p>
+                        <Link href="/website-in-a-day#order" className="mt-4 inline-flex self-start rounded-full bg-forest px-5 py-3 font-body text-[14px] font-medium text-mist transition hover:bg-forest-2">Start for $999 →</Link>
+                      </div>
+                    )}
                   </div>
-                  <p className="font-body text-[14px] text-ink/55">additional annual revenue — aggressive case</p>
-                </div>
-                <div className="flex flex-col justify-center">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-forest mb-3">Net ROI After Retainer</p>
-                  <div className="font-display fluid-stat leading-none mb-2 tabular-nums" style={{ color: '#1E3826' }}>
-                    {fmtCompact(netCount)}
-                  </div>
-                  <p className="font-body text-[14px] text-ink/55">profit above {tier.price} investment</p>
-                </div>
-              </div>
 
-              <div className="grid grid-cols-3 gap-4">
-                {[
-                  { label: 'Revenue Lift Range', val: `${roi.conservativeLift}–${roi.aggressiveLift}%` },
-                  { label: 'Conservative Case', val: roi.conservativeNew },
-                  { label: 'Annual Retainer', val: tier.price.split(' ')[0] },
-                ].map(s => (
-                  <div key={s.label} className="bg-bone rounded-2xl p-4 border border-black/[0.06]">
-                    <p className="font-mono text-[9px] uppercase tracking-[0.14em] text-ink/55 mb-2">{s.label}</p>
-                    <p className="font-display text-[22px] leading-none text-ink">{s.val}</p>
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    {[
+                      { label: 'Revenue lift range', val: `${roi.conservativeLift}–${roi.aggressiveLift}%` },
+                      { label: 'Conservative case', val: `${roi.conservativeNew} a year` },
+                      { label: 'Your plan', val: tier.price.replace(' / ', '/') },
+                    ].map(st => (
+                      <div key={st.label} className="bg-bone rounded-2xl p-4 border border-ink/[0.06]">
+                        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/55 mb-2">{st.label}</p>
+                        <p className="font-display text-[22px] leading-none text-ink">{st.val}</p>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
 
-              <p className="font-body text-[11px] text-ink/40 mt-6 leading-relaxed">
-                Projections based on industry ROAS benchmarks for businesses at your stage and tier. Actual results vary. Not a guarantee.
-              </p>
+                  <div className="mt-6 rounded-[18px] border border-ink/[0.1] bg-bone/70 p-5">
+                    <p className="flex items-center gap-2 font-display text-[16px] font-medium"><span className="h-3.5 w-[3px] bg-dawn" />These are estimates, not promises</p>
+                    <p className="mt-2 font-body text-[14px] leading-relaxed text-ink/70">
+                      We apply average growth ranges for businesses at your revenue and plan, based on industry benchmarks. Real results depend on your market, offer, budget and execution. This is not a guarantee or financial advice.
+                    </p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -596,7 +642,7 @@ function ResultsDashboard({
             <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(20,16,10,.8), rgba(20,16,10,.35) 70%)' }} />
             <div className="relative">
               <p className="font-mono text-[11px] uppercase tracking-[0.2em] mb-3 text-lime">
-                Your Starting Point · {tierKey === 'hewn' ? 'Foundation' : tierKey === 'wrought' ? 'Growth' : 'Scale'}
+                {mode === 'launch' ? 'When there’s revenue to grow' : <>Your starting point · {tierKey === 'hewn' ? 'Foundation' : tierKey === 'wrought' ? 'Growth' : 'Scale'}</>}
               </p>
               <h3 className="font-display fluid-h2 leading-none text-white mb-1">{tier.name}</h3>
               <p className="font-body text-[24px] text-mist/70 mb-5">{tier.price}</p>
@@ -617,7 +663,7 @@ function ResultsDashboard({
         </div>
 
         {/* ── Not ready yet ── */}
-        <div className={`transition-all duration-700 ${phase >= 5 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        {mode !== 'launch' && <div className={`transition-all duration-700 ${phase >= 5 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-paper border border-ink/[0.08] rounded-[32px] p-8">
             <div>
               <p className="font-display font-medium text-[18px] text-ink mb-1">Not ready for a retainer?</p>
@@ -627,7 +673,7 @@ function ResultsDashboard({
               Site in a Day →
             </Link>
           </div>
-        </div>
+        </div>}
 
       </div>
     </div>
