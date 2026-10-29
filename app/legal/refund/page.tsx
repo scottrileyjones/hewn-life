@@ -1,75 +1,80 @@
 import LegalLayout from '@/components/LegalLayout'
 
 export const metadata = {
-  title: 'Refund Policy — Hewn Life',
-  description: 'Hewn Life&apos;s policy on refunds, cancellations, and chargebacks.',
+  title: 'Refunds & Cancellations — Hewn Life',
+  description: 'How Hewn Life billing, automatic renewals, cancellations and refunds work.',
 }
 
 export default function Refund() {
   return (
     <LegalLayout
-      title="Refund Policy"
-      updated="May 30, 2026"
-      intro="This Refund Policy describes when and how refunds are issued for services provided by Hewn Life LLC. Because our services are custom, labor-intensive, and begin promptly after engagement, this Policy is designed to be fair to both parties. It supplements our Terms of Service and any applicable statement of work (&ldquo;SOW&rdquo;)."
+      title="Refunds & Cancellations"
+      updated="October 29, 2026"
+      intro="This policy explains how billing, automatic renewal, cancellation and refunds work for Hewn Life plans and projects. It is part of our Terms of Service."
+      summary={[
+        'Monthly plans renew each month until you cancel. Cancel anytime at hewn.life/cancel; you keep service until the end of the month you’ve paid for.',
+        'We don’t charge cancellation fees and you don’t need to call anyone to cancel.',
+        'Website in a Day: full refund if you cancel before we start the build. Once the build starts, the fee isn’t refundable.',
+        'Ad spend and third-party costs are paid to those platforms and follow their policies.',
+      ]}
       sections={[
         {
-          heading: 'Nature of Our Services',
+          heading: 'Monthly plans',
           body: [
-            'Hewn Life provides custom professional services — strategy, design, development, content, and advertising management. Work typically begins immediately after engagement and involves dedicated time, labor, and third-party costs. As such, fees are generally non-refundable once work has commenced, except as expressly stated in this Policy or required by law.',
+            'Hewn, Wrought and Forged plans are billed monthly in advance on the day you subscribe, and renew automatically on the same day each month at the price shown at checkout (plus any applicable tax) until you cancel.',
+            'Because each month’s work is planned and resourced at the start of the month, monthly fees aren’t refundable for a month that has started, and we don’t give partial-month refunds when you cancel.',
           ],
         },
         {
-          heading: 'Deposits & Project Fees',
+          heading: 'Annual billing',
           body: [
-            'Deposits and upfront project fees reserve our time and cover initial work. They are non-refundable once work has begun. If you cancel a project before any work has started, you may be eligible for a refund of the deposit less a reasonable administrative fee and any non-recoverable costs already incurred on your behalf.',
+            'If you choose annual billing, you pay for 12 months in advance at the discounted rate shown at checkout. Annual plans renew for another year unless you cancel before the renewal date, and we email you a reminder before each renewal.',
+            'If you cancel within 14 days of an annual charge, we’ll refund the amount paid minus the regular monthly price for any month in which we’ve already started work. After 14 days, annual fees aren’t refundable, but cancelling stops the next renewal.',
           ],
         },
         {
-          heading: 'Website in a Day & Fixed-Fee Projects',
+          heading: 'How to cancel',
           body: [
-            'For fixed-fee productized offerings (such as Website in a Day), the fee covers a defined scope delivered on an accelerated timeline. Because production begins immediately, fees are non-refundable once the build has started. If you cancel before the kickoff/onboarding step, you may request a refund less any administrative and third-party costs already incurred.',
+            'Go to hewn.life/cancel and enter the email address on your account. We’ll email you a link; one click cancels your subscription at the end of the current billing period, and we’ll send you a confirmation. You can also cancel by emailing hello@hewn.life from that address.',
+            'There is no cancellation fee. After you cancel, you keep access to the Services until the end of the period you’ve paid for, then billing stops. We’ll hand over completed, paid-for deliverables as described in our Terms.',
           ],
         },
         {
-          heading: 'Recurring & Retainer Engagements',
+          heading: 'Website in a Day',
           body: [
-            'Recurring and retainer fees are billed in advance for the upcoming period and are non-refundable. You may cancel future billing periods in accordance with the notice requirements in your SOW or our Terms of Service. Cancellation stops future charges; it does not refund fees for the current or prior periods.',
+            'Website in a Day is a one-time $999 purchase. If you cancel before we’ve started your build, we’ll refund it in full. Because the work starts as soon as your brief is complete and payment clears, the fee isn’t refundable once the build has started.',
+            'Your purchase includes one round of edits after launch. If something we delivered doesn’t match your brief, tell us and we’ll fix it.',
           ],
         },
         {
-          heading: 'Advertising Spend',
+          heading: 'Projects under a statement of work',
           body: [
-            'Advertising spend (&ldquo;ad spend&rdquo;) paid to third-party platforms is governed by those platforms&apos; policies and is not refundable by Hewn Life. Any unspent, recoverable budget held in a managed account will be returned or credited where the platform permits. Our management fees are separate from ad spend and are non-refundable once services for the period have been performed.',
+            'For custom projects, the refund and cancellation terms in your SOW apply. Where an SOW doesn’t address it, deposits are refundable only if you cancel before work begins, less any third-party costs already incurred for you.',
           ],
         },
         {
-          heading: 'Third-Party Costs',
+          heading: 'Ad spend and third-party costs',
           body: [
-            'Amounts paid for third-party products and services — including software, subscriptions, hosting, domains, stock assets, and media — are non-refundable to the extent they are non-recoverable from the provider.',
+            'Advertising spend is paid to the advertising platforms and governed by their policies; we can’t refund it. Where the platform allows, unspent prepaid budget in an account we manage will be returned to you or left in your account. Software, domains, stock assets and other third-party purchases made for you are refundable only to the extent the provider refunds them.',
           ],
         },
         {
-          heading: 'No Refunds for Results',
+          heading: 'Results',
           body: [
-            'Refunds are not available based on marketing, advertising, or business performance. We do not guarantee specific results, and dissatisfaction with outcomes is not a basis for a refund, as outcomes depend on factors outside our control.',
+            'We don’t offer refunds based on marketing results, because results depend on many factors outside our control. See our Results Disclaimer.',
           ],
         },
         {
-          heading: 'Requesting a Refund',
+          heading: 'Requesting a refund',
           body: [
-            'To request a refund where this Policy permits one, email hello@hewn.life with your name, engagement details, and the reason for your request within fourteen (14) days of the relevant charge. We review requests in good faith and aim to respond within ten (10) business days. Approved refunds are issued to the original payment method.',
+            'Email hello@hewn.life with your name, the purchase and the reason. We aim to respond within 5 business days. Approved refunds go back to the original payment method and usually appear within 5–10 business days.',
+            'If you have a billing problem, please contact us before disputing a charge with your bank. We can usually fix it faster. This doesn’t limit any rights you have with your card issuer.',
           ],
         },
         {
-          heading: 'Chargebacks',
+          heading: 'Changes',
           body: [
-            'If you have a billing concern, please contact us first so we can resolve it. Initiating a chargeback or payment dispute without first contacting us is a breach of our Terms of Service. We reserve the right to contest invalid chargebacks and to suspend Services and recover associated fees and costs.',
-          ],
-        },
-        {
-          heading: 'Changes to This Policy',
-          body: [
-            'We may update this Refund Policy from time to time. The version in effect at the time of your engagement applies to that engagement.',
+            'We may update this policy. The version in effect when you were charged applies to that charge. We’ll email active subscribers before any change that affects their renewals.',
           ],
         },
       ]}

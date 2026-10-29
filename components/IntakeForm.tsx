@@ -148,7 +148,12 @@ export default function IntakeForm({ order = false, checkoutUrl = '', source = '
       <button type="submit" disabled={state === 'sending'} className="w-full rounded-full bg-forest py-4 font-body text-[15px] font-medium text-mist transition hover:bg-forest-2 disabled:opacity-60">
         {state === 'sending' ? 'Sending your brief…' : order ? 'Continue to payment · $999' : 'Send my brief'}
       </button>
-      <p className="text-center font-body text-xs text-ink/55">{order ? 'Next you pay $999 by card. Your 24 hours start once payment clears.' : 'We use this only to build your concept site.'} Never shared or sold.</p>
+      <p className="text-center font-body text-xs leading-relaxed text-ink/55">
+        {order ? 'Next you pay $999 by card. Your 24 hours start once payment clears. ' : ''}
+        We use your brief to build your site and to email you a short growth plan. Never sold. By sending it you agree to our{' '}
+        <a href="/legal/terms" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Terms</a> and{' '}
+        <a href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Privacy Policy</a>.
+      </p>
     </form>
   )
 }

@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { CONSENT_STORAGE_KEY as STORAGE_KEY, updateConsent } from '@/lib/gtm'
+import { CONSENT_STORAGE_KEY as STORAGE_KEY, COOKIE_SETTINGS_EVENT, updateConsent } from '@/lib/gtm'
 import { Mark } from '@/components/strata/Glyph'
 import { colors } from '@/lib/strata'
 
@@ -20,6 +20,12 @@ export default function CookieConsent() {
     } catch {
       setVisible(true)
     }
+  }, [])
+
+  useEffect(() => {
+    const open = () => setVisible(true)
+    window.addEventListener(COOKIE_SETTINGS_EVENT, open)
+    return () => window.removeEventListener(COOKIE_SETTINGS_EVENT, open)
   }, [])
 
   const respond = (choice: 'accepted' | 'declined') => {
@@ -66,5 +72,14 @@ export default function CookieConsent() {
         </div>
       </div>
     </div>
+  )
+}
+
+/** Footer link that reopens the cookie banner so visitors can change their choice. */
+export function CookieSettingsButton({ className = '' }: { className?: string }) {
+  return (
+    <button type="button" onClick={() => window.dispatchEvent(new Event(COOKIE_SETTINGS_EVENT))} className={className}>
+      Cookie settings
+    </button>
   )
 }

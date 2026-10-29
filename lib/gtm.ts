@@ -44,10 +44,20 @@ declare global {
  * Tell Consent Mode whether the visitor has granted or denied tracking.
  * Call this whenever the cookie banner choice changes.
  */
+/** Global Privacy Control: the browser asks us not to sell or share data, so advertising stays off. */
+export function hasGPC() {
+  return typeof navigator !== 'undefined' && (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl === true
+}
+
 export function updateConsent(choice: ConsentChoice) {
   if (typeof window === 'undefined' || typeof window.gtag !== 'function') return
-  window.gtag('consent', 'update', choice === 'accepted' ? CONSENT_GRANTED : CONSENT_DENIED)
+  const update = choice !== 'accepted' ? CONSENT_DENIED
+    : hasGPC() ? { ...CONSENT_DENIED, analytics_storage: 'granted' } : CONSENT_GRANTED
+  window.gtag('consent', 'update', update)
 }
+
+/** Fired by the footer's "Cookie settings" link to reopen the banner. */
+export const COOKIE_SETTINGS_EVENT = 'hewn:cookie-settings'
 
 /**
  * Push a custom event into the GTM dataLayer, e.g.

@@ -8,7 +8,7 @@ import { sign } from './sign'
 
 export const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hewn.life'
 const FROM = process.env.PLAN_FROM_EMAIL || 'Hewn Life <hello@hewn.life>'
-const REVIEWER = process.env.PLAN_REVIEW_EMAIL || 'hello@hewn.life'
+export const REVIEWER = process.env.PLAN_REVIEW_EMAIL || 'hello@hewn.life'
 const ADDRESS = process.env.PLAN_MAIL_ADDRESS || 'Hewn Life LLC, 389 N 1500 E, Layton, UT 84040'
 
 export const planUrl = (token: string) => `${SITE}/plan/${token}`
@@ -19,10 +19,10 @@ export function emailConfigured() {
   return Boolean(process.env.RESEND_API_KEY)
 }
 
-const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+export const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 const first = (name: string) => esc(name.trim().split(/\s+/)[0] || 'there')
 
-function layout(body: string, footer = '') {
+export function layout(body: string, footer = '') {
   return `<!doctype html><html><body style="margin:0;background:#F7F6F3;font-family:Helvetica,Arial,sans-serif;color:#0D0D0D">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F7F6F3;padding:32px 16px"><tr><td align="center">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#FFFFFF;border-radius:20px;overflow:hidden">
@@ -33,10 +33,10 @@ function layout(body: string, footer = '') {
 </td></tr></table></body></html>`
 }
 
-const button = (href: string, label: string) =>
+export const button = (href: string, label: string) =>
   `<a href="${href}" style="display:inline-block;background:#1E3826;color:#F4F2EC;text-decoration:none;font-weight:600;padding:14px 24px;border-radius:999px">${label}</a>`
 
-async function send(to: string, subject: string, html: string, extraHeaders: Record<string, string> = {}) {
+export async function send(to: string, subject: string, html: string, extraHeaders: Record<string, string> = {}) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },

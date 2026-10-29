@@ -30,10 +30,11 @@ export default function GoogleTagManager() {
         });
         try {
           if (localStorage.getItem('${CONSENT_STORAGE_KEY}') === 'accepted') {
+            var ads = navigator.globalPrivacyControl ? 'denied' : 'granted';
             gtag('consent', 'update', {
-              ad_storage: 'granted',
-              ad_user_data: 'granted',
-              ad_personalization: 'granted',
+              ad_storage: ads,
+              ad_user_data: ads,
+              ad_personalization: ads,
               analytics_storage: 'granted'
             });
           }

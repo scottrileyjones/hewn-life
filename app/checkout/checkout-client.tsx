@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
+import { CAL_URL } from '@/lib/cal'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { useSearchParams } from 'next/navigation'
@@ -182,7 +183,7 @@ function OrderSummary({ name, price, billing, mode, tier }: {
       <div className="px-7 py-4 bg-bone flex items-center gap-5 flex-wrap">
         {[
           { icon: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z', text: 'Stripe secured' },
-          { icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', text: mode === 'subscription' ? 'Cancel anytime' : 'Satisfaction guaranteed' },
+          { icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', text: mode === 'subscription' ? 'Cancel online anytime' : 'One round of edits included' },
         ].map((item, i) => (
           <div key={i} className="flex items-center gap-1.5">
             <svg className="w-3.5 h-3.5 flex-shrink-0 text-[#6B6560]/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -199,18 +200,37 @@ function OrderSummary({ name, price, billing, mode, tier }: {
 
 // ── Payment form ──────────────────────────────────────
 
-function PaymentForm({ color, order }: {
+/** What Stripe will actually charge, from the price itself. */
+type Charge = { amount: number; currency: string; interval: string | null; intervalCount: number }
+
+const money = (cents: number, currency: string) =>
+  new Intl.NumberFormat('en-US', { style: 'currency', currency: currency.toUpperCase(), maximumFractionDigits: cents % 100 ? 2 : 0 }).format(cents / 100)
+
+/** The automatic-renewal disclosure, stated next to the button that agrees to it. */
+function renewalTerms(c: Charge, fallbackDollars: number, mode: string) {
+  if (mode !== 'subscription') {
+    const amt = c.amount ? money(c.amount, c.currency) : `$${fallbackDollars.toLocaleString()}`
+    return `You’ll be charged ${amt} once, plus any applicable tax. No recurring charges.`
+  }
+  const amt = money(c.amount, c.currency)
+  const every = c.intervalCount > 1 ? `every ${c.intervalCount} ${c.interval}s` : c.interval === 'year' ? 'every year' : 'every month'
+  return `You’ll be charged ${amt} today and ${amt} ${every} after that, plus any applicable tax, until you cancel. Your plan renews automatically. Cancel anytime at hewn.life/cancel; it takes effect at the end of the period you’ve paid for.`
+}
+
+function PaymentForm({ color, order, charge }: {
   color: string
   order: { name: string; price: number; tier: string; mode: string }
+  charge: Charge | null
 }) {
   const stripe = useStripe()
   const elements = useElements()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [agreed, setAgreed] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!stripe || !elements) return
+    if (!stripe || !elements || !agreed) return
     setLoading(true)
     setError('')
     // Pass order details to /thank-you so it can fire the GA4 purchase
@@ -238,9 +258,22 @@ function PaymentForm({ color, order }: {
         <p className="font-body text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>
       )}
 
+      <div className="rounded-xl border border-black/[0.08] bg-bone px-4 py-3.5">
+        <p className="font-body text-[13px] leading-relaxed text-[#3D3A36]">
+          {renewalTerms(charge ?? { amount: 0, currency: 'usd', interval: 'month', intervalCount: 1 }, order.price, order.mode)}
+        </p>
+        <label className="mt-3 flex items-start gap-2.5 font-body text-[13px] leading-relaxed text-[#3D3A36]">
+          <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)} required className="mt-0.5 h-4 w-4 flex-shrink-0 accent-forest" />
+          <span>
+            I agree to the <a href="/legal/terms" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Terms of Service</a>
+            {order.mode === 'subscription' ? ', including automatic renewal,' : ''} and the <a href="/legal/refund" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Refunds &amp; Cancellations</a> policy, and I’ve read the <a href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Privacy Policy</a>.
+          </span>
+        </label>
+      </div>
+
       <button
         type="submit"
-        disabled={loading || !stripe || !elements}
+        disabled={loading || !stripe || !elements || !agreed}
         className="flex items-center justify-center gap-2 w-full text-white font-body font-semibold text-[15px] px-8 py-4 rounded-full transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed hover:opacity-90"
         style={{ background: color }}
       >
@@ -253,7 +286,7 @@ function PaymentForm({ color, order }: {
             Processing…
           </>
         ) : (
-          'Complete Payment'
+          order.mode === 'subscription' ? 'Subscribe and pay' : 'Complete payment'
         )}
       </button>
 
@@ -279,6 +312,7 @@ export default function CheckoutClient() {
 
   const [step, setStep] = useState<'info' | 'payment'>('info')
   const [clientSecret, setClientSecret] = useState('')
+  const [charge, setCharge] = useState<Charge | null>(null)
   // Orders that start from a brief arrive with the contact details already filled in.
   const [contact, setContact] = useState<ContactInfo>({
     businessName: params.get('businessName') ?? '',
@@ -325,9 +359,9 @@ export default function CheckoutClient() {
           metadata: { businessName: contact.businessName, fullName: contact.fullName, phone: contact.phone, notes: contact.notes },
         }),
       })
-      const { clientSecret: secret, error: apiError } = await res.json() as { clientSecret?: string; error?: string }
+      const { clientSecret: secret, charge: c, error: apiError } = await res.json() as { clientSecret?: string; charge?: Charge; error?: string }
       if (apiError) throw new Error(apiError)
-      if (secret) { setClientSecret(secret); setStep('payment'); window.scrollTo({ top: 0, behavior: 'smooth' }) }
+      if (secret) { setClientSecret(secret); if (c) setCharge(c); setStep('payment'); window.scrollTo({ top: 0, behavior: 'smooth' }) }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
     } finally {
@@ -488,7 +522,7 @@ export default function CheckoutClient() {
 
                   <p className="text-center font-body text-xs text-[#6B6560]/50">
                     Have questions first?{' '}
-                    <a href="https://cal.com/scott-hewn/discovery" target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: meta.color }}>Book a free call</a>
+                    <a href={CAL_URL} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: meta.color }}>Book a free call</a>
                   </p>
                 </form>
               </>
@@ -503,7 +537,7 @@ export default function CheckoutClient() {
                 </p>
                 {clientSecret && (
                   <Elements stripe={stripePromise} options={{ clientSecret, appearance }}>
-                    <PaymentForm color={meta.color} order={{ name, price, tier, mode }} />
+                    <PaymentForm color={meta.color} order={{ name, price, tier, mode }} charge={charge} />
                   </Elements>
                 )}
               </>

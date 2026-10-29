@@ -19,6 +19,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
+    // The exact charge and renewal interval, shown next to the pay button.
+    const price = await stripe.prices.retrieve(priceId)
+    const charge = {
+      amount: price.unit_amount ?? 0,
+      currency: price.currency,
+      interval: price.recurring?.interval ?? null,
+      intervalCount: price.recurring?.interval_count ?? 1,
+    }
+
     const customer = await stripe.customers.create({
       email,
       metadata: metadata ?? {},
@@ -49,15 +58,13 @@ export async function POST(request: Request) {
               ? subscription.pending_setup_intent
               : subscription.pending_setup_intent.id
           )
-          return NextResponse.json({ clientSecret: setupIntent.client_secret, mode: 'setup' })
+          return NextResponse.json({ clientSecret: setupIntent.client_secret, mode: 'setup', charge })
         }
         return NextResponse.json({ error: 'Could not create payment session. Please try again.' }, { status: 500 })
       }
 
-      return NextResponse.json({ clientSecret })
+      return NextResponse.json({ clientSecret, charge })
     } else {
-      const price = await stripe.prices.retrieve(priceId)
-
       const paymentIntent = await stripe.paymentIntents.create({
         amount: price.unit_amount!,
         currency: price.currency,
@@ -66,7 +73,7 @@ export async function POST(request: Request) {
         payment_method_types: ['card', 'klarna', 'afterpay_clearpay', 'affirm'],
       })
 
-      return NextResponse.json({ clientSecret: paymentIntent.client_secret })
+      return NextResponse.json({ clientSecret: paymentIntent.client_secret, charge })
     }
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error'

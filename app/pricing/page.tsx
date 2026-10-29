@@ -29,6 +29,7 @@ import type { GlyphKey } from '@/lib/strata'
 import Link from 'next/link'
 import Cal, { getCalApi } from '@calcom/embed-react'
 import CalButton from '@/components/CalButton'
+import { CAL_LINK } from '@/lib/cal'
 
 type TierSlug = 'hewn' | 'wrought' | 'forged'
 type IconType = 'brand' | 'website' | 'seo' | 'ads' | 'automation' | 'video' | 'content' | 'referral'
@@ -243,7 +244,7 @@ function CalEmbed() {
 
   return (
     <Cal
-      calLink="scott-hewn/discovery"
+      calLink={CAL_LINK}
       style={{ width: '100%', height: '600px', border: 'none' }}
     />
   )
