@@ -19,6 +19,7 @@ const columns = [
     links: [
       { href: '/how-it-works', label: 'How it works' },
       { href: '/who-we-serve', label: 'Who we serve' },
+      { href: '/case-studies', label: 'Case studies' },
       { href: '/dashboard', label: 'Sample dashboard' },
       { href: '/pricing', label: 'Pricing' },
       { href: '/about', label: 'About' },

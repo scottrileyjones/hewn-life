@@ -218,6 +218,7 @@ export default function PlanView({ record, review = false }: { record: PlanRecor
             })}
           </div>
           <p className="mt-6 font-body text-[12px] leading-relaxed text-mist/55">Our team’s work before founding Hewn Life. These outcomes aren’t typical, and yours will depend on your business. <a href="/legal/results-disclaimer" className="underline underline-offset-2">Results Disclaimer</a></p>
+          <a href="/case-studies/telehealth" className="mt-4 inline-block font-body text-[15px] font-medium text-lime">Read the full case study →</a>
         </div>
       </section>
 
