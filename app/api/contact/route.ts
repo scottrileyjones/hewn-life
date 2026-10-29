@@ -1,4 +1,9 @@
+import { waitUntil } from '@vercel/functions'
+import { startPlan } from '@/lib/plans/flow'
 import { NextRequest, NextResponse } from 'next/server'
+
+// Room for the growth-plan deck to be written after the response is sent.
+export const maxDuration = 300
 
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID
 const AIRTABLE_TABLE_ID = process.env.AIRTABLE_TABLE_ID
@@ -54,6 +59,10 @@ export async function POST(req: NextRequest) {
       console.error('Airtable error:', res.status, await res.text())
       return NextResponse.json({ error: 'Could not send your message.' }, { status: 502 })
     }
+    waitUntil(startPlan({
+      source: 'Contact form', name, company, email, consent: false,
+      answers: { 'Biggest challenge': challenge, Details: notes },
+    }))
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('contact route error:', err)

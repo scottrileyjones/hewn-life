@@ -1,4 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { waitUntil } from '@vercel/functions'
+import { startPlan } from '@/lib/plans/flow'
+
+// Room for the growth-plan deck to be written after the response is sent.
+export const maxDuration = 300
 
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID
 const AIRTABLE_TABLE_ID = process.env.AIRTABLE_TABLE_ID
@@ -67,6 +72,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Could not save lead.' }, { status: 502 })
     }
 
+    waitUntil(startPlan({
+      source: 'Quiz', name: name || '', company: company || '', email, consent: consent === true,
+      answers: { ...a, 'Annual revenue': annualRevenueLabel || '', 'Recommended tier': tier || '', Notes: notes || '' },
+    }))
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('quiz-lead route error:', err)

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { markPaid } from '@/lib/plans/flow'
 
 export async function POST(request: Request) {
   const body = await request.text()
@@ -29,6 +30,21 @@ export async function POST(request: Request) {
       amount: session.amount_total,
       mode: session.mode,
     })
+    await markPaid(session.customer_email ?? session.customer_details?.email ?? '')
+  }
+
+  // Embedded checkout: subscriptions settle as paid invoices, one-time orders as payment intents.
+  if (event.type === 'invoice.paid') {
+    await markPaid((event.data.object as Stripe.Invoice).customer_email ?? '')
+  }
+  if (event.type === 'payment_intent.succeeded') {
+    const pi = event.data.object as Stripe.PaymentIntent
+    let email = pi.receipt_email ?? ''
+    if (!email && typeof pi.customer === 'string') {
+      const c = await stripe.customers.retrieve(pi.customer)
+      if (!c.deleted) email = c.email ?? ''
+    }
+    await markPaid(email)
   }
 
   return NextResponse.json({ received: true })

@@ -2,6 +2,12 @@ import { createHmac, timingSafeEqual } from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 import { intakeFields } from '@/lib/intake'
 import { briefsConfigured, toFields, createBrief } from '@/lib/airtable'
+import { waitUntil } from '@vercel/functions'
+import { markBooked } from '@/lib/plans/flow'
+import { briefLead } from '@/lib/plans/lead'
+
+// Room for a growth-plan deck to be written after the response is sent.
+export const maxDuration = 300
 
 /**
  * Cal.com BOOKING_CREATED webhook → website brief in Airtable.
@@ -50,6 +56,8 @@ export async function POST(req: NextRequest) {
       Source: 'Cal.com booking',
       'Cal booking': [p.startTime, p.title].filter(Boolean).join(' · '),
     }))
+    // Their growth plan, ahead of the call: the existing one, or a new one from this booking.
+    waitUntil(markBooked(answers.email, briefLead(answers, 'Website brief')))
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('cal-webhook error:', err)

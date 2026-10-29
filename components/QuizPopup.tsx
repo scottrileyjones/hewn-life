@@ -14,7 +14,7 @@ export default function QuizPopup() {
 
   useEffect(() => {
     // Don't show on quiz or checkout pages
-    if (pathname.startsWith('/quiz') || pathname.startsWith('/checkout')) return
+    if (pathname.startsWith('/quiz') || pathname.startsWith('/checkout') || pathname.startsWith('/plan')) return
     // Don't show if already dismissed this session
     if (sessionStorage.getItem(STORAGE_KEY)) return
 
