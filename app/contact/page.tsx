@@ -60,7 +60,7 @@ export default function Contact() {
         pill="Let's talk"
         title={<>Tell us about your business. We&apos;ll tell you what&apos;s <em className="accent text-lime">possible.</em></>}
         lede="Book a free 30-minute discovery call. No pitch deck, no pressure. Just a direct conversation about your goals."
-        seed={52}
+        scene="night" seed={52}
       />
 
       <section className="mx-auto max-w-7xl px-5 py-24">

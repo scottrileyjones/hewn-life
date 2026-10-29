@@ -146,7 +146,7 @@ export default function GrowthDashboard() {
     <div className="overflow-clip rounded-[32px] bg-[#111814] text-mist">
       {/* ── HEADER ── */}
       <header className="relative isolate border-b-2 border-lime/60">
-        <Terrain scene="amber" seed={9} className="-z-20" />
+        <Terrain scene="highland" seed={9} className="-z-20" />
         <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(0deg, #111814 0%, rgba(17,24,20,.55) 60%, rgba(17,24,20,.35) 100%)' }} />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-6">
           <div className="flex flex-wrap items-center gap-2 mb-4">
