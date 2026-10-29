@@ -95,9 +95,8 @@ export default function Nav() {
       </nav>
 
       {menuOpen && (
-        <div className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-10 bg-bone lg:hidden">
-          <HewnLogo size="lg" />
-          <div className="mt-4 flex flex-col items-center gap-7">
+        <div className="fixed inset-0 z-40 flex flex-col items-center gap-8 overflow-y-auto bg-bone px-5 pb-10 pt-24 lg:hidden">
+          <div className="my-auto flex flex-col items-center gap-6">
             {[{ href: '/', label: 'Home' }, ...navLinks].map(link => (
               <Link
                 key={link.href}

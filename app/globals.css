@@ -287,3 +287,18 @@ body {
   background-size: 600px 600px;
   opacity: 0.8;
 }
+
+/* Phones: never pan sideways. Clip (not hidden) so sticky headers keep working,
+   and 16px form text so iOS doesn't zoom in on focus and leave the page wide. */
+html,
+body {
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+}
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}

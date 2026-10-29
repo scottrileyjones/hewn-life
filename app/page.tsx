@@ -221,7 +221,7 @@ export default function Home() {
           </div>
         </div>
         <div className="mt-7 text-center">
-          <CalButton className="inline-flex items-center justify-center rounded-full bg-forest px-6 py-3.5 font-body text-[15px] font-medium text-mist transition hover:bg-forest-2">Become a client</CalButton>
+          <Link href="/pricing#plans" className="inline-flex items-center justify-center rounded-full bg-forest px-6 py-3.5 font-body text-[15px] font-medium text-mist transition hover:bg-forest-2">Become a client</Link>
         </div>
       </section>
 

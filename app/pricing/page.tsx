@@ -400,6 +400,49 @@ export default function Pricing() {
             )
           })}
         </div>
+
+        {/* ── WEBSITE IN A DAY: the next step down, flagged as new ── */}
+        <FadeInWrapper delay={330}>
+          <div className="mt-3.5 grid overflow-hidden rounded-[28px] bg-lime text-forest lg:grid-cols-[1.5fr_1fr]">
+            <div className="p-7 sm:p-9">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="inline-flex items-center gap-2 rounded-full bg-forest px-3 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-lime">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-75 motion-reduce:animate-none" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-lime" />
+                  </span>
+                  New
+                </span>
+                <span className="font-body text-sm font-medium text-forest/75">Not ready for a monthly plan?</span>
+              </div>
+              <div className="mt-5 flex flex-wrap items-end gap-x-6 gap-y-2">
+                <p className="font-display text-[clamp(30px,3.4vw,42px)] font-medium leading-none tracking-[-0.03em]">Website in a Day</p>
+                <p className="flex items-end gap-1.5">
+                  <span className="font-display text-[44px] font-medium leading-none tracking-[-0.04em] tabular-nums">$999</span>
+                  <span className="mb-1 font-body text-sm text-forest/70">one time</span>
+                </p>
+              </div>
+              <p className="mt-3 max-w-xl font-body text-[15px] text-forest/80">Fill in one form. We design, write, build and launch your custom website within 24 hours. The easiest way to start with Hewn.</p>
+              <ul className="mt-5 grid gap-2 sm:grid-cols-3">
+                {['Custom design and copy', 'Live on your domain in 24h', 'Yours to keep, no retainer'].map(h => (
+                  <li key={h} className="flex items-center gap-2.5 font-body text-sm font-medium"><span className="h-3.5 w-[3px] bg-forest" />{h}</li>
+                ))}
+              </ul>
+              <Link href="/website-in-a-day#order" className="mt-7 inline-flex items-center justify-center rounded-full bg-forest px-7 py-4 font-body text-sm font-medium text-mist transition hover:bg-forest-2">
+                Start my website · $999 →
+              </Link>
+            </div>
+            <div className="relative isolate hidden min-h-[240px] overflow-hidden lg:block">
+              <Terrain scene="forge" seed={71} className="-z-20" />
+              <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(214,242,139,.25), transparent 30%)' }} />
+              <div className="absolute bottom-6 right-7 text-right text-mist">
+                <p className="font-display text-[64px] font-medium leading-none tracking-[-0.04em]">24h</p>
+                <p className="font-body text-sm text-mist/80">from brief to live</p>
+              </div>
+            </div>
+          </div>
+        </FadeInWrapper>
+
         <p className="mt-10 text-center font-mono text-[11px] uppercase tracking-[0.16em] text-ink/55">
           Cancel anytime · Onboarding in 48 hours · Founder-led strategy · No long-term contracts
         </p>
