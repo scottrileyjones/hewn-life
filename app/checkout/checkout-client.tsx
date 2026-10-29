@@ -16,7 +16,7 @@ const PRODUCT_META: Record<string, {
   nextSteps: string[]
 }> = {
   hewn: {
-    color: '#6BAD3D',
+    color: '#1E3826',
     tagline: 'Your brand, built to last.',
     chips: ['No contract', '48hr kickoff', 'Cancel anytime'],
     highlights: [
@@ -32,7 +32,7 @@ const PRODUCT_META: Record<string, {
     ],
   },
   wrought: {
-    color: '#8B5CF6',
+    color: '#1E3826',
     tagline: 'Your full marketing engine.',
     chips: ['No contract', '48hr kickoff', 'Cancel anytime'],
     highlights: [
@@ -48,9 +48,9 @@ const PRODUCT_META: Record<string, {
     ],
   },
   forged: {
-    color: '#8B5CF6',
+    color: '#1E3826',
     tagline: 'Your entire marketing team.',
-    chips: ['All 6 pillars', 'Fractional CMO', 'Cancel anytime'],
+    chips: ['All 9 pillars', 'Fractional CMO', 'Cancel anytime'],
     highlights: [
       'Everything in Wrought',
       'Review generation, UGC & referral program',
@@ -60,11 +60,11 @@ const PRODUCT_META: Record<string, {
     nextSteps: [
       'Onboarding call booked within 48 hours',
       'Full system audit & roadmap built',
-      'All six pillars activated month one',
+      'All nine pillars activated in month one',
     ],
   },
   'website-in-a-week': {
-    color: '#6BAD3D',
+    color: '#1E3826',
     tagline: 'Your website, live in 5 days.',
     chips: ['$1,000 flat', '5 days', '100% yours'],
     highlights: [
@@ -98,7 +98,7 @@ function OrderSummary({ name, price, billing, mode, tier }: {
   const meta = PRODUCT_META[tier] ?? PRODUCT_META['website-in-a-week']
 
   return (
-    <div className="rounded-3xl overflow-hidden bg-white border border-black/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.06)]">
+    <div className="rounded-[28px] overflow-hidden bg-white border border-ink/[0.08]">
 
       {/* Accent top bar */}
       <div className="h-1" style={{ background: meta.color }} />
@@ -108,7 +108,7 @@ function OrderSummary({ name, price, billing, mode, tier }: {
         <p className="font-mono text-[9px] uppercase tracking-[0.28em] mb-2" style={{ color: meta.color }}>
           {mode === 'subscription' ? 'Monthly plan' : 'One-time project'}
         </p>
-        <h2 className="font-display font-bold text-[22px] text-[#0D0D0D] leading-snug mb-3">
+        <h2 className="font-display font-medium tracking-[-0.03em] text-[22px] text-[#0D0D0D] leading-snug mb-3">
           {meta.tagline}
         </h2>
         <div className="flex flex-wrap gap-1.5">
@@ -145,15 +145,15 @@ function OrderSummary({ name, price, billing, mode, tier }: {
         <div className="flex items-center justify-between">
           <p className="font-body text-sm text-[#6B6560]">
             {mode === 'subscription'
-              ? billing === 'annual' ? 'Billed annually' : 'Billed monthly'
+              ? billing === 'annual' ? 'Per month, billed yearly' : 'Billed monthly'
               : 'One-time fee'}
           </p>
           <div className="flex items-baseline gap-1">
-            <span className="font-display font-bold text-[38px] text-[#0D0D0D] leading-none">
+            <span className="font-display font-medium tracking-[-0.03em] text-[38px] text-[#0D0D0D] leading-none">
               ${price.toLocaleString()}
             </span>
             {mode === 'subscription' && (
-              <span className="font-body text-sm text-[#6B6560]">/{billing === 'annual' ? 'yr' : 'mo'}</span>
+              <span className="font-body text-sm text-[#6B6560]">/mo</span>
             )}
           </div>
         </div>
@@ -179,7 +179,7 @@ function OrderSummary({ name, price, billing, mode, tier }: {
       </div>
 
       {/* Trust strip */}
-      <div className="px-7 py-4 bg-[#F9F7F3] flex items-center gap-5 flex-wrap">
+      <div className="px-7 py-4 bg-bone flex items-center gap-5 flex-wrap">
         {[
           { icon: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z', text: 'Stripe secured' },
           { icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', text: mode === 'subscription' ? 'Cancel anytime' : 'Satisfaction guaranteed' },
@@ -354,17 +354,17 @@ export default function CheckoutClient() {
       <div className="min-h-screen bg-white flex items-center justify-center px-6">
         <div className="text-center">
           <p className="font-body text-[#6B6560] mb-6">No plan selected.</p>
-          <a href="/pricing" className="font-body text-sm font-medium text-[#6BAD3D] hover:underline">← Back to Pricing</a>
+          <a href="/pricing" className="font-body text-sm font-medium text-forest hover:underline">← Back to Pricing</a>
         </div>
       </div>
     )
   }
 
-  const inputClass = 'w-full border border-black/[0.12] rounded-xl px-4 py-3.5 font-body text-sm text-[#0D0D0D] placeholder:text-[#6B6560]/40 focus:outline-none focus:ring-2 focus:border-transparent bg-white transition-all'
+  const inputClass = 'w-full border border-black/[0.12] rounded-[14px] px-4 py-3.5 font-body text-sm text-[#0D0D0D] placeholder:text-[#6B6560]/40 focus:outline-none focus:ring-2 focus:border-transparent bg-white transition-all'
   const labelClass = 'block font-body text-xs font-medium text-[#0D0D0D] uppercase tracking-[0.12em] mb-2'
 
   return (
-    <div className="min-h-screen bg-[#F9F7F3]">
+    <div className="min-h-screen bg-bone">
 
       {/* Checkout header with real logo */}
       <div className="border-b border-black/[0.06] bg-white">
@@ -417,7 +417,7 @@ export default function CheckoutClient() {
             {step === 'info' ? (
               <>
                 <p className="font-mono text-[10px] uppercase tracking-[0.25em] mb-3" style={{ color: meta.color }}>Step 1 of 2</p>
-                <h1 className="font-display font-bold text-[38px] md:text-[50px] text-[#0D0D0D] mb-3 leading-[1.06]">
+                <h1 className="font-display font-medium tracking-[-0.03em] text-[38px] md:text-[50px] text-[#0D0D0D] mb-3 leading-[1.06]">
                   You&apos;re almost in.
                 </h1>
                 <p className="font-body text-base text-[#6B6560] mb-10 leading-relaxed max-w-md">
@@ -488,7 +488,7 @@ export default function CheckoutClient() {
             ) : (
               <>
                 <p className="font-mono text-[10px] uppercase tracking-[0.25em] mb-3" style={{ color: meta.color }}>Step 2 of 2</p>
-                <h1 className="font-display font-bold text-[38px] md:text-[50px] text-[#0D0D0D] mb-3 leading-[1.06]">
+                <h1 className="font-display font-medium tracking-[-0.03em] text-[38px] md:text-[50px] text-[#0D0D0D] mb-3 leading-[1.06]">
                   How would you<br />like to pay?
                 </h1>
                 <p className="font-body text-base text-[#6B6560] mb-10">

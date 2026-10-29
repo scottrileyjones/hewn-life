@@ -118,7 +118,7 @@ export default function BuildWeek() {
       {/* ── Right: sticky browser mockup that builds ── */}
       <div className="order-1 lg:order-2 sticky top-16 lg:top-20 self-start z-20">
         {/* On mobile, an opaque backdrop panel keeps scrolling text from bleeding behind the mockup */}
-        <div className="-mx-6 px-6 pt-3 pb-4 bg-white/95 backdrop-blur-sm border-b border-black/[0.07] shadow-[0_12px_20px_-12px_rgba(0,0,0,0.18)] lg:mx-0 lg:px-0 lg:pt-0 lg:pb-0 lg:bg-transparent lg:backdrop-blur-none lg:border-0 lg:shadow-none">
+        <div className="-mx-5 px-5 pt-3 pb-4 bg-white/95 backdrop-blur-sm border-b border-black/[0.07] shadow-[0_12px_20px_-12px_rgba(0,0,0,0.18)] lg:mx-0 lg:px-0 lg:pt-0 lg:pb-0 lg:bg-transparent lg:backdrop-blur-none lg:border-0 lg:shadow-none">
           {/* Compact on mobile, full size on desktop */}
           <div className="lg:hidden">
             <BrowserMockup activeDay={activeDay} compact />

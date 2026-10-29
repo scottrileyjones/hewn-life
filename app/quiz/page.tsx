@@ -1,11 +1,9 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import Terrain from '@/components/strata/Terrain'
 import CalButton from '@/components/CalButton'
 
-const QUIZ_HERO_IMAGE =
-  'https://res.cloudinary.com/dsx2wcqte/image/upload/f_auto,q_auto,w_1400,h_1600,c_fill/v1780278857/jakub-zerdzicki-4rTXOMv28VA-unsplash_ui8wm1.jpg'
 
 // ── Revenue slider stops ──────────────────────────────────────────────────────
 
@@ -13,16 +11,16 @@ const QUIZ_HERO_IMAGE =
 
 const TICKER_ITEMS = [
   { label: 'Revenue opportunity', value: '$340K', color: '#6BAD3D' },
-  { label: 'Marketing health score', value: '71 / 100', color: '#8B5CF6' },
+  { label: 'Marketing health score', value: '71 / 100', color: '#1E3826' },
   { label: 'Top priority', value: 'Paid Media', color: '#0D0D0D' },
   { label: 'Revenue opportunity', value: '$1.2M', color: '#6BAD3D' },
-  { label: 'Health score', value: '58 / 100', color: '#8B5CF6' },
+  { label: 'Health score', value: '58 / 100', color: '#1E3826' },
   { label: 'Biggest gap', value: 'Brand Messaging', color: '#0D0D0D' },
   { label: 'Revenue opportunity', value: '$88K', color: '#6BAD3D' },
-  { label: 'Marketing health score', value: '83 / 100', color: '#8B5CF6' },
+  { label: 'Marketing health score', value: '83 / 100', color: '#1E3826' },
   { label: 'Top priority', value: 'SEO & Content', color: '#0D0D0D' },
   { label: 'Revenue opportunity', value: '$520K', color: '#6BAD3D' },
-  { label: 'Health score', value: '47 / 100', color: '#8B5CF6' },
+  { label: 'Health score', value: '47 / 100', color: '#1E3826' },
   { label: 'Biggest gap', value: 'Email & Retention', color: '#0D0D0D' },
 ]
 
@@ -224,7 +222,7 @@ const tiers = {
     tagline: 'Activate the machine.',
     description: 'For growing businesses ready to turn marketing into a revenue driver. SEO, paid media, email, and conversion optimization — a full system running for you every month.',
     href: '/pricing',
-    color: '#8B5CF6',
+    color: '#D6F28B',
   },
   forged: {
     name: 'Forged',
@@ -232,7 +230,7 @@ const tiers = {
     tagline: 'Market leadership or nothing.',
     description: 'For companies that are done playing catch-up. Full-stack growth execution with senior strategy, aggressive paid programs, and a dedicated team obsessed with your numbers.',
     href: '/pricing',
-    color: '#8B5CF6',
+    color: '#D6F28B',
   },
 }
 
@@ -443,12 +441,12 @@ function ResultsDashboard({
 
         {/* ── Hero headline ── */}
         <div className={`pb-12 transition-all duration-700 ${phase >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#6BAD3D] mb-5">
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-forest mb-5">
             {firstName ? `${firstName}'s Assessment` : 'Your Assessment'} · {tier.name} Tier Match
           </p>
           <h1 className="hero-heading fluid-hero text-[#0D0D0D] leading-[1.04] mb-4">
             You have a real<br />
-            <span className="accent" style={{ color: '#6BAD3D' }}>revenue opportunity.</span>
+            <span className="accent" style={{ color: '#1E3826' }}>revenue opportunity.</span>
           </h1>
           <p className="font-body text-base text-[#6B6560] max-w-xl">
             Based on your answers, here's what the numbers say — and what's within reach if you execute.
@@ -458,7 +456,7 @@ function ResultsDashboard({
         {/* ── ROI hero ── */}
         <div className={`mb-6 transition-all duration-700 ${phase >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="relative rounded-3xl overflow-hidden bg-white border border-black/[0.07] shadow-[0_4px_40px_-8px_rgba(0,0,0,0.08)] p-8 md:p-12">
-            <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full blur-3xl bg-[#8B5CF6]/8 pointer-events-none" />
+            <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full blur-3xl bg-[#1E3826]/8 pointer-events-none" />
             <div className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full blur-3xl bg-[#6BAD3D]/8 pointer-events-none" />
 
             <div className="relative">
@@ -466,15 +464,15 @@ function ResultsDashboard({
 
               <div className="grid md:grid-cols-2 gap-8 md:gap-12 mb-10">
                 <div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#6BAD3D] mb-3">Potential New Revenue</p>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-forest mb-3">Potential New Revenue</p>
                   <div className="font-display fluid-stat leading-none text-[#0D0D0D] mb-2 tabular-nums">
                     {fmtCompact(roiCount)}
                   </div>
                   <p className="font-body text-[14px] text-[#A89F92]">additional annual revenue — aggressive case</p>
                 </div>
                 <div className="flex flex-col justify-center">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#8B5CF6] mb-3">Net ROI After Retainer</p>
-                  <div className="font-display fluid-stat leading-none mb-2 tabular-nums" style={{ color: '#8B5CF6' }}>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#1E3826] mb-3">Net ROI After Retainer</p>
+                  <div className="font-display fluid-stat leading-none mb-2 tabular-nums" style={{ color: '#1E3826' }}>
                     {fmtCompact(netCount)}
                   </div>
                   <p className="font-body text-[14px] text-[#A89F92]">profit above {tier.price} investment</p>
@@ -564,7 +562,7 @@ function ResultsDashboard({
           <div className="bg-white rounded-3xl border border-black/[0.07] shadow-[0_4px_40px_-8px_rgba(0,0,0,0.06)] p-8 md:p-10">
             <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#A89F92] mb-2">Recommended Service Mix</p>
             <h2 className="hero-heading text-[24px] md:text-[32px] text-[#0D0D0D] leading-tight mb-8">
-              The channels that'll <span className="accent" style={{ color: '#6BAD3D' }}>move the needle.</span>
+              The channels that'll <span className="accent" style={{ color: '#1E3826' }}>move the needle.</span>
             </h2>
             <div className="grid md:grid-cols-2 gap-3">
               {services.map((svc, i) => (
@@ -590,7 +588,7 @@ function ResultsDashboard({
 
         {/* ── Tier + CTA ── */}
         <div className={`mb-6 transition-all duration-700 ${phase >= 5 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="relative rounded-3xl overflow-hidden p-8 md:p-12 bg-[#0D0D0D]">
+          <div className="relative rounded-[28px] overflow-hidden p-8 md:p-12 bg-forest">
             <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full blur-3xl opacity-30 pointer-events-none" style={{ background: tier.color }} />
             <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full blur-3xl opacity-15 pointer-events-none" style={{ background: tier.color }} />
             <div className="relative">
@@ -680,7 +678,7 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
   return (
     <main className="min-h-screen bg-white flex items-center justify-center px-6 py-28">
       <div className="max-w-md w-full">
-        <p className="text-center font-mono text-[10px] uppercase tracking-[0.22em] text-[#6BAD3D] mb-6">
+        <p className="text-center font-mono text-[10px] uppercase tracking-[0.22em] text-forest mb-6">
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#6BAD3D] animate-pulse mr-2 align-middle" />
           Building your growth plan
         </p>
@@ -701,19 +699,19 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
             {scene === 0 && (
               <div key="s0" className="w-full animate-fade-up">
                 <div className="rounded-2xl border border-black/[0.07] bg-white p-4 shadow-sm">
-                  <div className="build-block h-20 rounded-xl bg-gradient-to-br from-[#8B5CF6] to-[#6BAD3D]" style={{ animationDelay: '0ms' }} />
+                  <div className="build-block h-20 rounded-xl bg-gradient-to-br from-[#1E3826] to-[#6BAD3D]" style={{ animationDelay: '0ms' }} />
                   <div className="build-block h-3 w-3/4 rounded-full bg-black/10 mt-4" style={{ animationDelay: '300ms' }} />
                   <div className="build-block h-3 w-1/2 rounded-full bg-black/10 mt-2.5" style={{ animationDelay: '500ms' }} />
                   <div className="flex gap-3 mt-4">
                     <div className="build-block h-14 flex-1 rounded-xl bg-black/[0.05]" style={{ animationDelay: '750ms' }} />
                     <div className="build-block h-14 flex-1 rounded-xl bg-black/[0.05]" style={{ animationDelay: '900ms' }} />
                   </div>
-                  <div className="build-block mt-4 h-9 w-32 rounded-full bg-[#8B5CF6]" style={{ animationDelay: '1150ms' }} />
+                  <div className="build-block mt-4 h-9 w-32 rounded-full bg-[#1E3826]" style={{ animationDelay: '1150ms' }} />
                 </div>
                 <div className="build-badge mt-4 flex items-center justify-center gap-2" style={{ animationDelay: '1500ms' }}>
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-[#6BAD3D]/10 border border-[#6BAD3D]/30 px-3 py-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D] animate-pulse" />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#6BAD3D]">Published · Live</span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-forest">Published · Live</span>
                   </span>
                 </div>
               </div>
@@ -724,7 +722,7 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
               <div key="s1" className="w-full animate-fade-up">
                 <div className="rounded-2xl border border-black/[0.07] bg-white p-4 shadow-sm">
                   <div className="flex items-center gap-2.5 mb-3">
-                    <span className="w-9 h-9 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#6BAD3D]" />
+                    <span className="w-9 h-9 rounded-full bg-gradient-to-br from-[#1E3826] to-[#6BAD3D]" />
                     <div>
                       <div className="h-2.5 w-24 rounded-full bg-black/15" />
                       <div className="h-2 w-16 rounded-full bg-black/10 mt-1.5" />
@@ -742,7 +740,7 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
                       <span className="font-display text-[18px] text-[#0D0D0D] tabular-nums">{likeCount.toLocaleString()}</span>
                     </span>
                     <span className="font-body text-[13px] text-[#A89F92]">likes this week</span>
-                    <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.14em] text-[#6BAD3D]">↑ 312%</span>
+                    <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.14em] text-forest">↑ 312%</span>
                   </div>
                 </div>
               </div>
@@ -753,7 +751,7 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
               <div key="s2" className="w-full animate-fade-up">
                 <div className="rounded-2xl border border-black/[0.07] bg-white p-4 shadow-sm">
                   <div className="flex items-center gap-3 mb-4">
-                    <span className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#8B5CF6] to-[#6BAD3D] flex-shrink-0" />
+                    <span className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#1E3826] to-[#6BAD3D] flex-shrink-0" />
                     <div className="flex-1">
                       <div className="h-2.5 w-28 rounded-full bg-black/15" />
                       <div className="h-2 w-20 rounded-full bg-black/10 mt-2" />
@@ -777,14 +775,14 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
 
         {/* Copy */}
         <div className="text-center mt-7 min-h-[120px]">
-          <p key={`e${scene}`} className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#8B5CF6] mb-3 animate-fade-up">{current.eyebrow}</p>
+          <p key={`e${scene}`} className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#1E3826] mb-3 animate-fade-up">{current.eyebrow}</p>
           <h2 key={`h${scene}`} className="hero-heading text-[24px] md:text-[28px] text-[#0D0D0D] leading-tight mb-3 animate-fade-up">{current.headline}</h2>
           <p key={`s${scene}`} className="font-body text-[14px] text-[#6B6560] leading-relaxed max-w-sm mx-auto animate-fade-up">{current.sub}</p>
         </div>
 
         {/* Progress bar */}
         <div className="mt-7 h-1 bg-black/[0.06] rounded-full overflow-hidden">
-          <div className="h-full rounded-full bg-[#8B5CF6]" style={{ width: `${progress}%`, transition: `width ${SCENE_MS * 3}ms linear` }} />
+          <div className="h-full rounded-full bg-[#1E3826]" style={{ width: `${progress}%`, transition: `width ${SCENE_MS * 3}ms linear` }} />
         </div>
       </div>
 
@@ -867,13 +865,13 @@ function CaptureScreen({
       <div className="pt-20 md:pt-28 pb-16 md:pb-24 px-6 lg:px-12">
         <div className="max-w-md mx-auto">
           <div className="text-center mb-10">
-            <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[#6BAD3D] mb-5">
+            <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-forest mb-5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D]" />
               Your results are ready
             </span>
             <h2 className="hero-heading text-[30px] md:text-[40px] text-[#0D0D0D] leading-tight mb-3">
               Where should we send<br />
-              <span className="accent" style={{ color: '#6BAD3D' }}>your plan?</span>
+              <span className="accent" style={{ color: '#1E3826' }}>your plan?</span>
             </h2>
             <p className="font-body text-[15px] text-[#6B6560] leading-relaxed">
               We&apos;ve built your personalized recommendation. Tell us where to send it — and we&apos;ll show it to you right now.
@@ -890,7 +888,7 @@ function CaptureScreen({
                 value={contact.name}
                 onChange={e => setContact(c => ({ ...c, name: e.target.value }))}
                 placeholder="Jane Founder"
-                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all"
+                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#1E3826] focus:outline-none focus:ring-1 focus:ring-[#1E3826] transition-all"
               />
             </div>
             <div>
@@ -902,7 +900,7 @@ function CaptureScreen({
                 value={contact.company}
                 onChange={e => setContact(c => ({ ...c, company: e.target.value }))}
                 placeholder="Acme Co."
-                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all"
+                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#1E3826] focus:outline-none focus:ring-1 focus:ring-[#1E3826] transition-all"
               />
             </div>
             <div>
@@ -918,7 +916,7 @@ function CaptureScreen({
                 value={contact.email}
                 onChange={e => setContact(c => ({ ...c, email: e.target.value }))}
                 placeholder="jane@company.com"
-                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all"
+                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#1E3826] focus:outline-none focus:ring-1 focus:ring-[#1E3826] transition-all"
               />
             </div>
             <div>
@@ -933,7 +931,7 @@ function CaptureScreen({
                 value={contact.phone}
                 onChange={e => setContact(c => ({ ...c, phone: e.target.value }))}
                 placeholder="(555) 123-4567"
-                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all"
+                className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#1E3826] focus:outline-none focus:ring-1 focus:ring-[#1E3826] transition-all"
               />
             </div>
             <div>
@@ -943,7 +941,7 @@ function CaptureScreen({
                 autoComplete="address-level1"
                 value={contact.state}
                 onChange={e => setContact(c => ({ ...c, state: e.target.value }))}
-                className={`w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all appearance-none ${contact.state ? 'text-[#0D0D0D]' : 'text-black/25'}`}
+                className={`w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] focus:border-[#1E3826] focus:outline-none focus:ring-1 focus:ring-[#1E3826] transition-all appearance-none ${contact.state ? 'text-[#0D0D0D]' : 'text-black/25'}`}
               >
                 <option value="">Select a state…</option>
                 {US_STATES.map(s => (
@@ -962,7 +960,7 @@ function CaptureScreen({
                 onChange={e => setContact(c => ({ ...c, consent: e.target.checked }))}
                 className="peer sr-only"
               />
-              <span className="w-5 h-5 rounded-md border border-black/20 bg-white flex items-center justify-center transition-all peer-checked:bg-[#8B5CF6] peer-checked:border-[#8B5CF6]">
+              <span className="w-5 h-5 rounded-md border border-black/20 bg-white flex items-center justify-center transition-all peer-checked:bg-[#1E3826] peer-checked:border-[#1E3826]">
                 {contact.consent && (
                   <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
                     <path d="M2.5 6.5l2.2 2.2L9.5 3.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -971,7 +969,7 @@ function CaptureScreen({
               </span>
             </span>
             <span className="font-body text-[13px] text-[#6B6560] leading-relaxed">
-              I agree to receive my results and occasional marketing communications from Hewn Life, and consent to my information being used as described in the <Link href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="text-[#8B5CF6] underline hover:text-[#7C3AED]">privacy policy</Link>. I can unsubscribe anytime.
+              I agree to receive my results and occasional marketing communications from Hewn Life, and consent to my information being used as described in the <Link href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="text-[#1E3826] underline hover:text-forest-2">privacy policy</Link>. I can unsubscribe anytime.
             </span>
           </label>
 
@@ -982,7 +980,7 @@ function CaptureScreen({
             disabled={!canSubmit}
             className={`w-full mt-6 inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 ${
               canSubmit
-                ? 'bg-[#8B5CF6] text-white hover:bg-[#7C3AED] shadow-[0_8px_30px_-8px_rgba(139,92,246,0.5)] hover:-translate-y-0.5'
+                ? 'bg-[#1E3826] text-white hover:bg-forest-2 hover:-translate-y-0.5'
                 : 'bg-black/[0.06] text-black/30 cursor-not-allowed'
             }`}
           >
@@ -1037,7 +1035,7 @@ function RevenueSliderScreen({
               </p>
             </div>
             <div className="h-1 bg-black/[0.06] rounded-full overflow-hidden">
-              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${(1 / totalSteps) * 100}%`, background: '#8B5CF6' }} />
+              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${(1 / totalSteps) * 100}%`, background: '#1E3826' }} />
             </div>
           </div>
 
@@ -1064,7 +1062,7 @@ function RevenueSliderScreen({
                   <span className="font-body text-[13px] text-[#A89F92]">Pre-revenue — we&apos;ll base projections on market entry benchmarks</span>
                 )}
                 {revenueIdx === REVENUE_STOPS.length - 1 && (
-                  <span className="font-body text-[13px] text-[#6BAD3D]">Impressive — let&apos;s talk scale</span>
+                  <span className="font-body text-[13px] text-forest">Impressive — let&apos;s talk scale</span>
                 )}
               </div>
             </div>
@@ -1081,7 +1079,7 @@ function RevenueSliderScreen({
                 onChange={e => setRevenueIdx(Number(e.target.value))}
                 className="w-full h-2 appearance-none rounded-full cursor-pointer"
                 style={{
-                  background: `linear-gradient(to right, #8B5CF6 ${(revenueIdx / (REVENUE_STOPS.length - 1)) * 100}%, #E5E1DA ${(revenueIdx / (REVENUE_STOPS.length - 1)) * 100}%)`,
+                  background: `linear-gradient(to right, #1E3826 ${(revenueIdx / (REVENUE_STOPS.length - 1)) * 100}%, #E5E1DA ${(revenueIdx / (REVENUE_STOPS.length - 1)) * 100}%)`,
                 }}
               />
               <div className="flex justify-between mt-3">
@@ -1098,7 +1096,7 @@ function RevenueSliderScreen({
                   onClick={() => setRevenueIdx(i)}
                   className={`font-mono text-[10px] px-3 py-1.5 rounded-full border transition-all duration-200 ${
                     revenueIdx === i
-                      ? 'border-[#8B5CF6] bg-[#8B5CF6]/[0.06] text-[#8B5CF6]'
+                      ? 'border-[#1E3826] bg-[#1E3826]/[0.06] text-[#1E3826]'
                       : 'border-black/[0.08] text-[#A89F92] hover:border-black/20'
                   }`}
                 >
@@ -1118,7 +1116,7 @@ function RevenueSliderScreen({
             </button>
             <button
               onClick={onNext}
-              className="inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 bg-[#8B5CF6] text-white hover:bg-[#7C3AED] shadow-[0_8px_30px_-8px_rgba(139,92,246,0.5)] hover:-translate-y-0.5"
+              className="inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 bg-[#1E3826] text-white hover:bg-forest-2 hover:-translate-y-0.5"
             >
               Next →
             </button>
@@ -1133,7 +1131,7 @@ function RevenueSliderScreen({
           height: 24px;
           border-radius: 50%;
           background: white;
-          border: 2px solid #8B5CF6;
+          border: 2px solid #1E3826;
           box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
           cursor: pointer;
         }
@@ -1142,7 +1140,7 @@ function RevenueSliderScreen({
           height: 24px;
           border-radius: 50%;
           background: white;
-          border: 2px solid #8B5CF6;
+          border: 2px solid #1E3826;
           box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
           cursor: pointer;
         }
@@ -1184,7 +1182,7 @@ function NotesScreen({
               </p>
             </div>
             <div className="h-1 bg-black/[0.06] rounded-full overflow-hidden">
-              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: '#8B5CF6' }} />
+              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: '#1E3826' }} />
             </div>
           </div>
 
@@ -1206,7 +1204,7 @@ function NotesScreen({
               value={notes}
               onChange={e => setNotes(e.target.value)}
               placeholder="Tell us about your business, your goals, what you've tried, or anything that would help us tailor your plan."
-              className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#8B5CF6] focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-all resize-none"
+              className="w-full px-5 py-4 rounded-2xl border border-black/[0.12] bg-white font-body text-[15px] text-[#0D0D0D] placeholder:text-black/25 focus:border-[#1E3826] focus:outline-none focus:ring-1 focus:ring-[#1E3826] transition-all resize-none"
             />
           </div>
 
@@ -1220,7 +1218,7 @@ function NotesScreen({
             </button>
             <button
               onClick={onNext}
-              className="inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 bg-[#8B5CF6] text-white hover:bg-[#7C3AED] shadow-[0_8px_30px_-8px_rgba(139,92,246,0.5)] hover:-translate-y-0.5"
+              className="inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 bg-[#1E3826] text-white hover:bg-forest-2 hover:-translate-y-0.5"
             >
               {notes.trim() ? 'Continue →' : 'Skip →'}
             </button>
@@ -1340,15 +1338,8 @@ export default function Quiz() {
         {/* Hero — flex-1 so it fills remaining space; overflow-hidden clips the image only */}
         <section className="relative flex-1 overflow-hidden flex flex-col lg:block">
           {/* Image — right half on desktop, bottom fill on mobile */}
-          <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden lg:block">
-            <Image
-              src={QUIZ_HERO_IMAGE}
-              alt=""
-              fill
-              priority
-              className="object-cover object-center"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/20 to-transparent" />
+          <div className="absolute bottom-6 right-6 top-20 hidden w-[calc(50%-24px)] overflow-hidden rounded-[32px] isolate lg:block">
+            <Terrain scene="amber" seed={57} className="-z-10" />
           </div>
 
           {/* Content */}
@@ -1358,12 +1349,12 @@ export default function Quiz() {
                 <div className="animate-fade-up">
                   <span className="inline-flex items-center gap-2 rounded-full border border-[#6BAD3D]/30 bg-[#6BAD3D]/[0.06] px-4 py-1.5 mb-5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#6BAD3D] animate-pulse" />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#6BAD3D]">Free ROI Assessment</span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-forest">Free ROI Assessment</span>
                   </span>
 
                   <h1 className="hero-heading fluid-hero text-[#0D0D0D] leading-[1.02] mb-4">
                     See what growth<br />
-                    <span className="accent" style={{ color: '#6BAD3D' }}>is worth to you.</span>
+                    <span className="accent" style={{ color: '#1E3826' }}>is worth to you.</span>
                   </h1>
 
                   <p className="font-body text-base lg:text-lg text-[#6B6560] leading-relaxed mb-6 max-w-md">
@@ -1372,7 +1363,7 @@ export default function Quiz() {
 
                   <button
                     onClick={() => setStep('revenue')}
-                    className="w-full sm:w-auto inline-flex items-center justify-center bg-[#8B5CF6] text-white font-body font-semibold text-[17px] px-10 py-4 rounded-full hover:bg-[#7C3AED] transition-all duration-200 shadow-[0_12px_40px_-8px_rgba(139,92,246,0.35)] hover:-translate-y-0.5"
+                    className="w-full sm:w-auto inline-flex items-center justify-center bg-[#1E3826] text-white font-body font-semibold text-[17px] px-10 py-4 rounded-full hover:bg-forest-2 transition-all duration-200 hover:-translate-y-0.5"
                   >
                     Calculate My ROI →
                   </button>
@@ -1388,15 +1379,8 @@ export default function Quiz() {
           </div>
 
           {/* Mobile image — fills remaining space below content */}
-          <div className="relative flex-1 lg:hidden min-h-[120px]">
-            <Image
-              src={QUIZ_HERO_IMAGE}
-              alt=""
-              fill
-              priority
-              className="object-cover object-top"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-transparent" />
+          <div className="relative isolate mx-5 mb-5 min-h-[120px] flex-1 overflow-hidden rounded-[28px] lg:hidden">
+            <Terrain scene="amber" seed={57} className="-z-10" />
           </div>
         </section>
 
@@ -1496,7 +1480,7 @@ export default function Quiz() {
             <div className="h-1 bg-black/[0.06] rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-500"
-                style={{ width: `${progress}%`, background: '#8B5CF6' }}
+                style={{ width: `${progress}%`, background: '#1E3826' }}
               />
             </div>
           </div>
@@ -1521,12 +1505,12 @@ export default function Quiz() {
                   onClick={() => handleSelect(opt.value)}
                   className={`w-full text-left p-5 rounded-2xl border transition-all duration-200 font-body text-[15px] leading-snug ${
                     isSelected
-                      ? 'border-[#8B5CF6] bg-[#8B5CF6]/[0.06] text-[#0D0D0D] shadow-[0_0_0_1px_#8B5CF6]'
+                      ? 'border-[#1E3826] bg-[#1E3826]/[0.06] text-[#0D0D0D] shadow-[0_0_0_1px_#1E3826]'
                       : 'border-black/[0.08] bg-white text-[#3D3A36] hover:border-black/20 hover:bg-[#F9F7F3]'
                   }`}
                 >
                   <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-3 flex-shrink-0 align-middle transition-all duration-200 ${
-                    isSelected ? 'border-[#8B5CF6] bg-[#8B5CF6]' : 'border-black/20 bg-transparent'
+                    isSelected ? 'border-[#1E3826] bg-[#1E3826]' : 'border-black/20 bg-transparent'
                   }`}>
                     {isSelected && (
                       <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -1553,7 +1537,7 @@ export default function Quiz() {
               disabled={!selected}
               className={`inline-flex items-center justify-center font-body font-medium px-8 py-4 rounded-full transition-all duration-200 ${
                 selected
-                  ? 'bg-[#8B5CF6] text-white hover:bg-[#7C3AED] shadow-[0_8px_30px_-8px_rgba(139,92,246,0.5)] hover:-translate-y-0.5'
+                  ? 'bg-[#1E3826] text-white hover:bg-forest-2 hover:-translate-y-0.5'
                   : 'bg-black/[0.06] text-black/30 cursor-not-allowed'
               }`}
             >

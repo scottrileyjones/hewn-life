@@ -15,7 +15,7 @@ const navLinks = [
 ]
 
 // Older pages that still open on a dark hero.
-const DARK_HERO = ['/about', '/contact', '/pricing']
+const DARK_HERO: string[] = []
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
