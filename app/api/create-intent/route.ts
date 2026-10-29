@@ -33,14 +33,13 @@ export async function POST(request: Request) {
           save_default_payment_method: 'on_subscription',
           payment_method_types: ['card'],
         },
-        expand: ['latest_invoice.payment_intent'],
+        // Since Stripe API 2025-03-31, invoices expose the first payment's secret as
+        // confirmation_secret; latest_invoice.payment_intent no longer exists.
+        expand: ['latest_invoice.confirmation_secret'],
       })
 
-      const invoice = subscription.latest_invoice as (Stripe.Invoice & {
-        payment_intent: Stripe.PaymentIntent | null
-      }) | null
-
-      const clientSecret = invoice?.payment_intent?.client_secret
+      const invoice = subscription.latest_invoice as Stripe.Invoice | null
+      const clientSecret = invoice?.confirmation_secret?.client_secret
 
       if (!clientSecret) {
         // Fallback: retrieve the payment intent directly from the subscription's pending setup
