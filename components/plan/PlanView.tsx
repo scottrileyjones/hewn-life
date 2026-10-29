@@ -110,7 +110,7 @@ export default function PlanView({ record }: { record: PlanRecord }) {
       </section>
 
       {/* Challenges */}
-      <section className="mx-auto max-w-6xl px-4 pt-16 sm:px-6">
+      <section className="mx-auto max-w-6xl px-4 pt-16 sm:px-6 print:break-before-page print:pt-0">
         <p className={`${eyebrow} text-forest`}>01 · What we heard</p>
         <h2 className="hero-heading fluid-h2 mt-3 max-w-3xl">Your top {deck.challenges.length === 1 ? 'challenge' : `${deck.challenges.length} challenges`}, and how we’d address them.</h2>
         <div className="mt-8 flex flex-col gap-6">
