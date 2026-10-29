@@ -16,6 +16,16 @@ git push -u origin <branch>   # triggers auto-merge to main
 git deploy                     # force-pushes to Vercel production branch
 ```
 
+## Preview Before Deploying
+
+**Every change must be shown to the user as a screenshot before it is deployed.**
+
+After making any change, run the site locally, take screenshots of every page
+or section that changed (desktop, and phone when layout is affected) and send
+them in the conversation with a one-line note on what changed. Only run
+`git deploy` once the user has seen the preview and approved it. If something
+can't be rendered in the screenshot (e.g. blocked images), say so explicitly.
+
 ## Project
 
 - **Framework**: Next.js 14, TypeScript, Tailwind CSS
