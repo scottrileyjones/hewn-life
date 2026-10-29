@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import CalButton from './CalButton'
 import CardFlow, { type FlowStep } from './CardFlow'
-import { revenueValue, revenueStage, questions, tiers, computeResult, computeScore, getServices, computeHealthScore } from '@/lib/quiz'
+import { revenueIndex, revenueValue, revenueStage, questions, tiers, computeResult, computeScore, getServices, computeHealthScore } from '@/lib/quiz'
 
 type Readout = {
   email: string
@@ -14,13 +14,13 @@ type Readout = {
 
 /** Revenue as a few tappable ranges, each mapped to a calculator stop for scoring. */
 const REVENUE_BANDS = [
-  { label: 'Pre-revenue', idx: 0 },
-  { label: 'Under $250K', idx: 2 },
-  { label: '$250K–$1M', idx: 4 },
-  { label: '$1M–$5M', idx: 9 },
-  { label: '$5M–$20M', idx: 13 },
-  { label: '$20M+', idx: 15 },
-]
+  { label: 'Pre-revenue', value: 0 },
+  { label: 'Under $250K', value: 100000 },
+  { label: '$250K–$1M', value: 500000 },
+  { label: '$1M–$5M', value: 3000000 },
+  { label: '$5M–$20M', value: 15000000 },
+  { label: '$20M+', value: 30000000 },
+].map(b => ({ ...b, idx: revenueIndex(b.value) }))
 
 const CONSENT = 'I agree to receive my results and occasional marketing emails from Hewn Life, and to the privacy policy. I can unsubscribe anytime.'
 

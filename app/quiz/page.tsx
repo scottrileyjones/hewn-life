@@ -172,7 +172,7 @@ function ResultsDashboard({
   const firstName = contact.name ? contact.name.split(' ')[0] : null
   // launch: pre-revenue, so no projection. small: the projected lift is smaller
   // than the plan, so we point them at Website in a Day. growth: the full ROI view.
-  const mode: 'launch' | 'small' | 'growth' = roi.revenueLabel === '$0' ? 'launch' : roi.annualMaxRaw <= 0 ? 'small' : 'growth'
+  const mode: 'launch' | 'small' | 'growth' = roi.revenueLabel === REVENUE_STOPS[0].label ? 'launch' : roi.annualMaxRaw <= 0 ? 'small' : 'growth'
 
   return (
     <div className="min-h-screen bg-bone">
@@ -753,7 +753,7 @@ function RevenueSliderScreen({
         <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink/55">Annual revenue</span>
         <p className="mt-2 font-display text-[clamp(48px,6vw,72px)] font-medium leading-none tracking-[-0.04em] tabular-nums">{val.label}</p>
         <p className="mt-3 min-h-[20px] font-body text-sm text-ink/60">
-          {revenueIdx === 0 && 'Pre-revenue: we’ll base projections on market-entry benchmarks.'}
+          {revenueIdx === 0 && 'We’ll base projections on market-entry benchmarks.'}
           {revenueIdx === REVENUE_STOPS.length - 1 && 'Impressive. Let’s talk scale.'}
         </p>
       </div>
@@ -772,12 +772,12 @@ function RevenueSliderScreen({
           style={{ background: `linear-gradient(to right, #1E3826 ${pct}%, #E9E5DB ${pct}%)` }}
         />
         <div className="mt-3 flex justify-between font-mono text-[11px] uppercase tracking-[0.12em] text-ink/50">
-          <span>$0</span><span>$100M+</span>
+          <span>Pre-revenue</span><span>$100M+</span>
         </div>
       </div>
 
       <div className="mt-6 flex flex-wrap gap-2">
-        {[0, 3, 6, 10, 12, 16, 19].map(i => (
+        {[0, 1, 2, 5, 9, 11, 15, 18].map(i => (
           <button
             key={i}
             onClick={() => setRevenueIdx(i)}
