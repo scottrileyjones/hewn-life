@@ -47,6 +47,10 @@ module.exports = {
       fontSize: {
         hero: ['6.5rem', { lineHeight: '1.05', letterSpacing: '-0.02em' }],
       },
+      boxShadow: {
+        // Frosted chips that sit over imagery and terrain maps.
+        glass: '0 12px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.15)',
+      },
       animation: {
         'fade-up': 'fadeUp 0.7s ease forwards',
       },
