@@ -4,6 +4,8 @@ import Link from 'next/link'
 import Terrain from '@/components/strata/Terrain'
 import CalButton from '@/components/CalButton'
 import StepFrame, { Climb, nextBtn } from '@/components/quiz/StepFrame'
+import TerrainMap from '@/components/strata/TerrainMap'
+import { getPillar } from '@/lib/services'
 
 
 // ── Revenue slider stops ──────────────────────────────────────────────────────
@@ -46,6 +48,14 @@ function OutcomeTicker() {
       </div>
     </div>
   )
+}
+
+// Illustrative props for the landing map. Labeled "Sample" on the map itself.
+const SAMPLE_MAP = {
+  score: 58,
+  summitValue: 168000,
+  waypoints: ['performance-media', 'lifecycle', 'data-attribution'].map(s => getPillar(s)?.name ?? s),
+  seed: 57,
 }
 
 const REVENUE_STOPS = [
@@ -1232,12 +1242,12 @@ export default function Quiz() {
   // ── Intro ─────────────────────────────────────────────────────────────────
   if (step === 'intro') {
     return (
-      <main className="flex flex-col bg-bone" style={{ height: '100dvh' }}>
+      <main className="flex min-h-[100dvh] flex-col bg-bone lg:h-[100dvh]">
         {/* Hero — flex-1 so it fills remaining space; overflow-hidden clips the image only */}
         <section className="relative flex-1 overflow-hidden flex flex-col lg:block">
           {/* Image — right half on desktop, bottom fill on mobile */}
-          <div className="absolute bottom-6 right-6 top-20 hidden w-[calc(50%-24px)] overflow-hidden rounded-[32px] isolate lg:block">
-            <Terrain scene="survey" seed={57} className="-z-10" />
+          <div className="absolute bottom-6 right-6 top-20 hidden w-[calc(50%-24px)] lg:block">
+            <TerrainMap {...SAMPLE_MAP} showLabels label="Growth map · Sample" className="h-full w-full !rounded-[32px]" />
           </div>
 
           {/* Content */}
@@ -1276,9 +1286,9 @@ export default function Quiz() {
             </div>
           </div>
 
-          {/* Mobile image — fills remaining space below content */}
-          <div className="relative isolate mx-5 mb-5 min-h-[120px] flex-1 overflow-hidden rounded-[28px] lg:hidden">
-            <Terrain scene="survey" seed={57} className="-z-10" />
+          {/* Mobile map, below the content */}
+          <div className="mx-4 mb-5 mt-2 lg:hidden">
+            <TerrainMap {...SAMPLE_MAP} showLabels label="Growth map · Sample" className="h-[400px] w-full" />
           </div>
         </section>
 
