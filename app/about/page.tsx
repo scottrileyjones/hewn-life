@@ -130,7 +130,7 @@ export default function About() {
           ] as const).map(([name, word, line]) => (
             <figure key={name}>
               <div className="relative isolate aspect-[4/5] overflow-hidden rounded-[22px] bg-sand">
-                <Photo name={name} w={480} h={600} sizes="(min-width: 640px) 33vw, 100vw" />
+                <Photo name={name} w={480} h={600} sizes="(min-width: 640px) 33vw, 100vw" film />
               </div>
               <figcaption className="mt-3.5 font-body text-sm text-ink/70"><em className="accent mr-1.5 text-lg text-forest">{word}.</em>{line}</figcaption>
             </figure>
