@@ -254,7 +254,7 @@ body {
 /* Opt-in analog film look for a few photos (never text, UI or terrain): faded warm tone
    with lifted blacks, a soft heavy vignette, visible grain and dust specks. */
 .photo-film img {
-  filter: sepia(0.1) saturate(0.95) contrast(0.95);
+  filter: sepia(0.18) saturate(0.88) contrast(0.92);
 }
 .photo-film::before,
 .photo-film::after,
@@ -268,22 +268,22 @@ body {
 /* Lift the blacks to warm brown, then darken the edges. */
 .photo-film::before {
   background:
-    radial-gradient(ellipse 75% 70% at 50% 48%, transparent 45%, rgba(18, 13, 8, 0.35) 100%),
-    rgb(22, 18, 13);
+    radial-gradient(ellipse 75% 70% at 50% 48%, transparent 45%, rgba(18, 13, 8, 0.5) 100%),
+    rgb(30, 24, 17);
   background-blend-mode: normal;
   mix-blend-mode: lighten;
 }
 .photo-film::after {
   background:
-    radial-gradient(ellipse 80% 75% at 50% 48%, transparent 55%, rgba(14, 10, 6, 0.3) 100%),
+    radial-gradient(ellipse 80% 75% at 50% 48%, transparent 50%, rgba(14, 10, 6, 0.45) 100%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncG type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncB type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
   background-size: 100% 100%, 200px 200px;
   mix-blend-mode: soft-light;
-  opacity: 0.45;
+  opacity: 0.75;
 }
 /* Sparse white specks, like dust on a scanned negative. */
 .photo-film-dust {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='1' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 .97  0 0 0 0 .9  32 0 0 0 -24.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23d)'/%3E%3C/svg%3E");
   background-size: 600px 600px;
-  opacity: 0.35;
+  opacity: 0.55;
 }
