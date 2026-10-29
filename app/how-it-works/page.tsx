@@ -68,7 +68,7 @@ export default function HowItWorks() {
         pill="How it works"
         title={<>Most agencies sell campaigns. <em className="accent text-lime">We build systems.</em></>}
         lede="We use AI to compress months of work into days, cutting cost without cutting corners. Then we add the design taste and market instinct that actually win."
-        seed={61}
+        scene="topo" seed={61}
       >
         <CalButton className={btnLight}>Book a discovery call</CalButton>
         <Link href="/pricing" className={btnGlass}>See plans &amp; pricing</Link>

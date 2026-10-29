@@ -30,7 +30,7 @@ export default function ServicesPage() {
       {/* ── HERO ── */}
       <div className="mx-auto max-w-[1400px] px-5">
         <section className="relative isolate overflow-hidden rounded-[32px] text-mist">
-          <Terrain scene="amber" seed={12} className="-z-20" />
+          <Terrain scene="canyon" seed={12} className="-z-20" />
           <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(20,16,10,.65) 0%, rgba(20,16,10,.2) 60%, transparent 85%)' }} />
           <div className="px-6 pb-14 pt-24 lg:px-14 lg:pb-20 lg:pt-36">
             <Pill dark>The growth engine</Pill>

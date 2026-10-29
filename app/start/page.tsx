@@ -22,7 +22,7 @@ export default function StartPage() {
         pill="Website brief"
         title={<>Show us what you love. <em className="accent text-lime">We’ll build it first.</em></>}
         lede="Send three brands you’d borrow from and a little about your business. You’ll see a working concept of your new website on your exploration call."
-        seed={95}
+        scene="harvest" seed={95}
       />
       <section className="mx-auto grid max-w-7xl items-start gap-10 px-5 py-16 lg:grid-cols-[1fr_2fr]">
         <aside className="lg:sticky lg:top-24">

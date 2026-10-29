@@ -47,7 +47,7 @@ export default function About() {
         pill="Our methodology"
         title={<>Built for the era where <em className="accent text-lime">intelligence</em> is the advantage.</>}
         lede="We are a hybrid marketing team: senior strategists, specialist creatives and AI systems, working in a model designed to deliver top-tier agency quality at a fraction of the overhead."
-        seed={44}
+        scene="woodgrain" seed={44}
       />
 
       {/* ── THE MODEL ── */}

@@ -91,7 +91,7 @@ export default function WebsiteInADay() {
         pill="Website in a day"
         title={<>A real website. <em className="accent text-lime">In one day. $999.</em></>}
         lede="Fill in one form. We design, write, build and launch your website within 24 hours. The easiest way to start with Hewn."
-        seed={71}
+        scene="forge" seed={71}
         aside={
           <div className="grid w-full max-w-[380px] grid-cols-2 gap-px overflow-hidden rounded-[22px] border border-mist/30 backdrop-blur-xl lg:justify-self-end" style={{ background: 'rgba(244,242,236,.18)' }}>
             {stats.map(s => (

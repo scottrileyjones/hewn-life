@@ -51,10 +51,10 @@ export default function Nav() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`font-body text-sm transition-colors duration-200 ${
+                  className={`relative font-body text-[15px] font-medium transition-colors duration-200 after:absolute after:-bottom-1.5 after:left-0 after:h-[2px] after:rounded-full after:bg-ember after:transition-all ${
                     darkHero
-                      ? active ? 'text-white' : 'text-white/60 hover:text-white'
-                      : active ? 'text-ink' : 'text-ink/60 hover:text-ink'
+                      ? active ? 'text-white after:w-full' : 'text-white/80 after:w-0 hover:text-white'
+                      : active ? 'text-ink after:w-full' : 'text-ink/80 after:w-0 hover:text-ink'
                   }`}
                 >
                   {link.label}
@@ -68,11 +68,11 @@ export default function Nav() {
               href="https://hewnlife.myassembly.com"
               target="_blank"
               rel="noopener noreferrer"
-              className={`font-body text-sm transition-colors ${darkHero ? 'text-white/70 hover:text-white' : 'text-ink/60 hover:text-ink'}`}
+              className={`font-body text-[15px] font-medium transition-colors ${darkHero ? 'text-white/80 hover:text-white' : 'text-ink/80 hover:text-ink'}`}
             >
               Client login
             </a>
-            <CalButton className={`rounded-full px-[18px] py-2.5 font-body text-sm font-medium transition-all duration-200 ${
+            <CalButton className={`rounded-full px-5 py-2.5 font-body text-[15px] font-medium transition-all duration-200 ${
               darkHero ? 'bg-white text-ink hover:bg-mist' : 'bg-forest text-mist hover:bg-forest-2'
             }`}>
               Book a call

@@ -79,7 +79,7 @@ export default function Blog() {
       <PageHero
         pill="Journal"
         title={<>Ideas on marketing, growth and businesses that actually <em className="accent text-lime">work.</em></>}
-        seed={88}
+        scene="forest" seed={88}
       />
 
       <section className="mx-auto max-w-7xl px-5 py-16">

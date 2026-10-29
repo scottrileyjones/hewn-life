@@ -292,7 +292,7 @@ export default function Pricing() {
         pill="Transparent pricing"
         title={<>Pick a plan. Check out. We <em className="accent text-lime">get to work.</em></>}
         lede="No sales call required. Flat fees, secure checkout, and your onboarding call scheduled within 48 hours of purchase."
-        seed={23}
+        scene="meadow" seed={23}
       >
         <a href="#plans" className={btnLight}>See plans</a>
         <CalButton className={btnGlass}>Not sure? Let&apos;s talk</CalButton>

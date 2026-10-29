@@ -86,7 +86,15 @@ export const glyphs: Record<GlyphKey, GlyphPart[]> = {
 
 /* ── Terrain scenes ─────────────────────────────────────────── */
 
-export type SceneName = 'amber' | 'ember' | 'sage' | 'valley'
+export type SceneName =
+  | 'amber' | 'ember' | 'sage' | 'valley'
+  | 'forge' | 'canyon' | 'topo' | 'woodgrain' | 'forest' | 'meadow' | 'night' | 'highland' | 'harvest'
+
+/**
+ * How the land is drawn. Every form shares the light, contours and grain, and each
+ * speaks to the craft: stone carved, wood grown, metal forged, ground surveyed.
+ */
+export type SceneForm = 'ridges' | 'dunes' | 'mesa' | 'hills' | 'topo' | 'forest' | 'rings' | 'forge'
 
 export interface Scene {
   sky: string[]
@@ -98,6 +106,10 @@ export interface Scene {
   fog: string
   contour: string
   horizon: number
+  /** Defaults to ridges, the original mountain scene. */
+  form?: SceneForm
+  /** Scatter stars in the sky (night scenes). */
+  stars?: boolean
 }
 
 export const scenes: Record<SceneName, Scene> = {
@@ -105,6 +117,16 @@ export const scenes: Record<SceneName, Scene> = {
   ember: { sky: ['#120B06', '#2B1A0E', '#7A4520', '#D9893F'], far: '#7B5A3E', near: '#120B06', sun: [0.32, 0.6, '#FFC27A', 1], layers: 6, fog: '255,200,140', contour: 'rgba(255,220,180,0.08)', horizon: 0.6 },
   sage: { sky: ['#C9D3C2', '#DCE2D4', '#EDEFE6', '#F4F2EC'], far: '#B7C4AF', near: '#2A4A32', sun: [0.7, 0.25, '#FFFFFF', 0.6], layers: 7, fog: '244,242,236', contour: 'rgba(30,56,38,0.10)', horizon: 0.42 },
   valley: { sky: ['#4E6A52', '#7D9479', '#B8C4AE', '#E6DCC4'], far: '#93A58A', near: '#1E3826', sun: [0.62, 0.48, '#FFF2D6', 0.9], layers: 8, fog: '244,242,236', contour: 'rgba(244,242,236,0.12)', horizon: 0.5 },
+  // Page headers: one form and palette per page, same graphic language.
+  forge: { form: 'forge', sky: ['#0A0706', '#1A100B', '#2E1A10', '#4A2814'], far: '#3A2A22', near: '#0B0807', sun: [0.62, 0.66, '#FF9A3C', 0.85], layers: 5, fog: '255,150,70', contour: 'rgba(255,190,140,0.08)', horizon: 0.5 },
+  woodgrain: { form: 'rings', sky: ['#2A1A10', '#4A2E1A', '#7A4E2C', '#B07A48'], far: '#C08A56', near: '#3A2214', sun: [0.3, 0.3, '#FFDDB0', 0.45], layers: 26, fog: '255,220,180', contour: 'rgba(40,20,10,0.38)', horizon: 0 },
+  forest: { form: 'forest', sky: ['#1A2620', '#33463A', '#6E8270', '#C4CDB8'], far: '#6E8270', near: '#0E1612', sun: [0.66, 0.4, '#F4F2EC', 0.7], layers: 6, fog: '228,234,222', contour: 'rgba(240,244,236,0.08)', horizon: 0.42 },
+  canyon: { form: 'mesa', sky: ['#1E120C', '#4A2616', '#A4552C', '#E59A62'], far: '#B0673E', near: '#1C0F09', sun: [0.28, 0.5, '#FFD0A0', 0.9], layers: 6, fog: '255,196,150', contour: 'rgba(255,214,180,0.12)', horizon: 0.42 },
+  topo: { form: 'topo', sky: ['#14251A', '#1E3826', '#2A4A32', '#3D5A42'], far: '#2A4A32', near: '#132318', sun: [0.75, 0.3, '#D6F28B', 0.35], layers: 14, fog: '214,242,139', contour: 'rgba(214,242,139,0.32)', horizon: 0 },
+  meadow: { form: 'hills', sky: ['#24301A', '#4E5A28', '#A8984A', '#EAD48E'], far: '#9AA650', near: '#101A0A', sun: [0.72, 0.4, '#FFF0C0', 1], layers: 5, fog: '250,236,190', contour: 'rgba(250,240,200,0.24)', horizon: 0.46 },
+  night: { form: 'ridges', stars: true, sky: ['#05080A', '#0B1512', '#16261E', '#2A4034'], far: '#2E4638', near: '#050806', sun: [0.74, 0.24, '#E6F0DC', 0.55], layers: 6, fog: '200,220,205', contour: 'rgba(214,242,200,0.07)', horizon: 0.58 },
+  highland: { form: 'ridges', sky: ['#18242A', '#34484C', '#6E8580', '#C2CCC0'], far: '#7E928A', near: '#121A1C', sun: [0.4, 0.46, '#F4F2EC', 0.8], layers: 8, fog: '230,236,230', contour: 'rgba(240,244,238,0.10)', horizon: 0.48 },
+  harvest: { form: 'dunes', sky: ['#2A1E0C', '#6A4A18', '#C08A34', '#F0CE80'], far: '#C49448', near: '#2A1A08', sun: [0.62, 0.38, '#FFF0C8', 1], layers: 5, fog: '255,236,190', contour: 'rgba(255,240,210,0.13)', horizon: 0.5 },
 }
 
 /** A ridge of `points` samples across `width`, for small SVG charts. */
