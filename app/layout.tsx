@@ -1,3 +1,4 @@
+import HideOn from '@/components/HideOn'
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans, DM_Sans, Inter_Tight, Playfair_Display } from 'next/font/google'
 import './globals.css'
@@ -106,11 +107,11 @@ export default function RootLayout({
             }),
           }}
         />
-        <Nav />
+        <HideOn prefix="/crm"><Nav /></HideOn>
         <main>{children}</main>
-        <Footer />
+        <HideOn prefix="/crm"><Footer /></HideOn>
         <CookieConsent />
-        <QuizPopup />
+        <HideOn prefix="/crm"><QuizPopup /></HideOn>
       </body>
     </html>
   )
