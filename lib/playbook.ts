@@ -151,7 +151,7 @@ export const proof: { id: ProofId; value: string; label: string }[] = [
   { id: 'growth', value: '$0 → $10M', label: 'Grew a national telemedicine brand from launch to a $10M company.' },
   { id: 'exit', value: 'Acquired', label: 'Built the growth engine behind a business that went on to be acquired.' },
   { id: 'raise', value: 'Seed', label: 'Helped raise a multi-million-dollar seed round with the story, deck and brand.' },
-  { id: 'regulated', value: '30 years', label: 'Of healthcare marketing, one of the most regulated categories to market.' },
+  { id: 'regulated', value: '30 years', label: 'Of combined healthcare marketing experience across our team, in one of the most regulated categories to market.' },
 ]
 
 export type PlanId = 'website-in-a-day' | 'hewn' | 'wrought' | 'forged'

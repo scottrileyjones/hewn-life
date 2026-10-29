@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     default: 'Hewn Life — AI runs the engine. Artists drive.',
     template: '%s | Hewn Life',
   },
-  description: 'Premium AI-era marketing agency combining thirty years of human business acumen with the speed and scale of AI. Flat fees. Full transparency.',
+  description: 'Premium AI-era marketing agency bringing thirty years of combined human business acumen together with the speed and scale of AI. Flat fees. Full transparency.',
   alternates: {
     canonical: 'https://www.hewn.life',
   },
@@ -93,7 +93,7 @@ export default function RootLayout({
               name: 'Hewn Life',
               url: 'https://www.hewn.life',
               logo: 'https://www.hewn.life/images/hewn-logo.png',
-              description: 'Premium AI-era marketing agency combining thirty years of human business acumen with the speed and scale of AI.',
+              description: 'Premium AI-era marketing agency bringing thirty years of combined human business acumen together with the speed and scale of AI.',
               address: { '@type': 'PostalAddress', addressCountry: 'US' },
               contactPoint: {
                 '@type': 'ContactPoint',

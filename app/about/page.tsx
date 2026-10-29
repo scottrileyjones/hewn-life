@@ -10,11 +10,11 @@ import { colors, type GlyphKey } from '@/lib/strata'
 
 export const metadata: Metadata = {
   title: 'About Hewn Life — Our Story & Philosophy',
-  description: 'Hewn Life was built on 30 years of real business experience. We combine deep human strategy with AI-era speed to deliver marketing most agencies can\'t match at any price.',
+  description: 'Hewn Life was built on 30 years of combined business experience. We combine deep human strategy with AI-era speed to deliver marketing most agencies can\'t match at any price.',
   alternates: { canonical: 'https://www.hewn.life/about' },
   openGraph: {
     title: 'About Hewn Life — Our Story & Philosophy',
-    description: 'Hewn Life was built on 30 years of real business experience. We combine deep human strategy with AI-era speed to deliver marketing most agencies can\'t match at any price.',
+    description: 'Hewn Life was built on 30 years of combined business experience. We combine deep human strategy with AI-era speed to deliver marketing most agencies can\'t match at any price.',
     url: 'https://www.hewn.life/about',
     images: [ogImage],
   },
