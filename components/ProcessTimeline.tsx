@@ -56,7 +56,7 @@ export default function ProcessTimeline() {
       const container = containerRef.current
       if (!container) return
       const rect = container.getBoundingClientRect()
-      const triggerLine = window.innerHeight * 0.55
+      const triggerLine = window.innerHeight * 0.8
 
       // Spine fill progress
       const total = rect.height
@@ -146,7 +146,7 @@ export default function ProcessTimeline() {
 function StepPill({ step, isActive, align }: { step: typeof steps[number]; isActive: boolean; align: 'left' | 'right' }) {
   return (
     <div className={`transition-all duration-700 ${
-      isActive ? 'opacity-100 translate-y-0' : `opacity-0 ${align === 'right' ? 'md:translate-x-4' : 'md:-translate-x-4'} translate-y-2`
+      isActive ? 'opacity-100' : 'opacity-50'
     }`}>
       <span className={`inline-block rounded-full px-5 py-2 font-body text-sm font-semibold tracking-wide transition-all duration-500 ${
         isActive ? 'bg-forest text-mist' : 'bg-black/[0.06] text-black/40'
@@ -160,7 +160,7 @@ function StepPill({ step, isActive, align }: { step: typeof steps[number]; isAct
 function StepContent({ step, isActive, align }: { step: typeof steps[number]; isActive: boolean; align: 'left' | 'right' }) {
   return (
     <div className={`transition-all duration-700 delay-100 ${
-      isActive ? 'opacity-100 translate-x-0' : `opacity-0 ${align === 'right' ? 'md:translate-x-6' : 'md:-translate-x-6'}`
+      isActive ? 'opacity-100' : 'opacity-60'
     }`}>
       {/* Title block */}
       <div className={align === 'right' ? 'md:text-right' : ''}>
