@@ -59,10 +59,10 @@ export default function Home() {
           <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(90deg, rgba(20,16,10,.62) 0%, rgba(20,16,10,.18) 50%, transparent 75%), linear-gradient(0deg, rgba(20,16,10,.55) 0%, transparent 35%)' }} />
           <div className="grid items-end gap-10 px-6 pb-7 pt-24 lg:grid-cols-[1.2fr_1fr] lg:px-14 lg:pb-10 lg:pt-32">
             <div>
-              <Pill dark>Founder-led · AI-native</Pill>
-              <h1 className="mt-5 max-w-[11ch] font-display text-[clamp(44px,5.8vw,84px)] font-medium leading-none tracking-[-0.045em]">Your new growth team.</h1>
+              <Pill dark>Made by hand · Scaled by AI</Pill>
+              <h1 className="mt-5 max-w-[13ch] font-display text-[clamp(44px,5.8vw,84px)] font-medium leading-none tracking-[-0.045em]">AI runs the engine. <em className="accent block text-lime">Artists drive.</em></h1>
               <p className="mt-5 max-w-[30em] font-body text-lg text-mist/80">
-                Senior strategy, an AI creative line that ships 20–40 assets a week, and a live dashboard that grades every dollar. One flat monthly fee.
+                Senior marketers and artists make every call. AI does the heavy lifting: 20–40 assets a week and a live dashboard that grades every dollar. A full agency, one flat monthly fee.
               </p>
               <div className="mt-8 flex flex-wrap gap-2.5">
                 <CalButton className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 font-body text-[15px] font-medium text-ink transition hover:bg-mist">Book a discovery call</CalButton>
