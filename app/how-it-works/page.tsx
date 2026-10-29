@@ -124,7 +124,7 @@ export default function HowItWorks() {
             <div key={task} className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-mist/[0.08] px-5 py-4 first-of-type:border-t-0 sm:grid sm:grid-cols-[1fr_170px_210px] sm:items-center sm:px-8 sm:py-5 sm:first-of-type:border-t">
               <span className="w-full font-body text-[15px] text-mist/90 sm:w-auto sm:pr-4 sm:text-[17px]">{task}</span>
               <span className="font-body text-[15px] text-mist/50 line-through sm:pr-3 sm:text-[16px]">{before}</span>
-              <span className="font-display text-[24px] font-medium leading-tight tracking-[-0.02em] text-lime sm:text-[28px]"><span className="mr-1.5 font-body text-[15px] text-mist/40 sm:hidden">→</span>{after}</span>
+              <span className="font-display text-[19px] font-medium leading-tight tracking-[-0.01em] text-lime sm:text-[21px]"><span className="mr-1.5 font-body text-[15px] text-mist/40 sm:hidden">→</span>{after}</span>
             </div>
           ))}
         </div>
