@@ -63,9 +63,7 @@ export default function Nav() {
 
           <div className="hidden items-center gap-4 lg:flex">
             <a
-              href="https://hewnlife.myassembly.com"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/portal"
               className={`whitespace-nowrap font-body text-[15px] font-medium transition-colors ${darkHero ? 'text-white/80 hover:text-white' : 'text-ink/80 hover:text-ink'}`}
             >
               Client login
@@ -106,9 +104,7 @@ export default function Nav() {
               </Link>
             ))}
             <a
-              href="https://hewnlife.myassembly.com"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/portal"
               className="font-display text-3xl font-medium tracking-[-0.03em] text-ink/40 transition-colors hover:text-ink"
               onClick={() => setMenuOpen(false)}
             >

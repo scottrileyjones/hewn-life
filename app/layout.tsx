@@ -107,11 +107,11 @@ export default function RootLayout({
             }),
           }}
         />
-        <HideOn prefix={['/crm', '/hq']}><Nav /></HideOn>
+        <HideOn prefix={['/crm', '/hq', '/portal']}><Nav /></HideOn>
         <main>{children}</main>
-        <HideOn prefix={['/crm', '/hq']}><Footer /></HideOn>
+        <HideOn prefix={['/crm', '/hq', '/portal']}><Footer /></HideOn>
         <CookieConsent />
-        <HideOn prefix={['/crm', '/hq']}><QuizPopup /></HideOn>
+        <HideOn prefix={['/crm', '/hq', '/portal']}><QuizPopup /></HideOn>
       </body>
     </html>
   )
