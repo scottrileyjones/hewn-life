@@ -70,7 +70,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-mist/[0.14] pt-6 md:flex-row md:items-center">
-          <p className="font-body text-xs leading-relaxed text-mist/65">© {new Date().getFullYear()} Hewn Holdings LLC, doing business as Hewn Life. All rights reserved.<br />389 N 1500 E, Layton, UT 84040</p>
+          <p className="font-body text-xs leading-relaxed text-mist/65">© {new Date().getFullYear()} Hewn Holdings LLC, doing business as Hewn Life. All rights reserved.<br />285 N Main St #115, Kaysville, UT 84037</p>
           <div className="flex flex-wrap gap-x-5 gap-y-2">
             {[
               ['/legal/terms', 'Terms'],

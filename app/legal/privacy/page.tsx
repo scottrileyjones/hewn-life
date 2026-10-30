@@ -145,7 +145,7 @@ export default function Privacy() {
         {
           heading: 'Contact us',
           body: [
-            'Questions or requests: hello@hewn.life, or Hewn Holdings LLC, 389 N 1500 E, Layton, UT 84040, United States.',
+            'Questions or requests: hello@hewn.life, or Hewn Holdings LLC, 285 N Main St #115, Kaysville, UT 84037, United States.',
           ],
         },
       ]}
