@@ -154,7 +154,7 @@ export default function HowItWorks() {
             )
           })}
         </div>
-        <div className="mt-6 text-right"><Link href="/pricing" className="font-body text-sm font-medium text-forest underline underline-offset-4">See pricing for each plan →</Link></div>
+        <div className="mt-6 text-right"><Link href="/pricing" className="font-body text-sm font-medium text-forest decoration-forest/30 underline-offset-[6px] transition hover:text-ink hover:underline">See pricing for each plan →</Link></div>
       </section>
 
       {/* ── CADENCE ── */}
