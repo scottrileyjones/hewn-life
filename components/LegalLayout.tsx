@@ -98,7 +98,7 @@ export default function LegalLayout({ title, updated, intro, summary, sections }
                 <a href="mailto:hello@hewn.life" className="text-forest underline underline-offset-2">hello@hewn.life</a>.
               </p>
               <address className="font-body text-sm text-ink/70 not-italic leading-relaxed">
-                <span className="font-semibold text-ink">Hewn Life LLC</span><br />
+                <span className="font-semibold text-ink">Hewn Holdings LLC</span><br />
                 389 N 1500 E<br />
                 Layton, UT 84040<br />
                 United States

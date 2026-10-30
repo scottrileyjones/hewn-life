@@ -9,7 +9,7 @@ import { sign } from './sign'
 export const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hewn.life'
 const FROM = process.env.PLAN_FROM_EMAIL || 'Hewn Life <hello@hewn.life>'
 export const REVIEWER = process.env.PLAN_REVIEW_EMAIL || 'hello@hewn.life'
-const ADDRESS = process.env.PLAN_MAIL_ADDRESS || 'Hewn Life LLC, 389 N 1500 E, Layton, UT 84040'
+const ADDRESS = process.env.PLAN_MAIL_ADDRESS || 'Hewn Holdings LLC, 389 N 1500 E, Layton, UT 84040'
 
 export const planUrl = (token: string) => `${SITE}/plan/${token}`
 export const reviewUrl = (token: string) => `${planUrl(token)}?review=${sign(token, 'review')}`

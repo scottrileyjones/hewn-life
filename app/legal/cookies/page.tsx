@@ -9,8 +9,8 @@ export default function Cookies() {
   return (
     <LegalLayout
       title="Cookie Policy"
-      updated="October 29, 2026"
-      intro="This Cookie Policy explains how Hewn Life LLC uses cookies and similar technologies (such as tags, pixels and local storage, together “cookies”) on hewn.life. It should be read with our Privacy Policy."
+      updated="October 30, 2026"
+      intro="This Cookie Policy explains how Hewn Holdings LLC, doing business as Hewn Life, uses cookies and similar technologies (such as tags, pixels and local storage, together “cookies”) on hewn.life. It should be read with our Privacy Policy."
       summary={[
         'Analytics and advertising cookies stay off until you click Accept in our banner.',
         'If you decline, only what the Site needs to work is used.',

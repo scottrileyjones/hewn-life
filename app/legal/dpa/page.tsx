@@ -9,8 +9,8 @@ export default function Dpa() {
   return (
     <LegalLayout
       title="Data Processing Addendum"
-      updated="October 29, 2026"
-      intro="This Data Processing Addendum (“DPA”) forms part of the Terms of Service between Hewn Life LLC (“Hewn Life”) and each client (“Client”). It applies when Hewn Life processes personal data about Client’s customers, leads, subscribers or audiences (“Client Personal Data”) on Client’s behalf while providing the Services. If you need a countersigned copy, email hello@hewn.life."
+      updated="October 30, 2026"
+      intro="This Data Processing Addendum (“DPA”) forms part of the Terms of Service between Hewn Holdings LLC, doing business as Hewn Life (“Hewn Life”) and each client (“Client”). It applies when Hewn Life processes personal data about Client’s customers, leads, subscribers or audiences (“Client Personal Data”) on Client’s behalf while providing the Services. If you need a countersigned copy, email hello@hewn.life."
       summary={[
         'When we handle your customers’ data, you’re in charge of it and we only use it to do the work you’ve hired us for.',
         'We never sell it, keep it confidential, secure it, and only use vetted sub-processors.',
