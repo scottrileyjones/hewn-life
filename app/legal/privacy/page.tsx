@@ -9,8 +9,8 @@ export default function Privacy() {
   return (
     <LegalLayout
       title="Privacy Policy"
-      updated="October 29, 2026"
-      intro="This Privacy Policy explains how Hewn Life LLC (“Hewn Life,” “we,” “us” or “our”) collects, uses, shares and protects personal information when you visit hewn.life, fill in one of our forms, book a call, receive our emails or buy our Services. It doesn’t cover personal data we process for clients about their own customers; that is governed by our Data Processing Addendum and the client’s own privacy policy."
+      updated="October 30, 2026"
+      intro="This Privacy Policy explains how Hewn Holdings LLC, doing business as Hewn Life (“Hewn Life,” “we,” “us” or “our”) collects, uses, shares and protects personal information when you visit hewn.life, fill in one of our forms, book a call, receive our emails or buy our Services. It doesn’t cover personal data we process for clients about their own customers; that is governed by our Data Processing Addendum and the client’s own privacy policy."
       summary={[
         'We collect what you give us in our forms (like your name, email, business and answers) plus usage data from cookies if you accept them.',
         'We use it to give you your readout and growth plan, reply to you, run the Services you buy, and improve the Site.',
@@ -145,7 +145,7 @@ export default function Privacy() {
         {
           heading: 'Contact us',
           body: [
-            'Questions or requests: hello@hewn.life, or Hewn Life LLC, 389 N 1500 E, Layton, UT 84040, United States.',
+            'Questions or requests: hello@hewn.life, or Hewn Holdings LLC, 389 N 1500 E, Layton, UT 84040, United States.',
           ],
         },
       ]}

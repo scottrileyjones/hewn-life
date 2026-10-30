@@ -9,8 +9,8 @@ export default function Terms() {
   return (
     <LegalLayout
       title="Terms of Service"
-      updated="October 29, 2026"
-      intro="These Terms of Service (“Terms”) are an agreement between you and Hewn Life LLC, a Utah limited liability company (“Hewn Life,” “we,” “us” or “our”). They govern your use of hewn.life and any related pages, tools and emails (the “Site”) and your purchase and use of our marketing services, plans and subscriptions (the “Services”). If you are buying on behalf of a business, “you” means that business, and you confirm you have authority to bind it."
+      updated="October 30, 2026"
+      intro="These Terms of Service (“Terms”) are an agreement between you and Hewn Holdings LLC, a Utah limited liability company doing business as Hewn Life (“Hewn Life,” “we,” “us” or “our”). They govern your use of hewn.life and any related pages, tools and emails (the “Site”) and your purchase and use of our marketing services, plans and subscriptions (the “Services”). If you are buying on behalf of a business, “you” means that business, and you confirm you have authority to bind it."
       summary={[
         'Using the Site or buying from us means you agree to these Terms, our Privacy Policy and our Refunds & Cancellations policy.',
         'Monthly plans renew automatically each month until you cancel. You can cancel online at any time; it takes effect at the end of the period you’ve paid for.',
@@ -173,7 +173,7 @@ export default function Terms() {
           heading: 'General',
           body: [
             'We are an independent contractor. If any part of these Terms is unenforceable, the rest still applies. Not enforcing a provision isn’t a waiver. You may not assign these Terms without our consent; we may assign them as part of a merger, acquisition or sale of our business. We aren’t liable for delays caused by events beyond our reasonable control. These Terms, the policies they reference and any SOW are the entire agreement between us about their subject.',
-            'We may send you notices by email to the address you gave us. You can send notices to hello@hewn.life or to Hewn Life LLC, 389 N 1500 E, Layton, UT 84040.',
+            'We may send you notices by email to the address you gave us. You can send notices to hello@hewn.life or to Hewn Holdings LLC, 389 N 1500 E, Layton, UT 84040.',
           ],
         },
       ]}
