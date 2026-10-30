@@ -173,7 +173,7 @@ export default function Terms() {
           heading: 'General',
           body: [
             'We are an independent contractor. If any part of these Terms is unenforceable, the rest still applies. Not enforcing a provision isn’t a waiver. You may not assign these Terms without our consent; we may assign them as part of a merger, acquisition or sale of our business. We aren’t liable for delays caused by events beyond our reasonable control. These Terms, the policies they reference and any SOW are the entire agreement between us about their subject.',
-            'We may send you notices by email to the address you gave us. You can send notices to hello@hewn.life or to Hewn Holdings LLC, 389 N 1500 E, Layton, UT 84040.',
+            'We may send you notices by email to the address you gave us. You can send notices to hello@hewn.life or to Hewn Holdings LLC, 285 N Main St #115, Kaysville, UT 84037.',
           ],
         },
       ]}

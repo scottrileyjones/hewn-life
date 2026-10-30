@@ -99,8 +99,8 @@ export default function LegalLayout({ title, updated, intro, summary, sections }
               </p>
               <address className="font-body text-sm text-ink/70 not-italic leading-relaxed">
                 <span className="font-semibold text-ink">Hewn Holdings LLC</span><br />
-                389 N 1500 E<br />
-                Layton, UT 84040<br />
+                285 N Main St #115<br />
+                Kaysville, UT 84037<br />
                 United States
               </address>
             </div>
