@@ -2,6 +2,8 @@
  * Client portal records in Airtable: one Portal Clients row per client login,
  * and a Portal Messages row for each message or update between them and us.
  */
+import { parseProgress, type Progress } from './onboarding'
+
 const BASE = process.env.AIRTABLE_BASE_ID
 const TOKEN = process.env.AIRTABLE_TOKEN
 const CLIENTS = process.env.AIRTABLE_PORTAL_CLIENTS_TABLE_ID || 'tblrLwKCOAdGvvpL4'
@@ -11,6 +13,7 @@ export const CLIENT_STATUSES = ['Onboarding', 'Active', 'Paused', 'Past'] as con
 export type ClientStatus = typeof CLIENT_STATUSES[number]
 
 export type PortalLink = { label: string; url: string }
+export type PortalAsset = { name: string; url: string; type: string; size: number }
 
 export type PortalClient = {
   id: string
@@ -25,6 +28,10 @@ export type PortalClient = {
   lastClientMessage: string
   lastTeamMessage: string
   lastLogin: string
+  /** Onboarding plan key, e.g. 'website-in-a-day'. Empty until we apply one. */
+  package: string
+  progress: Progress
+  assets: PortalAsset[]
 }
 
 export type PortalMessage = {
@@ -66,6 +73,11 @@ const toClient = (r: Row): PortalClient => ({
   lastClientMessage: str(r.fields['Last client message']),
   lastTeamMessage: str(r.fields['Last team message']),
   lastLogin: str(r.fields['Last login']),
+  package: str(r.fields['Package']),
+  progress: parseProgress(str(r.fields['Progress'])),
+  assets: Array.isArray(r.fields['Assets'])
+    ? (r.fields['Assets'] as { filename?: string; url?: string; type?: string; size?: number }[]).map(a => ({ name: a.filename ?? '', url: a.url ?? '', type: a.type ?? '', size: a.size ?? 0 }))
+    : [],
 })
 
 const toMessage = (r: Row): PortalMessage => ({
@@ -120,7 +132,7 @@ export async function findClient(email: string): Promise<PortalClient | null> {
   return rows[0] ? toClient(rows[0]) : null
 }
 
-export type ClientPatch = Partial<Pick<PortalClient, 'email' | 'name' | 'company' | 'plan' | 'status' | 'projectStatus' | 'nextSteps'>> & { links?: string }
+export type ClientPatch = Partial<Pick<PortalClient, 'email' | 'name' | 'company' | 'plan' | 'status' | 'projectStatus' | 'nextSteps' | 'package' | 'progress'>> & { links?: string }
 
 export async function saveClient(id: string | null, p: ClientPatch): Promise<PortalClient> {
   const f: Record<string, unknown> = {}
@@ -132,6 +144,8 @@ export async function saveClient(id: string | null, p: ClientPatch): Promise<Por
   if (p.projectStatus !== undefined) f['Project status'] = p.projectStatus.slice(0, 5000)
   if (p.nextSteps !== undefined) f['Next steps'] = p.nextSteps.slice(0, 5000)
   if (p.links !== undefined) f['Links'] = formatLinks(parseLinks(p.links))
+  if (p.package !== undefined) f['Package'] = p.package || null
+  if (p.progress !== undefined) f['Progress'] = JSON.stringify(p.progress)
   return toClient(await write(CLIENTS, id, f))
 }
 
@@ -149,4 +163,20 @@ export async function addMessage(m: Omit<PortalMessage, 'id' | 'at'>): Promise<P
   return toMessage(await write(MESSAGES, null, {
     'Client email': m.clientEmail, From: m.from, Kind: m.kind, Author: m.author, Body: m.body.slice(0, 10000), 'Sent at': new Date().toISOString(),
   }))
+}
+
+export const ASSET_MAX_BYTES = 4 * 1024 * 1024
+export const ASSET_TYPES = ['image/png', 'image/jpeg', 'image/svg+xml', 'image/webp', 'image/gif', 'application/pdf']
+
+/** Add a file to the client's Assets field (Airtable's upload endpoint). The name starts with the step id. */
+export async function attachAsset(clientId: string, stepId: string, file: { name: string; type: string; bytes: ArrayBuffer }) {
+  need()
+  const name = `${stepId}--${file.name.replace(/[^\w.\- ]+/g, '_').slice(0, 120)}`
+  const res = await fetch(`https://content.airtable.com/v0/${BASE}/${clientId}/${encodeURIComponent('Assets')}/uploadAttachment`, {
+    method: 'POST',
+    headers: headers(),
+    body: JSON.stringify({ contentType: file.type, filename: name, file: Buffer.from(file.bytes).toString('base64') }),
+  })
+  if (!res.ok) throw new Error(`Airtable upload ${res.status}: ${await res.text()}`)
+  return name
 }
