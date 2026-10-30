@@ -1,6 +1,7 @@
 'use client'
 import { useMemo, useState } from 'react'
 import type { Contact, Stage } from '@/lib/crm/data'
+import CrmHeader from './CrmHeader'
 
 const STAGES: Stage[] = ['New', 'Plan sent', 'Opened', 'Booked', 'Proposal', 'Won', 'Lost']
 const RANK: Record<Stage, number> = { New: 0, 'Plan sent': 1, Opened: 2, Booked: 3, Proposal: 4, Won: 5, Lost: -1 }
@@ -71,9 +72,7 @@ export default function Board({ initial, user }: { initial: BoardContact[]; user
 
   return (
     <div className="min-h-[100dvh] bg-bone text-ink">
-      <header className="sticky top-0 z-30 border-b border-ink/[0.08] bg-bone/95 backdrop-blur">
-        <div className="flex flex-wrap items-center gap-3 px-4 py-3 sm:px-6">
-          <p className="mr-2 font-display text-[18px] font-semibold tracking-[-0.02em]">hewn<span className="accent text-ember">life</span> <span className="font-body text-[14px] font-normal text-ink/50">CRM</span></p>
+      <CrmHeader active="pipeline" user={user}>
           <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search name, company, email" aria-label="Search contacts"
             className="min-w-0 flex-1 rounded-full border border-ink/[0.12] bg-white px-4 py-2 font-body text-sm focus:border-forest focus:outline-none sm:max-w-xs" />
           <div className="flex rounded-full border border-ink/[0.12] bg-white p-0.5 font-body text-[13px]" role="group" aria-label="Time period">
@@ -82,12 +81,7 @@ export default function Board({ initial, user }: { initial: BoardContact[]; user
                 className={`rounded-full px-3 py-1.5 transition ${days === d ? 'bg-forest text-mist' : 'text-ink/70 hover:text-ink'}`}>{label}</button>
             ))}
           </div>
-          <div className="ml-auto flex items-center gap-3 font-body text-[13px] text-ink/60">
-            <span className="hidden sm:inline">{user}</span>
-            <form action="/api/crm/logout" method="post"><button className="underline underline-offset-2 hover:text-ink">Sign out</button></form>
-          </div>
-        </div>
-      </header>
+      </CrmHeader>
 
       <section className="px-4 pt-5 sm:px-6" aria-label="Funnel">
         <div className="grid gap-3 lg:grid-cols-[1fr_auto]">
