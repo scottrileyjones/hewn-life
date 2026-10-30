@@ -93,8 +93,8 @@ interface ContactInfo {
 
 // ── Order Summary ─────────────────────────────────────
 
-function OrderSummary({ name, price, billing, mode, tier }: {
-  name: string; price: number; billing: string; mode: string; tier: string
+function OrderSummary({ name, price, billing, mode, tier, charge }: {
+  name: string; price: number; billing: string; mode: string; tier: string; charge: Charge | null
 }) {
   const meta = PRODUCT_META[tier] ?? PRODUCT_META['website-in-a-day']
 
@@ -149,9 +149,10 @@ function OrderSummary({ name, price, billing, mode, tier }: {
               ? billing === 'annual' ? 'Per month, billed yearly' : 'Billed monthly'
               : 'One-time fee'}
           </p>
-          <div className="flex items-baseline gap-1">
+          <div className="flex items-baseline gap-2">
+            {charge?.promo && <span className="font-body text-lg text-[#6B6560] line-through">${price.toLocaleString()}</span>}
             <span className="font-display font-medium tracking-[-0.03em] text-[38px] text-[#0D0D0D] leading-none">
-              ${price.toLocaleString()}
+              {charge?.promo ? money(charge.amount, charge.currency) : `$${price.toLocaleString()}`}
             </span>
             {mode === 'subscription' && (
               <span className="font-body text-sm text-[#6B6560]">/mo</span>
@@ -161,6 +162,11 @@ function OrderSummary({ name, price, billing, mode, tier }: {
         <p className="font-body text-xs text-[#6B6560]/60 mt-1 text-right">
           {mode === 'subscription' ? 'No long-term contract · cancel anytime' : 'No recurring charges'}
         </p>
+        {charge?.promo && (
+          <p className="mt-2 text-right font-body text-xs font-medium" style={{ color: meta.color }}>
+            Code {charge.promo.code} applied: {money(charge.promo.off, charge.currency)} off
+          </p>
+        )}
       </div>
 
       {/* What happens next */}
@@ -201,7 +207,7 @@ function OrderSummary({ name, price, billing, mode, tier }: {
 // ── Payment form ──────────────────────────────────────
 
 /** What Stripe will actually charge, from the price itself. */
-type Charge = { amount: number; currency: string; interval: string | null; intervalCount: number }
+type Charge = { amount: number; currency: string; interval: string | null; intervalCount: number; original?: number; promo?: { code: string; off: number } }
 
 const money = (cents: number, currency: string) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: currency.toUpperCase(), maximumFractionDigits: cents % 100 ? 2 : 0 }).format(cents / 100)
@@ -236,7 +242,7 @@ function PaymentForm({ color, order, charge }: {
     // Pass order details to /thank-you so it can fire the GA4 purchase
     // conversion. Stripe appends payment_intent & redirect_status itself.
     const returnUrl = new URL('/thank-you', window.location.origin)
-    returnUrl.searchParams.set('value', String(order.price))
+    returnUrl.searchParams.set('value', String(charge?.amount ? charge.amount / 100 : order.price))
     if (order.name) returnUrl.searchParams.set('item_name', order.name)
     if (order.tier) returnUrl.searchParams.set('item_id', order.tier)
     returnUrl.searchParams.set('mode', order.mode)
@@ -323,6 +329,8 @@ export default function CheckoutClient() {
     phone: params.get('phone') ?? '',
     notes: '',
   })
+  // Beta testers can arrive with ?promo=BETA250 already in the link.
+  const [promoCode, setPromoCode] = useState((params.get('promo') ?? '').toUpperCase())
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -358,6 +366,7 @@ export default function CheckoutClient() {
         body: JSON.stringify({
           priceId, mode,
           email: contact.email,
+          ...(mode === 'payment' && promoCode.trim() ? { promoCode: promoCode.trim() } : {}),
           metadata: { businessName: contact.businessName, fullName: contact.fullName, phone: contact.phone, notes: contact.notes, ...(planRef ? { planToken: planRef } : {}) },
         }),
       })
@@ -507,6 +516,13 @@ export default function CheckoutClient() {
                     />
                   </div>
 
+                  {mode === 'payment' && (
+                    <div className="sm:max-w-[50%]">
+                      <label className={labelClass}>Promo code <span className="font-normal normal-case tracking-normal text-[#6B6560]/50">(optional)</span></label>
+                      <input value={promoCode} onChange={e => setPromoCode(e.target.value.toUpperCase())} type="text" autoComplete="off" placeholder="Enter code" className={`${inputClass} uppercase`} />
+                    </div>
+                  )}
+
                   {error && <p className="font-body text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>}
 
                   <button
@@ -548,7 +564,7 @@ export default function CheckoutClient() {
 
           {/* Right: sticky order summary */}
           <div className="lg:sticky lg:top-8 order-first lg:order-last">
-            <OrderSummary name={name} price={price} billing={billing} mode={mode} tier={tier} />
+            <OrderSummary name={name} price={price} billing={billing} mode={mode} tier={tier} charge={step === 'payment' ? charge : null} />
           </div>
 
         </div>
