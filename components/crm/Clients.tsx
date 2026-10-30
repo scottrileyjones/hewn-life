@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useMemo, useState } from 'react'
 import CrmHeader from './CrmHeader'
+import OnboardingPanel from './OnboardingPanel'
 import { CLIENT_STATUSES, formatLinks, type ClientStatus, type PortalClient, type PortalMessage } from '@/lib/portal/data'
 
 const when = (iso: string) => (iso ? new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : '')
@@ -100,7 +101,8 @@ export default function Clients({ user, clients: initial, selected, sampleThread
         </aside>
 
         {openEmail ? (
-          <div className="grid gap-4 xl:grid-cols-[1fr_1fr]">
+          <div className="grid content-start gap-4 xl:grid-cols-[1fr_1fr]">
+            {open && <OnboardingPanel key={open.id} client={open} sample={!!sampleThread} onChange={c => setClients(cs => cs.map(x => (x.id === c.id ? c : x)))} />}
             <section className="rounded-[20px] border border-ink/[0.08] bg-white p-4 sm:p-5">
               <div className="flex items-start justify-between gap-3">
                 <div>

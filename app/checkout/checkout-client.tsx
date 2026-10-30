@@ -367,7 +367,7 @@ export default function CheckoutClient() {
           priceId, mode,
           email: contact.email,
           ...(mode === 'payment' && promoCode.trim() ? { promoCode: promoCode.trim() } : {}),
-          metadata: { businessName: contact.businessName, fullName: contact.fullName, phone: contact.phone, notes: contact.notes, ...(planRef ? { planToken: planRef } : {}) },
+          metadata: { businessName: contact.businessName, fullName: contact.fullName, phone: contact.phone, notes: contact.notes, ...(tier ? { tier } : {}), ...(planRef ? { planToken: planRef } : {}) },
         }),
       })
       const { clientSecret: secret, charge: c, error: apiError } = await res.json() as { clientSecret?: string; charge?: Charge; error?: string }

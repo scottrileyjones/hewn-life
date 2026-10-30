@@ -1,7 +1,9 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { PortalClient, PortalMessage } from '@/lib/portal/data'
 import { CAL_URL } from '@/lib/cal'
+import { track, type Progress } from '@/lib/portal/onboarding'
+import { Timeline, Tracker, YourTurn } from './Onboarding'
 
 const when = (iso: string) => new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
 const teamName = (author: string) => {
@@ -25,8 +27,10 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
   )
 }
 
-export default function Dashboard({ client, messages: initial, billing }: { client: PortalClient; messages: PortalMessage[]; billing?: string }) {
+export default function Dashboard({ client: initialClient, messages: initial, billing }: { client: PortalClient; messages: PortalMessage[]; billing?: string }) {
+  const [client, setClient] = useState(initialClient)
   const [messages, setMessages] = useState(initial)
+  const t = useMemo(() => (client.package ? track(client.package, client.progress) : null), [client.package, client.progress])
   const [draft, setDraft] = useState('')
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
@@ -77,13 +81,20 @@ export default function Dashboard({ client, messages: initial, billing }: { clie
 
         <div className="mt-6 grid gap-4 lg:grid-cols-[1.6fr_1fr]">
           <div className="space-y-4">
-            <section className="rounded-[24px] bg-forest p-6 text-mist sm:p-7">
-              <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-lime">Where things stand</h2>
-              <p className="mt-3 whitespace-pre-line font-display text-[19px] leading-snug tracking-[-0.01em] sm:text-[22px]">
-                {client.projectStatus || 'We’re getting your project set up. Your first update will appear here.'}
-              </p>
-              {updates[0] && <p className="mt-4 font-body text-[13px] text-mist/70">Last update {when(updates[0].at)}</p>}
-            </section>
+            {t ? (
+              <>
+                <Tracker t={t} note={client.projectStatus} />
+                <YourTurn t={t} onSaved={out => setClient(c => ({ ...c, progress: out.progress as Progress, assets: out.assets }))} />
+              </>
+            ) : (
+              <section className="rounded-[24px] bg-forest p-6 text-mist sm:p-7">
+                <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-lime">Where things stand</h2>
+                <p className="mt-3 whitespace-pre-line font-display text-[19px] leading-snug tracking-[-0.01em] sm:text-[22px]">
+                  {client.projectStatus || 'We’re getting your project set up. Your first update will appear here.'}
+                </p>
+                {updates[0] && <p className="mt-4 font-body text-[13px] text-mist/70">Last update {when(updates[0].at)}</p>}
+              </section>
+            )}
 
             <Card title="Messages">
               <div className="mt-4 max-h-[520px] space-y-3 overflow-y-auto pr-1">
@@ -113,7 +124,8 @@ export default function Dashboard({ client, messages: initial, billing }: { clie
           </div>
 
           <div className="space-y-4">
-            <Card title="Next steps">
+            {t && <Timeline t={t} />}
+            {steps.length > 0 && <Card title="Next steps">
               {steps.length ? (
                 <ol className="mt-4 space-y-3">
                   {steps.map((s, i) => (
@@ -123,8 +135,8 @@ export default function Dashboard({ client, messages: initial, billing }: { clie
                     </li>
                   ))}
                 </ol>
-              ) : <p className="mt-3 font-body text-[14px] text-ink/55">Nothing waiting on you right now.</p>}
-            </Card>
+              ) : null}
+            </Card>}
 
             {client.links.length > 0 && (
               <Card title="Your links">

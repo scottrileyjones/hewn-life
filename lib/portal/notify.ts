@@ -28,3 +28,28 @@ export async function notifyTeam(c: PortalClient, m: PortalMessage) {
 <p style="margin:24px 0">${button(`${SITE}/hq/clients?c=${encodeURIComponent(c.email)}`, 'Reply in HQ')}</p>`)
   await send(REVIEWER, `Portal message from ${who}`, html)
 }
+
+/** To the team: a client sent their part of an onboarding step. */
+export async function notifyTeamStep(c: PortalClient, stepTitle: string) {
+  const who = `${c.name || c.email}${c.company ? `, ${c.company}` : ''}`
+  const html = layout(`
+<p style="margin:0 0 4px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#6E736D">Onboarding · ready to sign off</p>
+<h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;color:#0D0D0D">${esc(who)} sent “${esc(stepTitle)}”</h1>
+<p>Check it in HQ and sign the step off so their tracker moves on.</p>
+<p style="margin:24px 0">${button(`${SITE}/hq/clients?c=${encodeURIComponent(c.email)}`, 'Review in HQ')}</p>`)
+  await send(REVIEWER, `${c.company || c.name || c.email} sent: ${stepTitle}`, html)
+}
+
+/** To the client: we signed off a step. Says what's next, and flags it if the next move is theirs. */
+export async function notifyClientStep(c: PortalClient, doneTitle: string, next: { title: string; theirs: boolean } | null, progress: { done: number; total: number }) {
+  const html = layout(`
+<p>Hi ${esc(c.name.split(' ')[0] || 'there')},</p>
+<p style="margin:0 0 4px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#6E736D">Step ${progress.done} of ${progress.total} done</p>
+<h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;color:#0D0D0D">✓ ${esc(doneTitle)}</h1>
+${next
+    ? `<p>${next.theirs ? `<b>Your turn:</b> ${esc(next.title)}. It’s waiting for you in your portal.` : `Up next: <b>${esc(next.title)}</b>. We’re on it.`}</p>`
+    : '<p>That was the last step. Your project is complete. Thank you!</p>'}
+<p style="margin:24px 0">${button(loginUrl(c.email), next?.theirs ? 'Do your next step' : 'See your progress')}</p>
+<p style="margin:0">The Hewn Life team</p>`)
+  await send(c.email, next?.theirs ? `Done: ${doneTitle}. Your turn next` : `Done: ${doneTitle}`, html)
+}

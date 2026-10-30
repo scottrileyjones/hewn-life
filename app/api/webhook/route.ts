@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { markPaid } from '@/lib/plans/flow'
+import { provisionPortal } from '@/lib/portal/provision'
 
 export async function POST(request: Request) {
   const body = await request.text()
@@ -44,6 +45,18 @@ export async function POST(request: Request) {
     })
   }
 
+  // A first purchase gets a client portal with its package's onboarding plan. Never fail the webhook over it.
+  const portal = async (customer: string | Stripe.Customer | Stripe.DeletedCustomer | null, email: string, meta?: Stripe.Metadata | null) => {
+    try {
+      let m = meta ?? {}
+      if (!m.tier && typeof customer === 'string') {
+        const c = await stripe.customers.retrieve(customer)
+        if (!c.deleted) m = c.metadata ?? {}
+      }
+      await provisionPortal({ email, tier: m.tier, name: m.fullName, company: m.businessName })
+    } catch (err) { console.error('Portal provisioning failed:', err) }
+  }
+
   // Embedded checkout: subscriptions settle as paid invoices, one-time orders as payment intents.
   if (event.type === 'invoice.paid') {
     const invoice = event.data.object as Stripe.Invoice
@@ -51,6 +64,7 @@ export async function POST(request: Request) {
       token: await planToken(invoice.customer),
       amount: invoice.amount_paid ? invoice.amount_paid / 100 : undefined,
     })
+    if (invoice.billing_reason === 'subscription_create') await portal(invoice.customer, invoice.customer_email ?? '')
   }
   if (event.type === 'payment_intent.succeeded') {
     const pi = event.data.object as Stripe.PaymentIntent
@@ -61,6 +75,8 @@ export async function POST(request: Request) {
     }
     // Subscription invoices also raise payment intents; invoice.paid credits those.
     await markPaid(email, { token: await planToken(pi.customer, pi.metadata), amount: pi.amount_received ? pi.amount_received / 100 : undefined })
+    // Only our one-time checkout puts the tier on the payment intent; subscription payments are handled above.
+    if (pi.metadata?.tier) await portal(pi.customer, email, pi.metadata)
   }
 
   return NextResponse.json({ received: true })

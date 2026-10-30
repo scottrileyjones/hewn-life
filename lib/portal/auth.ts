@@ -28,14 +28,17 @@ export function loginUrl(email: string) {
 }
 
 /** Email a sign-in link if the address belongs to a client. Silent either way. */
-export async function sendPortalLink(raw: string) {
+export async function sendPortalLink(raw: string, welcome = false) {
   const client = await findClient(raw)
   if (!client || client.status === 'Past') return
-  await send(client.email, 'Your Hewn Life client portal link', layout(`
+  await send(client.email, welcome ? 'Welcome to Hewn Life: your project portal' : 'Your Hewn Life client portal link', layout(`
 <p>Hi ${esc(client.name.split(' ')[0] || 'there')},</p>
-<p>Here’s your link to the Hewn Life client portal. It works for ${LINK_HOURS} hours, and keeps you signed in on this device for ${SESSION_DAYS} days.</p>
+${welcome
+    ? `<p>Thank you for your order${client.plan ? ` of <b>${esc(client.plan)}</b>` : ''}. Your project portal is ready. It shows every step from here to launch, and the few things we need from you to get started, like your logo and some quick questions about your business.</p><p>The sooner those are in, the sooner you’re live.</p>`
+    : `<p>Here’s your link to the Hewn Life client portal.</p>`}
+<p>The link works for ${LINK_HOURS} hours, and keeps you signed in on this device for ${SESSION_DAYS} days. You can always get a new one at hewn.life/portal.</p>
 <p style="margin:24px 0">${button(loginUrl(client.email), 'Open your portal')}</p>
-<p style="font-size:13px;color:#6E736D">Didn’t ask for this? Ignore it; nobody can sign in without this email.</p>`))
+${welcome ? '<p style="margin:0">The Hewn Life team</p>' : '<p style="font-size:13px;color:#6E736D">Didn’t ask for this? Ignore it; nobody can sign in without this email.</p>'}`))
 }
 
 /** Verify an emailed link and return the cookie to set, or null. */
