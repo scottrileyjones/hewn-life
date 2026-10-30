@@ -66,6 +66,7 @@ export default function OnboardingPanel({ client, onChange, sample }: { client: 
           </select>
           <button onClick={applyPackage} disabled={!pkg || pkg === client.package || !!busy} className="rounded-full bg-forest px-4 py-1.5 text-mist disabled:opacity-40">{client.package ? 'Switch plan' : 'Apply plan'}</button>
           {t && <>
+            <button onClick={() => run('import', { action: 'import-brief', email: client.email }, out => { if (out.client) onChange(out.client); setMsg({ ok: true, text: 'Pulled in anything from their Website Brief that wasn’t already filled.' }) })} disabled={!!busy} className="rounded-full px-3 py-1.5 text-forest underline underline-offset-2 disabled:opacity-40">Import website brief</button>
             <button onClick={() => brief('copy')} disabled={!!busy} className="rounded-full border border-forest px-4 py-1.5 text-forest disabled:opacity-40">Copy build brief for Claude</button>
             <button onClick={() => brief('download')} disabled={!!busy} className="rounded-full px-2 py-1.5 text-forest underline underline-offset-2 disabled:opacity-40">.md</button>
           </>}
