@@ -102,7 +102,8 @@ export async function POST(request: Request) {
         currency: price.currency,
         customer: customer.id,
         metadata: { ...(metadata ?? {}), ...promoMeta },
-        payment_method_types: ['card', 'klarna', 'afterpay_clearpay', 'affirm'],
+        // Stripe offers whatever methods are switched on in the dashboard and valid for this amount (e.g. Affirm has a minimum).
+        automatic_payment_methods: { enabled: true },
       })
 
       return NextResponse.json({ clientSecret: paymentIntent.client_secret, charge })
