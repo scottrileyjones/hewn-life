@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Terrain from '@/components/strata/Terrain'
 import { Mark } from '@/components/strata/Glyph'
 import { colors, type SceneName } from '@/lib/strata'
+import { launchSlides } from '@/components/brand/LaunchCarousel'
 
 export const metadata: Metadata = {
   title: 'Social assets',
@@ -110,6 +111,7 @@ const assets: { label: string; node: React.ReactNode }[] = [
       </div>
     ),
   },
+  ...launchSlides.map(({ label, node }) => ({ label, node })),
 ]
 
 export default function SocialAssets() {
