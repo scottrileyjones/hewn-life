@@ -21,7 +21,7 @@ export const sampleClient = (): PortalClient => ({
     look: { submitted: ago(2.4), done: ago(2), by: 'jason@hewn.life', data: { reference_1: 'https://example.com', reference_notes: 'Clean, lots of white space, big phone number' } },
     assets: { submitted: ago(1), data: { folder: 'https://drive.google.com/', asset_notes: 'Use the van photo up top' }, files: ['assets--logo.png'] },
   },
-  assets: [{ name: 'assets--logo.png', url: 'https://example.com/logo.png', type: 'image/png', size: 48211 }],
+  assets: [{ id: 'att1', name: 'assets--logo.png', url: 'https://example.com/logo.png', type: 'image/png', size: 48211 }],
 })
 
 export const sampleMessages = (): PortalMessage[] => [

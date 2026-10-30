@@ -13,7 +13,7 @@ export const CLIENT_STATUSES = ['Onboarding', 'Active', 'Paused', 'Past'] as con
 export type ClientStatus = typeof CLIENT_STATUSES[number]
 
 export type PortalLink = { label: string; url: string }
-export type PortalAsset = { name: string; url: string; type: string; size: number }
+export type PortalAsset = { id: string; name: string; url: string; type: string; size: number }
 
 export type PortalClient = {
   id: string
@@ -76,7 +76,7 @@ const toClient = (r: Row): PortalClient => ({
   package: str(r.fields['Package']),
   progress: parseProgress(str(r.fields['Progress'])),
   assets: Array.isArray(r.fields['Assets'])
-    ? (r.fields['Assets'] as { filename?: string; url?: string; type?: string; size?: number }[]).map(a => ({ name: a.filename ?? '', url: a.url ?? '', type: a.type ?? '', size: a.size ?? 0 }))
+    ? (r.fields['Assets'] as { id?: string; filename?: string; url?: string; type?: string; size?: number }[]).map(a => ({ id: a.id ?? '', name: a.filename ?? '', url: a.url ?? '', type: a.type ?? '', size: a.size ?? 0 }))
     : [],
 })
 
@@ -179,4 +179,11 @@ export async function attachAsset(clientId: string, stepId: string, file: { name
   })
   if (!res.ok) throw new Error(`Airtable upload ${res.status}: ${await res.text()}`)
   return name
+}
+
+/** Add files to the client's Assets by URL (Airtable copies them), keeping the ones already there. */
+export async function addAssetUrls(client: PortalClient, files: { url: string; filename: string }[]): Promise<PortalClient> {
+  if (!files.length) return client
+  const keep = client.assets.filter(a => a.id).map(a => ({ id: a.id }))
+  return toClient(await write(CLIENTS, client.id, { Assets: [...keep, ...files] }))
 }

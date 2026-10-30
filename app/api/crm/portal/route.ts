@@ -5,6 +5,7 @@ import { sendPortalLink } from '@/lib/portal/auth'
 import { notifyClient, notifyClientStep } from '@/lib/portal/notify'
 import { isPackage, stepsFor, track } from '@/lib/portal/onboarding'
 import { buildBrief } from '@/lib/portal/brief'
+import { importBrief } from '@/lib/portal/provision'
 
 type Body =
   | { action: 'save'; id: string | null; patch: ClientPatch; invite?: boolean }
@@ -14,6 +15,7 @@ type Body =
   | { action: 'package'; email: string; package: string }
   | { action: 'signoff'; email: string; step: string; done: boolean; notify?: boolean }
   | { action: 'brief'; email: string }
+  | { action: 'import-brief'; email: string }
 
 /** The team side of the client portal: add and edit clients, post to their thread, send invites. */
 export async function POST(req: NextRequest) {
@@ -80,6 +82,12 @@ export async function POST(req: NextRequest) {
       const client = await findClient(b.email)
       if (!client) return NextResponse.json({ error: 'No such client.' }, { status: 404 })
       return NextResponse.json({ ok: true, markdown: buildBrief(client) })
+    }
+    if (b.action === 'import-brief') {
+      const client = await findClient(b.email)
+      if (!client) return NextResponse.json({ error: 'No such client.' }, { status: 404 })
+      if (!client.package) return NextResponse.json({ error: 'Apply a plan first.' }, { status: 400 })
+      return NextResponse.json({ ok: true, client: await importBrief(client) })
     }
     if (b.action === 'thread') {
       return NextResponse.json({ ok: true, messages: await loadMessages(b.email) })
