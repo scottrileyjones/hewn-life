@@ -12,7 +12,7 @@ export default function CrmHeader({ active, user, children }: { active: 'pipelin
       <div className="flex flex-wrap items-center gap-3 px-4 py-3 sm:px-6">
         <p className="font-display text-[18px] font-semibold tracking-[-0.02em]">hewn<span className="accent text-ember">life</span></p>
         <nav className="flex rounded-full border border-ink/[0.12] bg-white p-0.5 font-body text-[13px]" aria-label="CRM sections">
-          {tab('hq', '/crm/hq', 'HQ')}
+          {tab('hq', '/hq', 'HQ')}
           {tab('pipeline', '/crm', 'Pipeline')}
         </nav>
         {children}

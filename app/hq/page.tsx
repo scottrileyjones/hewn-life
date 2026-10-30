@@ -8,7 +8,7 @@ import { loadTasks } from '@/lib/hq/checklist'
 import { loadRevenue } from '@/lib/hq/revenue'
 import { sampleRevenue, sampleTasks } from '@/lib/hq/sample'
 
-export const metadata = { title: 'HQ — Hewn Life', robots: { index: false, follow: false } }
+export const metadata = { title: 'HQ', robots: { index: false, follow: false } }
 
 const RANK: Record<Contact['stage'], number> = { New: 0, 'Plan sent': 1, Opened: 2, Booked: 3, Proposal: 4, Won: 5, Lost: -1 }
 
