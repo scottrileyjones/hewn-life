@@ -31,6 +31,7 @@ export default function Clients({ user, clients: initial, selected, sampleThread
   const [busy, setBusy] = useState('')
   const [note, setNote] = useState('')
   const [error, setError] = useState('')
+  const [tab, setTab] = useState<'onboarding' | 'assets' | 'messages' | 'details'>('onboarding')
 
   const open = useMemo(() => clients.find(c => c.email === openEmail) ?? null, [clients, openEmail])
 
@@ -79,7 +80,7 @@ export default function Clients({ user, clients: initial, selected, sampleThread
   return (
     <div className="min-h-[100dvh] bg-bone text-ink">
       <CrmHeader active="clients" user={user} />
-      <main className="mx-auto grid max-w-[1400px] gap-4 px-4 pb-16 pt-6 sm:px-6 lg:grid-cols-[300px_1fr]">
+      <main className="mx-auto grid max-w-[1600px] gap-4 px-4 pb-6 pt-4 sm:px-6 lg:grid-cols-[240px_1fr]">
         <aside className="rounded-[20px] border border-ink/[0.08] bg-white">
           <div className="flex items-center justify-between border-b border-ink/[0.06] px-4 py-3">
             <p className="font-display text-[16px] font-semibold">Portal clients</p>
@@ -103,10 +104,27 @@ export default function Clients({ user, clients: initial, selected, sampleThread
         </aside>
 
         {openEmail ? (
-          <div className="grid content-start gap-4 xl:grid-cols-[1fr_1fr]">
-            {open && <AssetsPanel key={`a-${open.id}`} client={open} sample={sampleAssets} />}
-            {open && <OnboardingPanel key={open.id} client={open} sample={!!sampleThread} onChange={c => setClients(cs => cs.map(x => (x.id === c.id ? c : x)))} />}
-            <section className="rounded-[20px] border border-ink/[0.08] bg-white p-4 sm:p-5">
+          <div className="min-w-0">
+            {open && (
+              <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/55">{open.plan || 'Client'} · {open.status}</p>
+                  <h1 className="truncate font-display text-[24px] font-semibold tracking-[-0.02em]">{open.company || open.name || open.email}</h1>
+                  <p className="font-body text-[12px] text-ink/55">{open.name ? `${open.name} · ` : ''}{open.email} · {open.lastLogin ? `last in the portal ${when(open.lastLogin)}` : 'hasn’t opened the portal yet'}</p>
+                </div>
+                <nav className="flex rounded-full border border-ink/[0.12] bg-white p-0.5 font-body text-[13px]" aria-label="Client sections">
+                  {([['onboarding', 'Onboarding'], ['assets', 'Assets'], ['messages', 'Messages'], ['details', 'Details']] as const).map(([k, label]) => (
+                    <button key={k} onClick={() => setTab(k)} aria-pressed={tab === k}
+                      className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 ${tab === k ? 'bg-forest text-mist' : 'text-ink/70 hover:text-ink'}`}>
+                      {label}{k === 'messages' && waiting(open) && <span className="h-2 w-2 rounded-full bg-ember" aria-label="Client replied" />}
+                    </button>
+                  ))}
+                </nav>
+              </div>
+            )}
+            {open && tab === 'onboarding' && <OnboardingPanel key={open.id} client={open} sample={!!sampleThread} onChange={c => setClients(cs => cs.map(x => (x.id === c.id ? c : x)))} />}
+            {open && tab === 'assets' && <AssetsPanel key={`a-${open.id}`} client={open} sample={sampleAssets} />}
+            {(!open || tab === 'details') && <section className="max-w-3xl rounded-[20px] border border-ink/[0.08] bg-white p-4 sm:p-5">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/55">{open ? 'Client' : 'New client'}</p>
@@ -133,10 +151,10 @@ export default function Clients({ user, clients: initial, selected, sampleThread
                 <button onClick={() => save(false)} disabled={!!busy} className="rounded-full bg-forest px-5 py-2 font-body text-[14px] text-mist disabled:opacity-50">{busy === 'save' ? 'Saving…' : 'Save'}</button>
                 {!open && <button onClick={() => save(true)} disabled={!!busy} className="rounded-full border border-forest px-5 py-2 font-body text-[14px] text-forest disabled:opacity-50">Save and send invite</button>}
               </div>
-            </section>
+            </section>}
 
-            {open && (
-              <section className="flex flex-col rounded-[20px] border border-ink/[0.08] bg-white p-4 sm:p-5">
+            {open && tab === 'messages' && (
+              <section className="flex max-w-3xl flex-col rounded-[20px] border border-ink/[0.08] bg-white p-4 sm:p-5">
                 <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/55">Messages and updates</p>
                 <div className="mt-3 max-h-[560px] flex-1 space-y-3 overflow-y-auto pr-1">
                   {thread.map(m => (
