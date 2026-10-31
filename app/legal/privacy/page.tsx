@@ -9,7 +9,7 @@ export default function Privacy() {
   return (
     <LegalLayout
       title="Privacy Policy"
-      updated="October 30, 2026"
+      updated="October 31, 2026"
       intro="This Privacy Policy explains how Hewn Holdings LLC, doing business as Hewn Life (“Hewn Life,” “we,” “us” or “our”) collects, uses, shares and protects personal information when you visit hewn.life, fill in one of our forms, book a call, receive our emails or buy our Services. It doesn’t cover personal data we process for clients about their own customers; that is governed by our Data Processing Addendum and the client’s own privacy policy."
       summary={[
         'We collect what you give us in our forms (like your name, email, business and answers) plus usage data from cookies if you accept them.',
@@ -69,6 +69,7 @@ export default function Privacy() {
             'Airtable — our lead and client records, including client portal messages.',
             'Anthropic — AI generation of personal growth plans.',
             'Resend — sending our emails, including client portal sign-in links and alerts.',
+            'Twilio — sending project text alerts to clients who opt in.',
             'Google Workspace — our email and documents.',
             'Stripe — payments, subscriptions and billing.',
             'Cal.com — call scheduling.',
@@ -88,10 +89,11 @@ export default function Privacy() {
           ],
         },
         {
-          heading: 'Emails',
+          heading: 'Emails and texts',
           body: [
             'When you submit a form, we email you your growth plan and may send one follow-up a few days later if you agreed to receive marketing emails. Clients also receive service and billing emails. You can unsubscribe from marketing emails with the link in any of them or by emailing hello@hewn.life. We’ll still send transactional emails such as receipts and renewal notices.',
-            'We don’t send text messages without your separate consent. Giving us your phone number doesn’t sign you up for texts.',
+            'We don’t send text messages without your separate consent. Giving us your phone number doesn’t sign you up for texts. Clients can turn on project text alerts in their client portal; we record when and how they agreed. Reply STOP to any text to opt out, or turn texts off in the portal. See our SMS Terms.',
+            'We don’t sell, rent or share mobile numbers or text-message consent with third parties or affiliates for their marketing. Mobile numbers and opt-in data are used only to send the texts you asked for.',
           ],
         },
         {

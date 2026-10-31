@@ -32,6 +32,10 @@ export type PortalClient = {
   package: string
   progress: Progress
   assets: PortalAsset[]
+  /** E.164 mobile for text alerts; empty if they never gave one. */
+  mobile: string
+  /** Texts only go out while this is true. Only the client turns it on; replying STOP turns it off. */
+  smsOptIn: boolean
 }
 
 export type PortalMessage = {
@@ -78,6 +82,8 @@ const toClient = (r: Row): PortalClient => ({
   assets: Array.isArray(r.fields['Assets'])
     ? (r.fields['Assets'] as { id?: string; filename?: string; url?: string; type?: string; size?: number }[]).map(a => ({ id: a.id ?? '', name: a.filename ?? '', url: a.url ?? '', type: a.type ?? '', size: a.size ?? 0 }))
     : [],
+  mobile: str(r.fields['Mobile']),
+  smsOptIn: r.fields['SMS opt-in'] === true,
 })
 
 const toMessage = (r: Row): PortalMessage => ({
@@ -147,6 +153,19 @@ export async function saveClient(id: string | null, p: ClientPatch): Promise<Por
   if (p.package !== undefined) f['Package'] = p.package || null
   if (p.progress !== undefined) f['Progress'] = JSON.stringify(p.progress)
   return toClient(await write(CLIENTS, id, f))
+}
+
+/** Record a text opt-in or opt-out, appending to the consent log so we can show when and how they agreed. */
+export async function saveSmsChoice(c: PortalClient, optIn: boolean, mobile: string, how: string): Promise<PortalClient> {
+  const row = (await list(CLIENTS, `RECORD_ID()=${quote(c.id)}`))[0]
+  const log = row ? str(row.fields['SMS consent']) : ''
+  const line = `${new Date().toISOString()} · ${optIn ? 'opted in' : 'opted out'} · ${mobile || c.mobile} · ${how}`
+  return toClient(await write(CLIENTS, c.id, { Mobile: mobile || c.mobile, 'SMS opt-in': optIn, 'SMS consent': (log ? `${log}\n` : '') + line }))
+}
+
+/** Clients whose Mobile matches (used for STOP/START replies and inbound texts). */
+export async function findClientsByMobile(e164: string): Promise<PortalClient[]> {
+  return (await list(CLIENTS, `{Mobile}=${quote(e164)}`)).map(toClient)
 }
 
 export async function touchClient(id: string, field: 'Last client message' | 'Last team message' | 'Last login') {

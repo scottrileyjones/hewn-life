@@ -20,6 +20,7 @@ export const legalPages = [
   { href: '/legal/terms', label: 'Terms of Service', blurb: 'The agreement for using our site and buying our services.' },
   { href: '/legal/privacy', label: 'Privacy Policy', blurb: 'What we collect, why, who we share it with and your choices.' },
   { href: '/legal/refund', label: 'Refunds & Cancellations', blurb: 'How billing, renewals, cancelling and refunds work.' },
+  { href: '/legal/sms', label: 'SMS Terms', blurb: 'Project text alerts: what we send, how to opt in and how to stop.' },
   { href: '/legal/cookies', label: 'Cookie Policy', blurb: 'The cookies and tags on this site, and how to change your choice.' },
   { href: '/legal/results-disclaimer', label: 'Results Disclaimer', blurb: 'How to read our track record, figures and projections.' },
   { href: '/legal/dpa', label: 'Data Processing Addendum', blurb: 'How we handle your customers’ data when we work for you.' },

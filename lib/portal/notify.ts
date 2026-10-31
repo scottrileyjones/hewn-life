@@ -1,7 +1,25 @@
-/** Email alerts for the client portal: to the client when we post, to us when they do. */
+/**
+ * Alerts for the client portal: to the client when we post, to us when they do.
+ * Every alert is an email; it's also a text when the client opted in to texts
+ * (or, for team alerts, when TEAM_SMS_TO lists our phones). Texts only ever say
+ * what happened and point to the portal: never money, links to pay, or codes.
+ */
 import { SITE, REVIEWER, layout, button, send, esc } from '@/lib/plans/email'
+import { BRAND, sendSms, textTeam } from '@/lib/sms'
 import { loginUrl } from './auth'
 import type { PortalClient, PortalMessage } from './data'
+
+const PORTAL = 'hewn.life/portal'
+const HQ = 'hewn.life/hq/clients'
+const short = (s: string, n: number) => (s.length > n ? `${s.slice(0, n - 1).trimEnd()}…` : s)
+const nameOf = (c: PortalClient) => c.company || c.name || c.email
+
+/** Text the client if they opted in. Never throws. */
+async function textClient(c: PortalClient, body: string) {
+  if (!c.smsOptIn || !c.mobile) return
+  await sendSms(c.mobile, `${BRAND} ${body}`).catch(err => console.error('Client text failed:', err))
+}
+const team = (body: string) => textTeam(`${BRAND} ${body}`)
 
 const paragraphs = (body: string) =>
   body.split(/\n{2,}/).map(p => `<p style="margin:0 0 12px">${esc(p).replace(/\n/g, '<br>')}</p>`).join('')
@@ -15,7 +33,10 @@ export async function notifyClient(c: PortalClient, m: PortalMessage) {
 <div style="margin:16px 0;padding:16px 18px;border-left:3px solid #1E3826;background:#F4F2EC;border-radius:8px">${paragraphs(m.body)}</div>
 <p style="margin:24px 0">${button(loginUrl(c.email), update ? 'View the update' : 'Reply in your portal')}</p>
 <p style="margin:0">The Hewn Life team</p>`)
-  await send(c.email, update ? 'New update on your project' : 'New message from Hewn Life', html)
+  await Promise.all([
+    send(c.email, update ? 'New update on your project' : 'New message from Hewn Life', html),
+    textClient(c, `${update ? 'New update on your project' : 'New message from the team'}. Read it at ${PORTAL}`),
+  ])
 }
 
 /** To the team inbox, with a link to the client in HQ. */
@@ -26,7 +47,7 @@ export async function notifyTeam(c: PortalClient, m: PortalMessage) {
 <h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;color:#0D0D0D">${esc(who)}</h1>
 <div style="margin:0 0 16px;padding:16px 18px;border-left:3px solid #D6F28B;background:#F4F2EC;border-radius:8px">${paragraphs(m.body)}</div>
 <p style="margin:24px 0">${button(`${SITE}/hq/clients?c=${encodeURIComponent(c.email)}`, 'Reply in HQ')}</p>`)
-  await send(REVIEWER, `Portal message from ${who}`, html)
+  await Promise.all([send(REVIEWER, `Portal message from ${who}`, html), team(`${short(c.company || c.name || c.email, 40)} sent a message: "${short(m.body, 90)}" ${HQ}`)])
 }
 
 /** To the team: a client sent their part of an onboarding step. */
@@ -37,7 +58,7 @@ export async function notifyTeamStep(c: PortalClient, stepTitle: string) {
 <h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;color:#0D0D0D">${esc(who)} sent “${esc(stepTitle)}”</h1>
 <p>Check it in HQ and sign the step off so their tracker moves on.</p>
 <p style="margin:24px 0">${button(`${SITE}/hq/clients?c=${encodeURIComponent(c.email)}`, 'Review in HQ')}</p>`)
-  await send(REVIEWER, `${c.company || c.name || c.email} sent: ${stepTitle}`, html)
+  await Promise.all([send(REVIEWER, `${c.company || c.name || c.email} sent: ${stepTitle}`, html), team(`${short(nameOf(c), 40)} sent "${short(stepTitle, 50)}". Ready to sign off: ${HQ}`)])
 }
 
 /** To the client: we signed off a step. Says what's next, and flags it if the next move is theirs. */
@@ -51,7 +72,10 @@ ${next
     : '<p>That was the last step. Your project is complete. Thank you!</p>'}
 <p style="margin:24px 0">${button(loginUrl(c.email), next?.theirs ? 'Do your next step' : 'See your progress')}</p>
 <p style="margin:0">The Hewn Life team</p>`)
-  await send(c.email, next?.theirs ? `Done: ${doneTitle}. Your turn next` : `Done: ${doneTitle}`, html)
+  await Promise.all([
+    send(c.email, next?.theirs ? `Done: ${doneTitle}. Your turn next` : `Done: ${doneTitle}`, html),
+    textClient(c, `"${short(doneTitle, 50)}" is done (${progress.done}/${progress.total}).${next?.theirs ? ` Your turn: ${short(next.title, 50)}.` : ''} ${PORTAL}`),
+  ])
 }
 
 /** To the client: we sent something for review, or put it live. */
@@ -64,7 +88,10 @@ export async function notifyClientAsset(c: PortalClient, a: { title: string; cat
 <p>${review ? 'Have a look in your portal and approve it, or tell us what to change.' : `It’s live${a.liveLink ? ` at <a href="${esc(a.liveLink)}" style="color:#1E3826">${esc(a.liveLink)}</a>` : ''}.`}</p>
 <p style="margin:24px 0">${button(`${loginUrl(c.email)}&next=assets`, review ? 'Review it' : 'See it in your portal')}</p>
 <p style="margin:0">The Hewn Life team</p>`)
-  await send(c.email, review ? `For your review: ${a.title}` : `Live: ${a.title}`, html)
+  await Promise.all([
+    send(c.email, review ? `For your review: ${a.title}` : `Live: ${a.title}`, html),
+    textClient(c, review ? `"${short(a.title, 60)}" is ready for your review: ${PORTAL}/assets` : `"${short(a.title, 60)}" is now live. ${PORTAL}/assets`),
+  ])
 }
 
 /** To the team: a client uploaded, approved or asked for changes. */
@@ -76,7 +103,7 @@ export async function notifyTeamAsset(c: PortalClient, a: { title: string; categ
 <h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;color:#0D0D0D">${esc(who)} ${verb}: ${esc(a.title)}</h1>
 ${comment ? `<div style="margin:0 0 16px;padding:16px 18px;border-left:3px solid #D6F28B;background:#F4F2EC;border-radius:8px">${paragraphs(comment)}</div>` : ''}
 <p style="margin:24px 0">${button(`${SITE}/hq/clients?c=${encodeURIComponent(c.email)}`, 'Open in HQ')}</p>`)
-  await send(REVIEWER, `${c.company || c.name || c.email} ${verb}: ${a.title}`, html)
+  await Promise.all([send(REVIEWER, `${c.company || c.name || c.email} ${verb}: ${a.title}`, html), team(`${short(nameOf(c), 40)} ${verb}: ${short(a.title, 60)}. ${HQ}`)])
 }
 
 /** To the client: one or more posts are ready for them to review. */
@@ -90,7 +117,10 @@ export async function notifyClientPosts(c: PortalClient, posts: { title: string;
 <p>Approve them in your content calendar, or tell us what to change. Nothing posts until it’s approved.</p>
 <p style="margin:24px 0">${button(`${loginUrl(c.email)}&next=calendar`, 'Review in your calendar')}</p>
 <p style="margin:0">The Hewn Life team</p>`)
-  await send(c.email, posts.length === 1 ? `For your review: ${posts[0].title}` : `${posts.length} posts ready for your review`, html)
+  await Promise.all([
+    send(c.email, posts.length === 1 ? `For your review: ${posts[0].title}` : `${posts.length} posts ready for your review`, html),
+    textClient(c, `${posts.length === 1 ? 'A post is' : `${posts.length} posts are`} ready for your review: ${PORTAL}/calendar`),
+  ])
 }
 
 /** To the team: a client approved a post or asked for changes. */
@@ -102,5 +132,5 @@ export async function notifyTeamPost(c: PortalClient, p: { title: string }, deci
 <h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;color:#0D0D0D">${esc(who)} ${verb}: ${esc(p.title)}</h1>
 ${comment ? `<div style="margin:0 0 16px;padding:16px 18px;border-left:3px solid #D6F28B;background:#F4F2EC;border-radius:8px">${paragraphs(comment)}</div>` : ''}
 <p style="margin:24px 0">${button(`${SITE}/hq/calendar?c=${encodeURIComponent(c.email)}`, 'Open the calendar')}</p>`)
-  await send(REVIEWER, `${c.company || c.name || c.email} ${verb}: ${p.title}`, html)
+  await Promise.all([send(REVIEWER, `${c.company || c.name || c.email} ${verb}: ${p.title}`, html), team(`${short(nameOf(c), 40)} ${verb} post "${short(p.title, 50)}". hewn.life/hq/calendar`)])
 }

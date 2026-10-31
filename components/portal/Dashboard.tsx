@@ -5,6 +5,7 @@ import { CAL_URL } from '@/lib/cal'
 import { track, type Progress } from '@/lib/portal/onboarding'
 import { Timeline, Tracker, YourTurn } from './Onboarding'
 import PortalHeader from './PortalHeader'
+import TextAlerts from './TextAlerts'
 
 const when = (iso: string) => new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
 const teamName = (author: string) => {
@@ -162,6 +163,8 @@ export default function Dashboard({ client: initialClient, messages: initial, bi
                 </ul>
               </Card>
             )}
+
+            <TextAlerts mobile={client.mobile} on={client.smsOptIn} />
 
             <Card title="Billing and calls">
               <form action="/api/portal/billing" method="post" className="mt-4">
