@@ -1,6 +1,7 @@
 /** A made-up client and thread for previewing the portal locally (PLAN_SAMPLE=1 only). */
 import type { PortalClient, PortalMessage } from './data'
 import type { Asset } from './assets'
+import type { Post } from './posts'
 
 const ago = (days: number) => new Date(Date.now() - days * 864e5).toISOString()
 
@@ -50,5 +51,20 @@ export const sampleAssets = (): Asset[] => {
     { ...base, id: 'a9', title: 'October report', category: 'Data & reports · Reports', source: 'Hewn', status: 'Live', addedAt: ago(1), updatedAt: ago(1), link: 'https://lookerstudio.google.com/' },
     { ...base, id: 'a10', title: 'Five-star review roundup', category: 'Creators & UGC · Reviews & testimonials', source: 'Client', status: 'Received', addedAt: ago(2), updatedAt: ago(2), text: '“Showed up in an hour and fixed it for the quoted price.” — Mark T.' },
     { ...base, id: 'a11', title: 'November posts', category: 'Social · Posts', source: 'Hewn', status: 'Draft', addedAt: ago(0.2), updatedAt: ago(0.2), text: 'Week 1: water heater myths carousel\nWeek 2: crew spotlight reel' },
+  ]
+}
+
+/** Sample posts spread around today, for previewing the calendar. */
+export const samplePosts = (): Post[] => {
+  const at = (days: number, h: number) => { const d = new Date(); d.setDate(d.getDate() + days); d.setHours(h, 0, 0, 0); return d.toISOString() }
+  const base = { clientEmail: 'jane@acmeplumbing.com', overrides: {}, notes: '', feedback: '', publishedLinks: '', createdBy: 'scott@hewn.life', createdAt: ago(3), updatedAt: ago(1), assetIds: [] as string[] }
+  return [
+    { ...base, id: 'p1', title: 'Water heater myths', caption: 'Myth: water heaters last forever. Truth: 8–12 years. Here are 3 signs yours is done. 🔧', platforms: ['Instagram', 'Facebook'], format: 'Carousel', status: 'Client review', scheduledAt: at(2, 9) },
+    { ...base, id: 'p2', title: 'Crew spotlight: Mike', caption: 'Meet Mike, 15 years fixing what others couldn’t.', platforms: ['Instagram', 'Facebook', 'LinkedIn'], format: 'Post', status: 'Approved', scheduledAt: at(4, 12) },
+    { ...base, id: 'p3', title: 'Same-day service reel', caption: 'Burst pipe at 7am. Fixed by 9. That’s the Acme promise.', platforms: ['Instagram', 'TikTok', 'YouTube'], format: 'Reel / short video', status: 'Draft', scheduledAt: at(6, 17) },
+    { ...base, id: 'p4', title: 'Google post: fall tune-up', caption: 'Book a fall plumbing tune-up and save $40 this month.', platforms: ['Google Business', 'Facebook'], format: 'Post', status: 'Scheduled', scheduledAt: at(1, 10) },
+    { ...base, id: 'p5', title: 'Review of the week', caption: '“Showed up in an hour and fixed it for the quoted price.” — Mark T. ⭐⭐⭐⭐⭐', platforms: ['Facebook', 'Instagram', 'X'], format: 'Post', status: 'Published', scheduledAt: at(-3, 11), publishedLinks: 'Instagram | https://instagram.com/' },
+    { ...base, id: 'p6', title: 'Holiday hours', caption: 'Our holiday hours are up. Emergencies still answered 24/7.', platforms: ['Facebook', 'Google Business'], format: 'Text', status: 'Idea', scheduledAt: '' },
+    { ...base, id: 'p7', title: 'Leak detection tips', caption: 'Three quick checks for hidden leaks.', platforms: ['Instagram', 'Facebook'], format: 'Carousel', status: 'Changes requested', scheduledAt: at(8, 9), feedback: 'Oct 30 · Jane Smith: Changes requested — use the photo of the blue van' },
   ]
 }

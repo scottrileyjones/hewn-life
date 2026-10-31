@@ -78,3 +78,29 @@ ${comment ? `<div style="margin:0 0 16px;padding:16px 18px;border-left:3px solid
 <p style="margin:24px 0">${button(`${SITE}/hq/clients?c=${encodeURIComponent(c.email)}`, 'Open in HQ')}</p>`)
   await send(REVIEWER, `${c.company || c.name || c.email} ${verb}: ${a.title}`, html)
 }
+
+/** To the client: one or more posts are ready for them to review. */
+export async function notifyClientPosts(c: PortalClient, posts: { title: string; scheduledAt: string; platforms: string[] }[]) {
+  const when = (iso: string) => iso ? new Date(iso).toLocaleString('en-US', { timeZone: 'America/Denver', weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'Not scheduled yet'
+  const rows = posts.slice(0, 12).map(p => `<li style="margin:0 0 6px"><b>${esc(p.title)}</b><br><span style="color:#6E736D;font-size:13px">${esc(when(p.scheduledAt))} · ${esc(p.platforms.join(', '))}</span></li>`).join('')
+  const html = layout(`
+<p>Hi ${esc(c.name.split(' ')[0] || 'there')},</p>
+<h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;color:#0D0D0D">${posts.length === 1 ? 'A post is' : `${posts.length} posts are`} ready for your review</h1>
+<ul style="padding-left:18px;margin:0 0 16px">${rows}</ul>
+<p>Approve them in your content calendar, or tell us what to change. Nothing posts until it’s approved.</p>
+<p style="margin:24px 0">${button(`${loginUrl(c.email)}&next=calendar`, 'Review in your calendar')}</p>
+<p style="margin:0">The Hewn Life team</p>`)
+  await send(c.email, posts.length === 1 ? `For your review: ${posts[0].title}` : `${posts.length} posts ready for your review`, html)
+}
+
+/** To the team: a client approved a post or asked for changes. */
+export async function notifyTeamPost(c: PortalClient, p: { title: string }, decision: 'Approved' | 'Changes requested', comment = '') {
+  const who = `${c.name || c.email}${c.company ? `, ${c.company}` : ''}`
+  const verb = decision === 'Approved' ? 'approved' : 'asked for changes on'
+  const html = layout(`
+<p style="margin:0 0 4px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#6E736D">Content calendar</p>
+<h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;color:#0D0D0D">${esc(who)} ${verb}: ${esc(p.title)}</h1>
+${comment ? `<div style="margin:0 0 16px;padding:16px 18px;border-left:3px solid #D6F28B;background:#F4F2EC;border-radius:8px">${paragraphs(comment)}</div>` : ''}
+<p style="margin:24px 0">${button(`${SITE}/hq/calendar?c=${encodeURIComponent(c.email)}`, 'Open the calendar')}</p>`)
+  await send(REVIEWER, `${c.company || c.name || c.email} ${verb}: ${p.title}`, html)
+}
