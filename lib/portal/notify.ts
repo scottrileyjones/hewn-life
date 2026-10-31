@@ -53,3 +53,28 @@ ${next
 <p style="margin:0">The Hewn Life team</p>`)
   await send(c.email, next?.theirs ? `Done: ${doneTitle}. Your turn next` : `Done: ${doneTitle}`, html)
 }
+
+/** To the client: we sent something for review, or put it live. */
+export async function notifyClientAsset(c: PortalClient, a: { title: string; category: string; liveLink?: string }, kind: 'review' | 'live') {
+  const review = kind === 'review'
+  const html = layout(`
+<p>Hi ${esc(c.name.split(' ')[0] || 'there')},</p>
+<p style="margin:0 0 4px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#6E736D">${esc(a.category)}</p>
+<h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;color:#0D0D0D">${review ? 'Ready for your review' : 'Now live'}: ${esc(a.title)}</h1>
+<p>${review ? 'Have a look in your portal and approve it, or tell us what to change.' : `It’s live${a.liveLink ? ` at <a href="${esc(a.liveLink)}" style="color:#1E3826">${esc(a.liveLink)}</a>` : ''}.`}</p>
+<p style="margin:24px 0">${button(`${loginUrl(c.email)}&next=assets`, review ? 'Review it' : 'See it in your portal')}</p>
+<p style="margin:0">The Hewn Life team</p>`)
+  await send(c.email, review ? `For your review: ${a.title}` : `Live: ${a.title}`, html)
+}
+
+/** To the team: a client uploaded, approved or asked for changes. */
+export async function notifyTeamAsset(c: PortalClient, a: { title: string; category: string }, kind: 'uploaded' | 'Approved' | 'Changes requested', comment = '') {
+  const who = `${c.name || c.email}${c.company ? `, ${c.company}` : ''}`
+  const verb = kind === 'uploaded' ? 'added an asset' : kind === 'Approved' ? 'approved' : 'asked for changes on'
+  const html = layout(`
+<p style="margin:0 0 4px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#6E736D">Assets · ${esc(a.category)}</p>
+<h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;color:#0D0D0D">${esc(who)} ${verb}: ${esc(a.title)}</h1>
+${comment ? `<div style="margin:0 0 16px;padding:16px 18px;border-left:3px solid #D6F28B;background:#F4F2EC;border-radius:8px">${paragraphs(comment)}</div>` : ''}
+<p style="margin:24px 0">${button(`${SITE}/hq/clients?c=${encodeURIComponent(c.email)}`, 'Open in HQ')}</p>`)
+  await send(REVIEWER, `${c.company || c.name || c.email} ${verb}: ${a.title}`, html)
+}

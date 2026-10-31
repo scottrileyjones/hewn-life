@@ -6,7 +6,8 @@ export async function GET(req: NextRequest) {
   const p = req.nextUrl.searchParams
   const session = portalSessionFromLink(p.get('e') || '', Number(p.get('x')), p.get('s') || '')
   if (!session) return NextResponse.redirect(new URL('/portal/login?expired=1', req.url))
-  const res = NextResponse.redirect(new URL('/portal', req.url))
+  // Only known portal pages, so the link can't be used to send someone elsewhere.
+  const res = NextResponse.redirect(new URL(p.get('next') === 'assets' ? '/portal/assets' : '/portal', req.url))
   res.cookies.set(PORTAL_COOKIE, session.value, { httpOnly: true, secure: true, sameSite: 'lax', path: '/', maxAge: session.maxAge })
   return res
 }
