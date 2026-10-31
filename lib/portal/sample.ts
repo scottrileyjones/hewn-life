@@ -1,5 +1,6 @@
 /** A made-up client and thread for previewing the portal locally (PLAN_SAMPLE=1 only). */
 import type { PortalClient, PortalMessage } from './data'
+import type { Asset } from './assets'
 
 const ago = (days: number) => new Date(Date.now() - days * 864e5).toISOString()
 
@@ -30,3 +31,19 @@ export const sampleMessages = (): PortalMessage[] => [
   { id: 'm3', clientEmail: 'jane@acmeplumbing.com', from: 'Client', kind: 'Message', author: 'jane@acmeplumbing.com', at: ago(1), body: 'Looks great! Can we add the two new guys to the About page? I’ll send photos this week.' },
   { id: 'm4', clientEmail: 'jane@acmeplumbing.com', from: 'Hewn', kind: 'Message', author: 'jason@hewn.life', at: ago(0.2), body: 'Absolutely. Drop the photos in the shared folder and we’ll have them up the same day.' },
 ]
+
+export const sampleAssets = (): Asset[] => {
+  const base = { clientEmail: 'jane@acmeplumbing.com', files: [], link: '', text: '', notes: '', feedback: '', liveLink: '', addedBy: '' }
+  return [
+    { ...base, id: 'a1', title: 'Homepage hero and headline', category: 'Copy', source: 'Hewn', status: 'In review', addedAt: ago(0.3), updatedAt: ago(0.3),
+      text: 'On site in 2 hours. Flat-rate pricing.\nDavis County’s fastest plumbers — no surprises on the bill.', notes: 'Two headline options are in the doc; pick one.', feedback: 'Oct 30, 4:10 PM · jason: In review' },
+    { ...base, id: 'a2', title: 'Google search ad set 1', category: 'Ads', source: 'Hewn', status: 'In review', addedAt: ago(0.5), updatedAt: ago(0.5),
+      text: 'Emergency Plumber Near You | On Site in 2 Hours\nFlat-rate pricing, licensed and insured. Call now.' },
+    { ...base, id: 'a3', title: 'Target keywords', category: 'Keywords & SEO', source: 'Hewn', status: 'Approved', addedAt: ago(2), updatedAt: ago(1.5),
+      text: 'emergency plumber layton\nwater heater replacement davis county\ndrain cleaning kaysville', feedback: 'Oct 29, 9:00 AM · Jane Smith: Approved' },
+    { ...base, id: 'a4', title: 'Spring tune-up landing page', category: 'Landing pages', source: 'Hewn', status: 'Live', addedAt: ago(4), updatedAt: ago(3), link: 'https://acmeplumbing.com/spring', liveLink: 'https://acmeplumbing.com/spring' },
+    { ...base, id: 'a5', title: 'Customer video: kitchen remodel', category: 'UGC & video', source: 'Client', status: 'Received', addedAt: ago(1), updatedAt: ago(1), link: 'https://drive.google.com/', notes: 'Our favorite review video' },
+    { ...base, id: 'a6', title: 'Brand guide v1', category: 'Brand guide', source: 'Hewn', status: 'Changes requested', addedAt: ago(3), updatedAt: ago(2),
+      link: 'https://www.figma.com/', feedback: 'Oct 28, 2:00 PM · scott: In review\nOct 28, 5:30 PM · Jane Smith: Changes requested — Can we try a brighter blue?' },
+  ]
+}

@@ -4,6 +4,7 @@ import type { PortalClient, PortalMessage } from '@/lib/portal/data'
 import { CAL_URL } from '@/lib/cal'
 import { track, type Progress } from '@/lib/portal/onboarding'
 import { Timeline, Tracker, YourTurn } from './Onboarding'
+import PortalHeader from './PortalHeader'
 
 const when = (iso: string) => new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
 const teamName = (author: string) => {
@@ -27,7 +28,7 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
   )
 }
 
-export default function Dashboard({ client: initialClient, messages: initial, billing }: { client: PortalClient; messages: PortalMessage[]; billing?: string }) {
+export default function Dashboard({ client: initialClient, messages: initial, billing, assetCounts }: { client: PortalClient; messages: PortalMessage[]; billing?: string; assetCounts: { total: number; toReview: number } }) {
   const [client, setClient] = useState(initialClient)
   const [messages, setMessages] = useState(initial)
   const t = useMemo(() => (client.package ? track(client.package, client.progress) : null), [client.package, client.progress])
@@ -57,16 +58,7 @@ export default function Dashboard({ client: initialClient, messages: initial, bi
 
   return (
     <div className="min-h-[100dvh] bg-bone text-ink">
-      <header className="border-b border-ink/[0.08] bg-bone">
-        <div className="mx-auto flex max-w-[1180px] items-center gap-3 px-4 py-3.5 sm:px-6">
-          <p className="font-display text-[18px] font-semibold tracking-[-0.02em]">hewn<span className="accent text-ember">life</span></p>
-          <span className="hidden font-body text-[13px] text-ink/50 sm:inline">Client portal</span>
-          <div className="ml-auto flex items-center gap-3 font-body text-[13px] text-ink/60">
-            <span className="hidden sm:inline">{client.email}</span>
-            <form action="/api/portal/logout" method="post"><button className="underline underline-offset-2 hover:text-ink">Sign out</button></form>
-          </div>
-        </div>
-      </header>
+      <PortalHeader email={client.email} active="overview" toReview={assetCounts.toReview} />
 
       <main className="mx-auto max-w-[1180px] px-4 pb-16 pt-8 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-3">
@@ -124,6 +116,12 @@ export default function Dashboard({ client: initialClient, messages: initial, bi
           </div>
 
           <div className="space-y-4">
+            <Card title="Your assets">
+              <p className="mt-3 font-body text-[15px] leading-snug">
+                {assetCounts.toReview ? <><b>{assetCounts.toReview}</b> waiting for your review.</> : assetCounts.total ? `${assetCounts.total} files, links and drafts in your library.` : 'Logos, photos, videos, copy, ads and more, all in one place.'}
+              </p>
+              <a href="/portal/assets" className="mt-3 block w-full rounded-full bg-forest px-4 py-2.5 text-center font-body text-[14px] font-medium text-mist">{assetCounts.toReview ? 'Review now' : 'Open your assets'}</a>
+            </Card>
             {t && <Timeline t={t} />}
             {steps.length > 0 && <Card title="Next steps">
               {steps.length ? (
