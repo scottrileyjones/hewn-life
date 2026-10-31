@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
-import { CATEGORIES, type Asset, type AssetStatus } from '@/lib/portal/assets'
+import type { Asset, AssetStatus } from '@/lib/portal/assets'
+import { PILLARS, typeOf } from '@/lib/portal/taxonomy'
 
 export const STATUS_LABEL: Record<AssetStatus, string> = {
   Draft: 'Draft', Received: 'Received', 'In review': 'Needs your review', 'Changes requested': 'Changes requested', Approved: 'Approved', Live: 'Live', Archived: 'Archived',
@@ -12,14 +13,14 @@ const STATUS_STYLE: Record<AssetStatus, string> = {
 
 export function StatusPill({ status, team }: { status: AssetStatus; team?: boolean }) {
   const label = team && status === 'In review' ? 'With client' : STATUS_LABEL[status]
-  return <span className={`inline-block rounded-full px-2 py-0.5 font-body text-[11px] font-medium ${STATUS_STYLE[status]}`}>{label}</span>
+  return <span className={`inline-block whitespace-nowrap rounded-full px-2 py-0.5 font-body text-[11px] font-medium ${STATUS_STYLE[status]}`}>{label}</span>
 }
 
 const ext = (name: string) => (name.split('.').pop() || '').toUpperCase().slice(0, 4)
 export const kb = (n: number) => (n > 1048576 ? `${(n / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(n / 1024))} KB`)
 
 /** The card's picture: first image, a file badge, the link host, or the start of the text. */
-export function Thumb({ a, tall, small }: { a: Asset; tall?: boolean; small?: boolean }) {
+export function Thumb({ a, tall, small, compact }: { a: Asset; tall?: boolean; small?: boolean; compact?: boolean }) {
   const img = a.files.find(f => f.type.startsWith('image/'))
   if (small) {
     const label = img ? '' : a.files[0] ? ext(a.files[0].name) || 'FILE' : a.link ? '↗' : 'Aa'
@@ -27,7 +28,7 @@ export function Thumb({ a, tall, small }: { a: Asset; tall?: boolean; small?: bo
       ? <img src={img.thumb || img.url} alt="" className="h-11 w-11 shrink-0 rounded-[10px] bg-bone object-cover" loading="lazy" />
       : <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] bg-bone font-mono text-[11px] font-bold text-forest/70">{label}</span>
   }
-  const h = tall ? 'h-56' : 'h-32'
+  const h = tall ? 'h-56' : compact ? 'h-24' : 'h-32'
   if (img) return <img src={img.thumb || img.url} alt="" className={`${h} w-full rounded-[14px] bg-bone object-contain`} loading="lazy" />
   if (a.files[0]) return <div className={`${h} flex w-full items-center justify-center rounded-[14px] bg-bone font-mono text-[18px] font-bold text-forest/70`}>{ext(a.files[0].name) || 'FILE'}</div>
   if (a.link) { let host = a.link; try { host = new URL(a.link).host } catch {} return <div className={`${h} flex w-full flex-col items-center justify-center gap-1 rounded-[14px] bg-bone px-3 text-center`}><span aria-hidden className="text-[22px]">↗</span><span className="truncate font-body text-[13px] text-forest">{host}</span></div> }
@@ -76,7 +77,7 @@ export function UploadForm({ defaultCategory, onSubmit, team, onCancel }: {
   const [files, setFiles] = useState<File[]>([])
   const [sending, setSending] = useState('')
   const [error, setError] = useState('')
-  const [cat, setCat] = useState(defaultCategory || 'Photos')
+  const [cat, setCat] = useState(defaultCategory || 'Creative · Photos')
   const input = 'w-full rounded-[12px] border border-ink/[0.12] bg-white px-3.5 py-2.5 font-body text-[14px] focus:border-forest focus:outline-none'
 
   async function submit(form: HTMLFormElement, review: boolean) {
@@ -94,14 +95,16 @@ export function UploadForm({ defaultCategory, onSubmit, team, onCancel }: {
   return (
     <form onSubmit={e => { e.preventDefault(); submit(e.currentTarget, false) }} className="space-y-3 rounded-[18px] border border-ink/[0.08] bg-white p-4 sm:p-5">
       <div className="grid gap-3 sm:grid-cols-2">
-        <label className="grid gap-1 font-body text-[13px] font-medium">Section
-          <select name="category" value={cat} onChange={e => setCat(e.target.value)} className={input}>{CATEGORIES.map(c => <option key={c.id}>{c.id}</option>)}</select>
+        <label className="grid gap-1 font-body text-[13px] font-medium">Where it goes
+          <select name="category" value={cat} onChange={e => setCat(e.target.value)} className={input}>
+            {PILLARS.map(p => <optgroup key={p.key} label={p.name}>{p.types.map(x => <option key={x.id} value={x.id}>{x.name}</option>)}</optgroup>)}
+          </select>
         </label>
         <label className="grid gap-1 font-body text-[13px] font-medium"><span>Name <span className="font-normal text-ink/45">(optional)</span></span>
           <input name="title" placeholder="e.g. Spring promo ad, Logo (white)" className={input} />
         </label>
       </div>
-      <p className="font-body text-[12px] text-ink/55">{CATEGORIES.find(c => c.id === cat)?.hint}</p>
+      <p className="font-body text-[12px] text-ink/55">{typeOf(cat).hint}</p>
       <label className="flex cursor-pointer flex-col items-center justify-center rounded-[16px] border-2 border-dashed border-ink/[0.15] bg-bone px-4 py-5 text-center hover:border-forest">
         <span className="font-body text-[14px] font-medium text-forest">Choose files</span>
         <span className="mt-1 font-body text-[12px] text-ink/55">Images, PDFs, docs or short videos, up to 4 MB each. Bigger files: paste a link below.</span>

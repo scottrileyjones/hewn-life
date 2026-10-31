@@ -8,22 +8,11 @@ const BASE = process.env.AIRTABLE_BASE_ID
 const TOKEN = process.env.AIRTABLE_TOKEN
 const TABLE = process.env.AIRTABLE_PORTAL_ASSETS_TABLE_ID || 'tblI6qCew5yyIYhOR'
 
-export const CATEGORIES = [
-  { id: 'Brand guide', hint: 'Your brand guide: colors, type, voice and logo rules.' },
-  { id: 'Logos & brand', hint: 'Logo files and brand marks.' },
-  { id: 'Photos', hint: 'Photos of your work, team, products or place.' },
-  { id: 'UGC & video', hint: 'Customer videos, creator content and reels. Big files: share a link.' },
-  { id: 'Ads', hint: 'Ad creative and ad copy.' },
-  { id: 'Copy', hint: 'Website copy, headlines and messaging.' },
-  { id: 'Landing pages', hint: 'Landing page links and drafts.' },
-  { id: 'Keywords & SEO', hint: 'Target keywords, search terms and SEO notes.' },
-  { id: 'Social', hint: 'Social posts, captions and content plans.' },
-  { id: 'Email', hint: 'Email campaigns and automations.' },
-  { id: 'Reports', hint: 'Reports and dashboards.' },
-  { id: 'Other', hint: 'Anything else.' },
-] as const
-export type Category = typeof CATEGORIES[number]['id']
-export const CATEGORY_IDS = CATEGORIES.map(c => c.id) as readonly string[]
+import { TYPE_IDS, normalizeCategory } from './taxonomy'
+
+/** "Pillar · Type", e.g. "Paid media · Ads". See lib/portal/taxonomy.ts. */
+export type Category = string
+export const CATEGORY_IDS: readonly string[] = TYPE_IDS
 
 export const ASSET_STATUSES = ['Draft', 'Received', 'In review', 'Changes requested', 'Approved', 'Live', 'Archived'] as const
 export type AssetStatus = typeof ASSET_STATUSES[number]
@@ -59,7 +48,7 @@ const toAsset = (r: Row): Asset => ({
   id: r.id,
   clientEmail: str(r.fields['Client email']).toLowerCase(),
   title: str(r.fields['Title']),
-  category: (CATEGORY_IDS.includes(str(r.fields['Category'])) ? str(r.fields['Category']) : 'Other') as Category,
+  category: normalizeCategory(str(r.fields['Category'])),
   source: str(r.fields['Source']) === 'Hewn' ? 'Hewn' : 'Client',
   status: ((ASSET_STATUSES as readonly string[]).includes(str(r.fields['Status'])) ? str(r.fields['Status']) : 'Received') as AssetStatus,
   files: Array.isArray(r.fields['Files'])

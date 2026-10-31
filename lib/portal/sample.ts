@@ -35,15 +35,20 @@ export const sampleMessages = (): PortalMessage[] => [
 export const sampleAssets = (): Asset[] => {
   const base = { clientEmail: 'jane@acmeplumbing.com', files: [], link: '', text: '', notes: '', feedback: '', liveLink: '', addedBy: '' }
   return [
-    { ...base, id: 'a1', title: 'Homepage hero and headline', category: 'Copy', source: 'Hewn', status: 'In review', addedAt: ago(0.3), updatedAt: ago(0.3),
+    { ...base, id: 'a1', title: 'Homepage hero and headline', category: 'Website · Pages & copy', source: 'Hewn', status: 'In review', addedAt: ago(0.3), updatedAt: ago(0.3),
       text: 'On site in 2 hours. Flat-rate pricing.\nDavis County’s fastest plumbers — no surprises on the bill.', notes: 'Two headline options are in the doc; pick one.', feedback: 'Oct 30, 4:10 PM · jason: In review' },
-    { ...base, id: 'a2', title: 'Google search ad set 1', category: 'Ads', source: 'Hewn', status: 'In review', addedAt: ago(0.5), updatedAt: ago(0.5),
+    { ...base, id: 'a2', title: 'Google search ad set 1', category: 'Paid media · Ads', source: 'Hewn', status: 'In review', addedAt: ago(0.5), updatedAt: ago(0.5),
       text: 'Emergency Plumber Near You | On Site in 2 Hours\nFlat-rate pricing, licensed and insured. Call now.' },
-    { ...base, id: 'a3', title: 'Target keywords', category: 'Keywords & SEO', source: 'Hewn', status: 'Approved', addedAt: ago(2), updatedAt: ago(1.5),
+    { ...base, id: 'a3', title: 'Target keywords', category: 'SEO + AI search · Keywords', source: 'Hewn', status: 'Approved', addedAt: ago(2), updatedAt: ago(1.5),
       text: 'emergency plumber layton\nwater heater replacement davis county\ndrain cleaning kaysville', feedback: 'Oct 29, 9:00 AM · Jane Smith: Approved' },
-    { ...base, id: 'a4', title: 'Spring tune-up landing page', category: 'Landing pages', source: 'Hewn', status: 'Live', addedAt: ago(4), updatedAt: ago(3), link: 'https://acmeplumbing.com/spring', liveLink: 'https://acmeplumbing.com/spring' },
-    { ...base, id: 'a5', title: 'Customer video: kitchen remodel', category: 'UGC & video', source: 'Client', status: 'Received', addedAt: ago(1), updatedAt: ago(1), link: 'https://drive.google.com/', notes: 'Our favorite review video' },
-    { ...base, id: 'a6', title: 'Brand guide v1', category: 'Brand guide', source: 'Hewn', status: 'Changes requested', addedAt: ago(3), updatedAt: ago(2),
+    { ...base, id: 'a4', title: 'Spring tune-up landing page', category: 'Paid media · Landing pages', source: 'Hewn', status: 'Live', addedAt: ago(4), updatedAt: ago(3), link: 'https://acmeplumbing.com/spring', liveLink: 'https://acmeplumbing.com/spring' },
+    { ...base, id: 'a5', title: 'Customer video: kitchen remodel', category: 'Creators & UGC · UGC & video', source: 'Client', status: 'Received', addedAt: ago(1), updatedAt: ago(1), link: 'https://drive.google.com/', notes: 'Our favorite review video' },
+    { ...base, id: 'a6', title: 'Brand guide v1', category: 'Brand · Brand guide', source: 'Hewn', status: 'Changes requested', addedAt: ago(3), updatedAt: ago(2),
       link: 'https://www.figma.com/', feedback: 'Oct 28, 2:00 PM · scott: In review\nOct 28, 5:30 PM · Jane Smith: Changes requested — Can we try a brighter blue?' },
+    { ...base, id: 'a7', title: 'Brand palette', category: 'Brand · Colors & type', source: 'Hewn', status: 'Approved', addedAt: ago(5), updatedAt: ago(4), text: 'Navy #14213D\nSignal orange #FCA311\nCloud #E5E5E5' },
+    { ...base, id: 'a8', title: 'Positioning and tagline', category: 'Brand · Voice & messaging', source: 'Hewn', status: 'Approved', addedAt: ago(5), updatedAt: ago(4), text: 'Fast, fair, fixed right.\nThe plumber Davis County calls first.' },
+    { ...base, id: 'a9', title: 'October report', category: 'Data & reports · Reports', source: 'Hewn', status: 'Live', addedAt: ago(1), updatedAt: ago(1), link: 'https://lookerstudio.google.com/' },
+    { ...base, id: 'a10', title: 'Five-star review roundup', category: 'Creators & UGC · Reviews & testimonials', source: 'Client', status: 'Received', addedAt: ago(2), updatedAt: ago(2), text: '“Showed up in an hour and fixed it for the quoted price.” — Mark T.' },
+    { ...base, id: 'a11', title: 'November posts', category: 'Social · Posts', source: 'Hewn', status: 'Draft', addedAt: ago(0.2), updatedAt: ago(0.2), text: 'Week 1: water heater myths carousel\nWeek 2: crew spotlight reel' },
   ]
 }

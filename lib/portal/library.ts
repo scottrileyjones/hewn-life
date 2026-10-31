@@ -11,7 +11,7 @@ export function onboardingAssets(c: PortalClient): Asset[] {
     const step = steps.find(s => s.id === stepId)
     const at = c.progress[stepId]?.submitted || c.lastLogin || new Date(0).toISOString()
     return {
-      id: `onb-${f.id}`, clientEmail: c.email, title: f.name.slice(stepId.length + 2) || f.name, category: 'Logos & brand', source: 'Client', status: 'Received',
+      id: `onb-${f.id}`, clientEmail: c.email, title: f.name.slice(stepId.length + 2) || f.name, category: 'Brand · Logos', source: 'Client', status: 'Received',
       files: [{ id: f.id, name: f.name.slice(stepId.length + 2) || f.name, url: f.url, type: f.type, size: f.size, thumb: '' }],
       link: '', text: '', notes: step ? `Sent in onboarding: ${step.title}` : 'Sent in onboarding', feedback: '', liveLink: '', addedBy: c.email, addedAt: at, updatedAt: at,
     }
