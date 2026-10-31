@@ -75,6 +75,7 @@ export default function Footer() {
             {[
               ['/legal/terms', 'Terms'],
               ['/legal/privacy', 'Privacy'],
+              ['/legal/sms', 'SMS terms'],
               ['/legal/refund', 'Refunds & cancellations'],
               ['/legal/cookies', 'Cookies'],
               ['/legal/results-disclaimer', 'Results disclaimer'],

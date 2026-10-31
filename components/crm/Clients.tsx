@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useMemo, useState } from 'react'
+import { prettyPhone } from '@/lib/smsText'
 import CrmHeader from './CrmHeader'
 import OnboardingPanel from './OnboardingPanel'
 import AssetsPanel from './AssetsPanel'
@@ -130,6 +131,7 @@ export default function Clients({ user, clients: initial, selected, sampleThread
                   <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/55">{open ? 'Client' : 'New client'}</p>
                   <h1 className="font-display text-[22px] font-semibold tracking-[-0.02em]">{open ? open.company || open.name || open.email : 'Give a client a portal'}</h1>
                   {open && <p className="font-body text-[12px] text-ink/55">{open.lastLogin ? `Last opened the portal ${when(open.lastLogin)}` : 'Hasn’t opened the portal yet'}</p>}
+                  {open && <p className="font-body text-[12px] text-ink/55">{open.smsOptIn ? `Texts on · ${prettyPhone(open.mobile)}` : open.mobile ? 'Texts off (opted out)' : 'Texts off · the client turns them on in their portal'}</p>}
                 </div>
                 {open && <button onClick={invite} disabled={!!busy} className="shrink-0 rounded-full border border-forest px-3 py-1.5 font-body text-[12px] text-forest disabled:opacity-50">{busy === 'invite' ? 'Sending…' : 'Send portal link'}</button>}
               </div>

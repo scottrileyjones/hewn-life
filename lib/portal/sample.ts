@@ -24,6 +24,7 @@ export const sampleClient = (): PortalClient => ({
     assets: { submitted: ago(1), data: { folder: 'https://drive.google.com/', asset_notes: 'Use the van photo up top' }, files: ['assets--logo.png'] },
   },
   assets: [{ id: 'att1', name: 'assets--logo.png', url: 'https://example.com/logo.png', type: 'image/png', size: 48211 }],
+  mobile: '', smsOptIn: false,
 })
 
 export const sampleMessages = (): PortalMessage[] => [
