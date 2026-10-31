@@ -1,8 +1,9 @@
 import { NextRequest } from 'next/server'
-import { SITE } from '@/lib/plans/email'
+import { SITE, REVIEWER, esc, layout, send } from '@/lib/plans/email'
 import { addMessage, findClientsByMobile, saveSmsChoice, touchClient } from '@/lib/portal/data'
 import { notifyTeam } from '@/lib/portal/notify'
-import { HELP_TEXT, toE164, validTwilioSignature } from '@/lib/sms'
+import { setMarketing } from '@/lib/smsMarketing'
+import { HELP_TEXT, prettyPhone, toE164, validTwilioSignature } from '@/lib/sms'
 
 const STOP = ['STOP', 'STOPALL', 'UNSUBSCRIBE', 'CANCEL', 'END', 'QUIT', 'OPTOUT', 'REVOKE']
 const START = ['START', 'UNSTOP', 'YES']
@@ -31,11 +32,11 @@ export async function POST(req: NextRequest) {
   const clients = await findClientsByMobile(from).catch(() => [])
 
   if (STOP.includes(word)) {
-    await Promise.all(clients.map(c => saveSmsChoice(c, false, from, `replied ${word}`))).catch(err => console.error('SMS opt-out failed:', err))
+    await Promise.all([...clients.map(c => saveSmsChoice(c, false, from, `replied ${word}`)), setMarketing(from, false, `replied ${word}`)]).catch(err => console.error('SMS opt-out failed:', err))
     return twiml()
   }
   if (START.includes(word)) {
-    await Promise.all(clients.map(c => saveSmsChoice(c, true, from, `replied ${word}`))).catch(err => console.error('SMS opt-in failed:', err))
+    await Promise.all([...clients.map(c => saveSmsChoice(c, true, from, `replied ${word}`)), setMarketing(from, true, `replied ${word}`)]).catch(err => console.error('SMS opt-in failed:', err))
     return twiml()
   }
   if (HELP.includes(word)) return twiml(HELP_TEXT)
@@ -47,6 +48,12 @@ export async function POST(req: NextRequest) {
       await touchClient(client.id, 'Last client message')
       await notifyTeam(client, message).catch(err => console.error('Portal team alert failed:', err))
     } catch (err) { console.error('Inbound text failed:', err) }
+  } else if (body) {
+    // Not a client (e.g. a lead replying to a marketing text): forward it so someone can answer.
+    await send(REVIEWER, `Text reply from ${prettyPhone(from)}`, layout(`<p style="margin:0 0 4px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#6E736D">Text reply</p>
+<h1 style="margin:0 0 16px;font-size:22px;color:#0D0D0D">${esc(prettyPhone(from))}</h1>
+<div style="padding:16px 18px;border-left:3px solid #D6F28B;background:#F4F2EC;border-radius:8px">${esc(body)}</div>
+<p style="margin:16px 0 0;font-size:13px;color:#6E736D">Reply from your phone, or note it in the Pipeline.</p>`)).catch(err => console.error('Text forward failed:', err))
   }
   return twiml()
 }

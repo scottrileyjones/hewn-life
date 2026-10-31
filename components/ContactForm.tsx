@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import CalButton from './CalButton'
 import CardFlow, { type FlowStep } from './CardFlow'
+import { MARKETING_CONSENT } from '@/lib/smsText'
 import { REVENUE_BANDS, revenueValue, revenueStage, questions, tiers, computeResult, computeScore, getServices, computeHealthScore } from '@/lib/quiz'
 
 type Readout = {
@@ -41,6 +42,7 @@ const steps: FlowStep[] = [
       { name: 'email', label: 'Email', type: 'email', required: true, autoComplete: 'email', placeholder: 'you@business.com' },
       { name: 'phone', label: 'Phone', type: 'tel', autoComplete: 'tel' },
       { name: 'consent', type: 'checkbox', required: true, help: CONSENT },
+      { name: 'sms', type: 'checkbox', help: `Optional: ${MARKETING_CONSENT} SMS Terms: hewn.life/legal/sms` },
     ],
   },
 ]
@@ -78,6 +80,7 @@ export default function ContactForm() {
           source: 'Contact form',
           name: values.name, company: values.company, email: values.email, phone: values.phone, notes: values.notes,
           consent: values.consent === 'on',
+          smsMarketing: values.sms === 'on' && !!values.phone?.trim(),
           tier: tiers[tier].name,
           services: services.map(s => s.label),
           answers: readable,

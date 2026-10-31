@@ -4,6 +4,7 @@ import { briefsConfigured, toFields, createBrief, attachLogo } from '@/lib/airta
 import { waitUntil } from '@vercel/functions'
 import { startPlan } from '@/lib/plans/flow'
 import { briefLead } from '@/lib/plans/lead'
+import { subscribe } from '@/lib/smsMarketing'
 
 // Room for the growth-plan deck to be written after the response is sent.
 export const maxDuration = 300
@@ -40,6 +41,10 @@ export async function POST(req: NextRequest) {
 
     const source = typeof form.get('source') === 'string' ? String(form.get('source')) : 'Website'
     const id = await createBrief(toFields(answers, { Source: source.slice(0, 60) }))
+    if (form.get('sms_marketing') === 'on' && answers.phone?.trim()) {
+      const ip = (req.headers.get('x-forwarded-for') || '').split(',')[0].trim()
+      waitUntil(subscribe({ mobile: answers.phone, name: answers.name, email: answers.email, company: answers.business_name, source: 'Website brief', ip }))
+    }
     waitUntil(startPlan(briefLead(answers, /day/i.test(source) ? 'Website in a Day' : 'Website brief')))
 
     if (hasLogo) {

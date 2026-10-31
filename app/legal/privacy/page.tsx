@@ -69,7 +69,7 @@ export default function Privacy() {
             'Airtable — our lead and client records, including client portal messages.',
             'Anthropic — AI generation of personal growth plans.',
             'Resend — sending our emails, including client portal sign-in links and alerts.',
-            'Twilio — sending project text alerts to clients who opt in.',
+            'Twilio — sending text messages to people who opt in.',
             'Google Workspace — our email and documents.',
             'Stripe — payments, subscriptions and billing.',
             'Cal.com — call scheduling.',
@@ -92,7 +92,7 @@ export default function Privacy() {
           heading: 'Emails and texts',
           body: [
             'When you submit a form, we email you your growth plan and may send one follow-up a few days later if you agreed to receive marketing emails. Clients also receive service and billing emails. You can unsubscribe from marketing emails with the link in any of them or by emailing hello@hewn.life. We’ll still send transactional emails such as receipts and renewal notices.',
-            'We don’t send text messages without your separate consent. Giving us your phone number doesn’t sign you up for texts. Clients can turn on project text alerts in their client portal; we record when and how they agreed. Reply STOP to any text to opt out, or turn texts off in the portal. See our SMS Terms.',
+            'We don’t send text messages without your separate consent. Giving us your phone number doesn’t sign you up for texts. Clients can turn on project text alerts in their client portal, and anyone can tick a separate, optional box on our forms to get occasional marketing texts; we record when and how they agreed. Reply STOP to any text to opt out, or turn texts off in the portal. See our SMS Terms.',
             'We don’t sell, rent or share mobile numbers or text-message consent with third parties or affiliates for their marketing. Mobile numbers and opt-in data are used only to send the texts you asked for.',
           ],
         },

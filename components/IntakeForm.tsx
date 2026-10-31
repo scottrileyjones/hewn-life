@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import CalButton from './CalButton'
 import CardFlow, { type FlowField, type FlowStep } from './CardFlow'
 import { intakeFields, planInterest, LOGO_MAX_BYTES } from '@/lib/intake'
+import { MARKETING_CONSENT } from '@/lib/smsText'
 
 /** One brief question from lib/intake as a card-flow field, so labels and required flags stay in one place. */
 function field(id: string, overrides: Partial<FlowField> = {}): FlowField {
@@ -23,7 +24,8 @@ const choice = (id: string) => {
 function briefSteps(order: boolean): FlowStep[] {
   return [
     { id: 'you', title: 'First, who are we building for?', subtitle: 'We’ll send your site and your growth plan here.',
-      fields: [field('name', { label: 'Your name', autoComplete: 'name' }), field('email', { autoComplete: 'email' }), field('phone', { autoComplete: 'tel', placeholder: '' })] },
+      fields: [field('name', { label: 'Your name', autoComplete: 'name' }), field('email', { autoComplete: 'email' }), field('phone', { autoComplete: 'tel', placeholder: '' }),
+        { name: 'sms_marketing', type: 'checkbox', help: `Optional: ${MARKETING_CONSENT} SMS Terms: hewn.life/legal/sms` }] },
     { id: 'business', title: 'Tell us about the business.',
       fields: [field('business_name', { autoComplete: 'organization' }), field('current_website', { placeholder: 'Leave blank if you don’t have one' })] },
     { id: 'action', title: 'What’s the one thing visitors should do on your site?', subtitle: 'We’ll build every page around it.', choice: choice('primary_action') },

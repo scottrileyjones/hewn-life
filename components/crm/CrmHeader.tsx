@@ -2,8 +2,8 @@ import Link from 'next/link'
 import type { ReactNode } from 'react'
 
 /** Top bar shared by the CRM's Pipeline and HQ pages. */
-export default function CrmHeader({ active, user, children }: { active: 'pipeline' | 'hq' | 'clients' | 'calendar'; user: string; children?: ReactNode }) {
-  const tab = (key: 'pipeline' | 'hq' | 'clients' | 'calendar', href: string, label: string) => (
+export default function CrmHeader({ active, user, children }: { active: 'pipeline' | 'hq' | 'clients' | 'calendar' | 'texts'; user: string; children?: ReactNode }) {
+  const tab = (key: 'pipeline' | 'hq' | 'clients' | 'calendar' | 'texts', href: string, label: string) => (
     <Link href={href} aria-current={active === key ? 'page' : undefined}
       className={`rounded-full px-3 py-1.5 transition ${active === key ? 'bg-forest text-mist' : 'text-ink/70 hover:text-ink'}`}>{label}</Link>
   )
@@ -16,6 +16,7 @@ export default function CrmHeader({ active, user, children }: { active: 'pipelin
           {tab('pipeline', '/crm', 'Pipeline')}
           {tab('clients', '/hq/clients', 'Clients')}
           {tab('calendar', '/hq/calendar', 'Calendar')}
+          {tab('texts', '/hq/texts', 'Texts')}
         </nav>
         {children}
         <div className="ml-auto flex items-center gap-3 font-body text-[13px] text-ink/60">
