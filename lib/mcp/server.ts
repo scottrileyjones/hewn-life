@@ -17,12 +17,14 @@ import { notifyClientPosts } from '@/lib/portal/notify'
 
 const AUTHOR = 'claude (MCP)'
 
-/** Constant-time check of the shared secret in HEWN_MCP_TOKEN. */
-export function authorized(key: string | null | undefined) {
-  const secret = process.env.HEWN_MCP_TOKEN || ''
-  if (secret.length < 24 || !key) return false
-  const a = Buffer.from(secret), b = Buffer.from(key)
-  return a.length === b.length && timingSafeEqual(a, b)
+/** Constant-time check of the shared secret in HEWN_MCP_TOKEN (stray spaces in the env value are ignored). */
+export function authCheck(key: string | null | undefined): 'ok' | 'unset' | 'bad' {
+  const secret = (process.env.HEWN_MCP_TOKEN || '').trim()
+  if (secret.length < 24) return 'unset'
+  const k = (key || '').trim()
+  if (!k) return 'bad'
+  const a = Buffer.from(secret), b = Buffer.from(k)
+  return a.length === b.length && timingSafeEqual(a, b) ? 'ok' : 'bad'
 }
 
 type Tool = { name: string; description: string; inputSchema: Record<string, unknown>; run: (args: Record<string, unknown>) => Promise<unknown> }
