@@ -24,3 +24,31 @@ export const prettyPhone = (e164: string) => {
   const m = e164.match(/^\+1(\d{3})(\d{3})(\d{4})$/)
   return m ? `(${m[1]}) ${m[2]}-${m[3]}` : e164
 }
+
+/** Separate, optional consent for promotional texts. Never bundled with the email consent or required to submit. */
+export const MARKETING_CONSENT = 'Text me offers and news from Hewn Life. I agree to receive recurring automated marketing texts at the number provided. Consent is not a condition of purchase. Msg frequency varies. Msg & data rates may apply. Reply HELP for help, STOP to cancel.'
+
+export const MARKETING_WELCOME = `${BRAND} Thanks for subscribing to texts from Hewn Life. Msg frequency varies. Msg & data rates may apply. Reply HELP for help, STOP to cancel.`
+
+const OPT_OUT = 'Reply STOP to opt out.'
+/** A marketing text as it will be sent: brand first, opt-out last. */
+export const marketingText = (body: string) => `${BRAND} ${body.trim()} ${OPT_OUT}`
+/** Room left for the body so the whole text fits in two segments (2 × 153 characters, plain GSM). */
+export const MARKETING_MAX = 306 - `${BRAND}  ${OPT_OUT}`.length
+
+/** Characters outside the basic GSM set force UCS-2, which drops a segment to 70 characters. */
+const GSM = /^[A-Za-z0-9 \r\n@£$¥èéùìòÇØøÅå_ÆæßÉ!"#%&'()*+,\-./:;<=>?¡ÄÖÑÜ§¿äöñüà^{}\\[~\]|€]*$/
+export function segments(text: string) {
+  const gsm = GSM.test(text)
+  const single = gsm ? 160 : 70, multi = gsm ? 153 : 67
+  return { gsm, count: text.length <= single ? 1 : Math.ceil(text.length / multi) }
+}
+
+/**
+ * Marketing texts only go out 11am–8pm Eastern, which is 8am–5pm Pacific: inside every
+ * continental US time zone's 8am–8pm window (the strictest state rules, e.g. Florida).
+ */
+export function sendWindow(now = new Date()) {
+  const hour = Number(new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', hourCycle: 'h23' }).format(now))
+  return { open: hour >= 11 && hour < 20, label: '9am–6pm Mountain' }
+}

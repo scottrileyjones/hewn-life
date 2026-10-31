@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { CONSENT_TEXT, prettyPhone } from '@/lib/smsText'
+import { CONSENT_TEXT, MARKETING_CONSENT, prettyPhone } from '@/lib/smsText'
 
 /** Portal card where a client turns project texts on or off. The box is never pre-ticked. */
 export default function TextAlerts({ mobile: initialMobile, on: initialOn }: { mobile: string; on: boolean }) {
@@ -8,17 +8,18 @@ export default function TextAlerts({ mobile: initialMobile, on: initialOn }: { m
   const [mobile, setMobile] = useState(initialMobile)
   const [draft, setDraft] = useState(initialMobile ? prettyPhone(initialMobile) : '')
   const [agreed, setAgreed] = useState(false)
+  const [offers, setOffers] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [note, setNote] = useState('')
 
   async function save(optIn: boolean) {
     setBusy(true); setError(''); setNote('')
-    const res = await fetch('/api/portal/sms', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ optIn, mobile: draft, agreed }) })
+    const res = await fetch('/api/portal/sms', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ optIn, mobile: draft, agreed, offers }) })
     const out = await res.json().catch(() => ({}))
     setBusy(false)
     if (!res.ok) { setError(out.error || 'Couldn’t save. Try again.'); return }
-    setOn(out.smsOptIn); setMobile(out.mobile || ''); setAgreed(false)
+    setOn(out.smsOptIn); setMobile(out.mobile || ''); setAgreed(false); setOffers(false)
     setNote(optIn ? (out.sent ? 'You’re in. We just sent a confirmation text.' : 'You’re in. Texts start as soon as our number is live.') : 'Texts are off. You’ll still get emails.')
   }
 
@@ -39,6 +40,10 @@ export default function TextAlerts({ mobile: initialMobile, on: initialOn }: { m
           <label className="mt-3 flex items-start gap-2.5 font-body text-[12px] leading-snug text-ink/65">
             <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 accent-[#1E3826]" />
             <span>{CONSENT_TEXT} See our <a href="/legal/sms" target="_blank" className="underline underline-offset-2">SMS Terms</a> and <a href="/legal/privacy" target="_blank" className="underline underline-offset-2">Privacy Policy</a>.</span>
+          </label>
+          <label className="mt-2.5 flex items-start gap-2.5 font-body text-[12px] leading-snug text-ink/65">
+            <input type="checkbox" checked={offers} onChange={e => setOffers(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 accent-[#1E3826]" />
+            <span>Optional: {MARKETING_CONSENT}</span>
           </label>
           <button disabled={busy || !agreed || !draft.trim()} className="mt-3 w-full rounded-full bg-forest px-4 py-2.5 font-body text-[14px] font-medium text-mist disabled:opacity-50">{busy ? 'Saving…' : 'Turn on texts'}</button>
         </form>

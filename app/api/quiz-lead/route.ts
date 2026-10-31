@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { waitUntil } from '@vercel/functions'
 import { startPlan } from '@/lib/plans/flow'
+import { subscribe } from '@/lib/smsMarketing'
 
 // Room for the growth-plan deck to be written after the response is sent.
 export const maxDuration = 300
@@ -12,7 +13,7 @@ const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { name, company, email, phone, state, notes, consent, tier, services, answers, score, annualRevenue, annualRevenueLabel } = body || {}
+    const { name, company, email, phone, state, notes, consent, smsMarketing, tier, services, answers, score, annualRevenue, annualRevenueLabel } = body || {}
     // The contact form asks the same questions as the quiz and posts here too.
     const source = body?.source === 'Contact form' ? 'Contact form' : 'Quiz'
 
@@ -72,6 +73,12 @@ export async function POST(req: NextRequest) {
       const detail = await res.text()
       console.error('Airtable error:', res.status, detail)
       return NextResponse.json({ error: 'Could not save lead.' }, { status: 502 })
+    }
+
+    // Marketing texts are a separate, optional box; only a ticked box and a phone number subscribe.
+    if (smsMarketing === true && typeof phone === 'string' && phone.trim()) {
+      const ip = (req.headers.get('x-forwarded-for') || '').split(',')[0].trim()
+      waitUntil(subscribe({ mobile: phone, name, email, company, source: source === 'Contact form' ? 'Contact form' : 'ROI calculator', ip }))
     }
 
     waitUntil(startPlan({

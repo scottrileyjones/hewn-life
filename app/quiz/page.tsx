@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
+import { MARKETING_CONSENT } from '@/lib/smsText'
 import Link from 'next/link'
 import Terrain from '@/components/strata/Terrain'
 import CalButton from '@/components/CalButton'
@@ -606,7 +607,7 @@ function CalculatingScreen({ onDone }: { onDone: () => void }) {
 
 // ── Capture screen ────────────────────────────────────────────────────────────
 
-interface Contact { name: string; company: string; email: string; phone: string; state: string; notes: string; consent: boolean }
+interface Contact { name: string; company: string; email: string; phone: string; state: string; notes: string; consent: boolean; sms?: boolean }
 
 const US_STATES = [
   'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
@@ -708,6 +709,15 @@ function CaptureScreen({
               I agree to receive my results and occasional marketing communications from Hewn Life, and consent to my information being used as described in the <Link href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="text-forest underline underline-offset-2">privacy policy</Link>. I can unsubscribe anytime.
             </span>
           </label>
+
+          {contact.phone.trim() && (
+            <label className="mt-3 flex cursor-pointer select-none items-start gap-3">
+              <input type="checkbox" checked={!!contact.sms} onChange={e => setContact(c => ({ ...c, sms: e.target.checked }))} className="mt-0.5 h-5 w-5 flex-shrink-0 cursor-pointer rounded accent-[#1E3826]" />
+              <span className="font-body text-[13px] leading-relaxed text-ink/60">
+                Optional: {MARKETING_CONSENT} See our <Link href="/legal/sms" target="_blank" rel="noopener noreferrer" className="text-forest underline underline-offset-2">SMS Terms</Link>.
+              </span>
+            </label>
+          )}
 
           {error && <p role="alert" className="mt-4 rounded-[14px] bg-[#F6E3DD] px-4 py-3 font-body text-sm text-[#7A2E1E]">{error}</p>}
 
@@ -875,7 +885,7 @@ export default function Quiz() {
   const [step, setStep] = useState<'intro' | number | 'revenue' | 'notes' | 'capture' | 'calculating' | 'results'>('intro')
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [selected, setSelected] = useState<string | null>(null)
-  const [contact, setContact] = useState({ name: '', company: '', email: '', phone: '', state: '', notes: '', consent: false })
+  const [contact, setContact] = useState<Contact>({ name: '', company: '', email: '', phone: '', state: '', notes: '', consent: false })
   const [revenueIdx, setRevenueIdx] = useState(0)
 
   // The revenue slider is the first step; downstream scoring still expects a
@@ -955,6 +965,7 @@ export default function Quiz() {
           state: contact.state,
           notes: contact.notes,
           consent: contact.consent,
+          smsMarketing: !!contact.sms && !!contact.phone.trim(),
           tier: tiers[tierKey].name,
           services: svc,
           answers: readableAnswers(),
