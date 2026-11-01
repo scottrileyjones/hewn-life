@@ -9,7 +9,7 @@ export default function SmsTerms() {
   return (
     <LegalLayout
       title="SMS Terms"
-      updated="October 31, 2026"
+      updated="November 1, 2026"
       intro="These terms cover the two kinds of text message Hewn Life sends: Project Alerts, for clients about their projects, and Hewn Life Offers, occasional marketing texts. Each has its own opt-in. They’re part of our Terms of Service. Hewn Life is a trade name of Hewn Holdings LLC."
       summary={[
         'We only text people who ticked a box agreeing to it. Project alerts and offers are separate boxes, and neither is required to buy from us.',
@@ -62,7 +62,7 @@ export default function SmsTerms() {
         {
           heading: 'Carriers and privacy',
           body: [
-            'Carriers are not liable for delayed or undelivered messages. We send texts through Twilio. We don’t sell or share your mobile number or your consent with third parties or affiliates for their marketing. See our Privacy Policy for how we handle your information.',
+            'Carriers are not liable for delayed or undelivered messages. We send texts through Twilio. No mobile information will be shared with third parties or affiliates for marketing or promotional purposes. Text messaging opt-in data and consent will not be shared with any third parties, except the providers that deliver our messages (Twilio). See our Privacy Policy for how we handle your information.',
           ],
         },
         {
