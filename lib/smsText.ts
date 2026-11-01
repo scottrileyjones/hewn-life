@@ -7,7 +7,7 @@ export const BRAND = 'Hewn Life:'
 export const CONSENT_TEXT = 'I agree to receive text messages from Hewn Life about my project at this number: step updates, items ready for my review and replies to my messages. Message frequency varies. Msg & data rates may apply. Reply STOP to cancel, HELP for help. Consent is not a condition of purchase.'
 
 export const WELCOME_TEXT = `${BRAND} You're signed up for project texts. Msg frequency varies. Msg & data rates may apply. Reply HELP for help, STOP to cancel. We'll never text you asking for payment or codes.`
-export const HELP_TEXT = `${BRAND} Project texts from your agency. Help: hello@hewn.life or hewn.life/portal. Msg & data rates may apply. Reply STOP to cancel.`
+export const HELP_TEXT = `${BRAND} Project updates and offers you signed up for. Help: hello@hewn.life or hewn.life/legal/sms. Msg & data rates may apply. Reply STOP to cancel.`
 
 /** US/Canada numbers to E.164 (+18015550100). Anything else must already be in +E.164 form. Null if it doesn't look like a phone number. */
 export function toE164(raw: string | null | undefined): string | null {
