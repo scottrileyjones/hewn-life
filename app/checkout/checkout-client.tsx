@@ -421,6 +421,28 @@ export default function CheckoutClient() {
   })
   const top = () => window.scrollTo({ top: 0, behavior: 'smooth' })
 
+  // The agreement names the signer, their title, entity and address, so it is re-filled as they type;
+  // they always sign the exact text on screen.
+  const [refreshing, setRefreshing] = useState(false)
+  useEffect(() => {
+    if (step !== 'sign') return
+    let live = true
+    setRefreshing(true)
+    const t = setTimeout(async () => {
+      try {
+        const res = await fetch('/api/checkout/agreement', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'preview', ...orderBody(), ...signerBody() }),
+        })
+        const out = await res.json() as { doc?: Doc; hash?: string }
+        if (live && out.doc && out.hash) setAgreement(ag => ({ doc: out.doc!, hash: out.hash!, hewn: ag?.hewn }))
+      } catch { /* keep the last version; signing re-checks it */ }
+      if (live) setRefreshing(false)
+    }, 500)
+    return () => { live = false; clearTimeout(t) }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, signer.legalName, signer.title, signer.address, signer.signature])
+
   // Step 1 → 2: load their filled-in agreement to read and sign.
   const handleInfoSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -705,10 +727,10 @@ export default function CheckoutClient() {
 
                   {error && <div className="rounded-[14px] border border-red-200 bg-red-50 px-4 py-3 font-body text-sm text-red-700">{error}</div>}
 
-                  <button type="submit" disabled={loading || !signer.consent || !signer.authority || !signer.signature.trim()}
+                  <button type="submit" disabled={loading || refreshing || !signer.consent || !signer.authority || !signer.signature.trim()}
                     className="flex items-center justify-center gap-2 w-full text-white font-body font-semibold text-[15px] px-8 py-4 rounded-full transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed hover:opacity-90"
                     style={{ background: meta.color }}>
-                    {loading ? 'Signing…' : <>Sign and continue to payment <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></>}
+                    {loading ? 'Signing…' : refreshing ? 'Updating your agreement…' : <>Sign and continue to payment <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></>}
                   </button>
                   <p className="text-center font-body text-xs text-[#6B6560]/70">Signed under the federal ESIGN Act. Your countersigned copy is emailed to you and saved in your portal.</p>
                 </form>
