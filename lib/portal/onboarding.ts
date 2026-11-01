@@ -7,6 +7,7 @@
 import { primaryActions } from '@/lib/intake'
 import { CAL_URL } from '@/lib/cal'
 import type { PlanId } from '@/lib/playbook'
+import { isKit, lookup } from '@/lib/addons'
 
 export const PHASES = [
   { id: 'received', label: 'Order received' },
@@ -180,9 +181,166 @@ const PLANS: Record<PlanId, string[]> = {
   forged: ['order', 'welcome', 'kickoff_call', 'business', 'look', 'assets', 'copy', 'domain', 'access', 'ads', 'growth', 'build_start', 'brand', 'design', 'seo', 'social', 'tracking', 'email_crm', 'programs', 'site_review', 'edits', 'launch', 'campaigns', 'strategy'],
 }
 
-export const isPackage = (v: string): v is PlanId => v in PLANS
-export const stepsFor = (pkg: string): Step[] => (isPackage(pkg) ? PLANS[pkg].map(id => S[id]) : [])
-export const packageName = (pkg: string) => PACKAGES.find(p => p.id === pkg)?.name ?? ''
+/* ── À la carte add-ons ───────────────────────────────────────────────────
+ * An add-on order is stored as package "addons:gbp,kit_found,…". Its plan is
+ * the requirements for each thing bought (like a Fiverr order), then our work,
+ * their review and delivery.
+ */
+const yesHelp = (verb = 'Invited hello@hewn.life') => [verb, 'I need help with this', 'I don’t have one']
+const ADDON_REQS: Record<string, Step> = {
+  gbp: {
+    id: 'req_gbp', title: 'Your Google Business Profile', owner: 'client', phase: 'kickoff',
+    detail: 'Invite hello@hewn.life as a Manager (on Google: your profile → ⋮ → Business Profile settings → People and access), then tell us what to list.',
+    uploads: { label: 'Photos for your profile', help: 'Your work, team, storefront or vehicles. PNG, JPG or WebP, up to 4 MB each.' },
+    fields: [
+      { id: 'gbp_access', label: 'Your profile', type: 'select', required: true, options: yesHelp() },
+      { id: 'gbp_link', label: 'Profile link or business name on Google', type: 'text' },
+      { id: 'gbp_services', label: 'Services to list', type: 'textarea', required: true, placeholder: 'One per line, most important first' },
+      { id: 'gbp_hours', label: 'Hours', type: 'text', placeholder: 'e.g. Mon–Fri 8–5' },
+      { id: 'gbp_area', label: 'Area you serve', type: 'text', placeholder: 'Cities or radius' },
+    ],
+  },
+  visibility: {
+    id: 'req_visibility', title: 'Your business and competitors', owner: 'client', phase: 'kickoff',
+    detail: 'What we compare you on across Google, Maps, ChatGPT and Gemini.',
+    fields: [
+      { id: 'vis_website', label: 'Your website', type: 'url', placeholder: 'https://' },
+      { id: 'vis_services', label: 'Main services', type: 'textarea', required: true },
+      { id: 'vis_area', label: 'Where you serve', type: 'text', required: true },
+      { id: 'vis_competitors', label: 'Up to three competitors', type: 'textarea', required: true, placeholder: 'Names or websites' },
+      { id: 'vis_questions', label: 'What customers ask before they buy', type: 'textarea', placeholder: 'e.g. Do you offer financing? How fast can you come out?' },
+    ],
+  },
+  reviews: {
+    id: 'req_reviews', title: 'How you reach your customers', owner: 'client', phase: 'kickoff',
+    detail: 'So review requests go out at the right moment, from the right place.',
+    uploads: { label: 'Your logo', help: 'For the QR card. PNG, SVG or PDF.' },
+    fields: [
+      { id: 'rev_site', label: 'Where reviews matter most', type: 'select', required: true, options: ['Google', 'Yelp', 'Facebook', 'Other'] },
+      { id: 'rev_tool', label: 'Where your customer list lives', type: 'text', required: true, placeholder: 'e.g. Jobber, Square, Housecall Pro, a spreadsheet' },
+      { id: 'rev_when', label: 'When to ask for a review', type: 'text', placeholder: 'e.g. the day after a job is finished' },
+      { id: 'rev_notes', label: 'Anything else', type: 'textarea' },
+    ],
+  },
+  ads_audit: {
+    id: 'req_ads_audit', title: 'Your ad accounts', owner: 'client', phase: 'kickoff',
+    detail: 'Invite hello@hewn.life with read access (or standard access if you want us to fix tracking), then tell us what a good result looks like.',
+    fields: [
+      { id: 'ads_google', label: 'Google Ads', type: 'select', required: true, options: yesHelp() },
+      { id: 'ads_meta', label: 'Meta (Facebook/Instagram) ads', type: 'select', required: true, options: yesHelp() },
+      { id: 'ads_spend', label: 'Monthly ad spend', type: 'text', required: true },
+      { id: 'ads_goal', label: 'What counts as a result', type: 'textarea', required: true, placeholder: 'e.g. calls, booked jobs, online sales' },
+    ],
+  },
+  creatives: {
+    id: 'req_creatives', title: 'What your ads should sell', owner: 'client', phase: 'kickoff',
+    detail: 'The offer, where the ads will run, and your brand files.',
+    uploads: { label: 'Logo, photos or past ads', help: 'PNG, JPG, SVG or PDF, up to 4 MB each.' },
+    fields: [
+      { id: 'cr_offer', label: 'The offer', type: 'textarea', required: true, placeholder: 'What you’re promoting and why someone should act now' },
+      { id: 'cr_platforms', label: 'Where the ads will run', type: 'text', required: true, placeholder: 'e.g. Facebook, Instagram, Google' },
+      { id: 'cr_mix', label: 'Static or motion', type: 'select', options: ['Mostly static', 'Mostly motion', 'A mix'] },
+      { id: 'cr_refs', label: 'Ads you like', type: 'textarea', placeholder: 'Links or descriptions' },
+    ],
+  },
+  landing: {
+    id: 'req_landing', title: 'Your landing page brief', owner: 'client', phase: 'kickoff',
+    detail: 'One page, one job. Tell us the offer and what visitors should do.',
+    uploads: { label: 'Logo and photos', help: 'PNG, JPG, SVG or WebP, up to 4 MB each.' },
+    fields: [
+      { id: 'lp_offer', label: 'The offer', type: 'textarea', required: true },
+      { id: 'lp_action', label: 'What visitors should do', type: 'select', required: true, options: primaryActions },
+      { id: 'lp_traffic', label: 'Where visitors come from', type: 'text', placeholder: 'e.g. Facebook ads, Google ads, a mailer' },
+      { id: 'lp_domain', label: 'Your website or domain', type: 'text', placeholder: 'yourbusiness.com' },
+    ],
+  },
+  email: {
+    id: 'req_email', title: 'Your email sequence', owner: 'client', phase: 'kickoff',
+    detail: 'Which tool we build in, and what the emails should achieve.',
+    fields: [
+      { id: 'em_tool', label: 'Email tool', type: 'select', required: true, options: ['Mailchimp', 'Klaviyo', 'Constant Contact', 'HubSpot', 'Other', 'None yet'] },
+      { id: 'em_access', label: 'Access', type: 'select', required: true, options: ['Invited hello@hewn.life', 'I need help with this'] },
+      { id: 'em_goal', label: 'Goal of the sequence', type: 'select', required: true, options: ['Welcome new subscribers', 'Turn leads into customers', 'Win back past customers', 'Something else'] },
+      { id: 'em_offer', label: 'Offer or next step to point people to', type: 'textarea', required: true },
+    ],
+  },
+  blog: {
+    id: 'req_blog', title: 'Your blog posts', owner: 'client', phase: 'kickoff',
+    detail: 'Topics you want to be found for. Leave them blank and we’ll research them.',
+    fields: [
+      { id: 'bl_site', label: 'Your website', type: 'url', required: true, placeholder: 'https://' },
+      { id: 'bl_topics', label: 'Topics or searches to rank for', type: 'textarea' },
+      { id: 'bl_audience', label: 'Who you’re writing for', type: 'textarea', required: true },
+      { id: 'bl_publish', label: 'Publishing', type: 'select', required: true, options: ['I’ll give you access to publish', 'Send me the posts and I’ll publish'] },
+    ],
+  },
+  video: {
+    id: 'req_video', title: 'Your video', owner: 'client', phase: 'kickoff',
+    detail: 'Share the video as a link; long videos are too big to upload here.',
+    fields: [
+      { id: 'vd_link', label: 'Link to the video', type: 'url', required: true, placeholder: 'Google Drive, Dropbox or YouTube' },
+      { id: 'vd_platforms', label: 'Where the clips will go', type: 'text', required: true, placeholder: 'e.g. Instagram Reels, TikTok, YouTube Shorts' },
+      { id: 'vd_notes', label: 'Moments to use or avoid', type: 'textarea' },
+    ],
+  },
+  brand: {
+    id: 'req_brand', title: 'Your brand today', owner: 'client', phase: 'kickoff',
+    detail: 'What you have now and where you want it to go.',
+    uploads: { label: 'Current logo and brand files', help: 'PNG, SVG, PDF or JPG, up to 4 MB each.' },
+    fields: [
+      { id: 'br_direction', label: 'Direction', type: 'select', required: true, options: ['Refresh my current logo', 'Open to a new look'] },
+      { id: 'br_words', label: 'Three words for your brand', type: 'text', required: true },
+      { id: 'br_refs', label: 'Brands or logos you like', type: 'textarea' },
+      { id: 'br_avoid', label: 'Anything to avoid', type: 'textarea' },
+    ],
+  },
+  copy: {
+    id: 'req_copy', title: 'Your website copy brief', owner: 'client', phase: 'kickoff',
+    detail: 'The answers we write your five pages from.',
+    fields: [
+      { id: 'cp_site', label: 'Current website', type: 'url', placeholder: 'https:// (blank if none)' },
+      { id: 'cp_pages', label: 'The five pages', type: 'text', required: true, placeholder: 'e.g. Home, About, Services, Reviews, Contact' },
+      { id: 'cp_offers', label: 'What you sell', type: 'textarea', required: true },
+      { id: 'cp_customer', label: 'Your ideal customer', type: 'textarea', required: true },
+      { id: 'cp_tone', label: 'How you want to sound', type: 'text', placeholder: 'e.g. friendly, expert, straight-talking' },
+    ],
+  },
+}
+const ADDON_TAIL: Step[] = [
+  { id: 'addon_work', title: 'We’re on it', detail: 'Everything you sent is in and the work has started.', owner: 'hewn', phase: 'building' },
+  {
+    id: 'addon_review', title: 'Review your deliverables', owner: 'client', phase: 'review',
+    detail: 'Check what we made in Assets. Approve it, or tell us what to change; one round of edits is included.',
+    fields: [
+      { id: 'decision', label: 'How does it look?', type: 'select', required: true, options: ['Approved, all good', 'I have edits'] },
+      { id: 'edits', label: 'Edits', type: 'textarea', placeholder: 'What to change, and to what' },
+    ],
+  },
+  { id: 'addon_delivered', title: 'Delivered', detail: 'Final files are in Assets, with anything you need to use them.', owner: 'hewn', phase: 'live' },
+]
+
+/** The add-on SKUs in an "addons:…" package, with kits opened up into their items. */
+export function addonItems(pkg: string): string[] {
+  if (!pkg.startsWith('addons:')) return []
+  const out: string[] = []
+  for (const sku of pkg.slice(7).split(',')) {
+    const x = lookup(sku)
+    for (const s of x ? (isKit(x) ? x.includes : [sku]) : []) if (!out.includes(s) && ADDON_REQS[s]) out.push(s)
+  }
+  return out
+}
+export const addonPackage = (skus: string[]) => `addons:${skus.join(',')}`
+
+export const isPackage = (v: string) => v in PLANS || addonItems(v).length > 0
+export const stepsFor = (pkg: string): Step[] => {
+  if (pkg in PLANS) return PLANS[pkg as PlanId].map(id => S[id])
+  const items = addonItems(pkg)
+  return items.length ? [S.order, S.welcome, ...items.map(s => ADDON_REQS[s]), ...ADDON_TAIL] : []
+}
+export const packageName = (pkg: string) => {
+  if (pkg.startsWith('addons:')) return pkg.slice(7).split(',').map(s => lookup(s)?.name).filter(Boolean).join(' + ')
+  return PACKAGES.find(p => p.id === pkg)?.name ?? ''
+}
 
 /** What has happened on one step. Kept as JSON on the client's Airtable row. */
 export type StepState = {

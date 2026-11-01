@@ -11,12 +11,17 @@ import { sampleAgreement } from '@/lib/agreements/sample'
 
 export const metadata = { title: 'Client portal', robots: { index: false, follow: false } }
 
-export default async function Portal({ searchParams }: { searchParams: { billing?: string } }) {
+export default async function Portal({ searchParams }: { searchParams: { billing?: string; sample?: string } }) {
   noStore()
   // PLAN_SAMPLE=1 (local previews only) shows a made-up client without signing in.
   if (process.env.PLAN_SAMPLE === '1') {
     const a = sampleAssets()
-    return <Dashboard client={sampleClient()} messages={sampleMessages()} billing={searchParams.billing} assetCounts={{ total: a.length, toReview: a.filter(x => x.status === 'In review').length }} agreements={[sampleAgreement('Wrought'), sampleAgreement('Website in a Day', true)]} />
+    // ?sample=addons previews an à la carte order straight after checkout.
+    const now = new Date().toISOString()
+    const client = searchParams.sample === 'addons'
+      ? { ...sampleClient(), package: 'addons:kit_found,video', plan: 'Get Found Kit + Video Clip Pack', progress: { order: { done: now }, welcome: { done: now } } }
+      : sampleClient()
+    return <Dashboard client={client} messages={sampleMessages()} billing={searchParams.billing} assetCounts={{ total: a.length, toReview: a.filter(x => x.status === 'In review').length }} agreements={[sampleAgreement('Wrought'), sampleAgreement('Website in a Day', true)]} />
   }
   const email = currentClientEmail()
   if (!email) redirect('/portal/login')

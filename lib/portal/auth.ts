@@ -55,3 +55,10 @@ export function currentClientEmail(): string | null {
   const [email, x, sig] = raw.split('|')
   return check('session', email, Number(x), sig) ? email : null
 }
+
+/** A session for someone who has just paid at checkout (proved by the payment's client secret). */
+export function portalSessionFor(email: string) {
+  const e = email.trim().toLowerCase()
+  const x = Date.now() + SESSION_DAYS * 864e5
+  return { value: `${e}|${x}|${sign('session', e, x)}`, maxAge: SESSION_DAYS * 86400 }
+}
