@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import PurchaseTracker from '@/components/PurchaseTracker'
 import { paidOrder } from '@/lib/checkout/order'
+import { PHASES, stepsFor } from '@/lib/portal/onboarding'
 
 export const metadata: Metadata = {
   title: 'Thank you — Hewn Life',
@@ -39,11 +40,12 @@ export default async function ThankYou({ searchParams }: { searchParams: { [key:
   const portalHref = order?.succeeded ? `/api/portal/checkout?${new URLSearchParams({ pi: order.id, s: secret! })}` : '/portal/login'
   const failed = status === 'failed'
 
-  const steps = [
-    { title: 'Order placed', body: 'Payment received. Your receipt is on its way.', state: 'done' },
-    { title: 'Tell us what we need', body: 'A few quick questions and your files, in your portal. About 10 minutes.', state: 'now' },
-    { title: 'We get to work', body: 'You’ll see every step in your portal, and we’ll email you as things move.', state: 'next' },
-  ] as const
+  // The plan for exactly what they bought: their requirements first, then the phases we take it through.
+  const plan = order ? stepsFor(order.pkg) : []
+  const reqs = plan.filter(st => st.owner === 'client' && st.phase === 'kickoff')
+  const isAddons = order?.pkg.startsWith('addons:') ?? false
+  const phaseLabel: Record<string, string> = { received: 'Order received', kickoff: 'Your requirements', building: 'We build', review: 'Your review', live: isAddons ? 'Delivered' : 'Live' }
+  const phases = (plan.length ? PHASES.filter(ph => plan.some(st => st.phase === ph.id)) : PHASES).map(ph => ph.id)
 
   return (
     <div className="bg-bone px-5 pb-24 pt-28">
@@ -67,36 +69,62 @@ export default async function ThankYou({ searchParams }: { searchParams: { [key:
                 Thank you{firstName ? `, ${firstName}` : ''}!
               </h1>
               <p className="mx-auto mt-4 max-w-lg font-body text-lg text-ink/70">
-                Your order is confirmed{order?.email ? <> and a receipt is on its way to <span className="font-medium text-ink">{order.email}</span></> : ''}. One quick thing and we can start.
+                Your order is confirmed{order?.email ? <> and your receipt is on its way to <span className="font-medium text-ink">{order.email}</span></> : ''}. We’re ready to start.
               </p>
             </div>
 
-            {/* The next step, front and centre */}
+            {/* The plan, and the step we're starting on now */}
             <div className="mt-10 overflow-hidden rounded-[32px] bg-forest text-mist">
               <div className="p-7 sm:p-10">
-                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-lime">Your next step</p>
-                <h2 className="mt-3 font-display text-[clamp(26px,3vw,36px)] font-medium leading-tight tracking-[-0.03em]">Tell us what we need to get started.</h2>
-                <p className="mt-3 max-w-xl font-body text-mist/75">Your portal has a short checklist for exactly what you bought: a few questions, logins to share and files to upload. The sooner it’s in, the sooner your work starts.</p>
+                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-lime">Your plan{order?.title && order.title !== 'Your order' ? ` · ${order.title}` : ''}</p>
+                <h2 className="mt-3 font-display text-[clamp(26px,3vw,38px)] font-medium leading-tight tracking-[-0.03em]">Your plan is ready. Let’s start step one.</h2>
+                <p className="mt-3 max-w-xl font-body text-mist/75">
+                  We’ve laid out exactly what we need for {isAddons ? 'what you ordered' : 'your project'}. Go through it now and we start work as soon as it’s in.
+                </p>
+
+                {/* Phase track */}
+                <ol className="mt-8 flex items-start" aria-label="Your plan">
+                  {phases.map((id, i) => {
+                    const state = i === 0 ? 'done' : i === 1 ? 'now' : 'next'
+                    return (
+                      <li key={id} className="relative flex flex-1 flex-col items-center text-center">
+                        {i > 0 && <span className={`absolute right-1/2 top-[15px] h-[2px] w-full ${i === 1 ? 'bg-lime' : 'bg-mist/15'}`} aria-hidden />}
+                        <span className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-full ${state === 'done' ? 'bg-lime text-forest' : state === 'now' ? 'bg-forest ring-2 ring-lime' : 'border border-mist/25 bg-forest'}`}>
+                          {state === 'done' ? <Tick className="h-4 w-4" /> : state === 'now' ? <span className="h-2.5 w-2.5 rounded-full bg-lime" /> : null}
+                        </span>
+                        <span className={`mt-2 px-1 font-body text-[11px] leading-tight sm:text-xs ${state === 'next' ? 'text-mist/50' : 'font-semibold text-mist'}`}>{phaseLabel[id]}</span>
+                      </li>
+                    )
+                  })}
+                </ol>
+              </div>
+
+              <div className="border-t border-mist/10 bg-forest-2 p-7 sm:p-10">
+                <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-mist/70">
+                  <span className="rounded-full bg-lime px-2 py-0.5 text-[9px] text-forest">Now</span> Step one: your requirements
+                </p>
+                {reqs.length > 0 ? (
+                  <ul className="mt-5 space-y-3">
+                    {reqs.map(r => (
+                      <li key={r.id} className="flex items-start gap-3">
+                        <span className="mt-0.5 h-5 w-5 flex-shrink-0 rounded-md border-2 border-mist/40" aria-hidden />
+                        <span>
+                          <span className="block font-body text-[15px] font-medium">{r.title}</span>
+                          <span className="mt-0.5 block font-body text-[13px] leading-snug text-mist/60">{r.detail}</span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-4 font-body text-mist/75">A short checklist in your portal: the questions, logins and files your project needs.</p>
+                )}
                 <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <a href={portalHref} className="inline-flex items-center justify-center gap-2 rounded-full bg-lime px-7 py-4 font-body text-[15px] font-semibold text-forest transition hover:bg-white">
-                    Start my requirements <span aria-hidden>→</span>
+                  <a href={portalHref} className="inline-flex flex-shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-lime px-7 py-4 font-body text-[15px] font-semibold text-forest transition hover:bg-white">
+                    Start now <span aria-hidden>→</span>
                   </a>
-                  <p className="font-body text-sm text-mist/60">Takes about 10 minutes. We’ve also emailed you a link.</p>
+                  <p className="font-body text-sm text-mist/60">About 10 minutes. Each part saves as you send it, and we’ve emailed you a link too.</p>
                 </div>
               </div>
-              <ol className="grid grid-cols-1 border-t border-mist/10 sm:grid-cols-3">
-                {steps.map((s, i) => (
-                  <li key={s.title} className={`flex gap-3 p-6 ${i ? 'border-t border-mist/10 sm:border-l sm:border-t-0' : ''} ${s.state === 'now' ? 'bg-forest-2' : ''}`}>
-                    <span className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full font-mono text-[11px] font-bold ${s.state === 'done' ? 'bg-lime text-forest' : s.state === 'now' ? 'bg-mist text-forest' : 'border border-mist/30 text-mist/60'}`}>
-                      {s.state === 'done' ? <Tick className="h-3.5 w-3.5" /> : i + 1}
-                    </span>
-                    <span>
-                      <span className="block font-body text-sm font-semibold">{s.title}{s.state === 'now' && <span className="ml-2 rounded-full bg-lime px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-forest">Now</span>}</span>
-                      <span className="mt-1 block font-body text-xs leading-relaxed text-mist/65">{s.body}</span>
-                    </span>
-                  </li>
-                ))}
-              </ol>
             </div>
 
             {/* What they bought */}
