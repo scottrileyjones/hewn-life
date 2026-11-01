@@ -9,6 +9,8 @@
  */
 import type { GlyphKey, SceneName } from '@/lib/strata'
 import { ADDONS, KITS, lookup, type Kit } from '@/lib/addons'
+import type { PhotoKey } from '@/lib/photos'
+import type { PlatformKey } from '@/lib/platforms'
 
 /** A headline with an optional italic accent run at the end. */
 export type Head = { text: string; accent?: string }
@@ -17,9 +19,15 @@ export type Mock =
   | 'brandsite' | 'funnel' | 'dashboard' | 'site' | 'landing' | 'profile' | 'audit' | 'reviews'
   | 'tracking' | 'ads' | 'email' | 'blog' | 'clips' | 'brandsheet' | 'copy'
 
+/** A floating card on a photo: a platform logo or a glyph, a label, an optional status. */
+export type Chip = { logo?: PlatformKey; glyph?: GlyphKey; label: string; sub?: string }
+export type Item = { glyph: GlyphKey; label: string; logos?: PlatformKey[] }
+export type PhotoSlide = { kind: 'photo'; photo: PhotoKey; head: Head; chips: Chip[] }
+
 export type Slide =
   | { kind: 'cover'; scene: SceneName; seed: number; eyebrow: string; head: Head; sub: string }
-  | { kind: 'included'; head: Head; items: { glyph: GlyphKey; label: string }[] }
+  | PhotoSlide
+  | { kind: 'included'; head: Head; items: Item[] }
   | { kind: 'result'; mock: Mock; head: Head; caption: string }
   | { kind: 'steps'; head: Head; steps: { when: string; what: string }[] }
   | { kind: 'kit'; head: Head; kit: Kit }
@@ -45,12 +53,17 @@ const PLANS: Record<string, Gallery> = {
     label: 'Hewn',
     slides: [
       { kind: 'cover', scene: 'valley', seed: 21, eyebrow: 'Hewn · monthly plan', head: { text: 'Your brand,', accent: 'built to last.' }, sub: 'Brand, website and local presence, shaped once and kept sharp every month.' },
+      { kind: 'photo', photo: 'leatherArtisan', head: { text: 'A brand that looks', accent: 'as good as your work.' }, chips: [
+        { glyph: 'brand', label: 'Logo and style guide', sub: 'Delivered' },
+        { glyph: 'creative', label: 'Website', sub: 'Live' },
+        { logo: 'googleMaps', label: 'Google Business Profile', sub: 'Optimized' },
+      ] },
       { kind: 'included', head: { text: 'What’s', accent: 'included' }, items: [
         { glyph: 'strategy', label: 'Brand strategy and messaging' },
         { glyph: 'brand', label: 'Logo, visual identity and style guide' },
         { glyph: 'creative', label: 'Custom website, up to 5 pages' },
         { glyph: 'seo', label: 'SEO foundation' },
-        { glyph: 'social', label: 'Google Business Profile and local listings' },
+        { glyph: 'social', label: 'Google Business Profile and local listings', logos: ['googleMaps'] },
         { glyph: 'data', label: 'Monthly strategy call' },
       ] },
       { kind: 'result', mock: 'brandsite', head: { text: 'What you', accent: 'walk away with.' }, caption: 'A brand system, and a website built on it that turns visitors into calls.' },
@@ -61,9 +74,14 @@ const PLANS: Record<string, Gallery> = {
     label: 'Wrought',
     slides: [
       { kind: 'cover', scene: 'canyon', seed: 8, eyebrow: 'Wrought · monthly plan', head: { text: 'Your full', accent: 'marketing engine.' }, sub: 'Everything in Hewn, plus paid media, funnels, automation and a CRM that follows up for you.' },
+      { kind: 'photo', photo: 'coastPhone', head: { text: 'Found, clicked,', accent: 'followed up.' }, chips: [
+        { logo: 'googleAds', label: 'Search campaign', sub: 'Live' },
+        { logo: 'meta', label: 'Retargeting', sub: 'Live' },
+        { glyph: 'lifecycle', label: 'Follow-up email', sub: 'Sent automatically' },
+      ] },
       { kind: 'included', head: { text: 'What’s', accent: 'included' }, items: [
         { glyph: 'brand', label: 'Everything in Hewn' },
-        { glyph: 'media', label: 'Paid media on Google and Meta' },
+        { glyph: 'media', label: 'Paid media on Google and Meta', logos: ['googleAds', 'meta'] },
         { glyph: 'creative', label: 'Sales funnels and landing pages' },
         { glyph: 'lifecycle', label: 'Marketing automation and nurture' },
         { glyph: 'data', label: 'CRM setup and pipeline' },
@@ -77,6 +95,11 @@ const PLANS: Record<string, Gallery> = {
     label: 'Forged',
     slides: [
       { kind: 'cover', scene: 'forge', seed: 5, eyebrow: 'Forged · monthly plan', head: { text: 'Your entire', accent: 'marketing team.' }, sub: 'All nine pillars, a fractional CMO, and weekly access to the people doing the work.' },
+      { kind: 'photo', photo: 'teamMeeting', head: { text: 'A team', accent: 'in your corner.' }, chips: [
+        { logo: 'slack', label: 'Slack access', sub: 'Monday to Friday' },
+        { glyph: 'data', label: 'KPI dashboard', sub: 'Monthly' },
+        { glyph: 'strategy', label: 'Growth plan', sub: 'Quarterly' },
+      ] },
       { kind: 'included', head: { text: 'What’s', accent: 'included' }, items: [
         { glyph: 'media', label: 'Everything in Wrought' },
         { glyph: 'creators', label: 'Review generation and testimonials' },
@@ -93,6 +116,11 @@ const PLANS: Record<string, Gallery> = {
     label: 'Website in a Day',
     slides: [
       { kind: 'cover', scene: 'amber', seed: 7, eyebrow: 'Website in a Day', head: { text: 'Your website.', accent: 'Live in 24 hours.' }, sub: 'Custom design and copy from your brief. Built, hosted and yours to keep.' },
+      { kind: 'photo', photo: 'cafeOwner', head: { text: 'Open for business.', accent: 'Online, too.' }, chips: [
+        { glyph: 'creative', label: 'Your website', sub: 'Live in 24 hours' },
+        { glyph: 'lifecycle', label: 'Booking form', sub: 'On' },
+        { logo: 'google', label: 'SEO-ready', sub: 'Built in' },
+      ] },
       { kind: 'included', head: { text: 'What’s', accent: 'included' }, items: [
         { glyph: 'creative', label: 'Custom design for mobile and desktop' },
         { glyph: 'brand', label: 'Copy written from your brief' },
@@ -112,27 +140,35 @@ const PLANS: Record<string, Gallery> = {
 
 /* ── One-time add-ons ───────────────────────────────────────── */
 
-type AddOnCopy = { scene: SceneName; seed: number; head: Head; items: { glyph: GlyphKey; label: string }[]; mock: Mock; result: Head; caption: string }
+type AddOnCopy = { scene: SceneName; seed: number; head: Head; items: Item[]; mock: Mock; result: Head; caption: string; photo: Omit<PhotoSlide, 'kind'> }
 
 const ADDON_COPY: Record<string, AddOnCopy> = {
   gbp: {
     scene: 'meadow', seed: 3, head: { text: 'Get found on', accent: 'Google Maps.' },
     items: [
-      { glyph: 'seo', label: 'Categories and services set up' },
+      { glyph: 'seo', label: 'Categories and services set up', logos: ['googleMaps'] },
       { glyph: 'creative', label: 'Photos and description written' },
       { glyph: 'social', label: 'Your first posts published' },
       { glyph: 'data', label: 'Details matched across the main directories' },
     ],
+    photo: { photo: 'cafeOwner', head: { text: 'When locals search,', accent: 'you show up.' }, chips: [
+      { logo: 'googleMaps', label: 'Google Maps', sub: 'Profile complete' },
+      { logo: 'google', label: 'Google Search', sub: 'Details matched' },
+    ] },
     mock: 'profile', result: { text: 'A profile that', accent: 'gets the call.' }, caption: 'Complete, accurate and ready when locals search for what you do.',
   },
   visibility: {
     scene: 'survey', seed: 12, head: { text: 'See how you show up,', accent: 'everywhere.' },
     items: [
-      { glyph: 'seo', label: 'Google search and Maps' },
-      { glyph: 'strategy', label: 'ChatGPT and Gemini answers' },
+      { glyph: 'seo', label: 'Google search and Maps', logos: ['google', 'googleMaps'] },
+      { glyph: 'strategy', label: 'ChatGPT and Gemini answers', logos: ['chatgpt', 'gemini'] },
       { glyph: 'data', label: 'Side by side with your competitors' },
       { glyph: 'brand', label: 'A ranked list of fixes' },
     ],
+    photo: { photo: 'coastPhone', head: { text: 'See where', accent: 'they find you.' }, chips: [
+      { logo: 'google', label: 'Google Search' }, { logo: 'googleMaps', label: 'Google Maps' },
+      { logo: 'chatgpt', label: 'ChatGPT' }, { logo: 'gemini', label: 'Gemini' },
+    ] },
     mock: 'audit', result: { text: 'Know exactly', accent: 'what to fix.' }, caption: 'Where you stand on each channel, and the fixes ranked by what moves you most.',
   },
   reviews: {
@@ -142,16 +178,25 @@ const ADDON_COPY: Record<string, AddOnCopy> = {
       { glyph: 'brand', label: 'A QR card for your counter' },
       { glyph: 'creators', label: 'Reply templates for every kind of review' },
     ],
+    photo: { photo: 'baristas', head: { text: 'Every great job,', accent: 'a review request.' }, chips: [
+      { logo: 'google', label: 'Google review', sub: 'Request sent' },
+      { glyph: 'lifecycle', label: 'Text and email', sub: 'After each job' },
+    ] },
     mock: 'reviews', result: { text: 'Every happy customer,', accent: 'asked.' }, caption: 'The request goes out after each job without anyone remembering to send it.',
   },
   ads_audit: {
     scene: 'topo', seed: 14, head: { text: 'Stop paying for', accent: 'ads that don’t work.' },
     items: [
-      { glyph: 'media', label: 'Google Ads account reviewed' },
-      { glyph: 'social', label: 'Meta Ads account reviewed' },
+      { glyph: 'media', label: 'Google Ads account reviewed', logos: ['googleAds'] },
+      { glyph: 'social', label: 'Meta Ads account reviewed', logos: ['meta'] },
       { glyph: 'strategy', label: 'Wasted spend found' },
       { glyph: 'data', label: 'Conversion tracking fixed' },
     ],
+    photo: { photo: 'teamMeeting', head: { text: 'Know what your ads', accent: 'really bring in.' }, chips: [
+      { logo: 'googleAds', label: 'Google Ads', sub: 'Audited' },
+      { logo: 'meta', label: 'Meta Ads', sub: 'Audited' },
+      { glyph: 'data', label: 'Conversion tracking', sub: 'Fixed' },
+    ] },
     mock: 'tracking', result: { text: 'See which ads', accent: 'bring customers.' }, caption: 'Tracking that follows each click through to a lead, so spend goes where it works.',
   },
   creatives: {
@@ -159,8 +204,13 @@ const ADDON_COPY: Record<string, AddOnCopy> = {
     items: [
       { glyph: 'creative', label: '8 ad creatives' },
       { glyph: 'media', label: 'Static or motion' },
-      { glyph: 'social', label: 'Sized for any platform' },
+      { glyph: 'social', label: 'Sized for any platform', logos: ['instagram', 'facebook', 'tiktok'] },
     ],
+    photo: { photo: 'creator', head: { text: 'Made for', accent: 'every feed.' }, chips: [
+      { logo: 'instagram', label: 'Instagram', sub: 'Feed and Stories' },
+      { logo: 'facebook', label: 'Facebook', sub: 'Feed' },
+      { logo: 'tiktok', label: 'TikTok', sub: 'In-feed' },
+    ] },
     mock: 'ads', result: { text: 'Every size,', accent: 'every feed.' }, caption: 'Square, portrait and story formats, so every placement gets an ad made for it.',
   },
   landing: {
@@ -170,6 +220,11 @@ const ADDON_COPY: Record<string, AddOnCopy> = {
       { glyph: 'brand', label: 'Designed and written for you' },
       { glyph: 'strategy', label: 'Live within 24 hours of your brief' },
     ],
+    photo: { photo: 'coastPhone', head: { text: 'From the ad', accent: 'to the call.' }, chips: [
+      { logo: 'googleAds', label: 'From Google Ads' },
+      { logo: 'meta', label: 'From Meta' },
+      { glyph: 'creative', label: 'Your page', sub: 'Live in 24 hours' },
+    ] },
     mock: 'landing', result: { text: 'One page.', accent: 'One job.' }, caption: 'A single offer, a clear call to action, and nothing to distract from it.',
   },
   email: {
@@ -180,6 +235,10 @@ const ADDON_COPY: Record<string, AddOnCopy> = {
       { glyph: 'brand', label: 'Written for your business' },
       { glyph: 'data', label: 'Built in your email tool' },
     ],
+    photo: { photo: 'baristas', head: { text: 'Stay in touch', accent: 'while you work.' }, chips: [
+      { logo: 'gmail', label: 'Email 3 of 6', sub: 'Sent' },
+      { glyph: 'lifecycle', label: 'Your sequence', sub: 'Always on' },
+    ] },
     mock: 'email', result: { text: 'Six emails,', accent: 'always on.' }, caption: 'Every new lead gets the same well-timed follow-up, without you lifting a finger.',
   },
   blog: {
@@ -187,9 +246,13 @@ const ADDON_COPY: Record<string, AddOnCopy> = {
     items: [
       { glyph: 'brand', label: '4 blog posts' },
       { glyph: 'creative', label: '1,200 to 1,500 words each' },
-      { glyph: 'seo', label: 'Keyword-researched' },
+      { glyph: 'seo', label: 'Keyword-researched', logos: ['google'] },
       { glyph: 'social', label: 'Ready to publish' },
     ],
+    photo: { photo: 'woodCarving', head: { text: 'Answers to what', accent: 'customers search.' }, chips: [
+      { logo: 'google', label: 'Google Search', sub: 'Keyword-researched' },
+      { glyph: 'brand', label: '4 posts', sub: 'Ready to publish' },
+    ] },
     mock: 'blog', result: { text: 'Four posts,', accent: 'ready to publish.' }, caption: 'Each one written around what your customers already search for.',
   },
   video: {
@@ -197,8 +260,11 @@ const ADDON_COPY: Record<string, AddOnCopy> = {
     items: [
       { glyph: 'creative', label: '10 short clips from one video' },
       { glyph: 'brand', label: 'Captioned' },
-      { glyph: 'social', label: 'For Reels, TikTok and Shorts' },
+      { glyph: 'social', label: 'For Reels, TikTok and Shorts', logos: ['instagram', 'tiktok', 'youtubeShorts'] },
     ],
+    photo: { photo: 'creator', head: { text: 'Film once.', accent: 'Post all week.' }, chips: [
+      { logo: 'instagram', label: 'Reels' }, { logo: 'tiktok', label: 'TikTok' }, { logo: 'youtubeShorts', label: 'Shorts' },
+    ] },
     mock: 'clips', result: { text: 'A week of posts', accent: 'from one shoot.' }, caption: 'Vertical, captioned and cut for the feeds your customers scroll.',
   },
   brand: {
@@ -209,6 +275,11 @@ const ADDON_COPY: Record<string, AddOnCopy> = {
       { glyph: 'strategy', label: 'A style guide' },
       { glyph: 'social', label: 'Ready-to-use files' },
     ],
+    photo: { photo: 'clayHands', head: { text: 'Shaped to fit', accent: 'your business.' }, chips: [
+      { glyph: 'brand', label: 'Logo', sub: 'Refreshed' },
+      { glyph: 'creative', label: 'Colors and type' },
+      { glyph: 'strategy', label: 'Style guide', sub: 'With files' },
+    ] },
     mock: 'brandsheet', result: { text: 'Your brand,', accent: 'in one place.' }, caption: 'Logo, colors and type with a guide, so everything you make looks like you.',
   },
   copy: {
@@ -218,6 +289,10 @@ const ADDON_COPY: Record<string, AddOnCopy> = {
       { glyph: 'strategy', label: 'Structured to lead to a call' },
       { glyph: 'seo', label: 'Optimized for search' },
     ],
+    photo: { photo: 'leatherArtisan', head: { text: 'Every word', accent: 'doing a job.' }, chips: [
+      { glyph: 'brand', label: 'Five pages', sub: 'Written' },
+      { logo: 'google', label: 'Search-optimized' },
+    ] },
     mock: 'copy', result: { text: 'Five pages,', accent: 'one clear story.' }, caption: 'Each page knows its job and points the reader to the next step.',
   },
 }
@@ -234,6 +309,7 @@ function addOnGallery(sku: string): Gallery | null {
     label: a.name,
     slides: [
       { kind: 'cover', scene: c.scene, seed: c.seed, eyebrow: a.name, head: c.head, sub: a.detail },
+      { kind: 'photo', ...c.photo },
       { kind: 'included', head: { text: 'What’s', accent: 'included' }, items: c.items },
       { kind: 'result', mock: c.mock, head: c.result, caption: c.caption },
       { kind: 'steps', head: { text: 'How it', accent: 'works' }, steps: oneTimeSteps },
@@ -250,6 +326,7 @@ function kitGallery(sku: string): Gallery | null {
     label: k.name,
     slides: [
       { kind: 'cover', scene, seed, eyebrow: k.name, head: splitHead(k.pitch), sub: `${k.includes.map(s => lookup(s)?.name).join(', ')}, together for less.` },
+      { kind: 'photo', ...parts[0].photo },
       { kind: 'kit', head: { text: 'Everything in', accent: 'the kit' }, kit: k },
       ...parts.map((p): Slide => ({ kind: 'result', mock: p.mock, head: p.result, caption: p.caption })),
       { kind: 'steps', head: { text: 'How it', accent: 'works' }, steps: oneTimeSteps },
