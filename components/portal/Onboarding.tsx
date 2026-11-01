@@ -150,12 +150,12 @@ export function Timeline({ t }: { t: Tracked }) {
           <li key={step.id} className="relative flex gap-3 pb-4 last:pb-0">
             {i < t.rows.length - 1 && <span aria-hidden className={`absolute left-[11px] top-6 h-[calc(100%-12px)] w-0.5 ${status === 'done' ? 'bg-forest' : 'bg-ink/10'}`} />}
             <span className={`relative z-10 mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[12px] font-bold
-              ${status === 'done' ? 'bg-forest text-mist' : status === 'submitted' ? 'bg-[#F6E7D4] text-[#7A4A12]' : status === 'current' || theirs.has(step.id) ? 'border-2 border-forest bg-lime text-forest' : 'border-2 border-ink/15 bg-white'}`}>{theirs.has(step.id) ? '!' : ICON[status]}</span>
+              ${status === 'done' ? 'bg-forest text-mist' : status === 'submitted' ? 'bg-[#F6E7D4] text-[#7A4A12]' : theirs.has(step.id) ? 'border-2 border-lime bg-gradient-to-br from-lime/60 via-lime/20 to-white' : status === 'current' ? 'border-2 border-forest bg-lime text-forest' : 'border-2 border-ink/15 bg-white'}`}>{theirs.has(step.id) ? <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-forest/70" /> : ICON[status]}</span>
             <div className="min-w-0">
               <p className={`font-body text-[15px] leading-snug ${status === 'waiting' && !theirs.has(step.id) ? 'text-ink/50' : 'font-medium'}`}>
                 {step.title}{step.owner === 'client' && status !== 'done' && <span className="ml-2 rounded-full bg-lime/70 px-2 py-0.5 align-middle font-body text-[10px] font-medium text-forest">You</span>}
               </p>
-              <p className="font-body text-[12px] text-ink/50">{status === 'done' ? `Done ${day(state.done)}` : status === 'submitted' ? `Sent ${day(state.submitted)} · ${LABEL.submitted}` : theirs.has(step.id) ? 'Your turn' : LABEL[status]}</p>
+              <p className="font-body text-[12px] text-ink/50">{status === 'done' ? `Done ${day(state.done)}` : status === 'submitted' ? `Sent ${day(state.submitted)} · ${LABEL.submitted}` : theirs.has(step.id) ? 'Ready for you' : LABEL[status]}</p>
             </div>
           </li>
         ))}
