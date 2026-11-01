@@ -12,7 +12,7 @@ export default async function DocumentsPage() {
   noStore()
   const sample = process.env.PLAN_SAMPLE === '1'
   const user = currentUser() ?? (sample ? 'alex@hewn.life' : null)
-  if (!user) redirect('/crm/login')
+  if (!user) redirect('/crm/login?next=/hq/documents')
   const all = sample ? [sampleInternal(false), sampleInternal(true)] : await loadAgreements().catch(() => [])
   const docs = all.map(a => ({ ...a, terms: internalTerms(a) })).filter((a): a is typeof a & { terms: InternalTerms } => !!a.terms && a.status !== 'Void')
   return <Documents user={user} docs={docs} />

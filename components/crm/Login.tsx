@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 
-export default function CrmLogin({ expired }: { expired: boolean }) {
+export default function CrmLogin({ expired, next = '' }: { expired: boolean; next?: string }) {
   const [email, setEmail] = useState('')
   const [state, setState] = useState<'idle' | 'sending' | 'sent'>('idle')
   const [error, setError] = useState('')
@@ -9,7 +9,7 @@ export default function CrmLogin({ expired }: { expired: boolean }) {
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     setError(''); setState('sending')
-    const res = await fetch('/api/crm/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) })
+    const res = await fetch('/api/crm/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, next }) })
     const out = await res.json().catch(() => ({}))
     if (!res.ok) { setError(out.error || 'Something went wrong.'); setState('idle'); return }
     setState('sent')

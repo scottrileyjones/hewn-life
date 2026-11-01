@@ -42,7 +42,7 @@ export default function Documents({ user, docs }: { user: string; docs: Row[] })
                     </ul>
                   </div>
                   <div className="flex flex-wrap items-center gap-2 font-body text-[13px]">
-                    {d.status === 'Signed' && <a href={`/api/agreements/pdf?id=${d.id}`} target="_blank" rel="noopener noreferrer" className="text-forest underline underline-offset-2">Signed PDF</a>}
+                    {d.status === 'Signed' && <a href={`/api/agreements/pdf?id=${d.id}&download=1`} className="text-forest underline underline-offset-2">Download PDF</a>}
                     {d.status !== 'Signed' && d.status !== 'Void' && <button onClick={() => remind(d.id)} className="text-ink/60 underline underline-offset-2">Remind</button>}
                     <Link href={`/hq/documents/${d.id}`} className={`rounded-full px-4 py-1.5 ${needsMe ? 'bg-forest text-mist' : 'border border-ink/15'}`}>{needsMe ? 'Review and sign' : 'Open'}</Link>
                   </div>
