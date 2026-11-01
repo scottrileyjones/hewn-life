@@ -17,5 +17,5 @@ export function payLink(a: Agreement): string | null {
   const tier = a.product.toLowerCase()
   const priceId = PRICE_IDS[tier]?.[billing]
   if (!priceId) return null
-  return `/checkout?${new URLSearchParams({ priceId, mode: 'subscription', name: a.product, price: String(d.fee), billing, tier, email: a.clientEmail, fullName: d.signerName, businessName: d.clientLegalName || a.company })}`
+  return `/checkout?${new URLSearchParams({ priceId, mode: 'subscription', name: a.product, price: String(d.fee), billing, tier, agreement: a.id, email: a.clientEmail, fullName: d.signerName, businessName: d.clientLegalName || a.company })}`
 }

@@ -5,7 +5,9 @@ import { provisionPortal } from '@/lib/portal/provision'
 import { enroll, exitFlows } from '@/lib/flows/engine'
 import { lookup } from '@/lib/addons'
 import { addonPackage } from '@/lib/portal/onboarding'
-import { notifyAddonOrder } from '@/lib/portal/notify'
+import { notifyAddonOrder, notifyCheckoutAgreement } from '@/lib/portal/notify'
+import { getAgreement, pdfName } from '@/lib/agreements/data'
+import { signedPdf } from '@/lib/agreements/pdf'
 
 export async function POST(request: Request) {
   const body = await request.text()
@@ -53,6 +55,21 @@ export async function POST(request: Request) {
     await converted(session.customer_email ?? session.customer_details?.email ?? '')
   }
 
+  // The agreement they signed at checkout: their countersigned copy, once paid.
+  const signedCopy = async (customer: string | Stripe.Customer | Stripe.DeletedCustomer | null, meta?: Stripe.Metadata | null) => {
+    try {
+      let id = meta?.agreementId
+      if (!id && typeof customer === 'string') {
+        const c = await stripe.customers.retrieve(customer)
+        if (!c.deleted) id = c.metadata?.agreementId
+      }
+      const a = id ? await getAgreement(id) : null
+      if (!a?.clientSig) return
+      const bytes = await signedPdf(a)
+      await notifyCheckoutAgreement({ title: a.title, clientEmail: a.clientEmail, signer: `${a.clientSig.name}, ${a.clientSig.title}`, company: a.company }, { filename: pdfName(a), content: Buffer.from(bytes).toString('base64') })
+    } catch (err) { console.error('Signed copy email failed:', err) }
+  }
+
   // A first purchase gets a client portal with its package's onboarding plan, and joins the lifecycle flows. Never fail the webhook over it.
   const portal = async (customer: string | Stripe.Customer | Stripe.DeletedCustomer | null, email: string, meta?: Stripe.Metadata | null) => {
     try {
@@ -78,7 +95,7 @@ export async function POST(request: Request) {
       amount: invoice.amount_paid ? invoice.amount_paid / 100 : undefined,
     })
     await converted(invoice.customer_email ?? '')
-    if (invoice.billing_reason === 'subscription_create') await portal(invoice.customer, invoice.customer_email ?? '')
+    if (invoice.billing_reason === 'subscription_create') { await portal(invoice.customer, invoice.customer_email ?? ''); await signedCopy(invoice.customer) }
   }
   if (event.type === 'payment_intent.succeeded') {
     const pi = event.data.object as Stripe.PaymentIntent
@@ -102,6 +119,7 @@ export async function POST(request: Request) {
       const items = skus.map(sku => lookup(sku)!).map(x => ({ name: x.name, detail: 'includes' in x ? `Includes ${x.includes.map(s => lookup(s)?.name).join(', ')}` : x.detail }))
       try { await notifyAddonOrder({ email, name: m.fullName, company: m.businessName, phone: m.phone, notes: m.notes, items, amount: pi.amount_received }) } catch (err) { console.error('Add-on order notice failed:', err) }
     } else if (pi.metadata?.tier) await portal(pi.customer, email, pi.metadata)
+    if (pi.metadata?.tier) await signedCopy(pi.customer, pi.metadata)
   }
 
   // A cancelled monthly plan joins the win-back flow.

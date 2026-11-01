@@ -382,7 +382,7 @@ export function render(d: Deal): Doc {
     ],
     list: [
       `Client: ${client}`,
-      `Client address: ${or(d.clientAddress, '[address]')}`,
+      `Client address: ${or(d.clientAddress, d.signerEmail ? 'not given; notices go by email to the contact below' : '[address]')}`,
       `Client contact for notices: ${or(d.signerName, '[name]')}, ${or(d.signerEmail, '[email]')}`,
       `Effective Date: ${longDate(d.effectiveDate)}`,
       `Start Date: ${longDate(d.startDate)}`,
