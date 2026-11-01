@@ -9,7 +9,7 @@ export default function Privacy() {
   return (
     <LegalLayout
       title="Privacy Policy"
-      updated="October 31, 2026"
+      updated="November 1, 2026"
       intro="This Privacy Policy explains how Hewn Holdings LLC, doing business as Hewn Life (“Hewn Life,” “we,” “us” or “our”) collects, uses, shares and protects personal information when you visit hewn.life, fill in one of our forms, book a call, receive our emails or buy our Services. It doesn’t cover personal data we process for clients about their own customers; that is governed by our Data Processing Addendum and the client’s own privacy policy."
       summary={[
         'We collect what you give us in our forms (like your name, email, business and answers) plus usage data from cookies if you accept them.',
@@ -93,7 +93,7 @@ export default function Privacy() {
           body: [
             'When you submit a form, we email you your growth plan and may send one follow-up a few days later if you agreed to receive marketing emails. Clients also receive service and billing emails. You can unsubscribe from marketing emails with the link in any of them or by emailing hello@hewn.life. We’ll still send transactional emails such as receipts and renewal notices.',
             'We don’t send text messages without your separate consent. Giving us your phone number doesn’t sign you up for texts. Clients can turn on project text alerts in their client portal, and anyone can tick a separate, optional box on our forms to get occasional marketing texts; we record when and how they agreed. Reply STOP to any text to opt out, or turn texts off in the portal. See our SMS Terms.',
-            'We don’t sell, rent or share mobile numbers or text-message consent with third parties or affiliates for their marketing. Mobile numbers and opt-in data are used only to send the texts you asked for.',
+            'No mobile information will be shared with third parties or affiliates for marketing or promotional purposes. Text messaging opt-in data and consent will not be shared with any third parties, except the providers that deliver our messages (Twilio). Mobile numbers and opt-in data are used only to send the texts you asked for.',
           ],
         },
         {
