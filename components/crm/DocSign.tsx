@@ -10,7 +10,7 @@ const when = (iso: string) => new Date(iso).toLocaleString('en-US', { month: 'lo
 const input = 'mt-1 w-full rounded-[12px] border border-ink/[0.15] px-3 py-2.5 font-body text-[15px] text-ink focus:border-forest focus:outline-none'
 
 /** One internal document: read it, then sign in your capacities. */
-export default function DocSign({ user, doc: initial, terms }: { user: string; doc: Agreement; terms: InternalTerms }) {
+export default function DocSign({ user, doc: initial, terms, next }: { user: string; doc: Agreement; terms: InternalTerms; next?: { id: string; title: string } | null }) {
   const [d, setD] = useState(initial)
   const idx = terms.signers.findIndex(s => s.email === user)
   const me = idx >= 0 ? terms.signers[idx] : null
@@ -21,6 +21,7 @@ export default function DocSign({ user, doc: initial, terms }: { user: string; d
   const [consent, setConsent] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const [done, setDone] = useState(false)
   const canSign = me && !sigs[idx] && d.status !== 'Void'
 
   async function sign(e: React.FormEvent) {
@@ -30,7 +31,7 @@ export default function DocSign({ user, doc: initial, terms }: { user: string; d
     const out = await res.json().catch(() => ({}))
     setBusy(false)
     if (!res.ok) { setError(out.error || 'Couldn’t sign. Try again.'); return }
-    setD(out.agreement); window.scrollTo({ top: 0, behavior: 'smooth' })
+    setD(out.agreement); setDone(true); window.scrollTo({ top: 0 })
   }
 
   return (
@@ -46,7 +47,9 @@ export default function DocSign({ user, doc: initial, terms }: { user: string; d
           </ul>
           <div className="mt-4 flex flex-wrap gap-2">
             {canSign && <a href="#sign" className="rounded-full bg-forest px-5 py-2 font-body text-[14px] text-mist">Go to signature</a>}
-            {d.status === 'Signed' && <a href={`/api/agreements/pdf?id=${d.id}`} target="_blank" rel="noopener noreferrer" className="rounded-full bg-lime px-5 py-2 font-body text-[14px] font-medium text-forest">Download signed PDF</a>}
+            {d.status === 'Signed' && <a href={`/api/agreements/pdf?id=${d.id}&download=1`} className="rounded-full bg-lime px-5 py-2 font-body text-[14px] font-medium text-forest">Download for my records</a>}
+            {d.status === 'Signed' && <a href={`/api/agreements/pdf?id=${d.id}`} target="_blank" rel="noopener noreferrer" className="rounded-full border border-mist/40 px-5 py-2 font-body text-[14px] text-mist">View PDF</a>}
+            {d.status !== 'Signed' && sigs.some(Boolean) && <a href={`/api/agreements/pdf?id=${d.id}&download=1`} className="rounded-full border border-ink/15 px-5 py-2 font-body text-[14px]">Download copy (signatures so far)</a>}
           </div>
         </section>
 
@@ -76,6 +79,29 @@ export default function DocSign({ user, doc: initial, terms }: { user: string; d
           </form>
         )}
       </main>
+
+      {done && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4" role="dialog" aria-modal="true" aria-labelledby="signed-title" onClick={() => setDone(false)}>
+          <div className="w-full max-w-md rounded-[24px] bg-white p-6 text-ink shadow-2xl sm:p-7" onClick={e => e.stopPropagation()}>
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-lime text-[24px] text-forest" aria-hidden>✓</span>
+            <h2 id="signed-title" className="mt-4 font-display text-[22px] font-semibold tracking-[-0.02em]">{d.status === 'Signed' ? 'Signed by everyone' : 'You’ve signed'}</h2>
+            <p className="mt-2 font-body text-[15px] leading-relaxed text-ink/75">
+              {d.status === 'Signed'
+                ? <>{d.title} is complete. The signed PDF, with its signature certificate, is on its way to both of you by email.</>
+                : <>Your signature on {d.title} is recorded. We’ve emailed {terms.signers.filter((_, i) => !sigs[i]).map(s => s.name.split(' ')[0]).join(' and ')} to sign; you’ll both get the signed PDF when they do.</>}
+            </p>
+            <div className="mt-5 flex flex-col gap-2">
+              {d.status === 'Signed'
+                ? <a href={`/api/agreements/pdf?id=${d.id}&download=1`} className="rounded-full bg-forest px-5 py-3 text-center font-body text-[15px] font-medium text-mist">Download for my records</a>
+                : <a href={`/api/agreements/pdf?id=${d.id}&download=1`} className="rounded-full border border-ink/15 px-5 py-3 text-center font-body text-[15px]">Download a copy (signatures so far)</a>}
+              {next
+                ? <Link href={`/hq/documents/${next.id}`} className={`rounded-full px-5 py-3 text-center font-body text-[15px] ${d.status === 'Signed' ? 'border border-ink/15' : 'bg-forest font-medium text-mist'}`}>Next to sign: {next.title} →</Link>
+                : <Link href="/hq/documents" className="rounded-full border border-ink/15 px-5 py-3 text-center font-body text-[15px]">Back to all docs</Link>}
+              <button onClick={() => setDone(false)} className="py-1 font-body text-[13px] text-ink/55">Close</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

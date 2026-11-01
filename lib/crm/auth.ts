@@ -23,11 +23,14 @@ function check(kind: 'link' | 'session', email: string, expires: number, sig: st
 }
 
 /** Email a sign-in link if the address is allowed. Silent either way. */
-export async function sendLoginLink(raw: string) {
+/** Only HQ/CRM pages are allowed as a place to land after signing in, so the link can't send anyone elsewhere. */
+export const safeNext = (next: unknown) => (typeof next === 'string' && /^\/(hq|crm)(\/[\w\-/]*)?$/.test(next) ? next : '')
+
+export async function sendLoginLink(raw: string, next = '') {
   const email = raw.trim().toLowerCase()
   if (!allowedUsers().includes(email)) return
   const x = Date.now() + LINK_MINUTES * 60e3
-  const url = `${SITE}/api/crm/auth?${new URLSearchParams({ e: email, x: String(x), s: sign('link', email, x) })}`
+  const url = `${SITE}/api/crm/auth?${new URLSearchParams({ e: email, x: String(x), s: sign('link', email, x), ...(safeNext(next) ? { next: safeNext(next) } : {}) })}`
   await send(email, 'Sign in to the Hewn Life CRM', layout(`
 <p>Use the button to sign in to the CRM. The link works for ${LINK_MINUTES} minutes.</p>
 <p style="margin:24px 0">${button(url, 'Sign in')}</p>

@@ -45,7 +45,8 @@ export default function AgreementView({ email, agreement: initial, payUrl: initi
             <p className="mt-2 font-body text-[15px] text-mist/80">Signed {a.clientSig ? when(a.clientSig.at) : ''}. A copy with its signature certificate is on its way to {a.clientEmail}.</p>
             <div className="mt-5 flex flex-wrap gap-2">
               {payUrl && <a href={payUrl} className="rounded-full bg-lime px-5 py-2.5 font-body text-[14px] font-medium text-forest">Set up billing →</a>}
-              <a href={`/api/agreements/pdf?id=${a.id}`} target="_blank" rel="noopener noreferrer" className="rounded-full border border-mist/40 px-5 py-2.5 font-body text-[14px] text-mist hover:bg-mist/10">Download signed PDF</a>
+              <a href={`/api/agreements/pdf?id=${a.id}&download=1`} className="rounded-full border border-mist/40 px-5 py-2.5 font-body text-[14px] text-mist hover:bg-mist/10">Download for my records</a>
+              <a href={`/api/agreements/pdf?id=${a.id}`} target="_blank" rel="noopener noreferrer" className="rounded-full px-3 py-2.5 font-body text-[14px] text-mist/80 underline underline-offset-2">View PDF</a>
             </div>
           </section>
         ) : a.status === 'Void' ? (

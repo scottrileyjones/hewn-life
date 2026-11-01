@@ -13,9 +13,10 @@ export async function GET(req: NextRequest) {
   const team = currentUser()
   const client = currentClientEmail()
   if (!a || (!team && client !== a.clientEmail)) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  // Before everyone has signed, only the team can get a copy (with the signatures so far).
   if (a.status !== 'Signed' && !team) return NextResponse.json({ error: 'Not signed yet' }, { status: 409 })
   const bytes = await signedPdf(a)
   return new NextResponse(Buffer.from(bytes), {
-    headers: { 'Content-Type': 'application/pdf', 'Content-Disposition': `inline; filename="${pdfName(a)}"`, 'Cache-Control': 'private, no-store' },
+    headers: { 'Content-Type': 'application/pdf', 'Content-Disposition': `${req.nextUrl.searchParams.get('download') ? 'attachment' : 'inline'}; filename="${pdfName(a)}"`, 'Cache-Control': 'private, no-store' },
   })
 }
