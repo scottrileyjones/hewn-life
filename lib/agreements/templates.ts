@@ -347,7 +347,14 @@ function scopeSection(d: Deal): Section[] {
         'Mobile-friendly, fast, SEO-ready build with basic on-page optimization',
         'Contact or booking form connected to Client’s email or booking tool',
         'Connection to Client’s domain and launch, with the live link delivered within 24 hours (see below)',
+        'Setup of the site’s code repository and hosting in accounts owned by Client (see Hosting and access below)',
         'One round of edits after launch',
+      ],
+    }, {
+      heading: 'Hosting and access',
+      paragraphs: [
+        'Hewn Life does not host the site. The site’s code is kept in a code repository (such as GitHub) and published through a hosting provider (such as Vercel, Netlify or Cloudflare Pages), both in accounts owned by Client. Where Hewn Life creates them during the build, it transfers ownership to Client at launch. Hewn Life will recommend a plan with no hosting fee where one suits the site.',
+        'Client gives Hewn Life collaborator access to the repository and the hosting project so Hewn Life, and the AI tools it uses, can make the edits included above and any changes Client asks for later. Client can remove that access at any time; Hewn Life will not change the site except as Client asks or approves.',
       ],
     }, {
       heading: 'Not included',
@@ -355,7 +362,8 @@ function scopeSection(d: Deal): Section[] {
       list: [
         'The domain name itself and any paid third-party tools, plugins or stock media Client chooses',
         'E-commerce catalogs, logins, custom software, integrations beyond a form or booking link, and ongoing content updates',
-        'Hosting beyond the period stated under Special terms, and ongoing marketing (available as monthly plans)',
+        'Hosting itself: Client’s hosting account is Client’s, and any fees the hosting provider charges are paid by Client directly',
+        'Ongoing content updates and marketing (available as monthly plans)',
       ],
     }]
   }
@@ -414,7 +422,7 @@ export function blankDeal(product: Product, client: { company?: string; name?: s
     billing: isRetainer(product) ? 'monthly' : 'one-time',
     fee: price.monthly ?? price.once ?? 0,
     adBudget: '', addOns: [], projectTitle: '', scope: '', deliverables: '', schedule: '', paymentTerms: '',
-    specialTerms: product === 'Website in a Day' ? 'Hosting is included for the first 12 months after launch. After that, Hewn Life will either quote continued hosting or move the site to an account in Client’s name, at Client’s choice.' : '',
+    specialTerms: '',
   }
 }
 
