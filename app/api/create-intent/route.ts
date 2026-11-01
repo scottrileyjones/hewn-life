@@ -2,9 +2,12 @@ import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { waitUntil } from '@vercel/functions'
 import { enroll } from '@/lib/flows/engine'
+import { lookup, normalizeCart } from '@/lib/addons'
 
 type Body = {
-  priceId: string
+  priceId?: string
+  /** À la carte cart: add-on and kit SKUs from lib/addons.ts (one-time only). */
+  items?: string[]
   mode: 'subscription' | 'payment'
   email: string
   metadata?: Record<string, string>
@@ -12,7 +15,7 @@ type Body = {
 }
 
 /** A customer-entered code that checks out, with the discount it gives on this price. */
-async function applyPromo(stripe: Stripe, raw: string, price: Stripe.Price) {
+async function applyPromo(stripe: Stripe, raw: string, prices: Stripe.Price[]) {
   const code = raw.trim()
   const fail = (msg = 'That promo code isn’t valid for this purchase.') => { throw Object.assign(new Error(msg), { userFacing: true }) }
   if (!/^[A-Za-z0-9-]{2,40}$/.test(code)) fail()
@@ -23,15 +26,19 @@ async function applyPromo(stripe: Stripe, raw: string, price: Stripe.Price) {
   const couponId = typeof promo.promotion.coupon === 'string' ? promo.promotion.coupon : promo.promotion.coupon?.id
   if (!couponId) fail()
   const coupon = await stripe.coupons.retrieve(couponId!, { expand: ['applies_to'] })
-  const product = typeof price.product === 'string' ? price.product : price.product.id
-  if (!coupon.valid || (coupon.applies_to && !coupon.applies_to.products.includes(product))) fail()
-  const base = price.unit_amount ?? 0
+  if (!coupon.valid) fail()
+  // A coupon limited to certain products only discounts those lines.
+  const productOf = (p: Stripe.Price) => typeof p.product === 'string' ? p.product : p.product.id
+  const eligible = prices.filter(p => !coupon.applies_to || coupon.applies_to.products.includes(productOf(p)))
+  if (!eligible.length) fail()
+  const base = eligible.reduce((t, p) => t + (p.unit_amount ?? 0), 0)
+  const total = prices.reduce((t, p) => t + (p.unit_amount ?? 0), 0)
   const off = coupon.amount_off != null
-    ? (coupon.currency === price.currency ? coupon.amount_off : 0)
+    ? (coupon.currency === prices[0].currency ? Math.min(coupon.amount_off, base) : 0)
     : Math.round(base * (coupon.percent_off ?? 0) / 100)
   if (!off) fail()
   // Stripe's minimum card charge is 50 cents.
-  return { id: promo.id, code: promo.code, off: Math.min(off, base - 50) }
+  return { id: promo.id, code: promo.code, off: Math.min(off, total - 50) }
 }
 
 export async function POST(request: Request) {
@@ -39,47 +46,60 @@ export async function POST(request: Request) {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
       apiVersion: '2026-04-22.dahlia',
     })
-    const { priceId, mode, email, metadata, promoCode } = (await request.json()) as Body
+    const { priceId: single, items, mode, email, metadata: rawMeta, promoCode } = (await request.json()) as Body
 
-    if (!priceId || !email) {
+    // A cart is tidied the same way the shop shows it (kits swapped in), then priced by Stripe.
+    const cart = items?.length ? normalizeCart(items) : []
+    if (items?.length && (!cart.length || mode !== 'payment')) {
+      return NextResponse.json({ error: 'Pick at least one add-on.' }, { status: 400 })
+    }
+    const priceIds = cart.length ? cart.map(s => lookup(s)!.priceId) : single ? [single] : []
+    if (!priceIds.length || !email) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
+    const priceId = priceIds[0]
+    const metadata: Record<string, string> = { ...(rawMeta ?? {}), ...(cart.length ? { tier: 'addons', items: cart.join(',') } : {}) }
 
     // The exact charge and renewal interval, shown next to the pay button.
-    const price = await stripe.prices.retrieve(priceId)
+    const prices = await Promise.all(priceIds.map(id => stripe.prices.retrieve(id)))
+    if (prices.length > 1 && prices.some(p => p.recurring || p.currency !== prices[0].currency)) {
+      return NextResponse.json({ error: 'Those items can’t be bought together.' }, { status: 400 })
+    }
+    const listAmount = prices.reduce((t, p) => t + (p.unit_amount ?? 0), 0)
+    const price = prices[0]
     // Promo codes are for one-time purchases (e.g. BETA250 on Website in a Day).
     if (promoCode?.trim() && mode === 'subscription') {
       return NextResponse.json({ error: 'Promo codes only apply to one-time purchases.' }, { status: 400 })
     }
-    const promo = promoCode?.trim() ? await applyPromo(stripe, promoCode, price) : null
+    const promo = promoCode?.trim() ? await applyPromo(stripe, promoCode, prices) : null
     const charge = {
-      amount: (price.unit_amount ?? 0) - (promo?.off ?? 0),
+      amount: listAmount - (promo?.off ?? 0),
       currency: price.currency,
       interval: price.recurring?.interval ?? null,
       intervalCount: price.recurring?.interval_count ?? 1,
-      ...(promo ? { original: price.unit_amount ?? 0, promo: { code: promo.code, off: promo.off } } : {}),
+      ...(promo ? { original: listAmount, promo: { code: promo.code, off: promo.off } } : {}),
     }
     const promoMeta: Record<string, string> = promo ? { promoCode: promo.code, promotionCodeId: promo.id, discount: String(promo.off) } : {}
 
     const customer = await stripe.customers.create({
       email,
-      metadata: metadata ?? {},
+      metadata,
     })
 
     // Joins the abandoned-checkout flow; paying takes them out of it (webhook).
-    const tier = metadata?.tier ?? ''
-    const plan = ({ 'website-in-a-day': 'Website in a Day', hewn: 'Hewn', wrought: 'Wrought', forged: 'Forged' } as Record<string, string>)[tier] ?? 'Hewn Life'
+    const tier = metadata.tier ?? ''
+    const plan = cart.length ? (cart.length === 1 ? lookup(cart[0])!.name : 'Hewn Life add-ons') : ({ 'website-in-a-day': 'Website in a Day', hewn: 'Hewn', wrought: 'Wrought', forged: 'Forged' } as Record<string, string>)[tier] ?? 'Hewn Life'
     const checkoutLink = `/checkout?${new URLSearchParams({
-      priceId, mode, name: plan, price: String((price.unit_amount ?? 0) / 100), billing: price.recurring?.interval === 'year' ? 'annual' : 'monthly',
-      ...(tier ? { tier } : {}), email, fullName: metadata?.fullName ?? '', businessName: metadata?.businessName ?? '', phone: metadata?.phone ?? '',
+      ...(cart.length ? { items: cart.join(',') } : { priceId }), mode, name: plan, price: String(listAmount / 100), billing: price.recurring?.interval === 'year' ? 'annual' : 'monthly',
+      ...(tier ? { tier } : {}), email, fullName: metadata.fullName ?? '', businessName: metadata.businessName ?? '', phone: metadata.phone ?? '',
     })}`
-    waitUntil(enroll('checkout_abandoned', { email, name: metadata?.fullName, company: metadata?.businessName, phone: metadata?.phone }, { plan, checkout_link: checkoutLink }))
+    waitUntil(enroll('checkout_abandoned', { email, name: metadata.fullName, company: metadata.businessName, phone: metadata.phone }, { plan, checkout_link: checkoutLink }))
 
     if (mode === 'subscription') {
       const subscription = await stripe.subscriptions.create({
         customer: customer.id,
         items: [{ price: priceId }],
-        metadata: metadata ?? {},
+        metadata,
         payment_behavior: 'default_incomplete',
         payment_settings: {
           save_default_payment_method: 'on_subscription',
@@ -112,7 +132,8 @@ export async function POST(request: Request) {
         amount: charge.amount,
         currency: price.currency,
         customer: customer.id,
-        metadata: { ...(metadata ?? {}), ...promoMeta },
+        metadata: { ...metadata, ...promoMeta },
+        description: cart.length ? cart.map(s => lookup(s)!.name).join(' + ') : undefined,
         // Stripe offers whatever methods are switched on in the dashboard and valid for this amount (e.g. Affirm has a minimum).
         automatic_payment_methods: { enabled: true },
       })

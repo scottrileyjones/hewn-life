@@ -29,10 +29,10 @@ import type { GlyphKey } from '@/lib/strata'
 import Link from 'next/link'
 import Cal, { getCalApi } from '@calcom/embed-react'
 import CalButton from '@/components/CalButton'
+import AddOnShop from '@/components/pricing/AddOnShop'
 import { CAL_LINK } from '@/lib/cal'
 
 type TierSlug = 'hewn' | 'wrought' | 'forged'
-type IconType = 'brand' | 'website' | 'seo' | 'ads' | 'automation' | 'video' | 'content' | 'referral'
 
 const PRICE_IDS: Record<TierSlug, { monthly: string; annual: string }> = {
   hewn: {
@@ -49,16 +49,6 @@ const PRICE_IDS: Record<TierSlug, { monthly: string; annual: string }> = {
   },
 }
 
-const PAYMENT_LINKS: Record<string, string> = {
-  'brand-identity': process.env.NEXT_PUBLIC_STRIPE_LINK_BRAND_IDENTITY ?? '',
-  'website':        process.env.NEXT_PUBLIC_STRIPE_LINK_WEBSITE_BUILD  ?? '',
-  'seo':            process.env.NEXT_PUBLIC_STRIPE_LINK_SEO_AUDIT      ?? '',
-  'google-ads':     process.env.NEXT_PUBLIC_STRIPE_LINK_GOOGLE_ADS     ?? '',
-  'automation':     process.env.NEXT_PUBLIC_STRIPE_LINK_MARKETING_AUTO ?? '',
-  'video':          process.env.NEXT_PUBLIC_STRIPE_LINK_VIDEO_ADS      ?? '',
-  'content':        process.env.NEXT_PUBLIC_STRIPE_LINK_CONTENT_SPRINT ?? '',
-  'referral':       process.env.NEXT_PUBLIC_STRIPE_LINK_REFERRAL_BUILD ?? '',
-}
 
 const tiers = [
   {
@@ -176,25 +166,6 @@ const tiers = [
   },
 ]
 
-const services = [
-  { service: 'Extra Ad Creative Pack',      slug: 'brand-identity', desc: '8 additional ad creatives — static or motion, any platform',         fee: '$800',   icon: 'brand'     as IconType },
-  { service: 'Email Automation Build-Out',  slug: 'automation',     desc: '6-email nurture or sales sequence, fully written and mapped',         fee: '$1,500', icon: 'automation' as IconType },
-  { service: 'Additional SEO Blog Post',    slug: 'seo',            desc: '1,200–1,500 words, keyword-optimized, publish-ready',                  fee: '$350',   icon: 'seo'       as IconType },
-  { service: 'Video Repurposing Pack',      slug: 'video',          desc: 'One raw video → 5 short-form clips, captioned and formatted',          fee: '$400',   icon: 'video'     as IconType },
-  { service: 'Whitepaper or Lead Magnet',   slug: 'content',        desc: 'Long-form authority piece — researched, written, and designed',        fee: '$1,200', icon: 'content'   as IconType },
-  { service: 'Competitor Audit + Report',   slug: 'google-ads',     desc: 'Positioning gap analysis + actionable recommendations',               fee: '$1,800', icon: 'ads'       as IconType },
-  { service: 'Brand Identity Refresh',      slug: 'referral',       desc: 'Logo, colors, typography — updated and delivered in a style guide',   fee: '$2,500', icon: 'referral'  as IconType },
-  { service: 'Full Website Copy',           slug: 'website',        desc: '5 pages written, structured, and optimized for conversion',           fee: '$3,000', icon: 'website'   as IconType },
-]
-
-const iconGlyph: Record<IconType, GlyphKey> = {
-  brand: 'creative', website: 'brand', seo: 'seo', ads: 'data', automation: 'lifecycle', video: 'social', content: 'strategy', referral: 'brand',
-}
-
-function ServiceIcon({ type }: { type: IconType }) {
-  return <Glyph name={iconGlyph[type]} fg="#F4F2EC" accent="#D6F28B" size={26} />
-}
-
 function Spinner() {
   return (
     <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -256,6 +227,8 @@ export default function Pricing() {
   const [expanded, setExpanded] = useState<TierSlug | null>(null)
   const [calOpen, setCalOpen] = useState(false)
   const [showStickyBar, setShowStickyBar] = useState(false)
+  // The add-on cart has its own bar; the Forged prompt steps aside while it's open.
+  const [cartCount, setCartCount] = useState(0)
   const plansRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -451,29 +424,9 @@ export default function Pricing() {
 
       {/* ── À LA CARTE ── */}
       <ForestBand id="services">
-        <div className="mb-10">
-          <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-mist/70">À la carte</span>
-          <h2 className={`${h2Class} mt-3.5 text-[clamp(30px,3.4vw,46px)]`}>Just need one thing?</h2>
-          <p className="mt-3 font-body text-mist/75">Order exactly what you need. Flat fees, fast execution.</p>
-        </div>
-        <div className="grid gap-2.5">
-          {services.map((svc, i) => (
-            <FadeInWrapper key={svc.slug} delay={i * 60}>
-              <div className="flex flex-col gap-4 rounded-[18px] bg-forest-2 p-5 sm:flex-row sm:items-center">
-                <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[12px] bg-forest"><ServiceIcon type={svc.icon} /></div>
-                <div className="min-w-0 flex-1">
-                  <p className="font-body text-sm font-medium">{svc.service}</p>
-                  <p className="mt-0.5 font-body text-xs leading-relaxed text-mist/70">{svc.desc}</p>
-                </div>
-                <div className="flex flex-shrink-0 items-center gap-4">
-                  <span className="font-display text-[22px] font-medium tabular-nums">{svc.fee}</span>
-                  <a href={PAYMENT_LINKS[svc.slug] || '#'} target="_blank" rel="noopener noreferrer" className="whitespace-nowrap rounded-full bg-mist px-5 py-2.5 font-body text-xs font-medium text-forest transition hover:bg-lime">Buy now</a>
-                </div>
-              </div>
-            </FadeInWrapper>
-          ))}
-
-          <FadeInWrapper delay={services.length * 60}>
+        <AddOnShop onCartChange={setCartCount} />
+        <div className="mt-4 grid gap-2.5">
+          <FadeInWrapper>
             <div className="rounded-[18px] bg-lime p-5 text-forest">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                 <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[12px] bg-forest"><Glyph name="strategy" fg="#F4F2EC" accent="#D6F28B" size={26} /></div>
@@ -549,7 +502,7 @@ export default function Pricing() {
         className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between gap-4 bg-forest px-5 py-4 md:hidden"
         style={{
           paddingBottom: 'max(16px, env(safe-area-inset-bottom))',
-          transform: showStickyBar ? 'translateY(0)' : 'translateY(100%)',
+          transform: showStickyBar && !cartCount ? 'translateY(0)' : 'translateY(100%)',
           transition: 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
