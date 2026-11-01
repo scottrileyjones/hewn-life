@@ -199,3 +199,18 @@ export async function notifyAddonOrder(o: { email: string; name?: string; compan
     team(`New add-on order, ${total}: ${short(o.items.map(i => i.name).join(' + '), 90)} for ${short(o.company || o.name || o.email, 40)}.`),
   ])
 }
+
+/** After checkout payment: their countersigned agreement, to them and to us. */
+export async function notifyCheckoutAgreement(a: { title: string; clientEmail: string; signer: string; company: string }, pdf: { filename: string; content: string }) {
+  const first = esc(a.signer.split(/[\s,]+/)[0] || 'there')
+  const client = layout(`
+<p>Hi ${first},</p>
+<p>Here’s your signed copy of <b>${esc(a.title)}</b> for your records, countersigned by Hewn Life, with a certificate page showing when and how it was signed. It’s also in your portal under Agreements.</p>
+<p style="margin:24px 0">${button(loginUrl(a.clientEmail), 'Open your portal')}</p>
+<p style="margin:0">The Hewn Life team</p>`)
+  const internal = layout(`<p><strong>${esc(a.company || a.clientEmail)} signed and paid: ${esc(a.title)}</strong></p><p>Signed at checkout by ${esc(a.signer)}. The signed PDF is attached and saved in Airtable.</p>`)
+  await Promise.allSettled([
+    send(a.clientEmail, `Your signed agreement: ${a.title}`, client, {}, [pdf]),
+    send(REVIEWER, `Signed at checkout: ${a.title}`, internal, {}, [pdf]),
+  ])
+}

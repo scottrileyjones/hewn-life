@@ -7,6 +7,8 @@ import { useSearchParams } from 'next/navigation'
 import HewnLogo from '@/components/HewnLogo'
 import { trackBeginCheckout, trackAddPaymentInfo } from '@/lib/gtm'
 import { cartTotals, isKit, kitListPrice, lookup, type AddOn, type Kit } from '@/lib/addons'
+import AgreementDoc from '@/components/agreements/AgreementDoc'
+import type { Doc } from '@/lib/agreements/templates'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
 
@@ -71,9 +73,9 @@ const PRODUCT_META: Record<string, {
     chips: ['Fixed price', 'Paid once', 'No contract'],
     highlights: [],
     nextSteps: [
-      'Order confirmed by email straight away',
-      'Within one business day: what we need from you',
-      'Then: the work, delivered to your inbox',
+      'Sign your agreement and pay',
+      'Your plan opens in your portal straight away',
+      'Send your requirements and we start',
     ],
   },
   'website-in-a-day': {
@@ -360,7 +362,14 @@ export default function CheckoutClient() {
 
   const meta = PRODUCT_META[tier] ?? PRODUCT_META['website-in-a-day']
 
-  const [step, setStep] = useState<'info' | 'payment'>('info')
+  const [step, setStep] = useState<'info' | 'sign' | 'payment'>('info')
+  // Signed earlier (e.g. an agreement from HQ, then its pay link): no second signature needed.
+  const presigned = (params.get('agreement') ?? '').match(/^rec[A-Za-z0-9]{14}$/)?.[0] ?? ''
+  const [agreementId, setAgreementId] = useState(presigned)
+  const [agreement, setAgreement] = useState<{ doc: Doc; hash: string } | null>(null)
+  const [signer, setSigner] = useState({ legalName: '', title: 'Owner', address: '', signature: '', consent: false, authority: false })
+  const stepLabels = presigned ? ['Your details', 'Payment'] : ['Your details', 'Review & sign', 'Payment']
+  const stepIndex = step === 'info' ? 0 : step === 'sign' ? 1 : stepLabels.length - 1
   const [clientSecret, setClientSecret] = useState('')
   const [charge, setCharge] = useState<Charge | null>(null)
   // Orders that start from a brief arrive with the contact details already filled in.
@@ -399,8 +408,62 @@ export default function CheckoutClient() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step])
 
+  const orderBody = () => ({
+    ...(isCart ? { items: cart.lines.map(l => l.sku) } : { priceId }),
+    ...(mode === 'payment' && promoCode.trim() ? { promoCode: promoCode.trim() } : {}),
+  })
+  const signerBody = () => ({
+    email: contact.email, fullName: signer.signature.trim() || contact.fullName, businessName: contact.businessName,
+    legalName: signer.legalName.trim() || contact.businessName, title: signer.title, address: signer.address,
+  })
+  const top = () => window.scrollTo({ top: 0, behavior: 'smooth' })
+
+  // Step 1 → 2: load their filled-in agreement to read and sign.
   const handleInfoSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (presigned) return createIntent(presigned)
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch('/api/checkout/agreement', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'preview', ...orderBody(), ...signerBody(), fullName: contact.fullName }),
+      })
+      const out = await res.json() as { doc?: Doc; hash?: string; error?: string }
+      if (!res.ok || !out.doc || !out.hash) throw new Error(out.error || 'We couldn’t load your agreement. Try again.')
+      setAgreement({ doc: out.doc, hash: out.hash })
+      setSigner(sg => ({ ...sg, legalName: sg.legalName || contact.businessName, signature: sg.signature || contact.fullName }))
+      setStep('sign'); top()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Step 2 → 3: sign, then set up the payment against the signed agreement.
+  const handleSign = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!agreement) return
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch('/api/checkout/agreement', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'sign', hash: agreement.hash, consent: signer.consent, authority: signer.authority, ...orderBody(), ...signerBody() }),
+      })
+      const out = await res.json() as { agreementId?: string; doc?: Doc; hash?: string; error?: string }
+      if (out.doc && out.hash) setAgreement({ doc: out.doc, hash: out.hash })
+      if (!res.ok || !out.agreementId) throw new Error(out.error || 'We couldn’t sign. Try again.')
+      setAgreementId(out.agreementId)
+      await createIntent(out.agreementId)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+      setLoading(false)
+    }
+  }
+
+  const createIntent = async (signedId: string) => {
     setLoading(true)
     setError('')
     try {
@@ -409,14 +472,14 @@ export default function CheckoutClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...(isCart ? { items: cart.lines.map(l => l.sku) } : { priceId }), mode,
-          email: contact.email,
+          email: contact.email, agreementId: signedId,
           ...(mode === 'payment' && promoCode.trim() ? { promoCode: promoCode.trim() } : {}),
           metadata: { businessName: contact.businessName, fullName: contact.fullName, phone: contact.phone, notes: contact.notes, ...(tier ? { tier } : {}), ...(planRef ? { planToken: planRef } : {}) },
         }),
       })
       const { clientSecret: secret, charge: c, error: apiError } = await res.json() as { clientSecret?: string; charge?: Charge; error?: string }
       if (apiError) throw new Error(apiError)
-      if (secret) { setClientSecret(secret); if (c) setCharge(c); setStep('payment'); window.scrollTo({ top: 0, behavior: 'smooth' }) }
+      if (secret) { setClientSecret(secret); if (c) setCharge(c); setStep('payment'); top() }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
     } finally {
@@ -467,27 +530,17 @@ export default function CheckoutClient() {
         <div className="max-w-6xl mx-auto px-6 lg:px-12 h-16 flex items-center justify-between">
           <HewnLogo dark size="sm" />
           <div className="flex items-center gap-2">
-            {['Contact info', 'Payment'].map((label, i) => (
-              <div key={i} className="flex items-center gap-2">
+            {stepLabels.map((label, i) => (
+              <div key={label} className="flex items-center gap-2">
                 {i > 0 && <div className="w-5 h-px bg-black/15" />}
                 <div className="flex items-center gap-1.5">
-                  <div
-                    className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono font-bold transition-all duration-300"
-                    style={
-                      (i === 0 && step === 'info') || (i === 1 && step === 'payment')
-                        ? { background: meta.color, color: '#fff' }
-                        : i === 0 && step === 'payment'
-                          ? { background: meta.color, color: '#fff' }
-                          : { background: 'rgba(0,0,0,0.07)', color: '#6B6560' }
-                    }
-                  >
-                    {i === 0 && step === 'payment'
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono font-bold transition-all duration-300"
+                    style={i <= stepIndex ? { background: meta.color, color: '#fff' } : { background: 'rgba(0,0,0,0.07)', color: '#6B6560' }}>
+                    {i < stepIndex
                       ? <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                       : i + 1}
                   </div>
-                  <span className={`font-body text-xs hidden sm:block ${
-                    (i === 0 && step === 'info') || (i === 1 && step === 'payment') ? 'text-[#0D0D0D] font-medium' : 'text-[#6B6560]'
-                  }`}>{label}</span>
+                  <span className={`font-body text-xs hidden sm:block ${i === stepIndex ? 'text-[#0D0D0D] font-medium' : 'text-[#6B6560]'}`}>{label}</span>
                 </div>
               </div>
             ))}
@@ -501,18 +554,18 @@ export default function CheckoutClient() {
           {/* Left: form */}
           <div>
             <button
-              onClick={() => step === 'payment' ? setStep('info') : window.history.back()}
+              onClick={() => step === 'payment' ? setStep(agreementId && !presigned ? 'sign' : 'info') : step === 'sign' ? setStep('info') : window.history.back()}
               className="inline-flex items-center gap-1.5 font-body text-sm text-[#6B6560] hover:text-[#0D0D0D] transition-colors mb-8"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-              {step === 'payment' ? 'Back' : 'Back to pricing'}
+              {step === 'info' ? 'Back to pricing' : 'Back'}
             </button>
 
             {step === 'info' ? (
               <>
-                <p className="font-mono text-[10px] uppercase tracking-[0.25em] mb-3" style={{ color: meta.color }}>Step 1 of 2</p>
+                <p className="font-mono text-[10px] uppercase tracking-[0.25em] mb-3" style={{ color: meta.color }}>Step 1 of {stepLabels.length}</p>
                 <h1 className="font-display font-medium tracking-[-0.03em] text-[38px] md:text-[50px] text-[#0D0D0D] mb-3 leading-[1.06]">
                   You&apos;re almost in.
                 </h1>
@@ -578,7 +631,7 @@ export default function CheckoutClient() {
                     {loading ? (
                       <><svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" /></svg>Setting up…</>
                     ) : (
-                      <>Continue to Payment <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></>
+                      <>{presigned ? 'Continue to payment' : 'Continue to your agreement'} <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></>
                     )}
                   </button>
 
@@ -588,9 +641,74 @@ export default function CheckoutClient() {
                   </p>
                 </form>
               </>
+            ) : step === 'sign' && agreement ? (
+              <>
+                <p className="font-mono text-[10px] uppercase tracking-[0.25em] mb-3" style={{ color: meta.color }}>Step 2 of {stepLabels.length}</p>
+                <h1 className="font-display font-medium tracking-[-0.03em] text-[38px] md:text-[50px] text-[#0D0D0D] mb-3 leading-[1.06]">
+                  Review and sign.
+                </h1>
+                <p className="font-body text-base text-[#6B6560] mb-8 leading-relaxed max-w-lg">
+                  Your agreement, filled in for {contact.businessName || 'your business'}. Hewn Life has already signed. Read it through, sign below, and payment comes next.
+                </p>
+
+                <div className="relative rounded-[22px] border border-black/[0.08] bg-white">
+                  <div className="flex items-center justify-between gap-3 border-b border-black/[0.06] px-5 py-3">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#6B6560]">Your agreement</span>
+                    <span className="flex items-center gap-1.5 font-body text-xs text-forest">
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                      Signed by Hewn Life
+                    </span>
+                  </div>
+                  <div className="max-h-[440px] overflow-y-auto px-5 py-6 sm:px-7" tabIndex={0} aria-label="Agreement text">
+                    <AgreementDoc doc={agreement.doc} />
+                  </div>
+                </div>
+
+                <form onSubmit={handleSign} className="mt-8 space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="legalName" className={labelClass}>Legal business name</label>
+                      <input id="legalName" required value={signer.legalName} onChange={e => setSigner({ ...signer, legalName: e.target.value })} placeholder="e.g. Acme Plumbing LLC" className={inputClass} style={{ '--tw-ring-color': meta.color + '40' } as React.CSSProperties} />
+                    </div>
+                    <div>
+                      <label htmlFor="signerTitle" className={labelClass}>Your title</label>
+                      <input id="signerTitle" required value={signer.title} onChange={e => setSigner({ ...signer, title: e.target.value })} placeholder="Owner" className={inputClass} style={{ '--tw-ring-color': meta.color + '40' } as React.CSSProperties} />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="noticeAddress" className={labelClass}>Business address <span className="normal-case tracking-normal text-[#6B6560]/60 font-normal">(optional, for notices)</span></label>
+                    <input id="noticeAddress" value={signer.address} onChange={e => setSigner({ ...signer, address: e.target.value })} placeholder="Street, city, state ZIP" className={inputClass} style={{ '--tw-ring-color': meta.color + '40' } as React.CSSProperties} />
+                  </div>
+
+                  <div>
+                    <label htmlFor="signature" className={labelClass}>Type your full name to sign</label>
+                    <input id="signature" required value={signer.signature} onChange={e => setSigner({ ...signer, signature: e.target.value })} autoComplete="name"
+                      className="w-full border-b-2 border-black/20 bg-transparent px-1 pb-2 pt-1 font-accent text-[32px] italic text-forest focus:border-forest focus:outline-none" />
+                    <p className="mt-2 font-body text-xs text-[#6B6560]">{signer.signature.trim() ? `${signer.signature.trim()}, ${signer.title || 'Owner'} · ${signer.legalName || contact.businessName}` : ' '}</p>
+                  </div>
+
+                  <label className="flex items-start gap-3">
+                    <input type="checkbox" checked={signer.consent} onChange={e => setSigner({ ...signer, consent: e.target.checked })} required className="mt-0.5 h-4 w-4 flex-shrink-0 accent-forest" />
+                    <span className="font-body text-sm leading-relaxed text-[#3D3A36]">I’ve read this agreement and agree to sign it electronically. My typed name is my signature.</span>
+                  </label>
+                  <label className="flex items-start gap-3">
+                    <input type="checkbox" checked={signer.authority} onChange={e => setSigner({ ...signer, authority: e.target.checked })} required className="mt-0.5 h-4 w-4 flex-shrink-0 accent-forest" />
+                    <span className="font-body text-sm leading-relaxed text-[#3D3A36]">I have authority to sign for {signer.legalName || contact.businessName || 'my business'}.</span>
+                  </label>
+
+                  {error && <div className="rounded-[14px] border border-red-200 bg-red-50 px-4 py-3 font-body text-sm text-red-700">{error}</div>}
+
+                  <button type="submit" disabled={loading || !signer.consent || !signer.authority || !signer.signature.trim()}
+                    className="flex items-center justify-center gap-2 w-full text-white font-body font-semibold text-[15px] px-8 py-4 rounded-full transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed hover:opacity-90"
+                    style={{ background: meta.color }}>
+                    {loading ? 'Signing…' : <>Sign and continue to payment <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></>}
+                  </button>
+                  <p className="text-center font-body text-xs text-[#6B6560]/70">Signed under the federal ESIGN Act. Your countersigned copy is emailed to you and saved in your portal.</p>
+                </form>
+              </>
             ) : (
               <>
-                <p className="font-mono text-[10px] uppercase tracking-[0.25em] mb-3" style={{ color: meta.color }}>Step 2 of 2</p>
+                <p className="font-mono text-[10px] uppercase tracking-[0.25em] mb-3" style={{ color: meta.color }}>Step {stepLabels.length} of {stepLabels.length}</p>
                 <h1 className="font-display font-medium tracking-[-0.03em] text-[38px] md:text-[50px] text-[#0D0D0D] mb-3 leading-[1.06]">
                   How would you<br />like to pay?
                 </h1>
