@@ -25,8 +25,8 @@ export async function POST(request: Request) {
     })
     const { priceId: single, items, mode, email, metadata: rawMeta, promoCode, agreementId } = (await request.json()) as Body
 
-    // No payment without a signed agreement for this buyer.
-    if (process.env.AIRTABLE_BASE_ID && process.env.AIRTABLE_TOKEN) {
+    // Monthly plans: no payment without a signed agreement for this buyer. One-time orders accept the Terms at payment.
+    if (mode === 'subscription' && process.env.AIRTABLE_BASE_ID && process.env.AIRTABLE_TOKEN) {
       const a = agreementId ? await getAgreement(agreementId).catch(() => null) : null
       if (!a || a.status !== 'Signed' || a.clientEmail !== String(email ?? '').trim().toLowerCase()) {
         return NextResponse.json({ error: 'Please review and sign your agreement before paying.' }, { status: 400 })

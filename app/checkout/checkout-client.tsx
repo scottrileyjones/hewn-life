@@ -74,7 +74,7 @@ const PRODUCT_META: Record<string, {
     chips: ['Fixed price', 'Paid once', 'No contract'],
     highlights: [],
     nextSteps: [
-      'Sign your agreement and pay',
+      'Pay securely, once',
       'Your plan opens in your portal straight away',
       'Send your requirements and we start',
     ],
@@ -369,7 +369,9 @@ export default function CheckoutClient() {
   const [agreementId, setAgreementId] = useState(presigned)
   const [agreement, setAgreement] = useState<{ doc: Doc; hash: string; hewn?: { name: string; title: string } } | null>(null)
   const [signer, setSigner] = useState({ legalName: '', title: 'Owner', address: '', signature: '', consent: false, authority: false })
-  const stepLabels = presigned ? ['Your details', 'Payment'] : ['Your details', 'Review & sign', 'Payment']
+  // Only monthly plans are signed (Master Services Agreement); one-time orders accept the Terms at payment.
+  const needsSign = mode === 'subscription' && !presigned
+  const stepLabels = needsSign ? ['Your details', 'Review & sign', 'Payment'] : ['Your details', 'Payment']
   const stepIndex = step === 'info' ? 0 : step === 'sign' ? 1 : stepLabels.length - 1
   const [clientSecret, setClientSecret] = useState('')
   const [charge, setCharge] = useState<Charge | null>(null)
@@ -422,7 +424,7 @@ export default function CheckoutClient() {
   // Step 1 → 2: load their filled-in agreement to read and sign.
   const handleInfoSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (presigned) return createIntent(presigned)
+    if (!needsSign) return createIntent(presigned)
     setLoading(true)
     setError('')
     try {
@@ -473,7 +475,7 @@ export default function CheckoutClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...(isCart ? { items: cart.lines.map(l => l.sku) } : { priceId }), mode,
-          email: contact.email, agreementId: signedId,
+          email: contact.email, ...(signedId ? { agreementId: signedId } : {}),
           ...(mode === 'payment' && promoCode.trim() ? { promoCode: promoCode.trim() } : {}),
           metadata: { businessName: contact.businessName, fullName: contact.fullName, phone: contact.phone, notes: contact.notes, ...(tier ? { tier } : {}), ...(planRef ? { planToken: planRef } : {}) },
         }),
@@ -555,7 +557,7 @@ export default function CheckoutClient() {
           {/* Left: form */}
           <div>
             <button
-              onClick={() => step === 'payment' ? setStep(agreementId && !presigned ? 'sign' : 'info') : step === 'sign' ? setStep('info') : window.history.back()}
+              onClick={() => step === 'payment' ? setStep(needsSign && agreement ? 'sign' : 'info') : step === 'sign' ? setStep('info') : window.history.back()}
               className="inline-flex items-center gap-1.5 font-body text-sm text-[#6B6560] hover:text-[#0D0D0D] transition-colors mb-8"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -632,7 +634,7 @@ export default function CheckoutClient() {
                     {loading ? (
                       <><svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" /></svg>Setting up…</>
                     ) : (
-                      <>{presigned ? 'Continue to payment' : 'Continue to your agreement'} <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></>
+                      <>{needsSign ? 'Continue to your agreement' : 'Continue to payment'} <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></>
                     )}
                   </button>
 
