@@ -347,14 +347,15 @@ function scopeSection(d: Deal): Section[] {
         'Mobile-friendly, fast, SEO-ready build with basic on-page optimization',
         'Contact or booking form connected to Client’s email or booking tool',
         'Connection to Client’s domain and launch, with the live link delivered within 24 hours (see below)',
-        'Setup of the site’s code repository and hosting in accounts owned by Client (see Hosting and access below)',
+        'Setup of the site’s code repository and of hosting in Client’s Vercel account (see Hosting and access below)',
         'One round of edits after launch',
       ],
     }, {
       heading: 'Hosting and access',
       paragraphs: [
-        'Hewn Life does not host the site. The site’s code is kept in a code repository (such as GitHub) and published through a hosting provider (such as Vercel, Netlify or Cloudflare Pages), both in accounts owned by Client. Where Hewn Life creates them during the build, it transfers ownership to Client at launch. Hewn Life will recommend a plan with no hosting fee where one suits the site.',
-        'Client gives Hewn Life collaborator access to the repository and the hosting project so Hewn Life, and the AI tools it uses, can make the edits included above and any changes Client asks for later. Client can remove that access at any time; Hewn Life will not change the site except as Client asks or approves.',
+        'Hewn Life does not host the site. The site is published through a hosting account with Vercel that Client owns and pays for directly (Vercel’s Pro plan, currently about $20 per month, is required for business sites). Client’s domain stays registered to Client.',
+        'Hewn Life keeps the site’s code in a private repository in its GitHub organization, where Hewn Life and the AI tools it uses can make the edits included above and any changes Client asks for later. Client owns the code once fees are paid and may have the repository transferred to Client’s own GitHub account at any time on request.',
+        'Client gives Hewn Life a deploy token for Client’s Vercel project so changes can be published. Client can revoke the token at any time; Hewn Life will not change the live site except as Client asks or approves.',
       ],
     }, {
       heading: 'Not included',
@@ -362,7 +363,7 @@ function scopeSection(d: Deal): Section[] {
       list: [
         'The domain name itself and any paid third-party tools, plugins or stock media Client chooses',
         'E-commerce catalogs, logins, custom software, integrations beyond a form or booking link, and ongoing content updates',
-        'Hosting itself: Client’s hosting account is Client’s, and any fees the hosting provider charges are paid by Client directly',
+        'Hosting fees: Client’s Vercel account and any fees Vercel charges are Client’s',
         'Ongoing content updates and marketing (available as monthly plans)',
       ],
     }]
