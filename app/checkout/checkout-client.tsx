@@ -6,6 +6,7 @@ import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-
 import { useSearchParams } from 'next/navigation'
 import HewnLogo from '@/components/HewnLogo'
 import { trackBeginCheckout, trackAddPaymentInfo } from '@/lib/gtm'
+import { cartTotals, isKit, kitListPrice, lookup, type AddOn, type Kit } from '@/lib/addons'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
 
@@ -64,6 +65,17 @@ const PRODUCT_META: Record<string, {
       'All nine pillars activated in month one',
     ],
   },
+  addons: {
+    color: '#1E3826',
+    tagline: 'Picked off the shelf.',
+    chips: ['Fixed price', 'Paid once', 'No contract'],
+    highlights: [],
+    nextSteps: [
+      'Order confirmed by email straight away',
+      'Within one business day: what we need from you',
+      'Then: the work, delivered to your inbox',
+    ],
+  },
   'website-in-a-day': {
     color: '#1E3826',
     tagline: 'Your website, live in a day.',
@@ -93,8 +105,8 @@ interface ContactInfo {
 
 // ── Order Summary ─────────────────────────────────────
 
-function OrderSummary({ name, price, billing, mode, tier, charge }: {
-  name: string; price: number; billing: string; mode: string; tier: string; charge: Charge | null
+function OrderSummary({ name, price, billing, mode, tier, charge, lines = [], saved = 0 }: {
+  name: string; price: number; billing: string; mode: string; tier: string; charge: Charge | null; lines?: (AddOn | Kit)[]; saved?: number
 }) {
   const meta = PRODUCT_META[tier] ?? PRODUCT_META['website-in-a-day']
 
@@ -123,8 +135,34 @@ function OrderSummary({ name, price, billing, mode, tier, charge }: {
         </div>
       </div>
 
+      {/* À la carte: the items in the cart */}
+      {lines.length > 0 && (
+        <div className="px-7 py-5 border-b border-black/[0.06]">
+          <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#6B6560]/60 mb-4">Your order</p>
+          <ul className="space-y-4">
+            {lines.map(l => (
+              <li key={l.sku} className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="font-body text-sm font-medium text-[#0D0D0D]">{l.name}</p>
+                  <p className="mt-0.5 font-body text-xs leading-snug text-[#6B6560]">
+                    {isKit(l) ? `Includes ${l.includes.map(s => lookup(s)?.name).join(', ')}` : l.detail}
+                  </p>
+                </div>
+                <div className="flex-shrink-0 text-right">
+                  {isKit(l) && <p className="font-body text-xs text-[#6B6560] line-through">${kitListPrice(l).toLocaleString()}</p>}
+                  <p className="font-body text-sm font-medium tabular-nums text-[#0D0D0D]">${l.fee.toLocaleString()}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          {saved > 0 && (
+            <p className="mt-4 rounded-full bg-lime px-3 py-1.5 text-center font-body text-xs font-medium text-forest">Kit pricing: you save ${saved.toLocaleString()}</p>
+          )}
+        </div>
+      )}
+
       {/* What's included */}
-      <div className="px-7 py-5 border-b border-black/[0.06]">
+      {meta.highlights.length > 0 && <div className="px-7 py-5 border-b border-black/[0.06]">
         <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#6B6560]/60 mb-4">What&apos;s included</p>
         <ul className="space-y-3">
           {meta.highlights.map((h, i) => (
@@ -139,7 +177,7 @@ function OrderSummary({ name, price, billing, mode, tier, charge }: {
             </li>
           ))}
         </ul>
-      </div>
+      </div>}
 
       {/* Price */}
       <div className="px-7 py-5 border-b border-black/[0.06]">
@@ -308,11 +346,15 @@ function PaymentForm({ color, order, charge }: {
 export default function CheckoutClient() {
   const params = useSearchParams()
   const priceId = params.get('priceId') ?? ''
-  const mode = (params.get('mode') ?? 'subscription') as 'subscription' | 'payment'
-  const name = params.get('name') ?? ''
-  const price = Number(params.get('price') ?? '0')
+  // À la carte: ?items=gbp,reviews. Names and prices come from the catalog, not the link.
+  const skus = (params.get('items') ?? '').split(',').filter(Boolean)
+  const cart = cartTotals(skus)
+  const isCart = cart.lines.length > 0
+  const mode = isCart ? 'payment' : (params.get('mode') ?? 'subscription') as 'subscription' | 'payment'
+  const name = isCart ? (cart.lines.length === 1 ? cart.lines[0].name : 'Hewn Life add-ons') : params.get('name') ?? ''
+  const price = isCart ? cart.total : Number(params.get('price') ?? '0')
   const billing = params.get('billing') ?? 'monthly'
-  const tier = params.get('tier') ?? ''
+  const tier = isCart ? 'addons' : params.get('tier') ?? ''
   // Set by a growth-plan page, so the purchase is credited to that lead in the CRM.
   const planRef = (params.get('ref') ?? '').replace(/[^a-f0-9]/g, '').slice(0, 32)
 
@@ -341,10 +383,12 @@ export default function CheckoutClient() {
 
   // GA4 ecommerce funnel: begin_checkout when a valid plan loads,
   // add_payment_info when the payment step is reached.
-  const items = [{ item_id: tier || 'website-in-a-day', item_name: name, price, quantity: 1 }]
+  const items = isCart
+    ? cart.lines.map(l => ({ item_id: l.sku, item_name: l.name, price: l.fee, quantity: 1 }))
+    : [{ item_id: tier || 'website-in-a-day', item_name: name, price, quantity: 1 }]
   const beganCheckout = useRef(false)
   useEffect(() => {
-    if (beganCheckout.current || !priceId || !name) return
+    if (beganCheckout.current || (!priceId && !isCart) || !name) return
     beganCheckout.current = true
     trackBeginCheckout(price, items)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -364,7 +408,7 @@ export default function CheckoutClient() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          priceId, mode,
+          ...(isCart ? { items: cart.lines.map(l => l.sku) } : { priceId }), mode,
           email: contact.email,
           ...(mode === 'payment' && promoCode.trim() ? { promoCode: promoCode.trim() } : {}),
           metadata: { businessName: contact.businessName, fullName: contact.fullName, phone: contact.phone, notes: contact.notes, ...(tier ? { tier } : {}), ...(planRef ? { planToken: planRef } : {}) },
@@ -401,7 +445,7 @@ export default function CheckoutClient() {
     },
   }
 
-  if (!priceId || !name) {
+  if ((!priceId && !isCart) || !name) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center px-6">
         <div className="text-center">
@@ -564,7 +608,7 @@ export default function CheckoutClient() {
 
           {/* Right: sticky order summary */}
           <div className="lg:sticky lg:top-8 order-first lg:order-last">
-            <OrderSummary name={name} price={price} billing={billing} mode={mode} tier={tier} charge={step === 'payment' ? charge : null} />
+            <OrderSummary name={name} price={price} billing={billing} mode={mode} tier={tier} charge={step === 'payment' ? charge : null} lines={cart.lines} saved={cart.saved} />
           </div>
 
         </div>

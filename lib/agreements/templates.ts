@@ -7,6 +7,7 @@
  * Starter drafts for attorney review. Keep them consistent with /legal/terms,
  * /legal/refund and /legal/dpa.
  */
+import { ADDONS as SHOP_ADDONS, KITS, lookup } from '@/lib/addons'
 
 export const PRODUCTS = ['Website in a Day', 'Hewn', 'Wrought', 'Forged', 'Add-on services', 'Custom project'] as const
 export type Product = typeof PRODUCTS[number]
@@ -14,16 +15,10 @@ export type Billing = 'monthly' | 'annual' | 'one-time'
 
 export type AddOn = { name: string; detail: string; fee: number }
 
-/** The add-on services on the pricing page, in the same order and at the same fees. */
+/** The à la carte shop (lib/addons.ts): kits first, then single add-ons. */
 export const ADD_ONS: AddOn[] = [
-  { name: 'Extra Ad Creative Pack', detail: '8 additional ad creatives, static or motion, for any platform', fee: 800 },
-  { name: 'Email Automation Build-Out', detail: 'A 6-email nurture or sales sequence, fully written and mapped', fee: 1500 },
-  { name: 'Additional SEO Blog Post', detail: 'One post of 1,200–1,500 words, keyword-optimized and ready to publish', fee: 350 },
-  { name: 'Video Repurposing Pack', detail: 'One raw video edited into 5 short-form clips, captioned and formatted', fee: 400 },
-  { name: 'Whitepaper or Lead Magnet', detail: 'A long-form authority piece, researched, written and designed', fee: 1200 },
-  { name: 'Competitor Audit + Report', detail: 'A positioning gap analysis with actionable recommendations', fee: 1800 },
-  { name: 'Brand Identity Refresh', detail: 'Updated logo, colors and typography, delivered in a style guide', fee: 2500 },
-  { name: 'Full Website Copy', detail: 'Five pages written, structured and optimized for conversion', fee: 3000 },
+  ...KITS.map(k => ({ name: k.name, detail: `Includes ${k.includes.map(s => lookup(s)?.name).join(', ')}`, fee: k.fee })),
+  ...SHOP_ADDONS.map(a => ({ name: a.name, detail: a.detail, fee: a.fee })),
 ]
 
 /** List prices; HQ can override the fee on any agreement (e.g. a beta price). */
