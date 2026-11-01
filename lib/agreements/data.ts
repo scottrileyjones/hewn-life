@@ -5,6 +5,7 @@
  */
 import { createHash } from 'crypto'
 import { docText, render, type Deal, type Doc, type Product } from './templates'
+import { docFromMarkdown } from './internal'
 
 const BASE = process.env.AIRTABLE_BASE_ID
 const TOKEN = process.env.AIRTABLE_TOKEN
@@ -13,7 +14,7 @@ const TABLE = process.env.AIRTABLE_AGREEMENTS_TABLE_ID || 'tblcwJbFdieUO7GCL'
 export const STATUSES = ['Sent', 'Viewed', 'Signed', 'Void'] as const
 export type AgreementStatus = typeof STATUSES[number]
 
-export type Signature = { name: string; title: string; email: string; at: string; ip: string; ua?: string }
+export type Signature = { name: string; title: string; email: string; at: string; ip: string; ua?: string; address?: string }
 
 export type Agreement = {
   id: string
@@ -54,7 +55,8 @@ const toAgreement = (r: Row): Agreement => {
     product: str(r.fields['Product']) as Product,
     status: (STATUSES as readonly string[]).includes(str(r.fields['Status'])) ? str(r.fields['Status']) as AgreementStatus : 'Sent',
     deal: json<Deal>(r.fields['Terms'], {} as Deal),
-    doc: json<Doc>(r.fields['Body'], { title: '', parties: '', sections: [] }),
+    // Internal documents can be loaded as their source text (Markdown); they're converted here and frozen on first open.
+    doc: str(r.fields['Body']).trimStart().startsWith('{') ? json<Doc>(r.fields['Body'], { title: '', parties: '', sections: [] }) : docFromMarkdown(str(r.fields['Body'])),
     hash: str(r.fields['Hash']),
     hewnSig: json<Signature | null>(r.fields['Hewn signature'], null),
     clientSig: json<Signature | null>(r.fields['Client signature'], null),
@@ -123,6 +125,12 @@ export async function createAgreement(deal: Deal, client: { email: string; compa
   }))
 }
 
+/** Lock an internal document loaded as source text: store the converted text and its fingerprint before anyone signs. */
+export async function ensureFrozen(a: Agreement): Promise<Agreement> {
+  if (a.hash) return a
+  return toAgreement(await write(a.id, { Body: JSON.stringify(a.doc), Hash: hashDoc(a.doc), Log: appendLog(a, `text locked for signing; document hash ${hashDoc(a.doc)}`) }))
+}
+
 export async function markViewed(a: Agreement, ip: string): Promise<Agreement> {
   if (a.status !== 'Sent') return a
   return toAgreement(await write(a.id, { Status: 'Viewed', 'Viewed at': new Date().toISOString(), Log: appendLog(a, `opened by ${a.clientEmail}`, ip) }))
@@ -132,6 +140,16 @@ export async function signAgreement(a: Agreement, sig: Signature): Promise<Agree
   return toAgreement(await write(a.id, {
     Status: 'Signed', 'Signed at': sig.at, 'Client signature': JSON.stringify(sig),
     Log: appendLog(a, `signed by ${sig.name}, ${sig.title} (${sig.email}); document hash ${a.hash}`, sig.ip),
+  }))
+}
+
+/** Internal documents: record one signer's signature (0 = first signer, 1 = second). Signed once both have signed. */
+export async function signInternalSlot(a: Agreement, slot: 0 | 1, sig: Signature): Promise<Agreement> {
+  const done = slot === 0 ? !!a.clientSig : !!a.hewnSig
+  return toAgreement(await write(a.id, {
+    [slot === 0 ? 'Hewn signature' : 'Client signature']: JSON.stringify(sig),
+    ...(done ? { Status: 'Signed', 'Signed at': sig.at } : { Status: 'Viewed' }),
+    Log: appendLog(a, `signed by ${sig.name}, ${sig.title} (${sig.email}); document hash ${a.hash}${done ? '; fully signed' : ''}`, sig.ip),
   }))
 }
 
