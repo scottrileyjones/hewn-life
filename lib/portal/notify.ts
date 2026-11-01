@@ -170,3 +170,21 @@ ${payUrl ? `<p>Last step: set up billing so we can start.</p><p style="margin:24
     team(`${short(nameOf(c), 40)} signed their agreement. ${HQ}`),
   ])
 }
+
+/** Internal documents: ask a team member to sign, in HQ. */
+export async function notifySignRequest(to: { name: string; email: string }, d: { id: string; title: string }) {
+  const html = layout(`
+<p>Hi ${esc(to.name.split(' ')[0] || 'there')},</p>
+<h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;color:#0D0D0D">Please sign: ${esc(d.title)}</h1>
+<p>It’s ready in HQ. Read it through and sign with your name; you’ll both get the signed PDF once everyone has signed.</p>
+<p style="margin:24px 0">${button(`${SITE}/hq/documents/${d.id}`, 'Review and sign')}</p>`)
+  await send(to.email, `Please sign: ${d.title}`, html)
+}
+
+/** Internal documents: everyone has signed, so send each signer the PDF. */
+export async function notifyDocSigned(signers: { name: string; email: string }[], d: { title: string }, pdf: { filename: string; content: string }) {
+  const html = layout(`
+<h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;color:#0D0D0D">Signed: ${esc(d.title)}</h1>
+<p>Everyone has signed. The signed PDF is attached, with a certificate page showing when and how each of you signed. It’s also in HQ → Docs.</p>`)
+  await Promise.all(signers.map(s => send(s.email, `Signed: ${d.title}`, html, {}, [pdf])))
+}

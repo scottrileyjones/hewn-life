@@ -5,6 +5,7 @@
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFPage } from 'pdf-lib'
 import { HEWN } from './templates'
 import type { Agreement, Signature } from './data'
+import { internalTerms } from './internal'
 
 const W = 612, H = 792, M = 64
 const INK = rgb(0.05, 0.05, 0.05), MUTED = rgb(0.42, 0.45, 0.43), FOREST = rgb(0.118, 0.22, 0.149)
@@ -67,7 +68,7 @@ export async function signedPdf(a: Agreement, { draft = false } = {}): Promise<U
   for (const s of a.doc.sections) {
     ensure(40)
     text(s.heading, { font: bold, size: s.heading.startsWith('Order Form') ? 12.5 : 10.5, gap: 4, color: s.heading.startsWith('Order Form') ? FOREST : INK })
-    for (const p of s.paragraphs) text(p)
+    for (const p of s.paragraphs) text(p, p.startsWith('•') ? { indent: 10, gap: 3 } : {})
     for (const l of s.list ?? []) text(`•  ${l}`, { indent: 10, gap: 3 })
     y -= 6
   }
@@ -75,7 +76,8 @@ export async function signedPdf(a: Agreement, { draft = false } = {}): Promise<U
   // Signatures
   ensure(190)
   y -= 6
-  text('Signatures', { font: bold, size: 12.5, color: FOREST, gap: 8 })
+  // Internal documents already end with their own "Signatures" section.
+  if (a.doc.sections.at(-1)?.heading !== 'Signatures') text('Signatures', { font: bold, size: 12.5, color: FOREST, gap: 8 })
   const col = (x: number, party: string, entity: string, sig: Signature | null) => {
     let yy = y
     const line = (s: string, font = reg, size = 9, color = INK) => { page.drawText(clean(font, s), { x, y: yy - size, size, font, color }); yy -= size * 1.5 }
@@ -90,11 +92,19 @@ export async function signedPdf(a: Agreement, { draft = false } = {}): Promise<U
     yy -= 4
     line(sig ? `${sig.name}, ${sig.title}` : 'Name, title', reg, 9)
     line(sig ? `Signed electronically ${when(sig.at)}` : 'Date', reg, 8, MUTED)
+    if (sig?.address) for (const l of wrap(reg, 8, clean(reg, `Notice address: ${sig.address}`), 210)) line(l, reg, 8, MUTED)
     return yy
   }
-  const left = col(M, 'HEWN LIFE', `${HEWN.legalName}, dba ${HEWN.dba}`, a.hewnSig)
-  const right = col(W / 2 + 10, 'CLIENT', a.deal.clientLegalName || a.company, a.clientSig)
-  y = Math.min(left, right) - 10
+  const internal = internalTerms(a)
+  // Client agreements: Hewn Life and the client. Internal documents: one block per capacity each signer signs in.
+  const blocks: [string, string, Signature | null][] = internal
+    ? internal.signers.flatMap((s, i) => s.capacities.map(c => [c.toUpperCase(), s.name, i === 0 ? a.hewnSig : a.clientSig] as [string, string, Signature | null]))
+    : [['HEWN LIFE', `${HEWN.legalName}, dba ${HEWN.dba}`, a.hewnSig], ['CLIENT', a.deal.clientLegalName || a.company, a.clientSig]]
+  for (let i = 0; i < blocks.length; i += 2) {
+    ensure(130)
+    const bottoms = blocks.slice(i, i + 2).map((b, j) => col(j ? W / 2 + 10 : M, ...b))
+    y = Math.min(...bottoms) - 18
+  }
 
   // Certificate
   if (!draft) {
@@ -106,11 +116,14 @@ export async function signedPdf(a: Agreement, { draft = false } = {}): Promise<U
   kv('Document fingerprint (SHA-256 of the signed text)', a.hash)
   kv('Sent', a.sentAt ? when(a.sentAt) : '')
   if (a.viewedAt) kv('First opened by client', when(a.viewedAt))
-  for (const [label, sig] of [['Hewn Life signer', a.hewnSig], ['Client signer', a.clientSig]] as const) {
+  const who = internalTerms(a)?.signers.map(s => `Signer: ${s.name}`) ?? ['Hewn Life signer', 'Client signer']
+  for (const [label, sig] of [[who[0], a.hewnSig], [who[1], a.clientSig]] as const) {
     if (!sig) continue
     kv(label, `${sig.name}, ${sig.title} · ${sig.email} · ${when(sig.at)} · IP ${sig.ip || 'not recorded'}${sig.ua ? ` · ${sig.ua.slice(0, 140)}` : ''}`)
   }
-  kv('How the client signed', `Signed in the Hewn Life client portal after signing in with a one-time link sent to ${a.clientEmail}. The signer reviewed the full agreement, confirmed authority to sign, agreed to sign electronically, and typed their name as their signature.`)
+  kv(internal ? 'How it was signed' : 'How the client signed', internal
+    ? 'Each signer signed in Hewn Life HQ while signed in to their own @hewn.life account, after reviewing the full document, confirming the capacities they sign in, agreeing to sign electronically, and typing their name as their signature.'
+    : `Signed in the Hewn Life client portal after signing in with a one-time link sent to ${a.clientEmail}. The signer reviewed the full agreement, confirmed authority to sign, agreed to sign electronically, and typed their name as their signature.`)
   y -= 4
   text('Event log', { font: bold, size: 10.5, gap: 4 })
   for (const l of a.log.split('\n').filter(Boolean)) {
