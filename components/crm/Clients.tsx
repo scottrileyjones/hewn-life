@@ -4,6 +4,8 @@ import { prettyPhone } from '@/lib/smsText'
 import CrmHeader from './CrmHeader'
 import OnboardingPanel from './OnboardingPanel'
 import AssetsPanel from './AssetsPanel'
+import AgreementsPanel from './AgreementsPanel'
+import type { Agreement } from '@/lib/agreements/data'
 import type { Asset } from '@/lib/portal/assets'
 import { CLIENT_STATUSES, formatLinks, type ClientStatus, type PortalClient, type PortalMessage } from '@/lib/portal/data'
 
@@ -22,7 +24,7 @@ async function call<T>(body: object): Promise<T> {
   return out as T
 }
 
-export default function Clients({ user, clients: initial, selected, sampleThread, sampleAssets }: { user: string; clients: PortalClient[] | null; selected: string; sampleThread?: PortalMessage[]; sampleAssets?: Asset[] }) {
+export default function Clients({ user, clients: initial, selected, sampleThread, sampleAssets, sampleAgreements, initialTab }: { user: string; clients: PortalClient[] | null; selected: string; sampleThread?: PortalMessage[]; sampleAssets?: Asset[]; sampleAgreements?: Agreement[]; initialTab?: string }) {
   const [clients, setClients] = useState(initial ?? [])
   const [openEmail, setOpenEmail] = useState<string | 'new' | null>(selected || initial?.[0]?.email || null)
   const [form, setForm] = useState<Form>(blank)
@@ -32,7 +34,7 @@ export default function Clients({ user, clients: initial, selected, sampleThread
   const [busy, setBusy] = useState('')
   const [note, setNote] = useState('')
   const [error, setError] = useState('')
-  const [tab, setTab] = useState<'onboarding' | 'assets' | 'messages' | 'details'>('onboarding')
+  const [tab, setTab] = useState<'onboarding' | 'assets' | 'agreements' | 'messages' | 'details'>(initialTab === 'agreements' ? 'agreements' : 'onboarding')
 
   const open = useMemo(() => clients.find(c => c.email === openEmail) ?? null, [clients, openEmail])
 
@@ -114,7 +116,7 @@ export default function Clients({ user, clients: initial, selected, sampleThread
                   <p className="font-body text-[12px] text-ink/55">{open.name ? `${open.name} · ` : ''}{open.email} · {open.lastLogin ? `last in the portal ${when(open.lastLogin)}` : 'hasn’t opened the portal yet'}</p>
                 </div>
                 <nav className="flex rounded-full border border-ink/[0.12] bg-white p-0.5 font-body text-[13px]" aria-label="Client sections">
-                  {([['onboarding', 'Onboarding'], ['assets', 'Assets'], ['messages', 'Messages'], ['details', 'Details']] as const).map(([k, label]) => (
+                  {([['onboarding', 'Onboarding'], ['assets', 'Assets'], ['agreements', 'Agreements'], ['messages', 'Messages'], ['details', 'Details']] as const).map(([k, label]) => (
                     <button key={k} onClick={() => setTab(k)} aria-pressed={tab === k}
                       className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 ${tab === k ? 'bg-forest text-mist' : 'text-ink/70 hover:text-ink'}`}>
                       {label}{k === 'messages' && waiting(open) && <span className="h-2 w-2 rounded-full bg-ember" aria-label="Client replied" />}
@@ -125,6 +127,7 @@ export default function Clients({ user, clients: initial, selected, sampleThread
             )}
             {open && tab === 'onboarding' && <OnboardingPanel key={open.id} client={open} sample={!!sampleThread} onChange={c => setClients(cs => cs.map(x => (x.id === c.id ? c : x)))} />}
             {open && tab === 'assets' && <AssetsPanel key={`a-${open.id}`} client={open} sample={sampleAssets} />}
+            {open && tab === 'agreements' && <AgreementsPanel key={`g-${open.id}`} client={open} sample={sampleAgreements} />}
             {(!open || tab === 'details') && <section className="max-w-3xl rounded-[20px] border border-ink/[0.08] bg-white p-4 sm:p-5">
               <div className="flex items-start justify-between gap-3">
                 <div>

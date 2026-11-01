@@ -36,11 +36,13 @@ export function layout(body: string, footer = '') {
 export const button = (href: string, label: string) =>
   `<a href="${href}" style="display:inline-block;background:#1E3826;color:#F4F2EC;text-decoration:none;font-weight:600;padding:14px 24px;border-radius:999px">${label}</a>`
 
-export async function send(to: string, subject: string, html: string, extraHeaders: Record<string, string> = {}) {
+export type Attachment = { filename: string; content: string /* base64 */ }
+
+export async function send(to: string, subject: string, html: string, extraHeaders: Record<string, string> = {}, attachments: Attachment[] = []) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: FROM, to: [to], subject, html, headers: extraHeaders }),
+    body: JSON.stringify({ from: FROM, to: [to], subject, html, headers: extraHeaders, ...(attachments.length ? { attachments } : {}) }),
   })
   if (!res.ok) throw new Error(`Resend ${res.status}: ${await res.text()}`)
 }
