@@ -79,6 +79,7 @@ export default function AgreementView({ email, agreement: initial, payUrl: initi
             <div className="mt-4 rounded-[16px] bg-bone px-4 py-3" aria-live="polite">
               <p className="font-body text-[11px] uppercase tracking-[0.14em] text-ink/45">Your signature</p>
               <p className="mt-1 min-h-[40px] font-accent text-[30px] italic leading-tight text-forest">{name.trim() || <span className="text-ink/25">Type your name above</span>}</p>
+              <p className="mt-2 border-t border-ink/10 pt-2 font-body text-[13px] text-ink/70">Date: <b className="font-medium text-ink">{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</b> <span className="text-ink/50">(recorded when you sign)</span></p>
             </div>
             <label className="mt-4 flex items-start gap-2.5 font-body text-[13px] leading-snug text-ink/75">
               <input type="checkbox" checked={authority} onChange={e => setAuthority(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 accent-[#1E3826]" />
