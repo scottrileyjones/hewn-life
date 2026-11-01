@@ -53,8 +53,8 @@ export async function checkoutAgreement(order: CheckoutOrder, who: CheckoutSigne
       deal.specialTerms = `Promo code ${promo.code} applied at checkout: ${usd(promo.off / 100)} off, for a total of ${usd(deal.fee - promo.off / 100)}.`
     }
   } else if (order.priceId) {
-    const price = await stripe.prices.retrieve(order.priceId)
-    const plan = PLAN_PRICES[order.priceId]
+    const price = sample ? ({ unit_amount: 250000, recurring: { interval: 'month' } } as unknown as Stripe.Price) : await stripe.prices.retrieve(order.priceId)
+    const plan = PLAN_PRICES[order.priceId] ?? (sample ? (['Hewn', 'monthly'] as [Product, 'monthly']) : undefined)
     if (plan) {
       deal = blankDeal(plan[0], { company, name: who.fullName, email: who.email })
       deal.billing = plan[1]
