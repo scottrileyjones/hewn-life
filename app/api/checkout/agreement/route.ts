@@ -3,6 +3,7 @@ import { waitUntil } from '@vercel/functions'
 import { checkoutAgreement, type CheckoutOrder, type CheckoutSigner } from '@/lib/checkout/deal'
 import { attachPdf, createAgreement, pdfName, signAgreement } from '@/lib/agreements/data'
 import { signedPdf } from '@/lib/agreements/pdf'
+import { hewnSigner } from '@/lib/checkout/signer'
 
 export const maxDuration = 60
 
@@ -30,7 +31,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const { deal, doc, hash } = await checkoutAgreement(order, who)
-    if (b.action !== 'sign') return NextResponse.json({ doc, hash })
+    if (b.action !== 'sign') return NextResponse.json({ doc, hash, hewn: hewnSigner() })
 
     if (b.hash !== hash) return NextResponse.json({ error: 'The agreement changed since you opened it. Review it again, then sign.', doc, hash }, { status: 409 })
     if (who.fullName.length < 3 || !who.fullName.includes(' ')) return NextResponse.json({ error: 'Type your full name to sign.' }, { status: 400 })
@@ -41,7 +42,7 @@ export async function POST(req: NextRequest) {
     const ua = (req.headers.get('user-agent') || '').slice(0, 300)
     const now = new Date().toISOString()
     // Hewn Life's signature on its standard checkout terms is applied by the company.
-    const hewn = { name: process.env.HEWN_SIGNER_NAME || 'Hewn Life', title: process.env.HEWN_SIGNER_TITLE || 'Authorized signatory', email: 'hello@hewn.life', at: now, ip: '' }
+    const hewn = { ...hewnSigner(), email: 'hello@hewn.life', at: now, ip: '' }
     const created = await createAgreement(deal, { email: who.email, company: deal.clientLegalName }, hewn)
     const signed = await signAgreement(created, { name: who.fullName, title: deal.signerTitle, email: who.email, at: now, ip, ua, ...(who.address ? { address: who.address } : {}) })
 
