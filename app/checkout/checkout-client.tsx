@@ -8,6 +8,7 @@ import HewnLogo from '@/components/HewnLogo'
 import { trackBeginCheckout, trackAddPaymentInfo } from '@/lib/gtm'
 import { cartTotals, isKit, kitListPrice, lookup, type AddOn, type Kit } from '@/lib/addons'
 import AgreementDoc from '@/components/agreements/AgreementDoc'
+import SignatureBlocks from '@/components/agreements/SignatureBlocks'
 import type { Doc } from '@/lib/agreements/templates'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
@@ -366,7 +367,7 @@ export default function CheckoutClient() {
   // Signed earlier (e.g. an agreement from HQ, then its pay link): no second signature needed.
   const presigned = (params.get('agreement') ?? '').match(/^rec[A-Za-z0-9]{14}$/)?.[0] ?? ''
   const [agreementId, setAgreementId] = useState(presigned)
-  const [agreement, setAgreement] = useState<{ doc: Doc; hash: string } | null>(null)
+  const [agreement, setAgreement] = useState<{ doc: Doc; hash: string; hewn?: { name: string; title: string } } | null>(null)
   const [signer, setSigner] = useState({ legalName: '', title: 'Owner', address: '', signature: '', consent: false, authority: false })
   const stepLabels = presigned ? ['Your details', 'Payment'] : ['Your details', 'Review & sign', 'Payment']
   const stepIndex = step === 'info' ? 0 : step === 'sign' ? 1 : stepLabels.length - 1
@@ -429,9 +430,9 @@ export default function CheckoutClient() {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'preview', ...orderBody(), ...signerBody(), fullName: contact.fullName }),
       })
-      const out = await res.json() as { doc?: Doc; hash?: string; error?: string }
+      const out = await res.json() as { doc?: Doc; hash?: string; hewn?: { name: string; title: string }; error?: string }
       if (!res.ok || !out.doc || !out.hash) throw new Error(out.error || 'We couldn’t load your agreement. Try again.')
-      setAgreement({ doc: out.doc, hash: out.hash })
+      setAgreement({ doc: out.doc, hash: out.hash, hewn: out.hewn })
       setSigner(sg => ({ ...sg, legalName: sg.legalName || contact.businessName, signature: sg.signature || contact.fullName }))
       setStep('sign'); top()
     } catch (err) {
@@ -453,7 +454,7 @@ export default function CheckoutClient() {
         body: JSON.stringify({ action: 'sign', hash: agreement.hash, consent: signer.consent, authority: signer.authority, ...orderBody(), ...signerBody() }),
       })
       const out = await res.json() as { agreementId?: string; doc?: Doc; hash?: string; error?: string }
-      if (out.doc && out.hash) setAgreement({ doc: out.doc, hash: out.hash })
+      if (out.doc && out.hash) setAgreement(ag => ({ doc: out.doc!, hash: out.hash!, hewn: ag?.hewn }))
       if (!res.ok || !out.agreementId) throw new Error(out.error || 'We couldn’t sign. Try again.')
       setAgreementId(out.agreementId)
       await createIntent(out.agreementId)
@@ -661,6 +662,10 @@ export default function CheckoutClient() {
                   </div>
                   <div className="max-h-[440px] overflow-y-auto px-5 py-6 sm:px-7" tabIndex={0} aria-label="Agreement text">
                     <AgreementDoc doc={agreement.doc} />
+                    <SignatureBlocks
+                      hewn={agreement.hewn ?? { name: 'Hewn Life', title: 'Authorized signatory' }}
+                      client={signer.signature.trim() ? { name: signer.signature.trim(), title: signer.title } : null}
+                      clientEntity={signer.legalName || contact.businessName} />
                   </div>
                 </div>
 

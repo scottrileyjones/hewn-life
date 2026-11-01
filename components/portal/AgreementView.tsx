@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import AgreementDoc from '@/components/agreements/AgreementDoc'
+import SignatureBlocks from '@/components/agreements/SignatureBlocks'
 import PortalHeader from './PortalHeader'
 import type { Agreement } from '@/lib/agreements/data'
 
@@ -64,6 +65,7 @@ export default function AgreementView({ email, agreement: initial, payUrl: initi
 
         <div className="mt-4 rounded-[24px] border border-ink/[0.08] bg-white p-5 sm:p-8">
           <AgreementDoc doc={a.doc} />
+          <SignatureBlocks hewn={a.hewnSig} client={a.clientSig ? { ...a.clientSig, signed: true } : name.trim() ? { name: name.trim(), title } : null} clientEntity={legal} />
         </div>
 
         {!signed && a.status !== 'Void' && (
