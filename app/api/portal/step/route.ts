@@ -3,6 +3,8 @@ import { currentClientEmail } from '@/lib/portal/auth'
 import { ASSET_MAX_BYTES, ASSET_TYPES, attachAsset, findClient, saveClient } from '@/lib/portal/data'
 import { stepsFor, track } from '@/lib/portal/onboarding'
 import { notifyTeamStep } from '@/lib/portal/notify'
+import { waitUntil } from '@vercel/functions'
+import { syncDesignBuild } from '@/lib/design/builds'
 
 /** A client submits their part of an onboarding step: form answers and any files. */
 export async function POST(req: NextRequest) {
@@ -49,6 +51,8 @@ export async function POST(req: NextRequest) {
     const progress = { ...fresh.progress, [stepId]: { ...prev, submitted: new Date().toISOString(), data, files: [...(prev.files ?? []), ...uploaded] } }
     const saved = await saveClient(fresh.id, { progress })
     await notifyTeamStep(saved, step.title).catch(err => console.error('Portal step alert failed:', err))
+    // Capture their current site and queue their Figma build (after responding).
+    waitUntil(syncDesignBuild(saved))
     return NextResponse.json({ ok: true, progress: saved.progress, assets: saved.assets })
   } catch (err) {
     console.error('Portal step failed:', err)
