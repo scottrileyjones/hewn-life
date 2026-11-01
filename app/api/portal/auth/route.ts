@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   // Only known portal pages, so the link can't be used to send someone elsewhere.
   const next = p.get('next') || ''
   const agreement = next.match(/^agreement-(rec[A-Za-z0-9]{14})$/)?.[1]
-  const res = NextResponse.redirect(new URL(agreement ? `/portal/agreements/${agreement}` : ({ assets: '/portal/assets', calendar: '/portal/calendar' } as Record<string, string>)[next] ?? '/portal', req.url))
+  const res = NextResponse.redirect(new URL(agreement ? `/portal/agreements/${agreement}` : ({ assets: '/portal/assets', calendar: '/portal/calendar', billing: '/portal/billing' } as Record<string, string>)[next] ?? '/portal', req.url))
   res.cookies.set(PORTAL_COOKIE, session.value, { httpOnly: true, secure: true, sameSite: 'lax', path: '/', maxAge: session.maxAge })
   return res
 }
