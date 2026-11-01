@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { waitUntil } from '@vercel/functions'
+import { enroll } from '@/lib/flows/engine'
 
 type Body = {
   priceId: string
@@ -63,6 +65,15 @@ export async function POST(request: Request) {
       email,
       metadata: metadata ?? {},
     })
+
+    // Joins the abandoned-checkout flow; paying takes them out of it (webhook).
+    const tier = metadata?.tier ?? ''
+    const plan = ({ 'website-in-a-day': 'Website in a Day', hewn: 'Hewn', wrought: 'Wrought', forged: 'Forged' } as Record<string, string>)[tier] ?? 'Hewn Life'
+    const checkoutLink = `/checkout?${new URLSearchParams({
+      priceId, mode, name: plan, price: String((price.unit_amount ?? 0) / 100), billing: price.recurring?.interval === 'year' ? 'annual' : 'monthly',
+      ...(tier ? { tier } : {}), email, fullName: metadata?.fullName ?? '', businessName: metadata?.businessName ?? '', phone: metadata?.phone ?? '',
+    })}`
+    waitUntil(enroll('checkout_abandoned', { email, name: metadata?.fullName, company: metadata?.businessName, phone: metadata?.phone }, { plan, checkout_link: checkoutLink }))
 
     if (mode === 'subscription') {
       const subscription = await stripe.subscriptions.create({
