@@ -1,0 +1,19 @@
+# Runs the lifecycle flows every 15 minutes (Vercel's own cron here runs only once a day).
+# Needs repository secret CRON_SECRET, the same value as CRON_SECRET in Vercel.
+name: Lifecycle flows
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send due flow steps
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$CRON_SECRET" ]; then echo "::notice::CRON_SECRET isn't set; skipping."; exit 0; fi
+          curl -fsS -H "Authorization: Bearer $CRON_SECRET" https://www.hewn.life/api/cron/flows

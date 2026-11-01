@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { waitUntil } from '@vercel/functions'
 import { startPlan } from '@/lib/plans/flow'
 import { subscribe } from '@/lib/smsMarketing'
+import { enroll } from '@/lib/flows/engine'
 
 // Room for the growth-plan deck to be written after the response is sent.
 export const maxDuration = 300
@@ -80,6 +81,9 @@ export async function POST(req: NextRequest) {
       const ip = (req.headers.get('x-forwarded-for') || '').split(',')[0].trim()
       waitUntil(subscribe({ mobile: phone, name, email, company, source: source === 'Contact form' ? 'Contact form' : 'ROI calculator', ip }))
     }
+
+    // Only people who agreed to marketing emails get the nurture sequence.
+    if (consent === true) waitUntil(enroll('lead_nurture', { email, name, company, phone }))
 
     waitUntil(startPlan({
       source, name: name || '', company: company || '', email, consent: consent === true,

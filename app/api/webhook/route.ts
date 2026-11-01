@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { markPaid } from '@/lib/plans/flow'
 import { provisionPortal } from '@/lib/portal/provision'
+import { enroll, exitFlows } from '@/lib/flows/engine'
 
 export async function POST(request: Request) {
   const body = await request.text()
@@ -30,6 +31,9 @@ export async function POST(request: Request) {
     return c.deleted ? undefined : c.metadata?.planToken
   }
 
+  // Paying for anything ends the checkout reminders and the lead and win-back sequences.
+  const converted = (email: string) => exitFlows(email, ['checkout_abandoned', 'lead_nurture', 'winback'], 'paid')
+
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session
     console.log('Checkout completed:', {
@@ -43,9 +47,10 @@ export async function POST(request: Request) {
       token: await planToken(session.customer, session.metadata),
       amount: session.amount_total ? session.amount_total / 100 : undefined,
     })
+    await converted(session.customer_email ?? session.customer_details?.email ?? '')
   }
 
-  // A first purchase gets a client portal with its package's onboarding plan. Never fail the webhook over it.
+  // A first purchase gets a client portal with its package's onboarding plan, and joins the lifecycle flows. Never fail the webhook over it.
   const portal = async (customer: string | Stripe.Customer | Stripe.DeletedCustomer | null, email: string, meta?: Stripe.Metadata | null) => {
     try {
       let m = meta ?? {}
@@ -54,6 +59,11 @@ export async function POST(request: Request) {
         if (!c.deleted) m = c.metadata ?? {}
       }
       await provisionPortal({ email, tier: m.tier, name: m.fullName, company: m.businessName })
+      const person = { email, name: m.fullName, company: m.businessName, phone: m.phone }
+      await enroll('onboarding', person)
+      // Website in a Day buyers hear about monthly plans later; a monthly plan ends that.
+      if (m.tier === 'website-in-a-day') await enroll('upsell', person)
+      else await exitFlows(email, ['upsell', 'winback'], 'started a monthly plan')
     } catch (err) { console.error('Portal provisioning failed:', err) }
   }
 
@@ -64,6 +74,7 @@ export async function POST(request: Request) {
       token: await planToken(invoice.customer),
       amount: invoice.amount_paid ? invoice.amount_paid / 100 : undefined,
     })
+    await converted(invoice.customer_email ?? '')
     if (invoice.billing_reason === 'subscription_create') await portal(invoice.customer, invoice.customer_email ?? '')
   }
   if (event.type === 'payment_intent.succeeded') {
@@ -76,7 +87,17 @@ export async function POST(request: Request) {
     // Subscription invoices also raise payment intents; invoice.paid credits those.
     await markPaid(email, { token: await planToken(pi.customer, pi.metadata), amount: pi.amount_received ? pi.amount_received / 100 : undefined })
     // Only our one-time checkout puts the tier on the payment intent; subscription payments are handled above.
+    await converted(email)
     if (pi.metadata?.tier) await portal(pi.customer, email, pi.metadata)
+  }
+
+  // A cancelled monthly plan joins the win-back flow.
+  if (event.type === 'customer.subscription.deleted') {
+    const sub = event.data.object as Stripe.Subscription
+    if (typeof sub.customer === 'string') {
+      const c = await stripe.customers.retrieve(sub.customer)
+      if (!c.deleted && c.email) await enroll('winback', { email: c.email, name: c.metadata?.fullName, company: c.metadata?.businessName, phone: c.metadata?.phone })
+    }
   }
 
   return NextResponse.json({ received: true })

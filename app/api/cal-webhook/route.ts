@@ -4,6 +4,7 @@ import { intakeFields } from '@/lib/intake'
 import { briefsConfigured, toFields, createBrief } from '@/lib/airtable'
 import { waitUntil } from '@vercel/functions'
 import { markBooked } from '@/lib/plans/flow'
+import { exitFlows } from '@/lib/flows/engine'
 import { briefLead } from '@/lib/plans/lead'
 
 // Room for a growth-plan deck to be written after the response is sent.
@@ -58,6 +59,7 @@ export async function POST(req: NextRequest) {
     }))
     // Their growth plan, ahead of the call: the existing one, or a new one from this booking.
     waitUntil(markBooked(answers.email, briefLead(answers, 'Website brief')))
+    waitUntil(exitFlows(answers.email, ['lead_nurture'], 'booked a call'))
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('cal-webhook error:', err)
