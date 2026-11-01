@@ -224,7 +224,7 @@ function CalEmbed() {
 export default function Pricing() {
   const router = useRouter()
   const [annual, setAnnual] = useState(false)
-  const [expanded, setExpanded] = useState<TierSlug | null>(null)
+  const [expanded, setExpanded] = useState(false)
   const [calOpen, setCalOpen] = useState(false)
   const [showStickyBar, setShowStickyBar] = useState(false)
   // The add-on cart has its own bar; the Forged prompt steps aside while it's open.
@@ -288,14 +288,16 @@ export default function Pricing() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 items-stretch gap-3.5 lg:grid-cols-3">
+        {/* On desktop each card spans two shared rows (card, deliverables), so buttons and lists line up across all three. */}
+        <div className="grid grid-cols-1 items-stretch gap-3.5 lg:grid-cols-3 lg:gap-y-0">
           {tiers.map((tier, i) => {
             const price = annual ? tier.price.annual : tier.price.monthly
             const feat = tier.slug === 'wrought'
-            const isExpanded = expanded === tier.slug
+            const isExpanded = expanded
             return (
-              <FadeInWrapper key={tier.slug} delay={i * 110} className="flex h-full flex-col">
-                <div className={`flex h-full flex-col overflow-hidden rounded-[28px] ${feat ? 'bg-forest text-mist' : 'border border-ink/[0.08] bg-white'}`}>
+              <FadeInWrapper key={tier.slug} delay={i * 110} className="flex h-full flex-col lg:row-span-2 lg:grid lg:grid-rows-subgrid">
+                <div className={`flex h-full flex-col overflow-hidden rounded-[28px] lg:row-span-2 lg:grid lg:grid-rows-subgrid ${feat ? 'bg-forest text-mist' : 'border border-ink/[0.08] bg-white'}`}>
+                  <div className="flex flex-col">
                   {feat && (
                     <div className="relative isolate h-24 overflow-hidden">
                       <Terrain scene="amber" seed={31} className="-z-10" />
@@ -343,15 +345,19 @@ export default function Pricing() {
                         <CalButton className={`font-body text-xs transition-colors ${feat ? 'text-mist/60 hover:text-mist' : 'text-ink/55 hover:text-ink'}`}>Have questions? Book a free call →</CalButton>
                       </p>
                       <button
-                        onClick={() => setExpanded(isExpanded ? null : tier.slug)}
+                        onClick={() => setExpanded(!expanded)}
                         aria-expanded={isExpanded}
                         className={`flex w-full items-center gap-1.5 font-body text-xs transition-colors ${feat ? 'text-mist/60 hover:text-mist' : 'text-ink/55 hover:text-ink'}`}
                       >
                         <svg className={`h-3.5 w-3.5 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
                         {isExpanded ? 'Hide full deliverables' : 'See everything included'}
                       </button>
+                    </div>
+                  </div>
+                  </div>
+                  <div className="px-7 sm:px-8">
                       {isExpanded && (
-                        <div className={`mt-6 space-y-5 border-t pt-6 ${feat ? 'border-mist/[0.12]' : 'border-ink/[0.08]'}`}>
+                        <div className={`mb-8 space-y-5 border-t pt-6 ${feat ? 'border-mist/[0.12]' : 'border-ink/[0.08]'}`}>
                           {tier.deliverables.map(group => (
                             <div key={group.pillar}>
                               <p className={`mb-2.5 font-mono text-[10px] uppercase tracking-[0.18em] ${feat ? 'text-lime' : 'text-forest'}`}>{group.pillar}</p>
@@ -367,7 +373,6 @@ export default function Pricing() {
                           ))}
                         </div>
                       )}
-                    </div>
                   </div>
                 </div>
               </FadeInWrapper>
