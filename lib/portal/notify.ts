@@ -134,3 +134,39 @@ ${comment ? `<div style="margin:0 0 16px;padding:16px 18px;border-left:3px solid
 <p style="margin:24px 0">${button(`${SITE}/hq/calendar?c=${encodeURIComponent(c.email)}`, 'Open the calendar')}</p>`)
   await Promise.all([send(REVIEWER, `${c.company || c.name || c.email} ${verb}: ${p.title}`, html), team(`${short(nameOf(c), 40)} ${verb} post "${short(p.title, 50)}". hewn.life/hq/calendar`)])
 }
+
+/** To the client: an agreement is ready to sign. The button signs them in and opens it. */
+export async function notifyClientAgreement(c: PortalClient, a: { id: string; title: string; product: string }) {
+  const html = layout(`
+<p>Hi ${esc(c.name.split(' ')[0] || 'there')},</p>
+<p style="margin:0 0 4px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#6E736D">Agreement · ${esc(a.product)}</p>
+<h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;color:#0D0D0D">Your agreement is ready to sign</h1>
+<p>We’ve signed our side. Read it through in your portal and sign with your name; it takes a couple of minutes. You’ll get a signed PDF by email straight after.</p>
+<p style="margin:24px 0">${button(`${loginUrl(c.email)}&next=agreement-${a.id}`, 'Review and sign')}</p>
+<p style="margin:0">Questions about anything in it? Reply to this email.</p>
+<p style="margin:16px 0 0">The Hewn Life team</p>`)
+  await Promise.all([
+    send(c.email, `Please sign: ${a.title}`, html),
+    textClient(c, `Your agreement is ready to sign: ${PORTAL}`),
+  ])
+}
+
+/** After signing: the signed PDF to the client and to us. */
+export async function notifyAgreementSigned(c: PortalClient, a: { title: string; signer: string }, pdf: { filename: string; content: string }, payUrl: string | null) {
+  const client = layout(`
+<p>Hi ${esc(c.name.split(' ')[0] || 'there')},</p>
+<h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;color:#0D0D0D">Signed. Welcome aboard.</h1>
+<p>Your signed copy of <b>${esc(a.title)}</b> is attached, with a certificate page showing when and how each of us signed. It’s also in your portal.</p>
+${payUrl ? `<p>Last step: set up billing so we can start.</p><p style="margin:24px 0">${button(`${SITE}${payUrl}`, 'Set up billing')}</p>` : `<p style="margin:24px 0">${button(loginUrl(c.email), 'Open your portal')}</p>`}
+<p style="margin:0">The Hewn Life team</p>`)
+  const internal = layout(`
+<p style="margin:0 0 4px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#6E736D">Agreement signed</p>
+<h1 style="margin:0 0 16px;font-size:22px;line-height:1.25;color:#0D0D0D">${esc(c.company || c.name || c.email)} signed ${esc(a.title)}</h1>
+<p>Signed by ${esc(a.signer)}. The signed PDF is attached and saved in Airtable.${payUrl ? ' They were sent on to checkout.' : ' Send the first invoice if it isn’t paid yet.'}</p>
+<p style="margin:24px 0">${button(`${SITE}/hq/clients?c=${encodeURIComponent(c.email)}`, 'Open in HQ')}</p>`)
+  await Promise.all([
+    send(c.email, `Signed: ${a.title}`, client, {}, [pdf]),
+    send(REVIEWER, `Signed: ${a.title}`, internal, {}, [pdf]),
+    team(`${short(nameOf(c), 40)} signed their agreement. ${HQ}`),
+  ])
+}

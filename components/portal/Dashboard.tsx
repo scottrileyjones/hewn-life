@@ -6,6 +6,7 @@ import { track, type Progress } from '@/lib/portal/onboarding'
 import { Timeline, Tracker, YourTurn } from './Onboarding'
 import PortalHeader from './PortalHeader'
 import TextAlerts from './TextAlerts'
+import type { Agreement } from '@/lib/agreements/data'
 
 const when = (iso: string) => new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
 const teamName = (author: string) => {
@@ -29,7 +30,7 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
   )
 }
 
-export default function Dashboard({ client: initialClient, messages: initial, billing, assetCounts }: { client: PortalClient; messages: PortalMessage[]; billing?: string; assetCounts: { total: number; toReview: number } }) {
+export default function Dashboard({ client: initialClient, messages: initial, billing, assetCounts, agreements = [] }: { client: PortalClient; messages: PortalMessage[]; billing?: string; assetCounts: { total: number; toReview: number }; agreements?: Agreement[] }) {
   const [client, setClient] = useState(initialClient)
   const [messages, setMessages] = useState(initial)
   const t = useMemo(() => (client.package ? track(client.package, client.progress) : null), [client.package, client.progress])
@@ -69,6 +70,15 @@ export default function Dashboard({ client: initialClient, messages: initial, bi
           </div>
           <span className={`rounded-full px-3 py-1 font-body text-[13px] font-medium ${STATUS_STYLE[client.status]}`}>{client.status}</span>
         </div>
+        {agreements.filter(a => a.status === 'Sent' || a.status === 'Viewed').map(a => (
+          <a key={a.id} href={`/portal/agreements/${a.id}`} className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-[20px] bg-lime px-5 py-4 text-forest">
+            <span>
+              <span className="block font-mono text-[10px] uppercase tracking-[0.2em]">Your turn · Agreement</span>
+              <span className="mt-0.5 block font-display text-[18px] font-semibold tracking-[-0.01em]">Sign your {a.product} agreement</span>
+            </span>
+            <span className="rounded-full bg-forest px-5 py-2 font-body text-[14px] font-medium text-mist">Review and sign →</span>
+          </a>
+        ))}
         {billing === 'none' && <p className="mt-4 rounded-[14px] bg-sand px-4 py-2.5 font-body text-sm">We couldn’t find billing for this email. Message us below and we’ll sort it out.</p>}
         {billing === 'error' && <p className="mt-4 rounded-[14px] bg-[#F6E3DD] px-4 py-2.5 font-body text-sm text-[#7A2E1E]">Billing didn’t open. Try again, or message us below.</p>}
 
@@ -158,6 +168,22 @@ export default function Dashboard({ client: initialClient, messages: initial, bi
                     <li key={u.id} className="border-l-2 border-ember pl-3">
                       <p className="whitespace-pre-line font-body text-[14px] leading-snug">{u.body}</p>
                       <p className="mt-0.5 font-body text-[11px] text-ink/50">{when(u.at)}</p>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            )}
+
+            {agreements.some(a => a.status === 'Signed') && (
+              <Card title="Agreements">
+                <ul className="mt-3 divide-y divide-ink/[0.06]">
+                  {agreements.filter(a => a.status === 'Signed').map(a => (
+                    <li key={a.id} className="flex items-center justify-between gap-3 py-2.5">
+                      <a href={`/portal/agreements/${a.id}`} className="min-w-0 font-body text-[14px] hover:text-forest">
+                        <span className="block truncate">{a.title}</span>
+                        <span className="block text-[12px] text-ink/50">Signed {when(a.signedAt)}</span>
+                      </a>
+                      <a href={`/api/agreements/pdf?id=${a.id}`} target="_blank" rel="noopener noreferrer" className="shrink-0 font-body text-[13px] text-forest underline underline-offset-2">PDF</a>
                     </li>
                   ))}
                 </ul>
