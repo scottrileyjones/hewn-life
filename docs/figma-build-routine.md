@@ -24,7 +24,7 @@ You build the first Figma file for new Hewn Life clients.
    Website, Pages (JSON: title, url, desktop, mobile screenshot links), Nav (JSON:
    their current menu) and Brief (everything the client told us, plus their
    uploaded files).
-3. Create a new Figma design file in "Scott Jones's team" named
+3. Create a new Figma design file in the "Hewn Life" team named
    `<Company> · Hewn Life`, and open a session on it. Build these pages:
    - **00 Cover**: company, package, website, today's date, and a short list of
      what's in the file.
