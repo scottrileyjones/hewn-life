@@ -189,15 +189,12 @@ export async function notifyDocSigned(signers: { name: string; email: string }[]
   await Promise.all(signers.map(s => send(s.email, `Signed: ${d.title}`, html, {}, [pdf])))
 }
 
-/** An à la carte order: the buyer hears what happens next; we get the order details. */
+/** An à la carte order, to us. (The buyer gets their portal welcome email, which asks for what we need.) */
 export async function notifyAddonOrder(o: { email: string; name?: string; company?: string; phone?: string; items: { name: string; detail: string }[]; amount: number; notes?: string }) {
   const list = o.items.map(i => `<li style="margin:0 0 8px"><strong>${esc(i.name)}</strong><br><span style="color:#6E736D">${esc(i.detail)}</span></li>`).join('')
-  const hi = esc((o.name ?? '').trim().split(/\s+/)[0] || 'there')
-  const buyer = layout(`<p>Hi ${hi},</p><p>Thanks for your order. Here’s what you bought:</p><ul style="padding-left:18px">${list}</ul><p>Within one business day we’ll email you a short list of what we need from you (logins, files or a few answers), and the date you can expect everything.</p><p>Questions? Just reply to this email.</p><p>The Hewn Life team</p>`)
   const total = `$${(o.amount / 100).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`
-  const internal = layout(`<p><strong>New add-on order: ${total}</strong></p><p>${esc(o.name || '')}${o.company ? `, ${esc(o.company)}` : ''}<br>${esc(o.email)}${o.phone ? `<br>${esc(o.phone)}` : ''}</p><ul style="padding-left:18px">${list}</ul>${o.notes ? `<p><strong>Notes:</strong> ${esc(o.notes)}</p>` : ''}<p>Reply to them within one business day with what we need.</p>`)
+  const internal = layout(`<p><strong>New add-on order: ${total}</strong></p><p>${esc(o.name || '')}${o.company ? `, ${esc(o.company)}` : ''}<br>${esc(o.email)}${o.phone ? `<br>${esc(o.phone)}` : ''}</p><ul style="padding-left:18px">${list}</ul>${o.notes ? `<p><strong>Notes:</strong> ${esc(o.notes)}</p>` : ''}<p>Their portal asks for everything we need; you’ll get a note as each answer comes in. HQ → Clients.</p>`)
   await Promise.allSettled([
-    send(o.email, 'Your Hewn Life order', buyer, { 'Reply-To': REVIEWER }),
     send(REVIEWER, `Add-on order: ${o.company || o.name || o.email} (${total})`, internal, { 'Reply-To': o.email }),
     team(`New add-on order, ${total}: ${short(o.items.map(i => i.name).join(' + '), 90)} for ${short(o.company || o.name || o.email, 40)}.`),
   ])

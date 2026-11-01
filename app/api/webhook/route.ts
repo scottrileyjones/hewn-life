@@ -4,6 +4,7 @@ import { markPaid } from '@/lib/plans/flow'
 import { provisionPortal } from '@/lib/portal/provision'
 import { enroll, exitFlows } from '@/lib/flows/engine'
 import { lookup } from '@/lib/addons'
+import { addonPackage } from '@/lib/portal/onboarding'
 import { notifyAddonOrder } from '@/lib/portal/notify'
 
 export async function POST(request: Request) {
@@ -91,9 +92,14 @@ export async function POST(request: Request) {
     // Only our one-time checkout puts the tier on the payment intent; subscription payments are handled above.
     await converted(email)
     if (pi.metadata?.tier === 'addons') {
-      // À la carte orders: no onboarding portal, just a confirmation to them and the order to us.
+      // À la carte orders: a portal with the requirements for what they bought, and the order to us.
       const m = pi.metadata
-      const items = (m.items ?? '').split(',').map(s => lookup(s)).filter(Boolean).map(x => ({ name: x!.name, detail: 'includes' in x! ? `Includes ${x.includes.map(s => lookup(s)?.name).join(', ')}` : x!.detail }))
+      const skus = (m.items ?? '').split(',').filter(sku => lookup(sku))
+      try {
+        await provisionPortal({ email, tier: addonPackage(skus), name: m.fullName, company: m.businessName })
+        await enroll('onboarding', { email, name: m.fullName, company: m.businessName, phone: m.phone })
+      } catch (err) { console.error('Add-on portal failed:', err) }
+      const items = skus.map(sku => lookup(sku)!).map(x => ({ name: x.name, detail: 'includes' in x ? `Includes ${x.includes.map(s => lookup(s)?.name).join(', ')}` : x.detail }))
       try { await notifyAddonOrder({ email, name: m.fullName, company: m.businessName, phone: m.phone, notes: m.notes, items, amount: pi.amount_received }) } catch (err) { console.error('Add-on order notice failed:', err) }
     } else if (pi.metadata?.tier) await portal(pi.customer, email, pi.metadata)
   }

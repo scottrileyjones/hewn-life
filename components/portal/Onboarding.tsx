@@ -3,6 +3,9 @@ import { useState } from 'react'
 import type { Step, StepStatus, track as trackFn } from '@/lib/portal/onboarding'
 import type { PortalAsset } from '@/lib/portal/data'
 
+/** Lowercase the first letter only, so names later on (Google, Meta) keep their capitals. */
+const lower = (t: string) => (/^(Google|Meta|AI)\b/.test(t) ? t : t.charAt(0).toLowerCase() + t.slice(1))
+
 type Tracked = ReturnType<typeof trackFn>
 
 const day = (iso?: string) => (iso ? new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '')
@@ -36,7 +39,7 @@ export function Tracker({ t, note }: { t: Tracked; note: string }) {
 
       <div className="mt-6 border-t border-mist/15 pt-5">
         <p className="font-display text-[20px] leading-snug tracking-[-0.01em] sm:text-[24px]">
-          {complete ? 'All done. Your project is complete.' : t.yourTurn.length ? `Your turn: ${t.yourTurn[0].step.title.toLowerCase()}.` : `We’re on it: ${t.current!.title.toLowerCase()}.`}
+          {complete ? 'All done. Your project is complete.' : t.yourTurn.length ? `Your turn: ${lower(t.yourTurn[0].step.title)}.` : `We’re on it: ${lower(t.current!.title)}.`}
         </p>
         {note && <p className="mt-2 whitespace-pre-line font-body text-[15px] leading-relaxed text-mist/80">{note}</p>}
       </div>
@@ -108,7 +111,7 @@ export function YourTurn({ t, onSaved }: { t: Tracked; onSaved: (out: { progress
         <h2 className="font-display text-[20px] font-semibold tracking-[-0.02em]">Your turn</h2>
         <span className="rounded-full bg-lime px-2.5 py-0.5 font-body text-[12px] font-medium text-forest">{t.yourTurn.length} to do</span>
       </div>
-      <p className="mt-1 font-body text-[14px] text-ink/60">These load straight into your build. The sooner they’re in, the sooner you’re live.</p>
+      <p className="mt-1 font-body text-[14px] text-ink/60">Everything we need to get started. The sooner it’s in, the sooner we start.</p>
       <ul className="mt-4 divide-y divide-ink/[0.06]">
         {t.yourTurn.map(({ step, state }) => (
           <li key={step.id} className="py-3">
