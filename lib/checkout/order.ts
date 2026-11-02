@@ -35,6 +35,10 @@ export async function paidOrder(paymentIntent?: string, secret?: string): Promis
     return { id: 'pi_sample', email: 'jane@acmeplumbing.com', name: 'Jane Smith', company: 'Acme Plumbing', pkg: addonPackage(skus), title: packageName(addonPackage(skus)), succeeded: true, amount: 169000, currency: 'usd',
       lines: skus.map(s => lookup(s)!).map(x => ({ name: x.name, detail: isKit(x) ? `Includes ${x.includes.map(s => lookup(s)?.name).join(', ')}` : x.detail, amount: x.fee * 100 })) }
   }
+  if (process.env.PLAN_SAMPLE === '1' && paymentIntent === 'pi_sample_wiad') {
+    return { id: 'pi_sample_wiad', email: 'jane@acmeplumbing.com', name: 'Jane Smith', company: 'Acme Plumbing', pkg: 'website-in-a-day', title: packageName('website-in-a-day'), succeeded: true, amount: 99900, currency: 'usd',
+      lines: [{ name: packageName('website-in-a-day'), detail: PLAN_LINE['website-in-a-day'] ?? '' }] }
+  }
   if (!paymentIntent?.startsWith('pi_') || !secret || !process.env.STRIPE_SECRET_KEY) return null
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2026-04-22.dahlia' })

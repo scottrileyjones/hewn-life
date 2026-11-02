@@ -2,7 +2,9 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import PurchaseTracker from '@/components/PurchaseTracker'
 import { paidOrder } from '@/lib/checkout/order'
-import { PHASES, stepsFor } from '@/lib/portal/onboarding'
+import { PHASES, stepsFor, type Progress } from '@/lib/portal/onboarding'
+import { findClient } from '@/lib/portal/data'
+import { requirementsSoFar } from '@/lib/portal/fromBrief'
 
 export const metadata: Metadata = {
   title: 'Thank you — Hewn Life',
@@ -47,6 +49,20 @@ export default async function ThankYou({ searchParams }: { searchParams: { [key:
   const phaseLabel: Record<string, string> = { received: 'Order received', kickoff: 'Your requirements', building: 'We build', review: 'Your review', live: isAddons ? 'Delivered' : 'Live' }
   const phases = (plan.length ? PHASES.filter(ph => plan.some(st => st.phase === ph.id)) : PHASES).map(ph => ph.id)
 
+  // Anything they already gave us (their Website Brief, or earlier in the portal) shows as done.
+  let have: Progress = {}
+  if (order?.succeeded && reqs.length) {
+    try {
+      const saved = process.env.PLAN_SAMPLE === '1' ? {} : (await findClient(order.email))?.progress ?? {}
+      have = await requirementsSoFar(order.email, order.pkg, saved)
+    } catch (err) { console.error('Thank-you requirements lookup failed:', err) }
+  }
+  const sent = (id: string) => !!(have[id]?.submitted || have[id]?.done)
+  const started = (id: string) => !sent(id) && !!(Object.keys(have[id]?.data ?? {}).length || have[id]?.files?.length)
+  const sentCount = reqs.filter(r => sent(r.id)).length
+  const allIn = reqs.length > 0 && sentCount === reqs.length
+  const nowAt = allIn ? 2 : 1
+
   return (
     <div className="bg-bone px-5 pb-24 pt-28">
       <PurchaseTracker transactionId={transactionId} value={value} itemId={itemId} itemName={itemName} status={status} />
@@ -77,18 +93,24 @@ export default async function ThankYou({ searchParams }: { searchParams: { [key:
             <div className="mt-10 overflow-hidden rounded-[32px] bg-forest text-mist">
               <div className="p-7 sm:p-10">
                 <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-lime">Your plan{order?.title && order.title !== 'Your order' ? ` · ${order.title}` : ''}</p>
-                <h2 className="mt-3 font-display text-[clamp(26px,3vw,38px)] font-medium leading-tight tracking-[-0.03em]">Your plan is ready. Let’s start step one.</h2>
+                <h2 className="mt-3 font-display text-[clamp(26px,3vw,38px)] font-medium leading-tight tracking-[-0.03em]">
+                  {allIn ? 'You’ve already sent us what we need.' : sentCount ? 'Your plan is ready, and you’re partway there.' : 'Your plan is ready. Let’s start step one.'}
+                </h2>
                 <p className="mt-3 max-w-xl font-body text-mist/75">
-                  We’ve laid out exactly what we need for {isAddons ? 'what you ordered' : 'your project'}. Go through it now and we start work as soon as it’s in.
+                  {allIn
+                    ? 'Your Website Brief covered every requirement, so we’re starting the build. Check your portal any time to add to it.'
+                    : sentCount
+                      ? `Your Website Brief already covered ${sentCount} of ${reqs.length}. Finish the rest and we start work as soon as it’s in.`
+                      : <>We’ve laid out exactly what we need for {isAddons ? 'what you ordered' : 'your project'}. Go through it now and we start work as soon as it’s in.</>}
                 </p>
 
                 {/* Phase track */}
                 <ol className="mt-8 flex items-start" aria-label="Your plan">
                   {phases.map((id, i) => {
-                    const state = i === 0 ? 'done' : i === 1 ? 'now' : 'next'
+                    const state = i < nowAt ? 'done' : i === nowAt ? 'now' : 'next'
                     return (
                       <li key={id} className="relative flex flex-1 flex-col items-center text-center">
-                        {i > 0 && <span className={`absolute right-1/2 top-[15px] h-[2px] w-full ${i === 1 ? 'bg-lime' : 'bg-mist/15'}`} aria-hidden />}
+                        {i > 0 && <span className={`absolute right-1/2 top-[15px] h-[2px] w-full ${i <= nowAt ? 'bg-lime' : 'bg-mist/15'}`} aria-hidden />}
                         <span className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-full ${state === 'done' ? 'bg-lime text-forest' : state === 'now' ? 'bg-forest ring-2 ring-lime' : 'border border-mist/25 bg-forest'}`}>
                           {state === 'done' ? <Tick className="h-4 w-4" /> : state === 'now' ? <span className="h-2.5 w-2.5 rounded-full bg-lime" /> : null}
                         </span>
@@ -101,15 +123,21 @@ export default async function ThankYou({ searchParams }: { searchParams: { [key:
 
               <div className="border-t border-mist/10 bg-forest-2 p-7 sm:p-10">
                 <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-mist/70">
-                  <span className="rounded-full bg-lime px-2 py-0.5 text-[9px] text-forest">Now</span> Step one: your requirements
+                  <span className="rounded-full bg-lime px-2 py-0.5 text-[9px] text-forest">{allIn ? 'Done' : 'Now'}</span> Step one: your requirements{sentCount > 0 && <span className="whitespace-nowrap normal-case tracking-normal text-mist/55">· {sentCount} of {reqs.length} in</span>}
                 </p>
                 {reqs.length > 0 ? (
                   <ul className="mt-5 space-y-3">
                     {reqs.map(r => (
                       <li key={r.id} className="flex items-start gap-3">
-                        <span className="mt-0.5 h-5 w-5 flex-shrink-0 rounded-md border-2 border-mist/40" aria-hidden />
+                        {sent(r.id)
+                          ? <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md bg-lime text-forest" aria-label="Done"><Tick className="h-3.5 w-3.5" /></span>
+                          : <span className="mt-0.5 h-5 w-5 flex-shrink-0 rounded-md border-2 border-mist/40" aria-hidden />}
                         <span>
-                          <span className="block font-body text-[15px] font-medium">{r.title}</span>
+                          <span className={`flex flex-wrap items-center gap-2 font-body text-[15px] font-medium ${sent(r.id) ? 'text-mist/75' : ''}`}>
+                            {r.title}
+                            {sent(r.id) && <span className="rounded-full bg-mist/10 px-2 py-0.5 whitespace-nowrap text-[11px] font-normal text-lime">From your brief</span>}
+                            {started(r.id) && <span className="rounded-full bg-mist/10 px-2 py-0.5 text-[11px] font-normal text-mist/80">Started</span>}
+                          </span>
                           <span className="mt-0.5 block font-body text-[13px] leading-snug text-mist/60">{r.detail}</span>
                         </span>
                       </li>
@@ -120,9 +148,9 @@ export default async function ThankYou({ searchParams }: { searchParams: { [key:
                 )}
                 <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
                   <a href={portalHref} className="inline-flex flex-shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-lime px-7 py-4 font-body text-[15px] font-semibold text-forest transition hover:bg-white">
-                    Start now <span aria-hidden>→</span>
+                    {allIn ? 'Open your portal' : sentCount ? 'Finish the rest' : 'Start now'} <span aria-hidden>→</span>
                   </a>
-                  <p className="font-body text-sm text-mist/60">About 10 minutes. Each part saves as you send it, and we’ve emailed you a link too.</p>
+                  <p className="font-body text-sm text-mist/60">{allIn ? 'Your answers are already in your portal, and we’ve emailed you a link too.' : sentCount ? 'Your brief answers are already filled in. Each part saves as you send it, and we’ve emailed you a link too.' : 'About 10 minutes. Each part saves as you send it, and we’ve emailed you a link too.'}</p>
                 </div>
               </div>
             </div>
