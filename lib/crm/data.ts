@@ -4,6 +4,7 @@
  * and the Pipeline table, with a stage worked out from what has happened.
  */
 import { getPlan, type PlanId } from '@/lib/playbook'
+import { anomalies, testRule } from './test'
 
 const BASE = process.env.AIRTABLE_BASE_ID
 const TOKEN = process.env.AIRTABLE_TOKEN
@@ -40,6 +41,12 @@ export type Contact = {
   crmNotes: string
   pipelineId: string | null
   events: CrmEvent[]
+  /** Why this is a test record ('' if it's real). Tests are left out of HQ numbers, the funnel and flows. */
+  test: string
+  /** Things worth a human look, like a surname in the business-name box. */
+  flags: string[]
+  /** Every business name we've been given, oldest first. */
+  companies: string[]
 }
 
 type Row = { id: string; createdTime: string; fields: Record<string, unknown> }
@@ -83,7 +90,7 @@ export async function loadContacts(): Promise<Contact[]> {
       c = {
         email, name: '', company: '', phone: '', state: '', sources: [], firstSeen: '', lastActivity: '', tier: '', score: null,
         revenue: '', consent: false, answers: {}, notes: '', plan: null, stage: 'New', autoStage: 'New', manual: null,
-        value: null, crmNotes: '', pipelineId: null, events: [],
+        value: null, crmNotes: '', pipelineId: null, events: [], test: '', flags: [], companies: [],
       }
       map.set(email, c)
     }
@@ -93,6 +100,7 @@ export async function loadContacts(): Promise<Contact[]> {
   const stamps = new Map<Contact, Record<string, string>>()
   const fill = (c: Contact, k: 'name' | 'company' | 'phone' | 'state' | 'revenue' | 'tier', v: string, at = '') => {
     if (!v) return
+    if (k === 'company') c.companies.push(v)
     const st = stamps.get(c) ?? {}
     if (c[k] && (st[k] ?? '') > at) return
     c[k] = v; st[k] = at; stamps.set(c, st)
@@ -162,6 +170,7 @@ export async function loadContacts(): Promise<Contact[]> {
     c.pipelineId = r.id
     if (typeof f['Deal value'] === 'number') c.value = f['Deal value'] as number
     c.crmNotes = str(f['Notes'])
+    if (f['Test'] === true) c.test = 'Marked as a test'
     const stage = pick(f['Stage']) as Stage
     const at = str(f['Stage set at'])
     if (STAGES.includes(stage) && at) {
@@ -181,13 +190,15 @@ export async function loadContacts(): Promise<Contact[]> {
     c.stage = c.manual && c.manual.at >= autoAt ? c.manual.stage : c.autoStage
     c.events.sort((a, b) => (a.at < b.at ? 1 : -1))
     if (!c.name) c.name = c.email
+    c.test = c.test || testRule(c.email)
+    c.flags = anomalies(c)
   }
 
   return contacts.sort((a, b) => (a.lastActivity < b.lastActivity ? 1 : -1))
 }
 
 /** Save a hand-set stage, notes or deal value for a contact. */
-export async function savePipeline(email: string, fields: { Stage?: Stage; 'Stage set by'?: string; Notes?: string; 'Deal value'?: number | null }, existingId?: string | null) {
+export async function savePipeline(email: string, fields: { Stage?: Stage; 'Stage set by'?: string; Notes?: string; 'Deal value'?: number | null; Test?: boolean }, existingId?: string | null) {
   if (!BASE || !TOKEN) throw new Error('Airtable not configured')
   const body: Record<string, unknown> = { ...fields }
   if (fields.Stage) body['Stage set at'] = new Date().toISOString()

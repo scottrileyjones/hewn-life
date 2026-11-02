@@ -4,6 +4,7 @@
  * the booked Net Revenue the Grant Agreement's milestones are measured on.
  */
 import Stripe from 'stripe'
+import { markedTests, testRule } from '@/lib/crm/test'
 
 export type Revenue = {
   mrr: number
@@ -31,10 +32,21 @@ export async function loadRevenue(): Promise<Revenue> {
     return { key: monthKey(d), label: d.toLocaleString('en-US', { month: 'short', timeZone: 'UTC' }), amount: 0 }
   })
 
+  // Test purchases (our own or marked Test in the CRM) and comped orders (99%+ off) aren't revenue.
+  const tests = await markedTests().catch(() => new Set<string>())
+  const isTest = (email?: string | null) => !!email && (!!testRule(email) || tests.has(email.trim().toLowerCase()))
+  const comped = (pi: Stripe.PaymentIntent | null) => {
+    const off = Number(pi?.metadata?.discount ?? 0)
+    return off > 0 && pi ? off / (off + pi.amount) >= 0.99 : false
+  }
+
   let collected30 = 0, collected90 = 0
   const customers = new Set<string>()
-  for await (const ch of stripe.charges.list({ created: { gte: Math.floor(start.getTime() / 1000) }, limit: 100 })) {
+  for await (const ch of stripe.charges.list({ created: { gte: Math.floor(start.getTime() / 1000) }, limit: 100, expand: ['data.payment_intent', 'data.customer'] })) {
     if (ch.status !== 'succeeded' || !ch.paid) continue
+    const pi = ch.payment_intent && typeof ch.payment_intent !== 'string' ? ch.payment_intent : null
+    const cust = ch.customer && typeof ch.customer !== 'string' && !ch.customer.deleted ? ch.customer : null
+    if ([ch.billing_details?.email, ch.receipt_email, pi?.receipt_email, cust?.email].some(isTest) || comped(pi)) continue
     const net = (ch.amount - ch.amount_refunded) / 100
     const at = ch.created * 1000
     const m = months.find(x => x.key === monthKey(new Date(at)))

@@ -30,16 +30,23 @@ export default function Board({ initial, user }: { initial: BoardContact[]; user
   const [dragging, setDragging] = useState<string | null>(null)
   const [over, setOver] = useState<Stage | null>(null)
   const [error, setError] = useState('')
+  const [showTests, setShowTests] = useState(false)
+  const [reviewOnly, setReviewOnly] = useState(false)
+  const testCount = contacts.filter(c => c.test).length
+  const reviewCount = contacts.filter(c => c.flags.length && !c.test).length
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase()
     const since = days ? Date.now() - days * 864e5 : 0
     return contacts.filter(c =>
+      (showTests || !c.test) && (!reviewOnly || c.flags.length > 0) &&
       (!since || new Date(c.firstSeen || c.lastActivity).getTime() >= since) &&
       (!q || [c.name, c.company, c.email, ...c.sources].join(' ').toLowerCase().includes(q)))
-  }, [contacts, query, days])
+  }, [contacts, query, days, showTests, reviewOnly])
 
+  const real = useMemo(() => visible.filter(c => !c.test), [visible])
   const funnel = useMemo(() => {
+    const visible = real
     const steps: [string, number][] = [
       ['Leads', visible.length],
       ['Plan sent', visible.filter(c => reached(c) >= 1).length],
@@ -48,12 +55,12 @@ export default function Board({ initial, user }: { initial: BoardContact[]; user
       ['Won', visible.filter(c => c.stage === 'Won').length],
     ]
     return steps.map(([label, n], i) => ({ label, n, of: i ? steps[i - 1][1] : n }))
-  }, [visible])
+  }, [real])
 
-  const openValue = visible.filter(c => !['Won', 'Lost'].includes(c.stage)).reduce((s, c) => s + (c.value ?? 0), 0)
-  const wonValue = visible.filter(c => c.stage === 'Won').reduce((s, c) => s + (c.value ?? 0), 0)
+  const openValue = real.filter(c => !['Won', 'Lost'].includes(c.stage)).reduce((s, c) => s + (c.value ?? 0), 0)
+  const wonValue = real.filter(c => c.stage === 'Won').reduce((s, c) => s + (c.value ?? 0), 0)
 
-  async function save(c: BoardContact, patch: { stage?: Stage; notes?: string; value?: number | null }) {
+  async function save(c: BoardContact, patch: { stage?: Stage; notes?: string; value?: number | null; test?: boolean }) {
     setError('')
     const prev = contacts
     setContacts(cs => cs.map(x => x.email !== c.email ? x : {
@@ -61,6 +68,7 @@ export default function Board({ initial, user }: { initial: BoardContact[]; user
       ...(patch.stage ? { stage: patch.stage, manual: { id: x.pipelineId ?? '', stage: patch.stage, at: new Date().toISOString(), by: user } } : {}),
       ...(patch.notes !== undefined ? { crmNotes: patch.notes } : {}),
       ...(patch.value !== undefined ? { value: patch.value } : {}),
+      ...(patch.test !== undefined ? { test: patch.test ? 'Marked as a test' : '' } : {}),
     }))
     const res = await fetch('/api/crm/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: c.email, pipelineId: c.pipelineId, ...patch }) })
     const out = await res.json().catch(() => ({}))
@@ -81,6 +89,18 @@ export default function Board({ initial, user }: { initial: BoardContact[]; user
                 className={`rounded-full px-3 py-1.5 transition ${days === d ? 'bg-forest text-mist' : 'text-ink/70 hover:text-ink'}`}>{label}</button>
             ))}
           </div>
+          {reviewCount > 0 && (
+            <button onClick={() => setReviewOnly(v => !v)} aria-pressed={reviewOnly}
+              className={`rounded-full border px-3 py-1.5 font-body text-[13px] transition ${reviewOnly ? 'border-[#B5621C] bg-[#F6E7D4] text-[#7A4A12]' : 'border-ink/[0.12] bg-white text-ink/70 hover:text-ink'}`}>
+              Needs review <span className="font-semibold">{reviewCount}</span>
+            </button>
+          )}
+          {testCount > 0 && (
+            <button onClick={() => setShowTests(v => !v)} aria-pressed={showTests}
+              className={`rounded-full border px-3 py-1.5 font-body text-[13px] transition ${showTests ? 'border-ink/30 bg-sand text-ink' : 'border-ink/[0.12] bg-white text-ink/70 hover:text-ink'}`}>
+              {showTests ? 'Hide' : 'Show'} tests <span className="font-semibold">{testCount}</span>
+            </button>
+          )}
       </CrmHeader>
 
       <section className="px-4 pt-5 sm:px-6" aria-label="Funnel">
@@ -149,6 +169,8 @@ export default function Board({ initial, user }: { initial: BoardContact[]; user
                       <div className="mt-2 flex flex-wrap items-center gap-1.5">
                         {c.sources.slice(0, 2).map(s => <span key={s} className="rounded-full bg-bone px-2 py-0.5 font-body text-[11px] text-ink/70">{s}</span>)}
                         {c.tier && !c.sources.includes(c.tier) && <span className="rounded-full bg-lime px-2 py-0.5 font-body text-[11px] text-forest">{c.tier}</span>}
+                        {c.test && <span title={c.test} className="rounded-full bg-ink/80 px-2 py-0.5 font-body text-[11px] text-mist">Test</span>}
+                        {c.flags.length > 0 && !c.test && <span title={c.flags.join('\n')} className="rounded-full bg-[#F6E7D4] px-2 py-0.5 font-body text-[11px] text-[#7A4A12]">⚠ Check</span>}
                       </div>
                       <div className="mt-2 flex items-center justify-between font-body text-[11px] text-ink/50">
                         <span>{ago(c.lastActivity)}</span>
@@ -171,7 +193,7 @@ export default function Board({ initial, user }: { initial: BoardContact[]; user
   )
 }
 
-function Drawer({ c, onClose, onSave }: { c: BoardContact; onClose: () => void; onSave: (p: { stage?: Stage; notes?: string; value?: number | null }) => void }) {
+function Drawer({ c, onClose, onSave }: { c: BoardContact; onClose: () => void; onSave: (p: { stage?: Stage; notes?: string; value?: number | null; test?: boolean }) => void }) {
   const [notes, setNotes] = useState(c.crmNotes)
   const [value, setValue] = useState(c.value?.toString() ?? '')
   const field = 'w-full rounded-[12px] border border-ink/[0.12] bg-white px-3 py-2 font-body text-sm focus:border-forest focus:outline-none'
@@ -186,6 +208,18 @@ function Drawer({ c, onClose, onSave }: { c: BoardContact; onClose: () => void; 
           </div>
           <button onClick={onClose} className="rounded-full border border-ink/15 px-3 py-1 font-body text-sm" aria-label="Close">Close</button>
         </div>
+
+        {(c.flags.length > 0 || c.test) && (
+          <div className={`mt-4 rounded-[16px] p-4 font-body text-[13px] ${c.test ? 'bg-sand text-ink/80' : 'bg-[#F6E7D4] text-[#5c3a10]'}`}>
+            {c.test
+              ? <p><strong>Test record</strong> · {c.test}. Left out of HQ numbers, the funnel and automated emails and texts.</p>
+              : <>
+                  <p className="font-semibold">Worth a look</p>
+                  <ul className="mt-1 list-disc space-y-0.5 pl-4">{c.flags.map(f => <li key={f}>{f}</li>)}</ul>
+                  {c.companies.length > 1 && <p className="mt-2 text-[12px] opacity-80">Showing the newest: “{c.company}”. If these are tests, mark it as a test below.</p>}
+                </>}
+          </div>
+        )}
 
         <div className="mt-4 flex flex-wrap gap-2">
           <a href={`mailto:${c.email}`} className="rounded-full bg-forest px-4 py-2 font-body text-[13px] text-mist">Email</a>
@@ -221,6 +255,10 @@ function Drawer({ c, onClose, onSave }: { c: BoardContact; onClose: () => void; 
           <p className="col-span-2 font-body text-[12px] text-ink/50">
             {c.manual && c.stage === c.manual.stage ? `Set by hand by ${c.manual.by.split('@')[0]}. Moves on automatically if something newer happens.` : `Set automatically from activity.`}
           </p>
+          <label className="col-span-2 flex items-center gap-2 font-body text-[13px] text-ink/80">
+            <input type="checkbox" checked={!!c.test} disabled={!!c.test && c.test !== 'Marked as a test'} onChange={e => onSave({ test: e.target.checked })} className="h-4 w-4 accent-forest" />
+            Test record {c.test && c.test !== 'Marked as a test' ? <span className="text-ink/50">({c.test.toLowerCase()}, set automatically)</span> : <span className="text-ink/50">(leave out of numbers and flows)</span>}
+          </label>
           <label className="col-span-2 font-body text-[12px] text-ink/60">Notes
             <textarea value={notes} onChange={e => setNotes(e.target.value)} onBlur={() => notes !== c.crmNotes && onSave({ notes })} rows={4} className={`${field} mt-1 resize-y`} placeholder="Call notes, next steps…" />
           </label>

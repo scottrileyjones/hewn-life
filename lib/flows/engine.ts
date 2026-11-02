@@ -12,6 +12,7 @@ import { sendSms } from '@/lib/sms'
 import { marketingText, sendWindow, toE164 } from '@/lib/smsText'
 import { loadSubscribers } from '@/lib/smsMarketing'
 import { DEFAULT_FLOWS, FLOW_KEYS, defaultFlow, fill, type Flow, type FlowKey, type Step } from './defaults'
+import { isTestEmail } from '@/lib/crm/test'
 
 const BASE = process.env.AIRTABLE_BASE_ID
 const TOKEN = process.env.AIRTABLE_TOKEN
@@ -113,6 +114,8 @@ export async function enroll(key: FlowKey, p: Person, context: Record<string, st
     const flow = await getFlow(key)
     if (flow.status !== 'Active' || !flow.steps.length) return null
     if (await isUnsubscribed(email)) return null
+    // Test records never get automated emails or texts.
+    if (await isTestEmail(email)) return null
     const open = await list(RUNS, `AND({Flow}=${quote(key)}, LOWER({Email})=${quote(email)}, {Status}='Active')`)
     if (open.length) return null
     return toRun(await write(RUNS, null, {
