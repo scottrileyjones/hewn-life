@@ -17,6 +17,8 @@ export const metadata: Metadata = {
 }
 import CalButton from '@/components/CalButton'
 import PlanHead from '@/components/strata/PlanHead'
+import BuyChoice from '@/components/strata/BuyChoice'
+import { planCheckout } from '@/lib/buy'
 import { plans } from '@/lib/services'
 import { coverFor, introOf } from '@/lib/gallery'
 import Link from 'next/link'
@@ -160,6 +162,9 @@ export default function HowItWorks() {
                       </li>
                     ))}
                   </ul>
+                  <Link href={planCheckout(t.slug as 'hewn' | 'wrought' | 'forged')} className="mt-7 flex w-full items-center justify-center rounded-full bg-forest px-6 py-3.5 font-body text-[15px] font-medium text-mist transition hover:bg-forest-2">
+                    Get {t.name} · ${price.toLocaleString()}/mo
+                  </Link>
                 </div>
               </div>
             )
@@ -198,6 +203,7 @@ export default function HowItWorks() {
         </Link>
       </section>
 
+      <BuyChoice />
       <CtaBanner />
     </div>
   )

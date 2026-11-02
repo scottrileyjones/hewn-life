@@ -8,6 +8,7 @@ import StatRow from '@/components/strata/StatRow'
 import AudienceCard from '@/components/strata/AudienceCard'
 import { audiences } from '@/lib/audiences'
 import { homeCards } from '@/lib/gallery'
+import { blackFriday, money, offerLive } from '@/lib/offer'
 import { Glyph, Pill } from '@/components/strata/Glyph'
 import { HeroRidge, PaybackChart, StrataBars, ElevationClimb, CreativeGrid, RidgeChart, dashboardSummary, verdictOf } from '@/components/strata/Charts'
 import { pillars, tierNames } from '@/lib/services'
@@ -50,6 +51,9 @@ const faqs = [
 const sectionHead = 'mx-auto mb-12 max-w-[720px] text-center'
 const h2 = 'mt-4 font-display font-medium tracking-[-0.03em] leading-[1.08] text-balance'
 
+// Rebuild hourly so the Black Friday link drops off on time.
+export const revalidate = 3600
+
 export default function Home() {
   const dash = dashboardSummary()
 
@@ -69,10 +73,17 @@ export default function Home() {
                 Senior marketers and artists make every call. AI does the heavy lifting: 20–40 assets a week and a live dashboard that grades every dollar. A full agency, one flat monthly fee.
               </p>
               <div className="mt-8 flex flex-wrap gap-2.5">
-                <CalButton className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 font-body text-[15px] font-medium text-ink transition hover:bg-mist">Book a discovery call</CalButton>
-                <Link href="/dashboard" className="inline-flex items-center justify-center rounded-full border border-mist/30 bg-mist/10 px-6 py-3.5 font-body text-[15px] font-medium text-mist backdrop-blur transition hover:bg-mist/20">See the dashboard →</Link>
+                <Link href="/pricing" className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 font-body text-[15px] font-medium text-ink transition hover:bg-mist">See plans &amp; pricing</Link>
+                <CalButton className="inline-flex items-center justify-center rounded-full border border-mist/30 bg-mist/10 px-6 py-3.5 font-body text-[15px] font-medium text-mist backdrop-blur transition hover:bg-mist/20">Book a discovery call</CalButton>
               </div>
-              <Link href="/website-in-a-day" className="mt-5 inline-flex font-body text-[15px] text-mist/85 underline-offset-4 hover:text-mist hover:underline">Just need a website? <span className="ml-1 font-medium text-lime">Website in a Day, $999 →</span></Link>
+              {offerLive() ? (
+                <Link href={blackFriday.page} className="mt-5 inline-flex items-center gap-2.5 rounded-full bg-lime py-1.5 pl-1.5 pr-4 font-body text-[14px] text-forest transition hover:bg-white">
+                  <span className="rounded-full bg-forest px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.04em] text-lime">Black Friday</span>
+                  Website in a Day, <s className="opacity-60">$999</s> <b className="font-semibold">{money(blackFriday.price)}</b> →
+                </Link>
+              ) : (
+                <Link href="/website-in-a-day" className="mt-5 inline-flex items-center gap-2 rounded-full border border-mist/25 bg-mist/10 px-4 py-2 font-body text-[14px] text-mist backdrop-blur transition hover:bg-mist/20">Just need a website? <b className="font-medium text-lime">Website in a Day, $999 →</b></Link>
+              )}
             </div>
             <div className="w-full max-w-[340px] rounded-[22px] border border-mist/30 p-[18px] pb-3.5 backdrop-blur-xl lg:justify-self-end" style={{ background: 'linear-gradient(140deg, rgba(244,242,236,.2), rgba(244,242,236,.07))', boxShadow: '0 24px 60px rgba(20,16,10,.35), inset 0 1px 0 rgba(255,255,255,.18)' }}>
               <div className="flex items-baseline justify-between gap-3">

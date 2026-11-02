@@ -73,12 +73,15 @@ export function ClosePanel({
   buttonText = 'Book a discovery call',
   secondary,
   seed = 33,
+  pricing = true,
 }: {
   title?: React.ReactNode
   body?: React.ReactNode
   buttonText?: string
   secondary?: { href: string; label: string }
   seed?: number
+  /** Lead with "See plans & pricing" (off on the pricing page itself). */
+  pricing?: boolean
 }) {
   return (
     <div className="mx-auto max-w-[1400px] px-5 py-12">
@@ -90,8 +93,10 @@ export function ClosePanel({
           <h2 className={`${h2Class} mt-4 max-w-[16ch] text-[clamp(34px,4.6vw,64px)]`}>{title}</h2>
           <p className="mt-4 max-w-[34em] font-body text-[17px] text-mist/85">{body}</p>
           <div className="mt-7 flex flex-wrap gap-2.5">
-            <CalButton className={btnLight}>{buttonText}</CalButton>
-            {secondary && <Link href={secondary.href} className={btnGlass}>{secondary.label}</Link>}
+            {/* Built to buy: pricing first, the call for anyone who wants to talk */}
+            {pricing && <Link href="/pricing" className={btnLight}>See plans &amp; pricing</Link>}
+            <CalButton className={pricing ? btnGlass : btnLight}>{buttonText}</CalButton>
+            {secondary && secondary.href !== '/pricing' && <Link href={secondary.href} className={btnGlass}>{secondary.label}</Link>}
           </div>
         </div>
       </section>

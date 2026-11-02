@@ -426,6 +426,7 @@ export default function Pricing() {
       </section>
 
       {/* ── À LA CARTE ── */}
+      <div id="a-la-carte" className="scroll-mt-24" />
       <ForestBand id="services">
         <AddOnShop onCartChange={setCartCount} />
         <div className="mt-4 grid gap-2.5">
@@ -498,7 +499,7 @@ export default function Pricing() {
         </div>
       </section>
 
-      <ClosePanel title="Let's figure it out together." body="Book a free 30-minute discovery call. No pitch deck, no pressure. Just an honest conversation about your business and where to start." seed={24} />
+      <ClosePanel title="Let's figure it out together." body="Book a free 30-minute discovery call. No pitch deck, no pressure. Just an honest conversation about your business and where to start." seed={24} pricing={false} />
 
       {/* Sticky mobile CTA */}
       <div

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { ogImage } from '@/lib/og'
 import CtaBanner from '@/components/CtaBanner'
+import BuyChoice from '@/components/strata/BuyChoice'
 import WhoWeServe from '@/components/WhoWeServe'
 import { PageHero } from '@/components/strata/Page'
 
@@ -27,6 +28,7 @@ export default function WhoWeServePage() {
         seed={36}
       />
       <WhoWeServe />
+      <BuyChoice title="Ready to build it? Pick a plan." className="pb-12 pt-12" />
       <CtaBanner />
     </div>
   )

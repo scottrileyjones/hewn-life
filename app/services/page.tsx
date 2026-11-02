@@ -9,6 +9,7 @@ import { Glyph, Pill } from '@/components/strata/Glyph'
 import { pillars, funnel, archetypes, scorecard, tierNames } from '@/lib/services'
 import { audiences } from '@/lib/audiences'
 import StatRow from '@/components/strata/StatRow'
+import BuyChoice from '@/components/strata/BuyChoice'
 import { servicesCards } from '@/lib/gallery'
 import { colors } from '@/lib/strata'
 
@@ -107,6 +108,7 @@ export default function ServicesPage() {
       {/* ── WHY IT MATTERS ── */}
       <StatRow className="pb-24" eyebrow="Why it matters" title="What the playbooks are worth."
         sub="Every pillar answers to a number. Here are a few from outside research. The source is on every card." cards={servicesCards()} />
+      <BuyChoice title="Get the playbooks in a plan." />
 
       {/* ── LAYERS ── */}
       <section className="mx-auto max-w-7xl px-5 pb-3.5">

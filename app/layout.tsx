@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans, DM_Sans, Inter_Tight, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import Nav from '@/components/Nav'
+import PromoBar from '@/components/PromoBar'
 import Footer from '@/components/Footer'
 import CookieConsent from '@/components/CookieConsent'
 import QuizPopup from '@/components/QuizPopup'
@@ -107,11 +108,12 @@ export default function RootLayout({
             }),
           }}
         />
+        <PromoBar />
         <HideOn prefix={['/crm', '/hq', '/portal']}><Nav /></HideOn>
         <main>{children}</main>
         <HideOn prefix={['/crm', '/hq', '/portal']}><Footer /></HideOn>
         <CookieConsent />
-        <HideOn prefix={['/crm', '/hq', '/portal']}><QuizPopup /></HideOn>
+        <HideOn prefix={['/crm', '/hq', '/portal', '/checkout', '/black-friday']}><QuizPopup /></HideOn>
       </body>
     </html>
   )

@@ -4,6 +4,7 @@ import CtaBanner from '@/components/CtaBanner'
 import BuildDay from '@/components/BuildDay'
 import CountUp from '@/components/CountUp'
 import IntakeForm from '@/components/IntakeForm'
+import { wiadCheckout } from '@/lib/offer'
 import Photo from '@/components/strata/Photo'
 import StatRow from '@/components/strata/StatRow'
 import { cardsFor } from '@/lib/gallery'
@@ -22,10 +23,10 @@ export const metadata: Metadata = {
 }
 
 // One-time $999 Stripe price. Without it the brief still submits and we invoice by email.
-const WIAD_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_PRICE_WEBSITE_IN_A_DAY ?? ''
-const checkoutUrl = WIAD_PRICE_ID
-  ? `/checkout?${new URLSearchParams({ priceId: WIAD_PRICE_ID, mode: 'payment', name: 'Website in a Day', price: '999', tier: 'website-in-a-day' })}`
-  : ''
+// While Black Friday runs the link carries the code; checkout drops it once the offer ends.
+const checkoutUrl = process.env.NEXT_PUBLIC_STRIPE_PRICE_WEBSITE_IN_A_DAY ? wiadCheckout() : ''
+// Rebuild hourly so the offer drops off on time.
+export const revalidate = 3600
 
 const orderSteps = [
   ['Answer the brief', 'A few quick questions about your business and a website you love, one at a time. About five minutes.'],
