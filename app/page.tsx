@@ -113,7 +113,10 @@ export default function Home() {
           </div>
           <div className="max-w-[32em] lg:justify-self-end">
             <p className="font-body text-[17px] text-ink/70">Owner-run shops, studios, service teams and makers. You have the craft and the customers who come back. We build the engine that brings the next thousand.</p>
-            <Link href="/who-we-serve" className="mt-3 inline-flex font-body text-[15px] font-medium text-forest decoration-forest/30 underline-offset-[6px] transition hover:text-ink hover:underline">See who we serve: e-commerce, local businesses, startups and more →</Link>
+            <Link href="/who-we-serve" className="mt-5 inline-flex items-center gap-2 rounded-full bg-forest px-5 py-2.5 font-body text-sm font-medium text-mist transition hover:bg-forest-2">
+              See who we serve
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </Link>
           </div>
         </div>
         <ul className="-mx-5 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 [scrollbar-width:none] lg:mx-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:px-0 [&::-webkit-scrollbar]:hidden">
