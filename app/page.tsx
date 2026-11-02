@@ -5,6 +5,8 @@ import Contour from '@/components/strata/Contour'
 import Photo from '@/components/strata/Photo'
 import PlanPicker from '@/components/strata/PlanPicker'
 import StatRow from '@/components/strata/StatRow'
+import AudienceCard from '@/components/strata/AudienceCard'
+import { audiences } from '@/lib/audiences'
 import { homeCards } from '@/lib/gallery'
 import { Glyph, Pill } from '@/components/strata/Glyph'
 import { HeroRidge, PaybackChart, StrataBars, ElevationClimb, CreativeGrid, RidgeChart, dashboardSummary, verdictOf } from '@/components/strata/Charts'
@@ -114,20 +116,21 @@ export default function Home() {
             <Link href="/who-we-serve" className="mt-3 inline-flex font-body text-[15px] font-medium text-forest decoration-forest/30 underline-offset-[6px] transition hover:text-ink hover:underline">See who we serve: e-commerce, local businesses, startups and more →</Link>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:grid-rows-2">
+        <ul className="-mx-5 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 [scrollbar-width:none] lg:mx-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:px-0 [&::-webkit-scrollbar]:hidden">
           {([
-            ['cafeOwner', 'Hospitality', 'col-span-2 row-span-2 aspect-[4/3] lg:aspect-auto', 900, 900],
-            ['leatherArtisan', 'Makers and retail', 'aspect-[4/5] lg:aspect-[4/3]', 600, 450],
-            ['creator', 'Experts and creators', 'aspect-[4/5] lg:aspect-[4/3]', 600, 450],
-            ['baristas', 'Service teams', 'col-span-2 aspect-[16/9] lg:aspect-[8/3]', 1200, 450],
-          ] as const).map(([name, label, cls, w, h]) => (
-            <figure key={name} className={`relative isolate overflow-hidden rounded-[22px] bg-sand ${cls}`}>
-              <Photo name={name} w={w} h={h} sizes={name === 'cafeOwner' || name === 'baristas' ? '(min-width: 1024px) 640px, 100vw' : '(min-width: 1024px) 320px, 50vw'} />
-              <span className="absolute inset-x-0 bottom-0 h-1/3" style={{ background: 'linear-gradient(0deg, rgba(20,16,10,.5), transparent)' }} />
-              <figcaption className="absolute bottom-3 left-3 rounded-full bg-mist/90 px-3 py-1.5 font-body text-xs font-medium text-forest backdrop-blur">{label}</figcaption>
-            </figure>
-          ))}
-        </div>
+            ['local', { photo: 'cafeOwner' }],
+            ['ecommerce', { color: 'lime' }],
+            ['creators', { photo: 'creator', glass: true }],
+            ['startups', { color: 'forest' }],
+          ] as const).map(([id, look]) => {
+            const a = audiences.find(x => x.id === id)!
+            return (
+              <li key={id} className="aspect-[4/5] w-[78%] shrink-0 snap-start overflow-hidden rounded-[22px] sm:w-[44%] lg:w-auto" style={{ containerType: 'inline-size' }}>
+                <AudienceCard a={a} look={look} />
+              </li>
+            )
+          })}
+        </ul>
       </section>
 
       {/* ── HOW IT WORKS ── */}
