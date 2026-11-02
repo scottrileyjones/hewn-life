@@ -1,3 +1,4 @@
+import { fitMetadata } from '@/lib/checkout/notes'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { waitUntil } from '@vercel/functions'
@@ -43,7 +44,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
     const priceId = priceIds[0]
-    const metadata: Record<string, string> = { ...(rawMeta ?? {}), ...(agreementId ? { agreementId } : {}), ...(cart.length ? { tier: 'addons', items: cart.join(',') } : {}) }
+    const metadata: Record<string, string> = fitMetadata({ ...(rawMeta ?? {}), ...(agreementId ? { agreementId } : {}), ...(cart.length ? { tier: 'addons', items: cart.join(',') } : {}) })
 
     // The exact charge and renewal interval, shown next to the pay button.
     const prices = await Promise.all(priceIds.map(id => stripe.prices.retrieve(id)))

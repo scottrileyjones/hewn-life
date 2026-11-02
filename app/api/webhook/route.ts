@@ -1,3 +1,4 @@
+import { joinNotes } from '@/lib/checkout/notes'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { markPaid } from '@/lib/plans/flow'
@@ -117,7 +118,7 @@ export async function POST(request: Request) {
         await enroll('onboarding', { email, name: m.fullName, company: m.businessName, phone: m.phone })
       } catch (err) { console.error('Add-on portal failed:', err) }
       const items = skus.map(sku => lookup(sku)!).map(x => ({ name: x.name, detail: 'includes' in x ? `Includes ${x.includes.map(s => lookup(s)?.name).join(', ')}` : x.detail }))
-      try { await notifyAddonOrder({ email, name: m.fullName, company: m.businessName, phone: m.phone, notes: m.notes, items, amount: pi.amount_received }) } catch (err) { console.error('Add-on order notice failed:', err) }
+      try { await notifyAddonOrder({ email, name: m.fullName, company: m.businessName, phone: m.phone, notes: joinNotes(m), items, amount: pi.amount_received }) } catch (err) { console.error('Add-on order notice failed:', err) }
     } else if (pi.metadata?.tier) await portal(pi.customer, email, pi.metadata)
     if (pi.metadata?.tier) await signedCopy(pi.customer, pi.metadata)
   }
