@@ -8,6 +8,8 @@ import { h2Class } from '@/components/strata/Page'
 import { Glyph, Pill } from '@/components/strata/Glyph'
 import { pillars, funnel, archetypes, scorecard, tierNames } from '@/lib/services'
 import { audiences } from '@/lib/audiences'
+import StatRow from '@/components/strata/StatRow'
+import { servicesCards } from '@/lib/gallery'
 import { colors } from '@/lib/strata'
 
 export const metadata: Metadata = {
@@ -101,6 +103,10 @@ export default function ServicesPage() {
           ))}
         </div>
       </section>
+
+      {/* ── WHY IT MATTERS ── */}
+      <StatRow className="pb-24" eyebrow="Why it matters" title="What the playbooks are worth."
+        sub="Every pillar answers to a number. Here are a few from outside research. The source is on every card." cards={servicesCards()} />
 
       {/* ── LAYERS ── */}
       <section className="mx-auto max-w-7xl px-5 pb-3.5">

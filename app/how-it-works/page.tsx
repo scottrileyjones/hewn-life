@@ -16,7 +16,9 @@ export const metadata: Metadata = {
   },
 }
 import CalButton from '@/components/CalButton'
-import CountUp from '@/components/CountUp'
+import PlanHead from '@/components/strata/PlanHead'
+import { plans } from '@/lib/services'
+import { coverFor, introOf } from '@/lib/gallery'
 import Link from 'next/link'
 import { PageHero, SectionHead, ForestBand, h2Class, btnLight, btnGlass, btnForest } from '@/components/strata/Page'
 import { Check } from '@/components/strata/Glyph'
@@ -59,9 +61,9 @@ const cadence = [
 
 export default function HowItWorks() {
   const tiers = [
-    { name: 'Hewn', tier: 'Plan 01', count: hewnAssets.length, items: hewnAssets, lead: null },
-    { name: 'Wrought', tier: 'Plan 02', count: hewnAssets.length + wroughtAssets.length, items: wroughtAssets, lead: 'Everything in Hewn, plus:' },
-    { name: 'Forged', tier: 'Plan 03', count: hewnAssets.length + wroughtAssets.length + forgedAssets.length, items: forgedAssets, lead: 'Everything in Wrought, plus:' },
+    { slug: 'hewn', name: 'Hewn', count: hewnAssets.length, items: hewnAssets, lead: null },
+    { slug: 'wrought', name: 'Wrought', count: hewnAssets.length + wroughtAssets.length, items: wroughtAssets, lead: 'Everything in Hewn, plus:' },
+    { slug: 'forged', name: 'Forged', count: hewnAssets.length + wroughtAssets.length + forgedAssets.length, items: forgedAssets, lead: 'Everything in Wrought, plus:' },
   ]
 
   return (
@@ -134,22 +136,31 @@ export default function HowItWorks() {
       <section className="mx-auto max-w-7xl px-5 py-24">
         <SectionHead pill="What you own" title="Assets you own. Systems that compound." lede="No proprietary tools. No lock-in. Every deliverable is yours from day one." />
         <div className="grid gap-3 md:grid-cols-3">
-          {tiers.map((t, i) => {
-            const feat = i === 1
+          {tiers.map(t => {
+            const cover = coverFor(t.slug)
+            const intro = introOf(t.slug)
+            const price = plans.find(p => p.slug === t.slug)?.price.monthly ?? 0
             return (
-              <div key={t.name} className={`rounded-[22px] p-7 ${feat ? 'bg-forest text-mist' : 'border border-ink/[0.08] bg-white'}`}>
-                <p className={`font-mono text-[10px] uppercase tracking-[0.18em] ${feat ? 'text-mist/60' : 'text-ink/55'}`}>{t.name} · {t.tier}</p>
-                <p className="mt-3 font-display text-6xl font-medium leading-none tracking-[-0.04em]"><CountUp value={String(t.count)} /></p>
-                <p className={`mt-1 font-body text-sm ${feat ? 'text-lime' : 'text-forest'}`}>deliverables built and owned</p>
-                {t.lead && <p className={`mt-5 font-body text-xs ${feat ? 'text-mist/60' : 'text-ink/55'}`}>{t.lead}</p>}
-                <ul className="mt-4 space-y-2.5">
-                  {t.items.map(a => (
-                    <li key={a} className="grid grid-cols-[16px_1fr] items-start gap-2.5 font-body text-sm">
-                      <Check className="mt-[3px] h-4 w-4" />
-                      <span className={feat ? 'text-mist/85' : 'text-ink/75'}>{a}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div key={t.name} className={`flex flex-col overflow-hidden rounded-[28px] border bg-white ${intro?.badge === 'Most Popular' ? 'border-forest/30 shadow-[0_18px_50px_-24px_rgba(30,56,38,.45)]' : 'border-ink/[0.08]'}`}>
+                {cover && (
+                  <div className="p-3 pb-0">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-[18px] bg-sand">
+                      <Photo name={cover} w={720} h={540} sizes="(min-width: 768px) 380px, 92vw" film={false} />
+                    </div>
+                  </div>
+                )}
+                <div className="p-7">
+                  <PlanHead name={t.name} price={price} badge={intro?.badge} eyebrow={`${t.count} deliverables you own`} />
+                  {t.lead && <p className="mt-1.5 font-body text-[15px] text-ink/70">{t.lead}</p>}
+                  <ul className="mt-5 border-t border-ink/[0.08]">
+                    {t.items.map(a => (
+                      <li key={a} className="grid grid-cols-[16px_1fr] items-start gap-2.5 border-b border-ink/[0.08] py-3 font-body text-sm">
+                        <Check className="mt-[3px] h-4 w-4" />
+                        <span className="text-ink/80">{a}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             )
           })}
