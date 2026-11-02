@@ -77,9 +77,12 @@ export default function Home() {
                 <CalButton className="inline-flex items-center justify-center rounded-full border border-mist/30 bg-mist/10 px-6 py-3.5 font-body text-[15px] font-medium text-mist backdrop-blur transition hover:bg-mist/20">Book a discovery call</CalButton>
               </div>
               {offerLive() ? (
-                <Link href={blackFriday.page} className="mt-5 inline-flex items-center gap-2.5 rounded-full bg-lime py-1.5 pl-1.5 pr-4 font-body text-[14px] text-forest transition hover:bg-white">
-                  <span className="rounded-full bg-forest px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.04em] text-lime">Black Friday</span>
-                  Website in a Day, <s className="opacity-60">$999</s> <b className="font-semibold">{money(blackFriday.price)}</b> →
+                <Link href={blackFriday.page} className="mt-5 flex max-w-full flex-col items-start gap-1.5 rounded-[18px] bg-lime px-3.5 py-3 font-body text-[14px] text-forest transition hover:bg-white sm:inline-flex sm:flex-row sm:items-center sm:gap-2.5 sm:rounded-full sm:py-1.5 sm:pl-1.5 sm:pr-4">
+                  <span className="shrink-0 whitespace-nowrap rounded-full bg-forest px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.04em] text-lime">Black Friday</span>
+                  <span className="flex flex-wrap items-baseline gap-x-2">
+                    <span className="whitespace-nowrap">Website in a Day</span>
+                    <span className="whitespace-nowrap"><s className="opacity-60">$999</s> <b className="font-semibold">{money(blackFriday.price)}</b> →</span>
+                  </span>
                 </Link>
               ) : (
                 <Link href="/website-in-a-day" className="mt-5 inline-flex items-center gap-2 rounded-full border border-mist/25 bg-mist/10 px-4 py-2 font-body text-[14px] text-mist backdrop-blur transition hover:bg-mist/20">Just need a website? <b className="font-medium text-lime">Website in a Day, $999 →</b></Link>
