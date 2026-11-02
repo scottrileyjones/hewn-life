@@ -1,4 +1,5 @@
 'use client'
+import { NOTES_MAX } from '@/lib/checkout/notes'
 import { useState, useEffect, useRef } from 'react'
 import { CAL_URL } from '@/lib/cal'
 import { loadStripe } from '@stripe/stripe-js'
@@ -667,11 +668,13 @@ export default function CheckoutClient() {
                     <label className={labelClass}>Anything we should know? <span className="font-normal normal-case tracking-normal text-[#6B6560]/50">(optional)</span></label>
                     <textarea
                       value={contact.notes}
-                      onChange={e => setContact(c => ({ ...c, notes: e.target.value }))}
+                      onChange={e => setContact(c => ({ ...c, notes: e.target.value.slice(0, NOTES_MAX) }))}
                       rows={3}
+                      maxLength={NOTES_MAX}
                       placeholder="Goals, timeline, current situation — anything useful for your kickoff."
                       className={`${inputClass} resize-none`}
                     />
+                    {contact.notes.length > NOTES_MAX * 0.8 && <p className="mt-1 text-right font-body text-[12px] text-[#6B6560]/70">{contact.notes.length.toLocaleString()} / {NOTES_MAX.toLocaleString()}</p>}
                   </div>
 
                   {mode === 'payment' && (

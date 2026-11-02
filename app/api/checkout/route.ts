@@ -1,3 +1,4 @@
+import { fitMetadata } from '@/lib/checkout/notes'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 
@@ -25,8 +26,8 @@ export async function POST(request: Request) {
       ...(customerEmail ? { customer_email: customerEmail } : {}),
       allow_promotion_codes: true,
       ...(mode === 'subscription'
-        ? { subscription_data: { metadata: metadata ?? {} } }
-        : { payment_intent_data: { metadata: metadata ?? {} } }),
+        ? { subscription_data: { metadata: fitMetadata(metadata ?? {}) } }
+        : { payment_intent_data: { metadata: fitMetadata(metadata ?? {}) } }),
       success_url: `${origin}/thank-you`,
       cancel_url: `${origin}/pricing`,
     })
