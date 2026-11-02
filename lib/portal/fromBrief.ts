@@ -77,3 +77,18 @@ export function briefLogos(brief: Row): { url: string; filename: string }[] {
   const logos = Array.isArray(brief.fields['Logo']) ? brief.fields['Logo'] as { url?: string; filename?: string }[] : []
   return logos.filter(l => l.url).map(l => ({ url: l.url!, filename: `assets--${(l.filename || 'logo').replace(/[^\w.\- ]+/g, '_')}` }))
 }
+
+/**
+ * What a buyer has already given us toward their requirements: their portal
+ * progress plus anything their Website Brief covers. Read-only, so the thank-you
+ * page can show it before the payment webhook has finished setting up the portal.
+ */
+export async function requirementsSoFar(email: string, pkg: string, saved: Progress = {}): Promise<Progress> {
+  if (process.env.PLAN_SAMPLE === '1') {
+    const now = new Date().toISOString()
+    return { business: { submitted: now, data: { business_name: 'Acme Plumbing' } }, look: { submitted: now, data: { reference_1: 'https://example.com' } }, assets: { submitted: now, files: ['assets--logo.png'] }, copy: { data: { public_phone: '801-555-0100' } } }
+  }
+  const brief = await latestBrief(email).catch(() => null)
+  if (!brief) return saved
+  return briefProgress(pkg, saved, brief, briefLogos(brief).map(l => l.filename))
+}
