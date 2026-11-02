@@ -79,7 +79,7 @@ export async function POST(request: Request) {
         const c = await stripe.customers.retrieve(customer)
         if (!c.deleted) m = c.metadata ?? {}
       }
-      await provisionPortal({ email, tier: m.tier, name: m.fullName, company: m.businessName })
+      await provisionPortal({ email, tier: m.tier, name: m.fullName, company: m.businessName, notes: joinNotes(m) })
       const person = { email, name: m.fullName, company: m.businessName, phone: m.phone }
       await enroll('onboarding', person)
       // Website in a Day buyers hear about monthly plans later; a monthly plan ends that.
@@ -114,7 +114,7 @@ export async function POST(request: Request) {
       const m = pi.metadata
       const skus = (m.items ?? '').split(',').filter(sku => lookup(sku))
       try {
-        await provisionPortal({ email, tier: addonPackage(skus), name: m.fullName, company: m.businessName })
+        await provisionPortal({ email, tier: addonPackage(skus), name: m.fullName, company: m.businessName, notes: joinNotes(m) })
         await enroll('onboarding', { email, name: m.fullName, company: m.businessName, phone: m.phone })
       } catch (err) { console.error('Add-on portal failed:', err) }
       const items = skus.map(sku => lookup(sku)!).map(x => ({ name: x.name, detail: 'includes' in x ? `Includes ${x.includes.map(s => lookup(s)?.name).join(', ')}` : x.detail }))

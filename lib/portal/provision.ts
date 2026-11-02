@@ -7,14 +7,23 @@ import { briefLogos, briefProgress, latestBrief } from './fromBrief'
 import { isPackage, packageName } from './onboarding'
 import { sendPortalLink } from './auth'
 
-export async function provisionPortal(input: { email: string; tier?: string; name?: string; company?: string }) {
+export async function provisionPortal(input: { email: string; tier?: string; name?: string; company?: string; notes?: string }) {
   const email = input.email.trim().toLowerCase()
   const tier = input.tier ?? ''
+  const notes = (input.notes ?? '').trim()
   if (!email || !isPackage(tier)) return
   const existing = await findClient(email)
-  if (existing?.package) return
+  // A returning client keeps their portal; a new order's notes still go on their account for the build.
+  if (existing?.package) {
+    const had = existing.progress.order?.data?.notes ?? ''
+    if (notes && !had.includes(notes)) {
+      const order = { ...(existing.progress.order ?? {}), data: { ...(existing.progress.order?.data ?? {}), notes: had ? `${had}\n\n${notes}` : notes } }
+      await saveClient(existing.id, { progress: { ...existing.progress, order } })
+    }
+    return
+  }
   const now = new Date().toISOString()
-  const progress = { ...(existing?.progress ?? {}), order: { done: now, by: 'checkout' }, welcome: { done: now, by: 'checkout' } }
+  const progress = { ...(existing?.progress ?? {}), order: { done: now, by: 'checkout', ...(notes ? { data: { notes } } : {}) }, welcome: { done: now, by: 'checkout' } }
   const saved = await saveClient(existing?.id ?? null, {
     ...(existing ? {} : { email, name: input.name ?? '', company: input.company ?? '', status: 'Onboarding' as const }),
     plan: existing?.plan || packageName(tier),
