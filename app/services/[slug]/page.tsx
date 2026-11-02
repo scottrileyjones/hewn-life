@@ -8,6 +8,8 @@ import { Glyph, Pill, Check } from '@/components/strata/Glyph'
 import { pillars, getPillar, tierNames } from '@/lib/services'
 import { colors } from '@/lib/strata'
 import { pillarPhotos } from '@/lib/photos'
+import StatCard from '@/components/strata/StatCard'
+import { pillarCard } from '@/lib/gallery'
 
 export function generateStaticParams() {
   return pillars.map(p => ({ slug: p.slug }))
@@ -28,6 +30,7 @@ const phaseColor = [colors.forest2, colors.lichen, colors.lime]
 export default function PillarPage({ params }: { params: { slug: string } }) {
   const p = getPillar(params.slug)
   if (!p) notFound()
+  const card = pillarCard(p.slug)
 
   const idx = pillars.indexOf(p)
   const prev = pillars[(idx + pillars.length - 1) % pillars.length]
@@ -104,6 +107,12 @@ export default function PillarPage({ params }: { params: { slug: string } }) {
               </ul>
               <p className="mt-5 font-body text-xs text-mist/70">Included from the <Link href="/pricing" className="font-medium text-lime underline underline-offset-2">{tierNames[p.tier]}</Link> plan.</p>
             </div>
+
+            {card && (
+              <div className="aspect-[4/5] overflow-hidden rounded-[22px]" style={{ containerType: 'inline-size' }}>
+                <StatCard s={card} sizes="(min-width: 1024px) 400px, 92vw" />
+              </div>
+            )}
           </div>
 
           <div className="rounded-[22px] border border-ink/[0.08] bg-white p-7 md:p-10">

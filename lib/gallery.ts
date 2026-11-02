@@ -105,3 +105,28 @@ export function homeCards(): Card[] {
     pick('forged', 'Review generation'),
   ]
 }
+
+/** The services page row: one card each from brand, search, content and referrals. */
+export function servicesCards(): Card[] {
+  const pick = (plan: string, service: string) => cardsFor(plan).find(c => c.service === service)!
+  return [
+    pick('forged', 'UGC'),
+    pick('hewn', 'Brand identity'),
+    pick('forged', 'Referral program'),
+    pick('hewn', 'SEO'),
+  ]
+}
+
+/** The stat card for a service playbook page, where one fits (keyed by lib/services pillar slug). */
+const PILLAR_CARDS: Record<string, [string, string]> = {
+  'performance-media': ['wrought', 'Paid media'],
+  'seo-aeo': ['hewn', 'SEO'],
+  creators: ['forged', 'UGC'],
+  lifecycle: ['wrought', 'Automation'],
+  brand: ['hewn', 'Brand identity'],
+}
+
+export function pillarCard(slug: string): Card | null {
+  const ref = PILLAR_CARDS[slug]
+  return ref ? cardsFor(ref[0]).find(c => c.service === ref[1]) ?? null : null
+}
