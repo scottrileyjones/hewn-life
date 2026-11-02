@@ -11,7 +11,7 @@ import AgreementDoc from '@/components/agreements/AgreementDoc'
 import SignatureBlocks from '@/components/agreements/SignatureBlocks'
 import type { Doc } from '@/lib/agreements/templates'
 import ProductGallery from '@/components/checkout/ProductGallery'
-import { galleryFor } from '@/lib/gallery'
+import { galleryFor, introFor } from '@/lib/gallery'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
 
@@ -115,6 +115,7 @@ function OrderSummary({ name, price, billing, mode, tier, charge, lines = [], sa
 }) {
   const meta = PRODUCT_META[tier] ?? PRODUCT_META['website-in-a-day']
   const slides = galleryFor(tier, lines.map(l => l.sku))
+  const intro = introFor(tier, lines.map(l => l.sku))
 
   return (
     <div className="rounded-[28px] overflow-hidden bg-white border border-ink/[0.08]">
@@ -124,27 +125,39 @@ function OrderSummary({ name, price, billing, mode, tier, charge, lines = [], sa
         ? <ProductGallery slides={slides} label={name} />
         : <div className="h-1" style={{ background: meta.color }} />}
 
-      {/* Header */}
-      <div className="px-7 pt-6 pb-5 border-b border-black/[0.06]">
-        <p className="font-mono text-[9px] uppercase tracking-[0.28em] mb-2" style={{ color: meta.color }}>
-          {mode === 'subscription' ? 'Monthly plan' : 'One-time project'}
-        </p>
-        {/* The gallery's cover already carries the headline */}
-        {slides.length === 0 && (
+      {/* Header: the plan's title at the top, or the classic label, tagline and chips */}
+      {intro ? (
+        <div className="px-7 pt-6 pb-5 border-b border-black/[0.06]">
+          <h2 className="font-display font-medium tracking-[-0.035em] text-[34px] leading-[1.05] text-[#0D0D0D]">{name}</h2>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-forest px-3.5 py-1.5 font-body text-[15px] font-semibold leading-none tabular-nums text-white">
+              {charge?.promo ? money(charge.amount, charge.currency) : `$${price.toLocaleString()}`}
+              <span className="font-medium text-white/75">{mode === 'subscription' ? '/mo' : ' one time'}</span>
+            </span>
+            {intro.badge && <span className="rounded-full bg-lime px-3 py-1.5 font-body text-[12px] font-semibold leading-none text-forest">{intro.badge}</span>}
+          </div>
+          <p className="mt-4 font-body text-[11px] font-semibold uppercase tracking-[0.06em] text-[#0D0D0D]">{intro.eyebrow}</p>
+          <p className="mt-1.5 font-body text-[15px] leading-relaxed text-[#3D3A36]">{intro.blurb}</p>
+        </div>
+      ) : (
+        <div className="px-7 pt-6 pb-5 border-b border-black/[0.06]">
+          <p className="font-mono text-[9px] uppercase tracking-[0.28em] mb-2" style={{ color: meta.color }}>
+            {mode === 'subscription' ? 'Monthly plan' : 'One-time project'}
+          </p>
           <h2 className="font-display font-medium tracking-[-0.03em] text-[22px] text-[#0D0D0D] leading-snug mb-3">
             {meta.tagline}
           </h2>
-        )}
-        <div className="flex flex-wrap gap-1.5">
-          {meta.chips.map((chip, i) => (
-            <span key={i}
-              className="font-mono text-[8px] uppercase tracking-[0.14em] px-2.5 py-1 rounded-full"
-              style={{ background: meta.color + '12', color: meta.color, border: `1px solid ${meta.color}30` }}>
-              {chip}
-            </span>
-          ))}
+          <div className="flex flex-wrap gap-1.5">
+            {meta.chips.map((chip, i) => (
+              <span key={i}
+                className="font-mono text-[8px] uppercase tracking-[0.14em] px-2.5 py-1 rounded-full"
+                style={{ background: meta.color + '12', color: meta.color, border: `1px solid ${meta.color}30` }}>
+                {chip}
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* À la carte: the items in the cart */}
       {lines.length > 0 && (

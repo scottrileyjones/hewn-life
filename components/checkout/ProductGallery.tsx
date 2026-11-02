@@ -1,12 +1,11 @@
 'use client'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Photo from '@/components/strata/Photo'
-import { Mark } from '@/components/strata/Glyph'
 import type { Graphic, Look, Slide } from '@/lib/gallery'
 
 /**
  * The checkout gallery: a swipeable set of slides that sells the package.
- * A cover photo, then one card per service with a single sourced stat.
+ * A clean cover photo, then one card per service with a single sourced stat.
  * Cards alternate photos (white type straight on the image, or on faint
  * glass) with flat lime or forest cards carrying a simple graphic. Slides peek at the
  * next one and a thin progress bar tracks where you are.
@@ -23,18 +22,6 @@ const C = {
 }
 
 /* ── Small parts ────────────────────────────────────────────── */
-
-/** A headline whose [bracketed] words sit in a white pill. */
-function Headline({ text }: { text: string }) {
-  const parts = text.split(/(\[[^\]]+\])/).filter(Boolean)
-  return (
-    <p className="font-display font-medium leading-[1.08] tracking-[-0.035em]" style={{ fontSize: '8.6cqw', textWrap: 'balance' } as React.CSSProperties}>
-      {parts.map((p, i) => p.startsWith('[')
-        ? <span key={i} className="mx-[0.04em] inline-block rounded-full bg-white px-[0.3em] leading-[1.08]" style={{ color: C.ink }}>{p.slice(1, -1)}</span>
-        : <span key={i}>{p}</span>)}
-    </p>
-  )
-}
 
 function Pill({ children, bg, fg }: { children: React.ReactNode; bg: string; fg: string }) {
   return (
@@ -135,22 +122,11 @@ function Card({ s }: { s: Extract<Slide, { kind: 'stat' | 'list' }> }) {
   )
 }
 
+/** The cover: just the photo. The plan's title sits in the summary below. */
 function Cover({ s }: { s: Extract<Slide, { kind: 'cover' }> }) {
   return (
-    <div className="relative isolate flex h-full w-full flex-col justify-between overflow-hidden p-[6.5cqw] text-white" style={{ background: '#5B4636' }}>
-      <Photo name={s.photo} w={680} h={850} sizes="(min-width: 1024px) 360px, 88vw" film={false} priority className="-z-20 [&_img]:text-transparent" />
-      <Scrim />
-      <div className="flex items-center justify-between">
-        <span className="flex items-center gap-[1.4cqw]">
-          <Mark fg={C.white} accent={C.white} size={16} />
-          <span className="font-display font-semibold leading-none" style={{ fontSize: '3.6cqw' }}>hewnlife</span>
-        </span>
-        <Pill bg={C.white} fg={C.ink}>{s.tag}</Pill>
-      </div>
-      <div>
-        <Headline text={s.head} />
-        <p className="mt-[2.4cqw] max-w-[92%] font-body leading-snug text-white/90" style={{ fontSize: '3.9cqw' }}>{s.sub}</p>
-      </div>
+    <div className="relative h-full w-full overflow-hidden" style={{ background: '#5B4636' }}>
+      <Photo name={s.photo} w={680} h={850} sizes="(min-width: 1024px) 360px, 88vw" film={false} priority className="[&_img]:text-transparent" />
     </div>
   )
 }
