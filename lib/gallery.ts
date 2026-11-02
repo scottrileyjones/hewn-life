@@ -1,0 +1,65 @@
+/**
+ * Checkout galleries: the swipeable slides at the top of the order summary.
+ *
+ * One gallery per plan, keyed by the checkout `tier` (or a single catalog SKU).
+ * A cover photo, then one card per service: what you get, in a word or two,
+ * and one sourced stat on why it matters. Cards alternate between photos and
+ * flat colour cards with a simple graphic.
+ *
+ * Every stat is a published third-party figure, cited on the card. Never a
+ * result, review or number of ours. Plan facts (price, timing, what's
+ * included) repeat the pricing page and lib/addons.ts.
+ *
+ * Cover headlines mark highlighted words with [brackets]; they render in a pill.
+ */
+import type { PhotoKey } from '@/lib/photos'
+
+export type Graphic = 'funnel' | 'pipeline' | 'swatches' | 'bars' | 'stars' | 'clock'
+
+/** How a card looks: a photo (type straight on it, or on faint glass) or a flat colour with a graphic. */
+export type Look =
+  | { photo: PhotoKey; glass?: boolean }
+  | { color: 'lime' | 'forest'; graphic?: Graphic }
+
+export type Slide =
+  | { kind: 'cover'; photo: PhotoKey; tag: string; head: string; sub: string }
+  | { kind: 'stat'; service: string; stat: string; text: string; source: string; look: Look }
+  | { kind: 'list'; service: string; items: string[]; look: Look }
+
+const GALLERIES: Record<string, Slide[]> = {
+  hewn: [
+    { kind: 'cover', photo: 'logoSketch', tag: 'Hewn · monthly plan', head: 'Deliberately shaped. [Ready to work.]', sub: 'Brand strategy and identity, a custom website, SEO and local listings.' },
+    { kind: 'stat', service: 'Brand identity', stat: '23%', text: 'average revenue lift from consistent branding', source: 'Lucidpress & Demand Metric, 2016', look: { color: 'lime', graphic: 'swatches' } },
+    { kind: 'stat', service: 'Website', stat: '46%', text: 'of credibility judgments cite a site’s design', source: 'Stanford Web Credibility Project, 2002', look: { photo: 'bakerTablet' } },
+    { kind: 'stat', service: 'Google profile', stat: '2.7×', text: 'more likely to be seen as reputable with a complete profile', source: 'Google Business Profile Help', look: { photo: 'brownstones', glass: true } },
+    { kind: 'stat', service: 'SEO', stat: '53%', text: 'of trackable web traffic comes from organic search', source: 'BrightEdge, 2019', look: { color: 'forest', graphic: 'bars' } },
+  ],
+  wrought: [
+    { kind: 'cover', photo: 'teamPlanning', tag: 'Wrought · monthly plan', head: 'Your full [marketing] [engine].', sub: 'Everything in Hewn, plus paid media, funnels, automation and a CRM.' },
+    { kind: 'stat', service: 'Paid media', stat: '$8', text: 'profit per $1 on Google Ads', source: 'Google Economic Impact Report', look: { photo: 'cityWalkPhone' } },
+    { kind: 'stat', service: 'Sales funnels', stat: '6.6%', text: 'median landing page conversion', source: 'Unbounce, 2024', look: { color: 'lime', graphic: 'funnel' } },
+    { kind: 'stat', service: 'Automation', stat: '7×', text: 'likelier to qualify a lead when you reply within the hour', source: 'Harvard Business Review, 2011', look: { photo: 'kitchenMorning', glass: true } },
+    { kind: 'stat', service: 'CRM setup', stat: '$8.71', text: 'return per $1 spent on CRM', source: 'Nucleus Research, 2014', look: { color: 'forest', graphic: 'pipeline' } },
+  ],
+  forged: [
+    { kind: 'cover', photo: 'officeWalk', tag: 'Forged · monthly plan', head: 'Your outsourced [CMO].', sub: 'Everything in Wrought, plus reviews, UGC, referrals and growth planning.' },
+    { kind: 'stat', service: 'UGC', stat: '79%', text: 'of shoppers say customer content highly impacts purchases', source: 'Stackla, 2021', look: { photo: 'creatorFilming' } },
+    { kind: 'stat', service: 'Review generation', stat: '270%', text: 'higher purchase likelihood with five reviews vs none', source: 'Spiegel Research Center, 2017', look: { color: 'forest', graphic: 'stars' } },
+    { kind: 'stat', service: 'Referral program', stat: '16%', text: 'higher lifetime value from referred customers', source: 'Journal of Marketing, 2011', look: { photo: 'friendsWalking', glass: true } },
+    { kind: 'list', service: 'Everything in Wrought', items: ['Paid media', 'Sales funnels', 'Automation', 'CRM'], look: { color: 'lime' } },
+  ],
+  'website-in-a-day': [
+    { kind: 'cover', photo: 'ownerPortrait', tag: 'Website in a Day', head: 'Your website, [live] in [24 hours].', sub: 'Custom design and copy from your brief. Built, hosted and yours to keep.' },
+    { kind: 'stat', service: 'Live in 24 hours', stat: '24h', text: 'from your brief to a live site', source: 'Then one round of edits, on us', look: { color: 'lime', graphic: 'clock' } },
+    { kind: 'stat', service: 'Mobile-first design', stat: '53%', text: 'of mobile visits are abandoned if a page takes over 3 seconds to load', source: 'Google, 2016', look: { photo: 'cafePhone' } },
+    { kind: 'stat', service: 'Copy written for you', stat: '20%', text: 'of a page’s words get read on a typical visit', source: 'Nielsen Norman Group, 2008', look: { photo: 'sketching', glass: true } },
+    { kind: 'stat', service: 'SEO-ready', stat: 'Half', text: 'of trackable web traffic comes from organic search', source: 'BrightEdge, 2019', look: { color: 'forest', graphic: 'bars' } },
+  ],
+}
+
+/** The gallery for a checkout: a plan tier, or the SKUs in an à la carte cart. */
+export function galleryFor(tier: string, skus: string[]): Slide[] {
+  if (GALLERIES[tier]) return GALLERIES[tier]
+  if (skus.length === 1 && GALLERIES[skus[0]]) return GALLERIES[skus[0]]
+  return []
+}

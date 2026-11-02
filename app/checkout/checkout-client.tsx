@@ -10,6 +10,8 @@ import { cartTotals, isKit, kitListPrice, lookup, type AddOn, type Kit } from '@
 import AgreementDoc from '@/components/agreements/AgreementDoc'
 import SignatureBlocks from '@/components/agreements/SignatureBlocks'
 import type { Doc } from '@/lib/agreements/templates'
+import ProductGallery from '@/components/checkout/ProductGallery'
+import { galleryFor } from '@/lib/gallery'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
 
@@ -112,21 +114,27 @@ function OrderSummary({ name, price, billing, mode, tier, charge, lines = [], sa
   name: string; price: number; billing: string; mode: string; tier: string; charge: Charge | null; lines?: (AddOn | Kit)[]; saved?: number
 }) {
   const meta = PRODUCT_META[tier] ?? PRODUCT_META['website-in-a-day']
+  const slides = galleryFor(tier, lines.map(l => l.sku))
 
   return (
     <div className="rounded-[28px] overflow-hidden bg-white border border-ink/[0.08]">
 
-      {/* Accent top bar */}
-      <div className="h-1" style={{ background: meta.color }} />
+      {/* Swipeable gallery of what the package delivers; plain accent bar if there's none */}
+      {slides.length > 0
+        ? <ProductGallery slides={slides} label={name} />
+        : <div className="h-1" style={{ background: meta.color }} />}
 
       {/* Header */}
       <div className="px-7 pt-6 pb-5 border-b border-black/[0.06]">
         <p className="font-mono text-[9px] uppercase tracking-[0.28em] mb-2" style={{ color: meta.color }}>
           {mode === 'subscription' ? 'Monthly plan' : 'One-time project'}
         </p>
-        <h2 className="font-display font-medium tracking-[-0.03em] text-[22px] text-[#0D0D0D] leading-snug mb-3">
-          {meta.tagline}
-        </h2>
+        {/* The gallery's cover already carries the headline */}
+        {slides.length === 0 && (
+          <h2 className="font-display font-medium tracking-[-0.03em] text-[22px] text-[#0D0D0D] leading-snug mb-3">
+            {meta.tagline}
+          </h2>
+        )}
         <div className="flex flex-wrap gap-1.5">
           {meta.chips.map((chip, i) => (
             <span key={i}
