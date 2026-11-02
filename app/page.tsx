@@ -4,6 +4,8 @@ import Terrain from '@/components/strata/Terrain'
 import Contour from '@/components/strata/Contour'
 import Photo from '@/components/strata/Photo'
 import PlanPicker from '@/components/strata/PlanPicker'
+import StatRow from '@/components/strata/StatRow'
+import { homeCards } from '@/lib/gallery'
 import { Glyph, Pill } from '@/components/strata/Glyph'
 import { HeroRidge, PaybackChart, StrataBars, ElevationClimb, CreativeGrid, RidgeChart, dashboardSummary, verdictOf } from '@/components/strata/Charts'
 import { pillars, tierNames } from '@/lib/services'
@@ -201,6 +203,10 @@ export default function Home() {
           </div>
         </Link>
       </section>
+
+      {/* ── WHY IT MATTERS ── */}
+      <StatRow className="pb-24 lg:pb-28" eyebrow="Why it matters" title="The numbers behind the work."
+        sub="Each service is there for a reason you can measure. The source is on every card." cards={homeCards()} />
 
       {/* ── COST COMPARISON ── */}
       <section className="mx-auto max-w-[760px] px-5 pb-24 lg:pb-28">

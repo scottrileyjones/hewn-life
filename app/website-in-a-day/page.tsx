@@ -5,6 +5,8 @@ import BuildDay from '@/components/BuildDay'
 import CountUp from '@/components/CountUp'
 import IntakeForm from '@/components/IntakeForm'
 import Photo from '@/components/strata/Photo'
+import StatRow from '@/components/strata/StatRow'
+import { cardsFor } from '@/lib/gallery'
 import { PageHero, SectionHead, ForestBand, h2Class, btnLight, btnGlass, btnForest } from '@/components/strata/Page'
 
 export const metadata: Metadata = {
@@ -142,6 +144,10 @@ export default function WebsiteInADay() {
           </div>
         </div>
       </section>
+
+      {/* ── WHY IT MATTERS ── */}
+      <StatRow className="pb-24" eyebrow="Why it matters" title="Built for how people actually browse."
+        sub="Fast on a phone, easy to scan and ready for search. The source is on every card." cards={cardsFor('website-in-a-day')} />
 
       {/* ── INCLUDED ── */}
       <ForestBand>
