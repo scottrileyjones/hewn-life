@@ -1,4 +1,5 @@
 /** Made-up contacts for previewing the CRM locally (PLAN_SAMPLE=1 only). */
+import { anomalies } from './test'
 import type { Contact, Stage } from './data'
 
 const d = (daysAgo: number) => new Date(Date.now() - daysAgo * 864e5).toISOString()
@@ -14,11 +15,14 @@ function c(name: string, company: string, source: string, stage: Stage, age: num
     tier: 'Wrought', score: 14, revenue: '$1,000,000', consent: true,
     answers: { 'Goal (90 days)': 'Generate consistent inbound leads', 'Biggest challenge': 'We get traffic but nothing converts', 'Monthly budget': '$3,000–$6,000 / mo' },
     notes: '', plan: { token: 'sample', status: 'Sent', by: 'Claude', recommended: 'Wrought', summary: `${company} has steady referrals but paid leads cost more each season. The plan: fix the pages that leak, test new creative weekly, and track every dollar on one dashboard.` },
-    stage, autoStage: stage, manual: null, value: null, crmNotes: '', pipelineId: null, events, ...extra,
+    stage, autoStage: stage, manual: null, value: null, crmNotes: '', pipelineId: null, events, test: '', flags: [], companies: [company], ...extra,
   }
 }
 
-export const sampleContacts = (): Contact[] => [
+export const sampleContacts = (): Contact[] => withFlags([
+  c('Jordan Blake', 'Blake', 'Quiz', 'Plan sent', 0.3, { tier: 'Hewn', companies: ['Blake'] }),
+  c('Avery Cole', 'Cole Roofing', 'Website in a Day', 'Won', 1.2, { companies: ['Summit Roofing', 'Peak Gutters', 'Cole Roofing'], value: 999 }),
+  c('Scott Jones', 'Hewn Test Co', 'Website in a Day', 'Won', 0.1, { email: 'scott@hewn.life', test: 'Hewn Life address' }),
   c('Maya Torres', 'Torres Home Comfort', 'Quiz', 'Booked', 3, { value: 5000 }),
   c('Devon Price', 'Price Dental Group', 'Contact form', 'Opened', 2, { tier: 'Forged' }),
   c('Alana Kim', 'Kim Skin Studio', 'Quiz', 'Plan sent', 1, { tier: 'Hewn' }),
@@ -30,4 +34,6 @@ export const sampleContacts = (): Contact[] => [
   c('Lena Fischer', 'Fischer Bakery', 'Contact form', 'Lost', 30, { autoStage: 'Opened', manual: { id: '', stage: 'Lost', at: d(12), by: 'scott@hewn.life' } }),
   c('Marcus Reed', 'Reed Fitness', 'Quiz', 'New', 0.5, { tier: 'Hewn' }),
   c('Tess Morgan', 'Morgan Creative', 'Quiz', 'Plan sent', 8, { tier: 'Wrought' }),
-]
+])
+
+const withFlags = (list: Contact[]) => list.map(x => ({ ...x, flags: anomalies(x) }))

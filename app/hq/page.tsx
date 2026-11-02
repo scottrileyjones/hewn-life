@@ -44,5 +44,5 @@ export default async function HqPage() {
   const [tasks, revenue, contacts] = sample
     ? [sampleTasks(), sampleRevenue(), sampleContacts()]
     : await Promise.all([safe('checklist', loadTasks), safe('Stripe', loadRevenue), safe('contacts', loadContacts)])
-  return <Hq user={user} tasks={tasks} revenue={revenue} funnel={contacts ? funnel(contacts) : null} today={new Date().toLocaleDateString('en-CA', { timeZone: 'America/Denver' })} />
+  return <Hq user={user} tasks={tasks} revenue={revenue} funnel={contacts ? funnel(contacts.filter(c => !c.test)) : null} today={new Date().toLocaleDateString('en-CA', { timeZone: 'America/Denver' })} />
 }
