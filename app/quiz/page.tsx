@@ -1,4 +1,5 @@
 'use client'
+import { looksLikeName } from '@/lib/crm/names'
 import { useState, useEffect, useRef } from 'react'
 import { MARKETING_CONSENT } from '@/lib/smsText'
 import Link from 'next/link'
@@ -680,6 +681,7 @@ function CaptureScreen({
             <div>
               <label htmlFor="cap-company" className={label}>Company</label>
               <input id="cap-company" type="text" name="organization" autoComplete="organization" value={contact.company} onChange={e => setContact(c => ({ ...c, company: e.target.value }))} placeholder="Your business" className={field} />
+              {looksLikeName(contact.name, contact.company) && <p className="mt-1.5 font-body text-[12px] text-[#7A4A12]">Just checking: is that your business name? It looks like it could be a last name.</p>}
             </div>
             <div>
               <label htmlFor="cap-email" className={label}>Email *</label>
