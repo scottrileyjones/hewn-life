@@ -18,6 +18,19 @@ export type PhotoKey =
   | 'rockStrata'
   | 'foliage'
   | 'coastPhone'
+  // Checkout galleries
+  | 'teamPlanning'
+  | 'cityWalkPhone'
+  | 'kitchenMorning'
+  | 'logoSketch'
+  | 'bakerTablet'
+  | 'brownstones'
+  | 'officeWalk'
+  | 'creatorFilming'
+  | 'friendsWalking'
+  | 'ownerPortrait'
+  | 'cafePhone'
+  | 'sketching'
 
 type Photo = { id: string; alt: string; gravity?: string }
 
@@ -32,6 +45,18 @@ export const photos: Record<PhotoKey, Photo> = {
   rockStrata: { id: 'v1793234450/AdobeStock_2187810424_mhixbr', alt: 'A layered red rock wall, the strata laid down over time' },
   foliage: { id: 'v1793234537/AdobeStock_2223507264_gbpel2', alt: 'Soft green foliage in warm light' },
   coastPhone: { id: 'v1793233385/AdobeStock_2074439565_j443st', alt: 'A woman checking her phone beside her car on the coast at sunset', gravity: 'g_auto:faces' },
+  teamPlanning: { id: 'v1793575114/hewn-09-AdobeStock_315350012', alt: 'Two people planning a campaign at a wall of sketches and notes' },
+  cityWalkPhone: { id: 'v1793575151/hewn-21-AdobeStock_223003575', alt: 'A man walking down a city street with a coffee and his phone', gravity: 'g_auto:faces' },
+  kitchenMorning: { id: 'v1793575194/hewn-24-AdobeStock_1839128313', alt: 'A woman in a bright kitchen in the morning', gravity: 'g_auto:faces' },
+  logoSketch: { id: 'v1793575155/hewn-11-AdobeStock_227745736', alt: 'A hand sketching logo ideas on paper' },
+  bakerTablet: { id: 'v1793575192/hewn-23-AdobeStock_1080914151', alt: 'A smiling baker holding a tablet in his bakery', gravity: 'g_auto:faces' },
+  brownstones: { id: 'v1793575099/hewn-42-AdobeStock_555190991', alt: 'A row of brownstones on a neighbourhood street' },
+  officeWalk: { id: 'v1793575106/hewn-45-AdobeStock_493417736', alt: 'Two colleagues walking and talking through a bright office', gravity: 'g_auto:faces' },
+  creatorFilming: { id: 'v1793575157/hewn-13-AdobeStock_444842611', alt: 'A creator filming herself on a phone on a tripod', gravity: 'g_auto:faces' },
+  friendsWalking: { id: 'v1793575116/hewn-22-AdobeStock_1294643860', alt: 'Two men talking as they walk outside', gravity: 'g_auto:faces' },
+  ownerPortrait: { id: 'v1793575161/hewn-15-AdobeStock_839435574', alt: 'A smiling business owner in a pink blazer', gravity: 'g_auto:faces' },
+  cafePhone: { id: 'v1793575159/hewn-14-AdobeStock_1501505131', alt: 'A woman smiling at her phone in a café', gravity: 'g_auto:faces' },
+  sketching: { id: 'v1793575153/hewn-10-AdobeStock_535693047', alt: 'Hands sketching ideas on paper' },
 }
 
 /** Delivery URL cropped to w×h, graded slightly cooler and softer so the set reads as one. */

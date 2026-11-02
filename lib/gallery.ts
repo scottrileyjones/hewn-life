@@ -1,62 +1,59 @@
 /**
  * Checkout galleries: the swipeable slides at the top of the order summary.
  *
- * One gallery per plan, add-on and kit, keyed by the checkout `tier` (plans) or
- * the catalog SKU (add-ons and kits). Every claim here repeats what the pricing
- * page or the catalog in lib/addons.ts already promises: no results, reviews or
- * numbers that aren't ours. Mockups use example content and say so on the slide.
+ * One gallery per plan, keyed by the checkout `tier` (or a single catalog SKU).
+ * A cover photo, then one card per service: what you get, in a word or two,
+ * and one sourced stat on why it matters. Cards alternate between photos and
+ * flat colour cards with a simple graphic.
  *
- * Headlines mark highlighted words with [brackets]; they render in a pill.
+ * Every stat is a published third-party figure, cited on the card. Never a
+ * result, review or number of ours. Plan facts (price, timing, what's
+ * included) repeat the pricing page and lib/addons.ts.
+ *
+ * Cover headlines mark highlighted words with [brackets]; they render in a pill.
  */
 import type { PhotoKey } from '@/lib/photos'
-import type { PlatformKey } from '@/lib/platforms'
-import type { LineIconName } from '@/components/checkout/LineIcon'
 
-export type Feature = { icon: LineIconName; title: string; text: string }
-/** The frosted card floating over a hero photo (the brand's data-meets-image move). */
-export type Glass = { logo?: PlatformKey; icon?: LineIconName; label: string; sub: string }
-export type Result = 'wrought' | 'website'
+export type Graphic = 'funnel' | 'pipeline' | 'swatches' | 'bars' | 'stars' | 'clock'
+
+/** How a card looks: a photo (type straight on it, or on faint glass) or a flat colour with a graphic. */
+export type Look =
+  | { photo: PhotoKey; glass?: boolean }
+  | { color: 'lime' | 'forest'; graphic?: Graphic }
 
 export type Slide =
-  | { kind: 'hero'; photo: PhotoKey; tag: string; head: string; sub: string; glass?: Glass }
-  | { kind: 'features'; head: string; items: Feature[]; note?: string }
-  | { kind: 'platforms'; head: string; sub: string; logos: PlatformKey[] }
-  | { kind: 'result'; head: string; result: Result }
-  | { kind: 'steps'; head: string; steps: { when: string; what: string }[] }
-
-const planSteps = (two: string, three: string) => [
-  { when: 'Within 48 hours', what: 'Your onboarding call is booked' },
-  { when: 'Week one', what: two },
-  { when: 'Month one', what: three },
-]
+  | { kind: 'cover'; photo: PhotoKey; tag: string; head: string; sub: string }
+  | { kind: 'stat'; service: string; stat: string; text: string; source: string; look: Look }
+  | { kind: 'list'; service: string; items: string[]; look: Look }
 
 const GALLERIES: Record<string, Slide[]> = {
+  hewn: [
+    { kind: 'cover', photo: 'logoSketch', tag: 'Hewn · monthly plan', head: 'Deliberately shaped. [Ready to work.]', sub: 'Brand strategy and identity, a custom website, SEO and local listings.' },
+    { kind: 'stat', service: 'Brand identity', stat: '23%', text: 'average revenue lift from consistent branding', source: 'Lucidpress & Demand Metric, 2016', look: { color: 'lime', graphic: 'swatches' } },
+    { kind: 'stat', service: 'Website', stat: '46%', text: 'of credibility judgments cite a site’s design', source: 'Stanford Web Credibility Project, 2002', look: { photo: 'bakerTablet' } },
+    { kind: 'stat', service: 'Google profile', stat: '2.7×', text: 'more likely to be seen as reputable with a complete profile', source: 'Google Business Profile Help', look: { photo: 'brownstones', glass: true } },
+    { kind: 'stat', service: 'SEO', stat: '53%', text: 'of trackable web traffic comes from organic search', source: 'BrightEdge, 2019', look: { color: 'forest', graphic: 'bars' } },
+  ],
   wrought: [
-    { kind: 'hero', photo: 'coastPhone', tag: 'Wrought · monthly plan', head: 'Your full [marketing] [engine].', sub: 'Everything in Hewn, plus paid media, funnels, automation and a CRM.', glass: { logo: 'googleAds', label: 'Search campaign', sub: 'Live' } },
-    { kind: 'features', head: 'What’s [included]', note: 'Plus everything in Hewn: brand, website, SEO and local listings.', items: [
-      { icon: 'megaphone', title: 'Paid media', text: 'Google and Meta campaigns, managed for you.' },
-      { icon: 'layout', title: 'Sales funnels', text: 'Landing pages, offers and conversion paths.' },
-      { icon: 'mail', title: 'Automation', text: 'Nurture sequences that follow up for you.' },
-      { icon: 'pipeline', title: 'CRM setup', text: 'Your pipeline and sales process, connected.' },
-    ] },
-    { kind: 'platforms', head: 'Running where your [customers] are.', sub: 'We build and manage your campaigns inside the platforms you already know.', logos: ['googleAds', 'meta', 'instagram', 'facebook'] },
-    { kind: 'result', head: 'From first click to [booked].', result: 'wrought' },
-    { kind: 'steps', head: 'How it [starts]', steps: planSteps('Full audit and strategy session', 'Campaigns live within the first month') },
+    { kind: 'cover', photo: 'teamPlanning', tag: 'Wrought · monthly plan', head: 'Your full [marketing] [engine].', sub: 'Everything in Hewn, plus paid media, funnels, automation and a CRM.' },
+    { kind: 'stat', service: 'Paid media', stat: '$8', text: 'profit per $1 on Google Ads', source: 'Google Economic Impact Report', look: { photo: 'cityWalkPhone' } },
+    { kind: 'stat', service: 'Sales funnels', stat: '6.6%', text: 'median landing page conversion', source: 'Unbounce, 2024', look: { color: 'lime', graphic: 'funnel' } },
+    { kind: 'stat', service: 'Automation', stat: '7×', text: 'likelier to qualify a lead when you reply within the hour', source: 'Harvard Business Review, 2011', look: { photo: 'kitchenMorning', glass: true } },
+    { kind: 'stat', service: 'CRM setup', stat: '$8.71', text: 'return per $1 spent on CRM', source: 'Nucleus Research, 2014', look: { color: 'forest', graphic: 'pipeline' } },
+  ],
+  forged: [
+    { kind: 'cover', photo: 'officeWalk', tag: 'Forged · monthly plan', head: 'Your outsourced [CMO].', sub: 'Everything in Wrought, plus reviews, UGC, referrals and growth planning.' },
+    { kind: 'stat', service: 'UGC', stat: '79%', text: 'of shoppers say customer content highly impacts purchases', source: 'Stackla, 2021', look: { photo: 'creatorFilming' } },
+    { kind: 'stat', service: 'Review generation', stat: '270%', text: 'higher purchase likelihood with five reviews vs none', source: 'Spiegel Research Center, 2017', look: { color: 'forest', graphic: 'stars' } },
+    { kind: 'stat', service: 'Referral program', stat: '16%', text: 'higher lifetime value from referred customers', source: 'Journal of Marketing, 2011', look: { photo: 'friendsWalking', glass: true } },
+    { kind: 'list', service: 'Everything in Wrought', items: ['Paid media', 'Sales funnels', 'Automation', 'CRM'], look: { color: 'lime' } },
   ],
   'website-in-a-day': [
-    { kind: 'hero', photo: 'cafeOwner', tag: 'Website in a Day', head: 'Your website, [live] in [24 hours].', sub: 'Custom design and copy from your brief. Built, hosted and yours to keep.', glass: { icon: 'globe', label: 'yourbusiness.com', sub: 'Live in 24 hours' } },
-    { kind: 'features', head: 'What’s [included]', note: 'Plus an SEO-ready technical foundation.', items: [
-      { icon: 'layout', title: 'Custom design', text: 'Made from your brief, for mobile and desktop.' },
-      { icon: 'pen', title: 'Copy written for you', text: 'Every word written from your brief.' },
-      { icon: 'globe', title: 'Hosted on your domain', text: 'Built, hosted and connected for you.' },
-      { icon: 'calendar', title: 'Contact or booking form', text: 'Customers reach you straight from the site.' },
-    ] },
-    { kind: 'result', head: 'A real site, on [every] screen.', result: 'website' },
-    { kind: 'steps', head: 'Three steps. [One day.]', steps: [
-      { when: 'Today', what: 'Brief received. We start when payment clears' },
-      { when: 'Within 24 hours', what: 'Your site is live' },
-      { when: 'Then', what: 'One round of edits, on us' },
-    ] },
+    { kind: 'cover', photo: 'ownerPortrait', tag: 'Website in a Day', head: 'Your website, [live] in [24 hours].', sub: 'Custom design and copy from your brief. Built, hosted and yours to keep.' },
+    { kind: 'stat', service: 'Live in 24 hours', stat: '24h', text: 'from your brief to a live site', source: 'Then one round of edits, on us', look: { color: 'lime', graphic: 'clock' } },
+    { kind: 'stat', service: 'Mobile-first design', stat: '53%', text: 'of mobile visits are abandoned if a page takes over 3 seconds to load', source: 'Google, 2016', look: { photo: 'cafePhone' } },
+    { kind: 'stat', service: 'Copy written for you', stat: '20%', text: 'of a page’s words get read on a typical visit', source: 'Nielsen Norman Group, 2008', look: { photo: 'sketching', glass: true } },
+    { kind: 'stat', service: 'SEO-ready', stat: 'Half', text: 'of trackable web traffic comes from organic search', source: 'BrightEdge, 2019', look: { color: 'forest', graphic: 'bars' } },
   ],
 }
 
