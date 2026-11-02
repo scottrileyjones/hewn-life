@@ -23,6 +23,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Terrain from '@/components/strata/Terrain'
+import Photo from '@/components/strata/Photo'
+import { coverFor, introOf } from '@/lib/gallery'
 import { Glyph, Pill } from '@/components/strata/Glyph'
 import { PageHero, ForestBand, ClosePanel, h2Class, btnLight, btnGlass } from '@/components/strata/Page'
 import type { GlyphKey } from '@/lib/strata'
@@ -293,43 +295,39 @@ export default function Pricing() {
           {tiers.map((tier, i) => {
             const price = annual ? tier.price.annual : tier.price.monthly
             const feat = tier.slug === 'wrought'
+            const cover = coverFor(tier.slug)
+            const intro = introOf(tier.slug)
             const isExpanded = expanded
             return (
               <FadeInWrapper key={tier.slug} delay={i * 110} className="flex h-full flex-col lg:row-span-2 lg:grid lg:grid-rows-subgrid">
-                <div className={`flex h-full flex-col overflow-hidden rounded-[28px] lg:row-span-2 lg:grid lg:grid-rows-subgrid ${feat ? 'bg-forest text-mist' : 'border border-ink/[0.08] bg-white'}`}>
+                <div className={`flex h-full flex-col overflow-hidden rounded-[28px] border bg-white lg:row-span-2 lg:grid lg:grid-rows-subgrid ${feat ? 'border-forest/30 shadow-[0_18px_50px_-24px_rgba(30,56,38,.45)]' : 'border-ink/[0.08]'}`}>
                   <div className="flex flex-col">
-                  {feat && (
-                    <div className="relative isolate h-24 overflow-hidden">
-                      <Terrain scene="amber" seed={31} className="-z-10" />
-                      <span className="absolute bottom-3 left-7 rounded-full bg-lime px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-forest">{tier.badge}</span>
+                  {cover && (
+                    <div className="p-3 pb-0">
+                      <div className="relative aspect-[4/3] overflow-hidden rounded-[18px] bg-sand">
+                        <Photo name={cover} w={720} h={540} sizes="(min-width: 1024px) 380px, 92vw" film={false} />
+                      </div>
                     </div>
                   )}
                   <div className="flex flex-1 flex-col p-7 sm:p-8">
-                    <div className="mb-5 flex items-center justify-between">
-                      <p className={`font-mono text-[10px] uppercase tracking-[0.18em] ${feat ? 'text-mist/60' : 'text-ink/55'}`}>{tier.subtitle}</p>
-                      {!feat && tier.badge && <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-forest">{tier.badge}</span>}
+                    <p className="font-display text-[34px] font-medium leading-[1.05] tracking-[-0.035em]">{tier.name}</p>
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                      <span className="rounded-full bg-forest px-3.5 py-1.5 font-body text-[15px] font-semibold leading-none tabular-nums text-white">
+                        ${price.toLocaleString()}<span className="font-medium text-white/75">/mo</span>
+                      </span>
+                      {annual && <span className="font-body text-sm text-ink/40 line-through tabular-nums">${tier.price.monthly.toLocaleString()}</span>}
+                      {tier.badge && <span className="rounded-full bg-lime px-3 py-1.5 font-body text-[12px] font-semibold leading-none text-forest">{tier.badge}</span>}
                     </div>
-                    <p className="font-display text-[32px] font-medium leading-none tracking-[-0.03em]">{tier.name}</p>
-                    <p className={`mt-3 mb-6 font-body text-sm ${feat ? 'text-mist/70' : 'text-ink/70'}`}>{tier.tagline}</p>
+                    <p className="mt-2 font-body text-xs text-ink/55">{annual ? 'Per month, billed yearly · save 20%' : 'Billed monthly · cancel anytime'}</p>
 
-                    <div className={`mb-6 border-b pb-6 ${feat ? 'border-mist/[0.12]' : 'border-ink/[0.08]'}`}>
-                      {annual && (
-                        <div className="mb-1 flex items-baseline gap-2">
-                          <span className={`font-body text-sm line-through ${feat ? 'text-mist/40' : 'text-ink/40'}`}>${tier.price.monthly.toLocaleString()}</span>
-                          <span className={`font-mono text-[10px] uppercase tracking-widest ${feat ? 'text-lime' : 'text-forest'}`}>Save 20%</span>
-                        </div>
-                      )}
-                      <div className="flex items-end gap-1">
-                        <span className="font-display text-[56px] font-medium leading-none tracking-[-0.04em] tabular-nums">${price.toLocaleString()}</span>
-                        <span className={`mb-1.5 font-body text-sm ${feat ? 'text-mist/60' : 'text-ink/55'}`}>/mo{annual ? ', billed yearly' : ''}</span>
-                      </div>
-                    </div>
+                    <p className="mt-6 font-body text-[11px] font-semibold uppercase tracking-[0.06em] text-ink">{intro?.eyebrow ?? tier.subtitle}</p>
+                    <p className="mt-1.5 font-body text-[15px] leading-relaxed text-ink/70">{tier.tagline}</p>
 
-                    <ul className="mb-8 space-y-2.5">
+                    <ul className="mb-8 mt-6 border-t border-ink/[0.08]">
                       {tier.highlights.map(h => (
-                        <li key={h} className="flex items-start gap-3">
-                          <svg viewBox="0 0 100 100" className="mt-0.5 h-[18px] w-[18px] flex-shrink-0" aria-hidden="true"><rect x="14" y="30" width="16" height="56" fill={feat ? '#F4F2EC' : '#1E3826'} /><polygon points="30,62 86,34 86,48 30,76" fill={feat ? '#D6F28B' : '#6BAD3D'} /></svg>
-                          <span className={`font-body text-sm ${feat ? 'text-mist/85' : 'text-ink/80'}`}>{h}</span>
+                        <li key={h} className="flex items-start gap-3 border-b border-ink/[0.08] py-3">
+                          <svg viewBox="0 0 100 100" className="mt-0.5 h-[16px] w-[16px] flex-shrink-0" aria-hidden="true"><rect x="14" y="30" width="16" height="56" fill="#1E3826" /><polygon points="30,62 86,34 86,48 30,76" fill="#6BAD3D" /></svg>
+                          <span className="font-body text-sm text-ink/80">{h}</span>
                         </li>
                       ))}
                     </ul>
@@ -337,17 +335,17 @@ export default function Pricing() {
                     <div className="mt-auto">
                       <button
                         onClick={() => handleStripeCheckout(tier.slug)}
-                        className={`mb-3 flex w-full items-center justify-center gap-2 rounded-full px-6 py-4 font-body text-sm font-medium transition ${feat ? 'bg-lime text-forest hover:bg-white' : 'bg-forest text-mist hover:bg-forest-2'}`}
+                        className="mb-3 flex w-full items-center justify-center gap-2 rounded-full bg-forest px-6 py-4 font-body text-sm font-medium text-mist transition hover:bg-forest-2"
                       >
                         Get {tier.name} · ${price.toLocaleString()}/mo
                       </button>
                       <p className="mb-6 text-center">
-                        <CalButton className={`font-body text-xs transition-colors ${feat ? 'text-mist/60 hover:text-mist' : 'text-ink/55 hover:text-ink'}`}>Have questions? Book a free call →</CalButton>
+                        <CalButton className={`font-body text-xs transition-colors text-ink/55 hover:text-ink`}>Have questions? Book a free call →</CalButton>
                       </p>
                       <button
                         onClick={() => setExpanded(!expanded)}
                         aria-expanded={isExpanded}
-                        className={`flex w-full items-center gap-1.5 font-body text-xs transition-colors ${feat ? 'text-mist/60 hover:text-mist' : 'text-ink/55 hover:text-ink'}`}
+                        className={`flex w-full items-center gap-1.5 font-body text-xs transition-colors text-ink/55 hover:text-ink`}
                       >
                         <svg className={`h-3.5 w-3.5 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
                         {isExpanded ? 'Hide full deliverables' : 'See everything included'}
@@ -357,15 +355,15 @@ export default function Pricing() {
                   </div>
                   <div className="px-7 sm:px-8">
                       {isExpanded && (
-                        <div className={`mb-8 space-y-5 border-t pt-6 ${feat ? 'border-mist/[0.12]' : 'border-ink/[0.08]'}`}>
+                        <div className={`mb-8 space-y-5 border-t pt-6 border-ink/[0.08]`}>
                           {tier.deliverables.map(group => (
                             <div key={group.pillar}>
-                              <p className={`mb-2.5 font-mono text-[10px] uppercase tracking-[0.18em] ${feat ? 'text-lime' : 'text-forest'}`}>{group.pillar}</p>
+                              <p className={`mb-2.5 font-mono text-[10px] uppercase tracking-[0.18em] text-forest`}>{group.pillar}</p>
                               <ul className="space-y-1.5">
                                 {group.items.map(item => (
                                   <li key={item} className="flex items-start gap-2.5">
-                                    <span className={`mt-1 h-3 w-[3px] flex-shrink-0 ${feat ? 'bg-lime' : 'bg-ember'}`} />
-                                    <span className={`font-body text-xs ${feat ? 'text-mist/75' : 'text-ink/75'}`}>{item}</span>
+                                    <span className={`mt-1 h-3 w-[3px] flex-shrink-0 bg-ember`} />
+                                    <span className={`font-body text-xs text-ink/75`}>{item}</span>
                                   </li>
                                 ))}
                               </ul>

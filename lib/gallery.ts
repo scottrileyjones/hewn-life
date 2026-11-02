@@ -78,3 +78,30 @@ export function galleryFor(tier: string, skus: string[]): Slide[] {
   if (skus.length === 1 && GALLERIES[skus[0]]) return GALLERIES[skus[0]]
   return []
 }
+
+type Card = Extract<Slide, { kind: 'stat' | 'list' }>
+
+/** A plan's service cards without the cover, for site pages. */
+export function cardsFor(key: string): Card[] {
+  return (GALLERIES[key] ?? []).filter((s): s is Card => s.kind !== 'cover')
+}
+
+/** A plan's cover photo. */
+export function coverFor(key: string): PhotoKey | null {
+  const c = GALLERIES[key]?.find(s => s.kind === 'cover')
+  return c && c.kind === 'cover' ? c.photo : null
+}
+
+/** A plan's short uppercase tagline and badge (also used at the top of checkout). */
+export const introOf = (key: string): Intro | null => INTROS[key] ?? null
+
+/** The home page's "why it matters" row: one card from each layer of the work, alternating photo and colour. */
+export function homeCards(): Card[] {
+  const pick = (plan: string, service: string) => cardsFor(plan).find(c => c.service === service)!
+  return [
+    pick('wrought', 'Paid media'),
+    pick('wrought', 'Sales funnels'),
+    pick('wrought', 'Automation'),
+    pick('forged', 'Review generation'),
+  ]
+}
