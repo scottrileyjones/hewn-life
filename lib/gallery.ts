@@ -10,8 +10,8 @@
  * result, review or number of ours. Plan facts (price, timing, what's
  * included) repeat the pricing page and lib/addons.ts.
  *
- * The cover is a photo with the plan's name over it; the title, tagline and
- * blurb also sit at the top of the order summary (see introFor).
+ * The cover is a clean photo; the plan's title, price, tagline and blurb sit
+ * at the top of the order summary instead (see introFor).
  */
 import type { PhotoKey } from '@/lib/photos'
 

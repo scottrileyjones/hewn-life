@@ -129,11 +129,15 @@ function OrderSummary({ name, price, billing, mode, tier, charge, lines = [], sa
       {intro ? (
         <div className="px-7 pt-6 pb-5 border-b border-black/[0.06]">
           <h2 className="font-display font-medium tracking-[-0.035em] text-[34px] leading-[1.05] text-[#0D0D0D]">{name}</h2>
-          <div className="mt-2 flex items-center justify-between gap-3">
-            <p className="font-body text-[11px] font-semibold uppercase tracking-[0.06em] text-[#0D0D0D]">{intro.eyebrow}</p>
-            {intro.badge && <span className="flex-shrink-0 rounded-full bg-lime px-2.5 py-1 font-body text-[11px] font-semibold leading-none text-forest">{intro.badge}</span>}
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-forest px-3.5 py-1.5 font-body text-[15px] font-semibold leading-none tabular-nums text-white">
+              {charge?.promo ? money(charge.amount, charge.currency) : `$${price.toLocaleString()}`}
+              <span className="font-medium text-white/75">{mode === 'subscription' ? '/mo' : ' one time'}</span>
+            </span>
+            {intro.badge && <span className="rounded-full bg-lime px-3 py-1.5 font-body text-[12px] font-semibold leading-none text-forest">{intro.badge}</span>}
           </div>
-          <p className="mt-3 font-body text-[15px] leading-relaxed text-[#3D3A36]">{intro.blurb}</p>
+          <p className="mt-4 font-body text-[11px] font-semibold uppercase tracking-[0.06em] text-[#0D0D0D]">{intro.eyebrow}</p>
+          <p className="mt-1.5 font-body text-[15px] leading-relaxed text-[#3D3A36]">{intro.blurb}</p>
         </div>
       ) : (
         <div className="px-7 pt-6 pb-5 border-b border-black/[0.06]">

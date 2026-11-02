@@ -5,7 +5,7 @@ import type { Graphic, Look, Slide } from '@/lib/gallery'
 
 /**
  * The checkout gallery: a swipeable set of slides that sells the package.
- * A cover photo with the plan's name, then one card per service with a single sourced stat.
+ * A clean cover photo, then one card per service with a single sourced stat.
  * Cards alternate photos (white type straight on the image, or on faint
  * glass) with flat lime or forest cards carrying a simple graphic. Slides peek at the
  * next one and a thin progress bar tracks where you are.
@@ -122,13 +122,11 @@ function Card({ s }: { s: Extract<Slide, { kind: 'stat' | 'list' }> }) {
   )
 }
 
-/** The cover: the photo with the plan's name over the bottom. */
-function Cover({ s, title }: { s: Extract<Slide, { kind: 'cover' }>; title: string }) {
+/** The cover: just the photo. The plan's title sits in the summary below. */
+function Cover({ s }: { s: Extract<Slide, { kind: 'cover' }> }) {
   return (
-    <div className="relative isolate flex h-full w-full flex-col justify-end overflow-hidden p-[6.5cqw] text-white" style={{ background: '#5B4636' }}>
-      <Photo name={s.photo} w={680} h={850} sizes="(min-width: 1024px) 360px, 88vw" film={false} priority className="-z-20 [&_img]:text-transparent" />
-      <div className="absolute inset-0 -z-10" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(13,20,15,.7))' }} />
-      <p className="font-display font-medium leading-[1.02] tracking-[-0.04em]" style={{ fontSize: '12cqw', textWrap: 'balance' } as React.CSSProperties}>{title}</p>
+    <div className="relative h-full w-full overflow-hidden" style={{ background: '#5B4636' }}>
+      <Photo name={s.photo} w={680} h={850} sizes="(min-width: 1024px) 360px, 88vw" film={false} priority className="[&_img]:text-transparent" />
     </div>
   )
 }
@@ -179,7 +177,7 @@ export default function ProductGallery({ slides, label }: { slides: Slide[]; lab
         {slides.map((s, i) => (
           <div key={i} className="aspect-[4/5] w-[88%] shrink-0 snap-start snap-always overflow-hidden rounded-[18px]" style={{ containerType: 'inline-size' }}
             role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${slides.length}`}>
-            {s.kind === 'cover' ? <Cover s={s} title={label} /> : <Card s={s} />}
+            {s.kind === 'cover' ? <Cover s={s} /> : <Card s={s} />}
           </div>
         ))}
       </div>
