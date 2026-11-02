@@ -19,6 +19,8 @@ export function buildBrief(c: PortalClient): string {
     `- Brief generated: ${new Date().toLocaleString('en-US', { timeZone: 'America/Denver', dateStyle: 'medium', timeStyle: 'short' })} (Mountain)`,
     '',
   ]
+  const orderNotes = (c.progress.order?.data?.notes ?? '').trim()
+  if (orderNotes) lines.push('## What they told us at checkout', '', 'From the “Anything we should know?” box when they ordered. Treat these as requests to build in.', '', orderNotes, '')
   for (const s of steps) {
     const st = c.progress[s.id]
     lines.push(`## ${s.title}`, '')
