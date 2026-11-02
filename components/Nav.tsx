@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import HewnLogo from './HewnLogo'
 import CalButton from './CalButton'
+import { usePromoBar, PROMO_BAR_H } from './PromoBar'
 
 const navLinks = [
   { href: '/services', label: 'Services' },
@@ -20,6 +21,7 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const pathname = usePathname()
+  const bar = usePromoBar()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40)
@@ -36,7 +38,7 @@ export default function Nav() {
 
   return (
     <>
-      <nav className={`fixed top-0 z-50 h-16 w-full transition-all duration-300 ${
+      <nav style={{ top: bar && !scrolled ? PROMO_BAR_H : 0 }} className={`fixed z-50 h-16 w-full transition-all duration-300 ${
         scrolled ? 'border-b border-ink/[0.06] bg-bone/90 backdrop-blur-md' : 'bg-transparent'
       }`}>
         <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-5 px-5">
@@ -68,11 +70,16 @@ export default function Nav() {
             >
               Client login
             </a>
-            <CalButton className={`whitespace-nowrap rounded-full px-5 py-2.5 font-body text-[15px] font-medium transition-all duration-200 ${
-              darkHero ? 'bg-white text-ink hover:bg-mist' : 'bg-forest text-mist hover:bg-forest-2'
+            <CalButton className={`whitespace-nowrap rounded-full border px-5 py-2.5 font-body text-[15px] font-medium transition-all duration-200 ${
+              darkHero ? 'border-white/40 text-white hover:bg-white/10' : 'border-ink/15 text-ink hover:border-ink/30'
             }`}>
               Book a call
             </CalButton>
+            <Link href="/pricing" className={`whitespace-nowrap rounded-full px-5 py-2.5 font-body text-[15px] font-medium transition-all duration-200 ${
+              darkHero ? 'bg-white text-ink hover:bg-mist' : 'bg-forest text-mist hover:bg-forest-2'
+            }`}>
+              See pricing
+            </Link>
           </div>
 
           <button
@@ -111,12 +118,18 @@ export default function Nav() {
               Client login
             </a>
           </div>
-          <CalButton
-            className="mt-2 rounded-full bg-forest px-8 py-4 font-body font-medium text-mist transition-all duration-200 hover:bg-forest-2"
-            onClick={() => setMenuOpen(false)}
-          >
-            Book a call
-          </CalButton>
+          <div className="mt-2 flex flex-col items-center gap-3">
+            <Link href="/pricing" onClick={() => setMenuOpen(false)}
+              className="rounded-full bg-forest px-8 py-4 font-body font-medium text-mist transition-all duration-200 hover:bg-forest-2">
+              See plans & pricing
+            </Link>
+            <CalButton
+              className="rounded-full border border-ink/15 px-8 py-4 font-body font-medium text-ink transition-all duration-200 hover:border-ink/30"
+              onClick={() => setMenuOpen(false)}
+            >
+              Book a call
+            </CalButton>
+          </div>
         </div>
       )}
     </>

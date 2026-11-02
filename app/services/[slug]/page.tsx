@@ -9,6 +9,7 @@ import { pillars, getPillar, tierNames } from '@/lib/services'
 import { colors } from '@/lib/strata'
 import { pillarPhotos } from '@/lib/photos'
 import StatCard from '@/components/strata/StatCard'
+import BuyBlock from '@/components/strata/BuyBlock'
 import { pillarCard } from '@/lib/gallery'
 
 export function generateStaticParams() {
@@ -147,6 +148,9 @@ export default function PillarPage({ params }: { params: { slug: string } }) {
           </div>
         </div>
       </section>
+
+      {/* ── BUY ── */}
+      <BuyBlock pillar={p.slug} tier={p.tier} />
 
       {/* ── PREV / NEXT ── */}
       <section className="mx-auto max-w-7xl px-5 pb-12">

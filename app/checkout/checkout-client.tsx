@@ -12,6 +12,7 @@ import SignatureBlocks from '@/components/agreements/SignatureBlocks'
 import type { Doc } from '@/lib/agreements/templates'
 import ProductGallery from '@/components/checkout/ProductGallery'
 import { galleryFor, introFor } from '@/lib/gallery'
+import { blackFriday, offerLive, money as usd } from '@/lib/offer'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
 
@@ -110,8 +111,8 @@ interface ContactInfo {
 
 // ── Order Summary ─────────────────────────────────────
 
-function OrderSummary({ name, price, billing, mode, tier, charge, lines = [], saved = 0 }: {
-  name: string; price: number; billing: string; mode: string; tier: string; charge: Charge | null; lines?: (AddOn | Kit)[]; saved?: number
+function OrderSummary({ name, price, billing, mode, tier, charge, lines = [], saved = 0, bf = false }: {
+  name: string; price: number; billing: string; mode: string; tier: string; charge: Charge | null; lines?: (AddOn | Kit)[]; saved?: number; bf?: boolean
 }) {
   const meta = PRODUCT_META[tier] ?? PRODUCT_META['website-in-a-day']
   const slides = galleryFor(tier, lines.map(l => l.sku))
@@ -130,10 +131,12 @@ function OrderSummary({ name, price, billing, mode, tier, charge, lines = [], sa
         <div className="px-7 pt-6 pb-5 border-b border-black/[0.06]">
           <h2 className="font-display font-medium tracking-[-0.035em] text-[34px] leading-[1.05] text-[#0D0D0D]">{name}</h2>
           <div className="mt-3 flex flex-wrap items-center gap-2">
+            {(bf || charge?.promo) && <span className="font-body text-sm text-ink/40 line-through tabular-nums">${price.toLocaleString()}</span>}
             <span className="rounded-full bg-forest px-3.5 py-1.5 font-body text-[15px] font-semibold leading-none tabular-nums text-white">
-              {charge?.promo ? money(charge.amount, charge.currency) : `$${price.toLocaleString()}`}
+              {charge?.promo ? money(charge.amount, charge.currency) : bf ? usd(blackFriday.price) : `$${price.toLocaleString()}`}
               <span className="font-medium text-white/75">{mode === 'subscription' ? '/mo' : ' one time'}</span>
             </span>
+            {bf && <span className="rounded-full bg-lime px-3 py-1.5 font-body text-[12px] font-semibold leading-none text-forest">Black Friday · {blackFriday.percentOff}% off</span>}
             {intro.badge && <span className="rounded-full bg-lime px-3 py-1.5 font-body text-[12px] font-semibold leading-none text-forest">{intro.badge}</span>}
           </div>
           <p className="mt-4 font-body text-[11px] font-semibold uppercase tracking-[0.06em] text-[#0D0D0D]">{intro.eyebrow}</p>
@@ -212,9 +215,9 @@ function OrderSummary({ name, price, billing, mode, tier, charge, lines = [], sa
               : 'One-time fee'}
           </p>
           <div className="flex items-baseline gap-2">
-            {charge?.promo && <span className="font-body text-lg text-[#6B6560] line-through">${price.toLocaleString()}</span>}
+            {(charge?.promo || bf) && <span className="font-body text-lg text-[#6B6560] line-through">${price.toLocaleString()}</span>}
             <span className="font-display font-medium tracking-[-0.03em] text-[38px] text-[#0D0D0D] leading-none">
-              {charge?.promo ? money(charge.amount, charge.currency) : `$${price.toLocaleString()}`}
+              {charge?.promo ? money(charge.amount, charge.currency) : bf ? usd(blackFriday.price) : `$${price.toLocaleString()}`}
             </span>
             {mode === 'subscription' && (
               <span className="font-body text-sm text-[#6B6560]">/mo</span>
@@ -224,6 +227,9 @@ function OrderSummary({ name, price, billing, mode, tier, charge, lines = [], sa
         <p className="font-body text-xs text-[#6B6560]/60 mt-1 text-right">
           {mode === 'subscription' ? 'No long-term contract · cancel anytime' : 'No recurring charges'}
         </p>
+        {bf && !charge?.promo && (
+          <p className="mt-2 text-right font-body text-xs font-medium text-forest">Code {blackFriday.code} applied at payment: {blackFriday.percentOff}% off</p>
+        )}
         {charge?.promo && (
           <p className="mt-2 text-right font-body text-xs font-medium" style={{ color: meta.color }}>
             Code {charge.promo.code} applied: {money(charge.promo.off, charge.currency)} off
@@ -405,7 +411,11 @@ export default function CheckoutClient() {
     notes: '',
   })
   // Beta testers can arrive with ?promo=BETA250 already in the link.
-  const [promoCode, setPromoCode] = useState((params.get('promo') ?? '').toUpperCase())
+  // A Black Friday link opened after the offer ends checks out at the normal price.
+  const [promoCode, setPromoCode] = useState(() => {
+    const code = (params.get('promo') ?? '').toUpperCase()
+    return code === blackFriday.code && !offerLive() ? '' : code
+  })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -781,7 +791,7 @@ export default function CheckoutClient() {
 
           {/* Right: sticky order summary */}
           <div className="lg:sticky lg:top-8 order-first lg:order-last">
-            <OrderSummary name={name} price={price} billing={billing} mode={mode} tier={tier} charge={step === 'payment' ? charge : null} lines={cart.lines} saved={cart.saved} />
+            <OrderSummary name={name} price={price} billing={billing} mode={mode} tier={tier} charge={step === 'payment' ? charge : null} lines={cart.lines} saved={cart.saved} bf={tier === 'website-in-a-day' && promoCode === blackFriday.code} />
           </div>
 
         </div>

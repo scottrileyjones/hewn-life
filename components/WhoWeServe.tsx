@@ -77,9 +77,9 @@ export default function WhoWeServe() {
             {a.cta.href ? (
               <Link href={a.cta.href} className="inline-flex items-center justify-center rounded-full bg-forest px-6 py-3.5 font-body text-[15px] font-medium text-mist transition hover:bg-forest-2">{a.cta.label} →</Link>
             ) : (
-              <CalButton className="inline-flex items-center justify-center rounded-full bg-forest px-6 py-3.5 font-body text-[15px] font-medium text-mist transition hover:bg-forest-2">{a.cta.label} →</CalButton>
+              <Link href="/pricing#plans" className="inline-flex items-center justify-center rounded-full bg-forest px-6 py-3.5 font-body text-[15px] font-medium text-mist transition hover:bg-forest-2">{a.cta.label} →</Link>
             )}
-            <Link href="/pricing#plans" className="inline-flex items-center justify-center rounded-full border border-ink/15 px-6 py-3.5 font-body text-[15px] font-medium transition hover:border-ink/40">See plans</Link>
+            <CalButton className="inline-flex items-center justify-center rounded-full border border-ink/15 px-6 py-3.5 font-body text-[15px] font-medium transition hover:border-ink/40">Book a call</CalButton>
           </div>
         </div>
 
