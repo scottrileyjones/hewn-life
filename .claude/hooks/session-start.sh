@@ -10,7 +10,10 @@ cd "$CLAUDE_PROJECT_DIR"
 npm install
 
 # Configure git to push directly to GitHub
-git remote set-url origin "https://scottrileyjones:${GITHUB_PAT:-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}@github.com/scottrileyjones/hewn-life.git"
+# Only rewrite the remote when a token is provided via the environment (never hardcode it)
+if [ -n "${GITHUB_PAT:-}" ]; then
+  git remote set-url origin "https://scottrileyjones:${GITHUB_PAT}@github.com/scottrileyjones/hewn-life.git"
+fi
 
 # Alias: git deploy → push current HEAD to Vercel production branch
 git config alias.deploy "push origin HEAD:claude/modest-ritchie-TS2pv --force"
