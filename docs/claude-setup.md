@@ -104,7 +104,7 @@ Tall screenshots are stacked in slices because Figma caps images at 4096 px.
 
 ## 6. Open items
 
-- [x] Security: the GitHub token once written into `.claude/hooks/session-start.sh` had expired and has been removed from the hook. Delete the expired tokens `hewn-life-claude-push` and `Claude Code` on GitHub.
+- [x] Security: the GitHub token once written into `.claude/hooks/session-start.sh` had expired and has been removed from the hook, and the expired tokens were deleted on GitHub.
 - [ ] Run one real purchase from `/black-friday` and confirm it charges $499.50, then refund it.
 - [ ] Decide on the "Not sure where to start?" quiz pop-up: it covers the home hero on first visit (already off on `/black-friday` and checkout).
 - [ ] CLAUDE.md still says "No stock photos"; the site now uses the curated hewn-* photos alongside terrain. Update the rule.
