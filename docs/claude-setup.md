@@ -34,7 +34,7 @@ is not allowed either; check the live site through ScreenshotOne.
 ScreenshotOne dashboard and Vercel):
 
 - `SCREENSHOTONE_ACCESS_KEY`, `SCREENSHOTONE_SECRET_KEY`: signing as in `lib/design/capture.ts`
-- `GITHUB_PAT`: used by `.claude/hooks/session-start.sh` to push. Use a fresh, fine-grained token scoped to this repo (see "Security" below).
+- No GitHub token is needed: pushes go through Claude's GitHub connector. Never put a token in a file in this (public) repo.
 
 The site's own runtime secrets (Stripe, Airtable, Twilio, Resend, Anthropic…)
 live in **Vercel**, not in Claude; nothing to do there.
@@ -104,7 +104,7 @@ Tall screenshots are stacked in slices because Figma caps images at 4096 px.
 
 ## 6. Open items
 
-- [ ] **Security: revoke the GitHub token written into `.claude/hooks/session-start.sh`** (public repo), create a new one, and store it only as the `GITHUB_PAT` secret.
+- [x] Security: the GitHub token once written into `.claude/hooks/session-start.sh` had expired and has been removed from the hook. Delete the expired tokens `hewn-life-claude-push` and `Claude Code` on GitHub.
 - [ ] Run one real purchase from `/black-friday` and confirm it charges $499.50, then refund it.
 - [ ] Decide on the "Not sure where to start?" quiz pop-up: it covers the home hero on first visit (already off on `/black-friday` and checkout).
 - [ ] CLAUDE.md still says "No stock photos"; the site now uses the curated hewn-* photos alongside terrain. Update the rule.
