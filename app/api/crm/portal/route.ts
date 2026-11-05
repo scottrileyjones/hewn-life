@@ -19,7 +19,7 @@ type Body =
 
 /** The team side of the client portal: add and edit clients, post to their thread, send invites. */
 export async function POST(req: NextRequest) {
-  const user = currentUser()
+  const user = (await currentUser())
   if (!user) return NextResponse.json({ error: 'Signed out' }, { status: 401 })
   const b = await req.json().catch(() => ({})) as Body
   try {

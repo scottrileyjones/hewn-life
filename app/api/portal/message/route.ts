@@ -5,7 +5,7 @@ import { notifyTeam } from '@/lib/portal/notify'
 
 /** A client sends us a message from their portal. */
 export async function POST(req: NextRequest) {
-  const email = currentClientEmail()
+  const email = (await currentClientEmail())
   const client = email ? await findClient(email).catch(() => null) : null
   if (!client || client.status === 'Past') return NextResponse.json({ error: 'Signed out' }, { status: 401 })
   const { body } = await req.json().catch(() => ({})) as { body?: unknown }

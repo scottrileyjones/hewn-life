@@ -8,7 +8,7 @@ type Body = { action: 'test' | 'send'; body?: string; audience?: Audience }
 
 /** Marketing texts from HQ: send a test to the team's phones, or send a campaign. */
 export async function POST(req: NextRequest) {
-  const user = currentUser()
+  const user = (await currentUser())
   if (!user) return NextResponse.json({ error: 'Signed out' }, { status: 401 })
   const b = await req.json().catch(() => ({})) as Body
   const body = (b.body || '').trim()

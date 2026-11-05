@@ -9,7 +9,8 @@ export const metadata = {
   robots: { index: false, follow: false },
 }
 
-export default async function ConfirmCancel({ searchParams }: { searchParams: { e?: string; x?: string; s?: string } }) {
+export default async function ConfirmCancel(props: { searchParams: Promise<{ e?: string; x?: string; s?: string }> }) {
+  const searchParams = await props.searchParams;
   noStore()
   const { e = '', x = '', s = '' } = searchParams
   if (!verifyCancelLink(e, Number(x), s)) {

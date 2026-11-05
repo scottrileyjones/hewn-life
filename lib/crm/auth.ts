@@ -45,8 +45,8 @@ export function sessionFromLink(email: string, expires: number, sig: string) {
 }
 
 /** The signed-in user's email, or null. */
-export function currentUser(): string | null {
-  const raw = cookies().get(SESSION_COOKIE)?.value
+export async function currentUser(): Promise<string | null> {
+  const raw = (await cookies()).get(SESSION_COOKIE)?.value
   if (!raw) return null
   const [email, x, sig] = raw.split('|')
   return check('session', email, Number(x), sig) ? email : null

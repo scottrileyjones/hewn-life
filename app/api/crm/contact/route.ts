@@ -4,7 +4,7 @@ import { STAGES, savePipeline, type Stage } from '@/lib/crm/data'
 
 /** Save a contact's hand-set stage, notes or deal value to the Pipeline table. */
 export async function POST(req: NextRequest) {
-  const user = currentUser()
+  const user = (await currentUser())
   if (!user) return NextResponse.json({ error: 'Signed out' }, { status: 401 })
   const body = await req.json().catch(() => ({})) as { email?: string; pipelineId?: string | null; stage?: string; notes?: string; value?: number | null; test?: boolean }
   const email = (body.email || '').trim().toLowerCase()

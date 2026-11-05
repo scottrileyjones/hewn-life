@@ -9,7 +9,7 @@ import { SITE } from '@/lib/plans/email'
  * returning to their portal. Signed out: sign in first, then back here.
  */
 export async function GET(req: NextRequest) {
-  const email = currentClientEmail()
+  const email = (await currentClientEmail())
   if (!email) return NextResponse.redirect(new URL('/portal/login?next=billing', req.url))
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-04-22.dahlia' })

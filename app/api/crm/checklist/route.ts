@@ -4,7 +4,7 @@ import { AREAS, OWNERS, STATUSES, deleteTask, saveTask, type TaskPatch } from '@
 
 /** Create or update a startup checklist task. */
 export async function POST(req: NextRequest) {
-  const user = currentUser()
+  const user = (await currentUser())
   if (!user) return NextResponse.json({ error: 'Signed out' }, { status: 401 })
   const body = await req.json().catch(() => ({})) as { id?: string | null; order?: number } & Record<string, unknown>
   const patch: TaskPatch = {}
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const user = currentUser()
+  const user = (await currentUser())
   if (!user) return NextResponse.json({ error: 'Signed out' }, { status: 401 })
   const id = req.nextUrl.searchParams.get('id')
   if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })

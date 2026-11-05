@@ -8,7 +8,7 @@ import { syncDesignBuild } from '@/lib/design/builds'
 
 /** A client submits their part of an onboarding step: form answers and any files. */
 export async function POST(req: NextRequest) {
-  const email = currentClientEmail()
+  const email = (await currentClientEmail())
   const client = email ? await findClient(email).catch(() => null) : null
   if (!client || client.status === 'Past') return NextResponse.json({ error: 'Signed out' }, { status: 401 })
 

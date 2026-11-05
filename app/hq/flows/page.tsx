@@ -12,7 +12,7 @@ const ago = (h: number) => new Date(Date.now() - h * 3600e3).toISOString()
 export default async function FlowsPage() {
   noStore()
   const sample = process.env.PLAN_SAMPLE === '1'
-  const user = currentUser() ?? (sample ? 'preview@hewn.life' : null)
+  const user = (await currentUser()) ?? (sample ? 'preview@hewn.life' : null)
   if (!user) redirect('/crm/login?next=/hq/flows')
   if (sample) {
     const runs: Run[] = [

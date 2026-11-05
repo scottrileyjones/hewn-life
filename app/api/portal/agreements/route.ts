@@ -11,7 +11,7 @@ export const maxDuration = 60
 
 /** The client signs an agreement: checks it's theirs and unchanged, records the signature, makes and sends the signed PDF. */
 export async function POST(req: NextRequest) {
-  const email = currentClientEmail()
+  const email = (await currentClientEmail())
   const client = email ? await findClient(email).catch(() => null) : null
   if (!client || client.status === 'Past') return NextResponse.json({ error: 'Signed out' }, { status: 401 })
   const b = await req.json().catch(() => ({})) as { id?: string; name?: string; title?: string; consent?: boolean; authority?: boolean; hash?: string }

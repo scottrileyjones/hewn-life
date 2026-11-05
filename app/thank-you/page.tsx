@@ -28,7 +28,10 @@ function Tick({ className = 'h-4 w-4' }: { className?: string }) {
  * After payment: thank them, show what they bought, and send them straight to
  * their portal to tell us what we need (like a Fiverr order's requirements).
  */
-export default async function ThankYou({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
+export default async function ThankYou(
+  props: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }
+) {
+  const searchParams = await props.searchParams;
   const transactionId = first(searchParams.payment_intent)
   const secret = first(searchParams.payment_intent_client_secret)
   const status = first(searchParams.redirect_status)

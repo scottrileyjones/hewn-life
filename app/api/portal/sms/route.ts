@@ -6,7 +6,7 @@ import { CONSENT_TEXT, WELCOME_TEXT, prettyPhone, sendSms, toE164 } from '@/lib/
 
 /** A client turns text alerts on (with their mobile and the consent box ticked) or off. */
 export async function POST(req: NextRequest) {
-  const email = currentClientEmail()
+  const email = (await currentClientEmail())
   const client = email ? await findClient(email).catch(() => null) : null
   if (!client || client.status === 'Past') return NextResponse.json({ error: 'Signed out' }, { status: 401 })
   const b = await req.json().catch(() => ({})) as { optIn?: unknown; mobile?: unknown; agreed?: unknown; offers?: unknown }

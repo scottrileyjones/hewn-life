@@ -12,7 +12,7 @@ export default async function Crm() {
   noStore()
   // PLAN_SAMPLE=1 (local previews only) shows made-up contacts without signing in.
   const sample = process.env.PLAN_SAMPLE === '1'
-  const user = currentUser() ?? (sample ? 'preview@hewn.life' : null)
+  const user = (await currentUser()) ?? (sample ? 'preview@hewn.life' : null)
   if (!user) redirect('/crm/login')
   const contacts = sample ? sampleContacts() : await loadContacts()
   // Signed review links, so opening a plan from here doesn't count as the lead opening it.

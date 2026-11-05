@@ -11,7 +11,8 @@ import { sampleAgreement } from '@/lib/agreements/sample'
 
 export const metadata = { title: 'Client portal', robots: { index: false, follow: false } }
 
-export default async function Portal({ searchParams }: { searchParams: { billing?: string; sample?: string } }) {
+export default async function Portal(props: { searchParams: Promise<{ billing?: string; sample?: string }> }) {
+  const searchParams = await props.searchParams;
   noStore()
   // PLAN_SAMPLE=1 (local previews only) shows a made-up client without signing in.
   if (process.env.PLAN_SAMPLE === '1') {
@@ -23,7 +24,7 @@ export default async function Portal({ searchParams }: { searchParams: { billing
       : sampleClient()
     return <Dashboard client={client} messages={sampleMessages()} billing={searchParams.billing} assetCounts={{ total: a.length, toReview: a.filter(x => x.status === 'In review').length }} agreements={[sampleAgreement('Wrought'), sampleAgreement('Website in a Day', true)]} />
   }
-  const email = currentClientEmail()
+  const email = (await currentClientEmail())
   if (!email) redirect('/portal/login')
   const client = await findClient(email)
   if (!client || client.status === 'Past') redirect('/portal/login')

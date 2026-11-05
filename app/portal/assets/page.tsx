@@ -13,7 +13,7 @@ export default async function Assets() {
   noStore()
   // PLAN_SAMPLE=1 (local previews only) shows a made-up client without signing in.
   if (process.env.PLAN_SAMPLE === '1') { const c = sampleClient(); return <AssetLibrary email={c.email} company={c.company} assets={sampleAssets()} preview /> }
-  const email = currentClientEmail()
+  const email = (await currentClientEmail())
   if (!email) redirect('/portal/login')
   const client = await findClient(email)
   if (!client || client.status === 'Past') redirect('/portal/login')
