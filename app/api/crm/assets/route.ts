@@ -13,7 +13,7 @@ type Body =
 
 /** Team asset actions: list a client's library, add assets (multipart), move them through review, edit, delete. */
 export async function POST(req: NextRequest) {
-  const user = currentUser()
+  const user = (await currentUser())
   if (!user) return NextResponse.json({ error: 'Signed out' }, { status: 401 })
   try {
     if ((req.headers.get('content-type') || '').includes('multipart/form-data')) {

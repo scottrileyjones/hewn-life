@@ -18,7 +18,7 @@ export default async function Calendar() {
     const c = sampleClient()
     return <ClientCalendar email={c.email} company={c.company} posts={samplePosts().filter(clientSees)} media={[]} preview assetsToReview={sampleAssets().filter(a => a.status === 'In review').length} />
   }
-  const email = currentClientEmail()
+  const email = (await currentClientEmail())
   if (!email) redirect('/portal/login')
   const client = await findClient(email)
   if (!client || client.status === 'Past') redirect('/portal/login')

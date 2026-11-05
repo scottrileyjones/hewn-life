@@ -6,7 +6,7 @@ import { UploadError, createFromForm } from '@/lib/portal/assetUpload'
 import { notifyTeamAsset } from '@/lib/portal/notify'
 
 async function client() {
-  const email = currentClientEmail()
+  const email = (await currentClientEmail())
   const c = email ? await findClient(email).catch(() => null) : null
   return c && c.status !== 'Past' ? c : null
 }

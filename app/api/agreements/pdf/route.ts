@@ -10,8 +10,8 @@ import { signedPdf } from '@/lib/agreements/pdf'
  */
 export async function GET(req: NextRequest) {
   const a = await getAgreement(req.nextUrl.searchParams.get('id') || '').catch(() => null)
-  const team = currentUser()
-  const client = currentClientEmail()
+  const team = (await currentUser())
+  const client = (await currentClientEmail())
   if (!a || (!team && client !== a.clientEmail)) return NextResponse.json({ error: 'Not found' }, { status: 404 })
   // Before everyone has signed, only the team can get a copy (with the signatures so far).
   if (a.status !== 'Signed' && !team) return NextResponse.json({ error: 'Not signed yet' }, { status: 409 })

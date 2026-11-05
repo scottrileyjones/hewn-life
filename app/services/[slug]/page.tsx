@@ -16,7 +16,8 @@ export function generateStaticParams() {
   return pillars.map(p => ({ slug: p.slug }))
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const p = getPillar(params.slug)
   if (!p) return {}
   return {
@@ -28,7 +29,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
 const phaseColor = [colors.forest2, colors.lichen, colors.lime]
 
-export default function PillarPage({ params }: { params: { slug: string } }) {
+export default async function PillarPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const p = getPillar(params.slug)
   if (!p) notFound()
   const card = pillarCard(p.slug)

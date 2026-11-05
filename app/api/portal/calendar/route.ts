@@ -6,7 +6,7 @@ import { notifyTeamPost } from '@/lib/portal/notify'
 
 /** A client approves a post, or asks for changes. */
 export async function POST(req: NextRequest) {
-  const email = currentClientEmail()
+  const email = (await currentClientEmail())
   const c = email ? await findClient(email).catch(() => null) : null
   if (!c || c.status === 'Past') return NextResponse.json({ error: 'Signed out' }, { status: 401 })
   const b = await req.json().catch(() => ({})) as { id?: string; decision?: string; comment?: string }

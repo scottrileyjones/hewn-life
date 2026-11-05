@@ -15,7 +15,7 @@ const ipOf = (req: NextRequest) => (req.headers.get('x-forwarded-for') || '').sp
 
 /** HQ: list a client's agreements, countersign and send a new one, resend the email, or void one. */
 export async function POST(req: NextRequest) {
-  const user = currentUser()
+  const user = (await currentUser())
   if (!user) return NextResponse.json({ error: 'Signed out' }, { status: 401 })
   const b = await req.json().catch(() => ({})) as Body
   try {

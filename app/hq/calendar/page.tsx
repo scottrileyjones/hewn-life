@@ -8,11 +8,12 @@ import { sampleAssets, sampleClient, samplePosts } from '@/lib/portal/sample'
 
 export const metadata = { title: 'Calendar', robots: { index: false, follow: false } }
 
-export default async function CalendarPage({ searchParams }: { searchParams: { c?: string } }) {
+export default async function CalendarPage(props: { searchParams: Promise<{ c?: string }> }) {
+  const searchParams = await props.searchParams;
   noStore()
   // PLAN_SAMPLE=1 (local previews only) shows a made-up client without signing in.
   const sample = process.env.PLAN_SAMPLE === '1'
-  const user = currentUser() ?? (sample ? 'preview@hewn.life' : null)
+  const user = (await currentUser()) ?? (sample ? 'preview@hewn.life' : null)
   if (!user) redirect('/crm/login')
   if (sample) {
     const c = sampleClient()

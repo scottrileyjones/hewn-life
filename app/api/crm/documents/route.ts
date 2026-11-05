@@ -14,7 +14,7 @@ type Body =
 
 /** HQ: a team member signs an internal document, or emails the other signer a reminder. */
 export async function POST(req: NextRequest) {
-  const user = currentUser()
+  const user = (await currentUser())
   if (!user) return NextResponse.json({ error: 'Signed out' }, { status: 401 })
   const b = await req.json().catch(() => ({})) as Body
   const a = await getAgreement(b.id).catch(() => null)

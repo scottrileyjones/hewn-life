@@ -39,7 +39,7 @@ export default async function HqPage() {
   noStore()
   // PLAN_SAMPLE=1 (local previews only) shows sample data without signing in.
   const sample = process.env.PLAN_SAMPLE === '1'
-  const user = currentUser() ?? (sample ? 'preview@hewn.life' : null)
+  const user = (await currentUser()) ?? (sample ? 'preview@hewn.life' : null)
   if (!user) redirect('/crm/login')
   const [tasks, revenue, contacts] = sample
     ? [sampleTasks(), sampleRevenue(), sampleContacts()]

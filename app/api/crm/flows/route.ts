@@ -17,7 +17,7 @@ const SAMPLE = { name: 'Jane Smith', company: 'Acme Plumbing', email: 'jane@exam
 
 /** HQ → Flows: edit flows, see and remove people in them, send yourself a test, run due steps now. */
 export async function POST(req: NextRequest) {
-  const user = currentUser()
+  const user = (await currentUser())
   if (!user) return NextResponse.json({ error: 'Signed out' }, { status: 401 })
   const b = await req.json().catch(() => ({})) as Body
   try {

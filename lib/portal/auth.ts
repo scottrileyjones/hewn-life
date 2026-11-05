@@ -49,8 +49,8 @@ export function portalSessionFromLink(email: string, expires: number, sig: strin
 }
 
 /** The signed-in client's email, or null. Still check the client exists before showing anything. */
-export function currentClientEmail(): string | null {
-  const raw = cookies().get(PORTAL_COOKIE)?.value
+export async function currentClientEmail(): Promise<string | null> {
+  const raw = (await cookies()).get(PORTAL_COOKIE)?.value
   if (!raw) return null
   const [email, x, sig] = raw.split('|')
   return check('session', email, Number(x), sig) ? email : null

@@ -14,7 +14,11 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 }
 
-export default async function PlanPage({ params, searchParams }: { params: { token: string }; searchParams: { review?: string; print?: string } }) {
+export default async function PlanPage(
+  props: { params: Promise<{ token: string }>; searchParams: Promise<{ review?: string; print?: string }> }
+) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   noStore()
   const sample = params.token === 'sample' && process.env.PLAN_SAMPLE === '1'
   const record = sample ? samplePlan : await findByToken(params.token).catch(() => null)

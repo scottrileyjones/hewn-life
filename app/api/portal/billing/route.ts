@@ -5,7 +5,7 @@ import { SITE } from '@/lib/plans/email'
 
 /** Send a signed-in client to Stripe's billing page for invoices, card and plan changes. */
 export async function POST(req: NextRequest) {
-  const email = currentClientEmail()
+  const email = (await currentClientEmail())
   if (!email) return NextResponse.redirect(new URL('/portal/login', req.url), 303)
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-04-22.dahlia' })

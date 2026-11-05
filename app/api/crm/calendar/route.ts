@@ -15,7 +15,7 @@ type Body =
 
 /** Team calendar actions: list posts, load a client's media, save posts, move them through review, delete. */
 export async function POST(req: NextRequest) {
-  const user = currentUser()
+  const user = (await currentUser())
   if (!user) return NextResponse.json({ error: 'Signed out' }, { status: 401 })
   const b = await req.json().catch(() => ({})) as Body
   try {

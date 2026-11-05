@@ -13,7 +13,7 @@ export default async function TextsPage() {
   noStore()
   // PLAN_SAMPLE=1 (local previews only) shows made-up subscribers without signing in.
   const sample = process.env.PLAN_SAMPLE === '1'
-  const user = currentUser() ?? (sample ? 'preview@hewn.life' : null)
+  const user = (await currentUser()) ?? (sample ? 'preview@hewn.life' : null)
   if (!user) redirect('/crm/login')
   if (sample) {
     const subs: Subscriber[] = [

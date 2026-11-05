@@ -8,10 +8,11 @@ import { sampleInternal } from '@/lib/agreements/sample'
 
 export const metadata = { title: 'Sign', robots: { index: false, follow: false } }
 
-export default async function DocPage({ params }: { params: { id: string } }) {
+export default async function DocPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   noStore()
   const sample = process.env.PLAN_SAMPLE === '1'
-  const user = currentUser() ?? (sample ? 'alex@hewn.life' : null)
+  const user = (await currentUser()) ?? (sample ? 'alex@hewn.life' : null)
   if (!user) redirect(`/crm/login?next=${encodeURIComponent(`/hq/documents/${params.id}`)}`)
   const found = sample ? sampleInternal(params.id === 'signed') : await getAgreement(params.id)
   const doc = found && !sample ? await ensureFrozen(found) : found
